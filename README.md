@@ -13,7 +13,7 @@ The mobile map application is optimized for a Windows Tablet PC with the followi
 
 This application will help you deploy a mobile mapping in a disconnected or connected network environment.
 
-![Image of Water Utility Mobile Map application](https://raw.github.com/Esri/water-utility-mobile-map/master/water-utility-mobile-map.png "Water Utility Mobile Map application"))
+![Image of Water Utility Mobile Map application](https://raw.github.com/Esri/water-utility-mobile-map/master/water-utility-mobile-map.png "Water Utility Mobile Map application")
 
 ## Features
 
