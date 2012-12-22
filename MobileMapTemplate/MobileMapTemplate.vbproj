@@ -1,0 +1,355 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{73121AEE-7109-4538-8C14-A9835345CE22}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>Esri.ArcGISTemplates.My.MyApplication</StartupObject>
+    <RootNamespace>Esri.ArcGISTemplates</RootNamespace>
+    <AssemblyName>MobileMapTemplate</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>Off</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <ApplicationIcon>ico\123.ico</ApplicationIcon>
+    <ManifestCertificateThumbprint>6BB95E950A812CB0792B309822C620EB2B628B29</ManifestCertificateThumbprint>
+    <ManifestKeyFile>MobileMapTemplate_TemporaryKey.pfx</ManifestKeyFile>
+    <GenerateManifests>true</GenerateManifests>
+    <SignManifests>true</SignManifests>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+    <SignAssembly>false</SignAssembly>
+    <TargetZone>LocalIntranet</TargetZone>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath />
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <PublishUrl>http://localhost/MobileMap/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <InstallUrl>http://localhost/MobileMap/</InstallUrl>
+    <ProductName>ArcGIS Templates - Water Utilities Mobile Map</ProductName>
+    <PublisherName>ESRI</PublisherName>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>publish.htm</WebPage>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>2.2.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>MobileMapTemplate.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\..\Compiled\InspectionMaintenance\Bin\</OutputPath>
+    <DocumentationFile>MobileMapTemplate.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <NoWarn>42353,42354,42355</NoWarn>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <NoWarn>42353,42354,42355</NoWarn>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ESRI.ArcGIS.Mobile, Version=3.1.0.0, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="MobileMapConsole.Designer.vb">
+      <DependentUpon>MobileMapConsole.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MobileMapConsole.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MobileMapConsoleSplash.Designer.vb">
+      <DependentUpon>MobileMapConsoleSplash.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MobileMapConsoleSplash.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MobileMapConsole.resx">
+      <DependentUpon>MobileMapConsole.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MobileMapConsoleSplash.resx">
+      <DependentUpon>MobileMapConsoleSplash.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Activity_Control\Activity_Control.vbproj">
+      <Project>{69260A52-9843-4EB4-A1E2-E8C890232DC2}</Project>
+      <Name>Activity_Control</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ALN_Control\ALN_Control.vbproj">
+      <Project>{B27D140C-2849-4560-A98D-F0576B8E9995}</Project>
+      <Name>ALN_Control</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonControls\Esri.ArcGISTemplates.CommonControls.vbproj">
+      <Project>{49225870-D079-4557-B5FA-B23CE053284E}</Project>
+      <Name>Esri.ArcGISTemplates.CommonControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GroupLayerToggle_Control\GroupLayerToggle_Control.vbproj">
+      <Project>{61BBC3E3-B530-41D7-A86E-EAB87CB766B8}</Project>
+      <Name>GroupLayerToggle_Control</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Identify_MapAction\Identify_MapAction.vbproj">
+      <Project>{EECB8460-96EB-42C4-8E9E-A01578EFA640}</Project>
+      <Name>Identify_MapAction</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Measure_MapAction\Measure_MapAction.vbproj">
+      <Project>{00A89236-ACC4-4DB6-8797-BED81C1FD6E8}</Project>
+      <Name>Measure_MapAction</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MobileServiceSync_Control\MobileService_Control.vbproj">
+      <Project>{803E64BB-2332-43A5-95C2-3BA605FCA389}</Project>
+      <Name>MobileService_Control</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Navigation_Control\Navigation_Control.vbproj">
+      <Project>{C421607F-27A0-449D-8815-9F6F31EB744E}</Project>
+      <Name>Navigation_Control</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EditFeaturesMapAction\EditFeaturesMapAction.vbproj">
+      <Project>{34098537-729F-48C8-85F6-D226593A5E2D}</Project>
+      <Name>EditFeaturesMapAction</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Search_Control\Search_Control.vbproj">
+      <Project>{58459A28-FF32-49F4-8439-A129BECAB49A}</Project>
+      <Name>Search_Control</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SketchPad_Control\SketchPad_Control.vbproj">
+      <Project>{08BADE23-D316-41C7-A13A-DE926928C612}</Project>
+      <Name>SketchPad_Control</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TOC_Control\TOC_Control.vbproj">
+      <Project>{6BCF7D02-C837-47B6-B635-810543C40BA1}</Project>
+      <Name>TOC_Control</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebDisplay_Control\WebDisplay_Control.vbproj">
+      <Project>{8AC125CB-8711-46A6-8535-AA482ADBF479}</Project>
+      <Name>WebDisplay_Control</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ico\Fire-Hydrant.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Square - Blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Square - Red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Square - Green.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\..\..\..\Program Files %28x86%29\ArcGIS SDKs\Windows Mobile\bin\ESRIMobileCore.dll">
+      <Link>ESRIMobileCore.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\..\..\Program Files %28x86%29\ArcGIS SDKs\Windows Mobile\bin\ESRIMobileGPS.dll">
+      <Link>ESRIMobileGPS.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Navigation_Control\bookmarks.xml">
+      <Link>bookmarks.xml</Link>
+    </Content>
+    <Content Include="AppImages\flow.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AppImages\hardhat.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AppImages\splash.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AppImages\Fire-Hydrant.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AppImages\123.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="file.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Images\MapVert.png" />
+    <None Include="Images\MapVertDown.png" />
+    <None Include="Images\ButtonsVertDown.png" />
+    <None Include="Images\ButtonsVert.png" />
+    <None Include="Images\PanelVert.png" />
+    <None Include="Images\PanelVertDown.png" />
+    <None Include="Images\animated.gif" />
+    <Content Include="Images\BluCamera.png" />
+    <None Include="Images\BluePrint.png" />
+    <Content Include="MobileMapConfig.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="NavigationSettings.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="cacheInstall\cache.zip">
+    </None>
+    <None Include="ico\hardhat.ico">
+    </None>
+    <None Include="Images\ArrowRight.png" />
+    <None Include="Images\ArrowLeft.png" />
+    <None Include="ico\123.ico" />
+    <None Include="My Project\app.manifest">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <PublishFile Include="IALoader">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

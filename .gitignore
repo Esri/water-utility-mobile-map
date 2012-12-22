@@ -10,5 +10,11 @@ __*
 
 # Visual Studio
 *.suo
+*.vbproj.user
 bin/
 obj/
+Debug/
+Release/
+
+# Image proj
+*.pdn

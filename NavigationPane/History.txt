@@ -1,0 +1,122 @@
+Version : 2.6.4
+11.07.2007
+Added : If deactivate or change application close collapse screen
+Improved : Collapse screen show method
+Fixed : Splitter resize problem
+
+Version : 2.6.3
+08.31.2007
+Improved : Collapse button click
+Removed : Unused methods from NavigateBarHelpers
+Fixed : if unsave setting then changing button position
+Fixed : Button's right click menu closing then paint
+
+08.28.2007
+Version : 2.6.2
+Added : Get Windows Theme Name and set NavigatabarColorTable (for XP)
+Added : Check height and if required show less button in panel
+Added : AlwaysUseSystemColors property. 
+Changed : Remove MTSplitter.cs from project added NavigateBarSplitter.cs
+Improved : Mouse events for splitter
+Fixed : StackOverflowException error for splitter
+Fixed : Overflow panel tooltiptext bug for Vista 
+Fixed : Some flickering problems
+
+05.28.2007
+Version : 2.6.1
+Added : OnNavigateBarButtonSelecting event on Navigatebar.
+Added : New code file (NavigateBarButtonCancelEventArgs.cs) on project. 
+Added : NavigateBar.RelatedControl property. If Button.RelatedControl is empty then display this control
+Improved : Button.PerformClick method on NavigateBarButton
+Improved : Overflow panel context menu building style
+Fixed : When RTL changing wrong displayed button count
+
+04.26.2007
+Version : 2.6
+Added : Simple Desing-time support
+Added : RightToLeft support (RightToLeft, IsUseRTLforButtons, IsUseRTLforMenus properties)
+Added : Arrow button shadow (for Office2007 style)
+Added : Optional arrow button style. Office 2003 or 2007 style. On NavigateBarColorTable
+Added : Overflow button context menu
+Added : Default uniq key for buttons ( meaningless values )
+Changed : Overflowpanel button displayed style
+Changed : NavigateBar button collection base class
+Changed : Sample application for new features.
+
+04.12.2007
+Version : 2.5.2
+Changed : Namespace and Assembly file name (I have to. Same code two project)
+Added : Collapse screen message filter
+Added : Show each button click show collapse screen
+Added : Tab key control
+Added : Programatic hide and show collapse screen
+
+04.06.2007 :
+Version : 2.5.1
+Update : Some features. (ContextMenu renderer, collapse button pressed paint, splitter point count and border, overflow button image size, collapse screen background paint)
+Added : OnNavigateBarColorChanged event
+Changed : NavigateBarDisplayedButtonCount is now optional. Default all buttons.
+Changed : Sample application for new features.
+
+04.02.2007 :
+Fixed : Overflowbutton selected image bug.
+
+04.01.2007 : 
+Verison : 2.5
+Changed : Painting style.
+Removed : UseMiddleColors property from NavigateBarColorTable
+Fixed : CollapsibleScreen close bug.
+
+03.25.2007 :
+Added : IsShowCollapseScreenCaption property on NavigatebarButton control.
+Added : CollapsedScreenWidth property on NavigatebarButton control.
+Added : Shadow for collapse screen (XP or higher)
+Changed : Sample application for new features.
+
+03.23.2007 :
+Added : IsCollapsible and IsShowCollapseButton properties in navigatebar. Now collapse mode is optional.
+Changed :Sample application for new features.
+
+03.20.2007 :
+Added : ChangeButtonPosition method in navigatebar.
+Changed : Menu option dialog Reset style (return orjinal order)
+Changed : Sample application for new features.
+
+03.10.2007 :
+Fixed : Overflow panel refresh bug
+
+03.07.2007 :
+Changed : Collapse, expand and configure button imaged removed. Drawing graphics control.
+Fixed : Caption bar draw recrangle error
+
+03.05.2007 :
+Added : Office 2007 Style theme support
+Added : Collapse and Expand features
+Added : Contextmenu on button's
+Added : Contextmenu renderer
+Added : Customizable new color table
+Added : Custom save and restore xml file name
+Added : New event OnNavigateBarCollapseModeChanged
+Added : New methods RunMenuOptionsDialog and ChangeCollapseMode
+New : Content text style
+Removed : ReDisplay method (new feature is DisplayedButonCount property on navigatebar)
+Removed : Theme property (new feature is NavigateBarColorTable property)
+Moved : NavigateBar PaintAngle property move on NavigateBarColorTable
+Changed : Setting file format
+Fixed : Some bugs
+Updated : Sample application for new features.
+
+02.19.2007 :
+Fixed : RestoreSettingsFromXmlFile method (thanks Moehre)
+Fixed : Displayed button count when restoring
+Added : Some a few properties and a new event (IsCollapsedMode, CollapsibleWidth, OverFlowPanelHeight, DisplayedButtonCount - OnNavigateBarDisplayedButtonCountChanged)
+Updated : Sample application for new features.
+
+02.07.2007 :
+Fixed : Related control panel paint bug.
+Added : English comments in code files.
+Update sample application. Added programatic collapse sample.
+Add new property IsAlwaysDisplayed for NavigateBarbutton
+
+01.22.2007 :
+Update article for new features
