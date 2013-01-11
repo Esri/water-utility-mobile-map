@@ -3,7 +3,7 @@
 The Water Utility Mobile Map is an ArcGIS Mobile application that can be used by field operations and maintenance staff in a water utility or public works department to gain access to utility information. The Water Utility Mobile Map requires a Tablet PC that supports:
 
 * Microsoft Windows 7,  Microsoft Windows Vista or XP Tablet Edition
-* Microsoft .NET Framework 2.0
+* Microsoft .NET Framework 3.5
 
 The mobile map application is optimized for a Windows Tablet PC with the following:
 
@@ -37,10 +37,10 @@ on the ArcGIS Resource Center can guide you in the setup and configuration of th
 
 ## Requirements
 
-### Your Services
-
+* Microsoft .NET Framework 3.5
+* Visual Studio 2010
 * ArcGIS for Windows Mobile 3.1 - [About](http://www.esri.com/software/arcgis/arcgismobile)
-* Mobile Project Center 3.1 - [About](http://www.esri.com/software/arcgis/arcgismobile)
+* ArcLogistic Navigator 
 * ArcGIS for Desktop 10.1 - Standard or Advanced - [About](http://www.esri.com/software/arcgis/arcgis-for-desktop)
 * ArcGIS for Server 10.1 - Standard or Advanced - [About](http://www.esri.com/software/arcgis/arcgisserver)
 * Local Government Information Model - [About](http://www.arcgis.com/home/item.html?id=5f799e6d23d94e25b5aaaf2a58e63fb1)
@@ -51,6 +51,7 @@ Learn more about Esri's [ArcGIS for Local Government maps and apps](http://resou
 
 Additional [information and sample data](http://www.arcgis.com/home/item.html?id=a57e96b9240e4311b7fd863b80a6d389)
 are available for the application.
+
 
 ## Issues
 
