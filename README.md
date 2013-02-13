@@ -40,7 +40,7 @@ on the ArcGIS Resource Center can guide you in the setup and configuration of th
 * Microsoft .NET Framework 3.5
 * Visual Studio 2010
 * ArcGIS for Windows Mobile 3.1 - [About](http://www.esri.com/software/arcgis/arcgismobile)
-* ArcLogistic Navigator 
+* ArcLogistic Navigator
 * ArcGIS for Desktop 10.1 - Standard or Advanced - [About](http://www.esri.com/software/arcgis/arcgis-for-desktop)
 * ArcGIS for Server 10.1 - Standard or Advanced - [About](http://www.esri.com/software/arcgis/arcgisserver)
 * Local Government Information Model - [About](http://www.arcgis.com/home/item.html?id=5f799e6d23d94e25b5aaaf2a58e63fb1)
@@ -79,3 +79,6 @@ limitations under the License.
 
 A copy of the license is available in the repository's
 [license.txt](https://raw.github.com/Esri/water-utility-mobile-map/master/license.txt) file.
+
+[](Esri Tags: Local Government water utility mobile map C-Sharp)
+[](Esri Language: Visual-Basic)
