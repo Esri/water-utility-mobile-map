@@ -121,11 +121,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\..\..\..\Program Files %28x86%29\ArcGIS\Mobile3.0\bin\ESRIMobileCore.dll">
-      <Link>ESRIMobileCore.dll</Link>
+    <Content Include="..\..\..\..\Program Files %28x86%29\ArcGIS SDKs\Windows Mobile\bin\esrigps.dll">
+      <Link>esrigps.dll</Link>
     </Content>
-    <Content Include="..\..\..\..\..\Program Files %28x86%29\ArcGIS\Mobile3.0\bin\ESRIMobileGPS.dll">
-      <Link>ESRIMobileGPS.dll</Link>
+    <Content Include="..\..\..\..\Program Files %28x86%29\ArcGIS SDKs\Windows Mobile\bin\ESRIMobileCore.dll">
+      <Link>ESRIMobileCore.dll</Link>
     </Content>
     <Content Include="..\MobileMapTemplate\MobileMapConfig.xml">
       <Link>MobileMapConfig.xml</Link>

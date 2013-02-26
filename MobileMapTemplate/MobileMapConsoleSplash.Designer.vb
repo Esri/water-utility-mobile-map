@@ -39,18 +39,18 @@ Partial Class MobileMapConsoleSplash
         'Label2
         '
         Me.Label2.BackColor = System.Drawing.Color.Transparent
-        Me.Label2.Location = New System.Drawing.Point(299, 236)
+        Me.Label2.Location = New System.Drawing.Point(270, 236)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(170, 24)
+        Me.Label2.Size = New System.Drawing.Size(216, 24)
         Me.Label2.TabIndex = 1
         Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'Label3
         '
         Me.Label3.BackColor = System.Drawing.Color.Transparent
-        Me.Label3.Location = New System.Drawing.Point(299, 264)
+        Me.Label3.Location = New System.Drawing.Point(270, 264)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(170, 24)
+        Me.Label3.Size = New System.Drawing.Size(216, 24)
         Me.Label3.TabIndex = 2
         Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '

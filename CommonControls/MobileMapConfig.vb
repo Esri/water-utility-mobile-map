@@ -2305,9 +2305,14 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
         Private gPSPointAvgField As String = 1
         Private gPSPointAvgWaitIntervalField As String = 0.001
         Private gPSPointMaxTriesField As String = 200
+        Private waypointControlField As MobileConfigMobileMapConfigNavigationOptionsGPSWaypointControl
+
 
         Private Shared sSerializer As System.Xml.Serialization.XmlSerializer
+        Public Sub New()
+            waypointControlField = New MobileConfigMobileMapConfigNavigationOptionsGPSWaypointControl()
 
+        End Sub
         <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=0)> _
         Public Property Visible() As String
             Get
@@ -2410,6 +2415,15 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
             End Get
             Set(ByVal value As String)
                 Me.gPSPointMaxTriesField = value
+            End Set
+        End Property
+        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=11)> _
+        Public Property WaypointControl() As MobileConfigMobileMapConfigNavigationOptionsGPSWaypointControl
+            Get
+                Return Me.waypointControlField
+            End Get
+            Set(ByVal value As MobileConfigMobileMapConfigNavigationOptionsGPSWaypointControl)
+                Me.waypointControlField = value
             End Set
         End Property
         Private Shared ReadOnly Property Serializer() As System.Xml.Serialization.XmlSerializer
@@ -2558,6 +2572,210 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
         End Function
 #End Region
     End Class
+
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.233"), _
+System.SerializableAttribute(), _
+System.ComponentModel.DesignerCategoryAttribute("code"), _
+System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
+    Partial Public Class MobileConfigMobileMapConfigNavigationOptionsGPSWaypointControl
+
+
+
+        Private Shared sSerializer As System.Xml.Serialization.XmlSerializer
+
+
+        Private visibleField As String
+
+        Private displayTextField As String
+
+        Private statusBarMessageField As String
+
+
+        Public Sub New()
+            MyBase.New()
+            visibleField = False
+
+
+        End Sub
+
+        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=0)> _
+        Public Property Visible() As String
+            Get
+                Return Me.visibleField
+            End Get
+            Set(ByVal value As String)
+                Me.visibleField = value
+            End Set
+        End Property
+
+        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=1)> _
+        Public Property DisplayText() As String
+            Get
+                Return Me.displayTextField
+            End Get
+            Set(ByVal value As String)
+                Me.displayTextField = value
+            End Set
+        End Property
+
+        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=2)> _
+        Public Property StatusBarMessage() As String
+            Get
+                Return Me.statusBarMessageField
+            End Get
+            Set(ByVal value As String)
+                Me.statusBarMessageField = value
+            End Set
+        End Property
+
+        Private Shared ReadOnly Property Serializer() As System.Xml.Serialization.XmlSerializer
+            Get
+                If (sSerializer Is Nothing) Then
+                    sSerializer = New System.Xml.Serialization.XmlSerializer(GetType(MobileConfigMobileMapConfigNavigationOptionsGPSWaypointControl))
+                End If
+                Return sSerializer
+            End Get
+        End Property
+
+#Region "Serialize/Deserialize"
+        '''<summary>
+        '''Serializes current MobileConfigMobileMapConfigNavigationOptionsGPSWaypointControl object into an XML document
+        '''</summary>
+        '''<returns>string XML value</returns>
+        Public Overridable Function Serialize() As String
+            Dim streamReader As System.IO.StreamReader = Nothing
+            Dim memoryStream As System.IO.MemoryStream = Nothing
+            Try
+                memoryStream = New System.IO.MemoryStream()
+                Serializer.Serialize(memoryStream, Me)
+                memoryStream.Seek(0, System.IO.SeekOrigin.Begin)
+                streamReader = New System.IO.StreamReader(memoryStream)
+                Return streamReader.ReadToEnd
+            Finally
+                If (Not (streamReader) Is Nothing) Then
+                    streamReader.Dispose()
+                End If
+                If (Not (memoryStream) Is Nothing) Then
+                    memoryStream.Dispose()
+                End If
+            End Try
+        End Function
+
+        '''<summary>
+        '''Deserializes workflow markup into an MobileConfigMobileMapConfigNavigationOptionsGPSWaypointControl object
+        '''</summary>
+        '''<param name="xml">string workflow markup to deserialize</param>
+        '''<param name="obj">Output MobileConfigMobileMapConfigNavigationOptionsGPSWaypointControl object</param>
+        '''<param name="exception">output Exception value if deserialize failed</param>
+        '''<returns>true if this XmlSerializer can deserialize the object; otherwise, false</returns>
+        Public Overloads Shared Function Deserialize(ByVal xml As String, ByRef obj As MobileConfigMobileMapConfigNavigationOptionsGPSWaypointControl, ByRef exception As System.Exception) As Boolean
+            exception = Nothing
+            obj = CType(Nothing, MobileConfigMobileMapConfigNavigationOptionsGPSWaypointControl)
+            Try
+                obj = Deserialize(xml)
+                Return True
+            Catch ex As System.Exception
+                exception = ex
+                Return False
+            End Try
+        End Function
+
+        Public Overloads Shared Function Deserialize(ByVal xml As String, ByRef obj As MobileConfigMobileMapConfigNavigationOptionsGPSWaypointControl) As Boolean
+            Dim exception As System.Exception = Nothing
+            Return Deserialize(xml, obj, exception)
+        End Function
+
+        Public Overloads Shared Function Deserialize(ByVal xml As String) As MobileConfigMobileMapConfigNavigationOptionsGPSWaypointControl
+            Dim stringReader As System.IO.StringReader = Nothing
+            Try
+                stringReader = New System.IO.StringReader(xml)
+                Return CType(Serializer.Deserialize(System.Xml.XmlReader.Create(stringReader)), MobileConfigMobileMapConfigNavigationOptionsGPSWaypointControl)
+            Finally
+                If (Not (stringReader) Is Nothing) Then
+                    stringReader.Dispose()
+                End If
+            End Try
+        End Function
+
+        '''<summary>
+        '''Serializes current MobileConfigMobileMapConfigNavigationOptionsGPSWaypointControl object into file
+        '''</summary>
+        '''<param name="fileName">full path of outupt xml file</param>
+        '''<param name="exception">output Exception value if failed</param>
+        '''<returns>true if can serialize and save into file; otherwise, false</returns>
+        Public Overridable Overloads Function SaveToFile(ByVal fileName As String, ByRef exception As System.Exception) As Boolean
+            exception = Nothing
+            Try
+                SaveToFile(fileName)
+                Return True
+            Catch e As System.Exception
+                exception = e
+                Return False
+            End Try
+        End Function
+
+        Public Overridable Overloads Sub SaveToFile(ByVal fileName As String)
+            Dim streamWriter As System.IO.StreamWriter = Nothing
+            Try
+                Dim xmlString As String = Serialize()
+                Dim xmlFile As System.IO.FileInfo = New System.IO.FileInfo(fileName)
+                streamWriter = xmlFile.CreateText
+                streamWriter.WriteLine(xmlString)
+                streamWriter.Close()
+            Finally
+                If (Not (streamWriter) Is Nothing) Then
+                    streamWriter.Dispose()
+                End If
+            End Try
+        End Sub
+
+        '''<summary>
+        '''Deserializes xml markup from file into an MobileConfigMobileMapConfigNavigationOptionsGPSWaypointControl object
+        '''</summary>
+        '''<param name="fileName">string xml file to load and deserialize</param>
+        '''<param name="obj">Output MobileConfigMobileMapConfigNavigationOptionsGPSWaypointControl object</param>
+        '''<param name="exception">output Exception value if deserialize failed</param>
+        '''<returns>true if this XmlSerializer can deserialize the object; otherwise, false</returns>
+        Public Overloads Shared Function LoadFromFile(ByVal fileName As String, ByRef obj As MobileConfigMobileMapConfigNavigationOptionsGPSWaypointControl, ByRef exception As System.Exception) As Boolean
+            exception = Nothing
+            obj = CType(Nothing, MobileConfigMobileMapConfigNavigationOptionsGPSWaypointControl)
+            Try
+                obj = LoadFromFile(fileName)
+                Return True
+            Catch ex As System.Exception
+                exception = ex
+                Return False
+            End Try
+        End Function
+
+        Public Overloads Shared Function LoadFromFile(ByVal fileName As String, ByRef obj As MobileConfigMobileMapConfigNavigationOptionsGPSWaypointControl) As Boolean
+            Dim exception As System.Exception = Nothing
+            Return LoadFromFile(fileName, obj, exception)
+        End Function
+
+        Public Overloads Shared Function LoadFromFile(ByVal fileName As String) As MobileConfigMobileMapConfigNavigationOptionsGPSWaypointControl
+            Dim file As System.IO.FileStream = Nothing
+            Dim sr As System.IO.StreamReader = Nothing
+            Try
+                file = New System.IO.FileStream(fileName, FileMode.Open, FileAccess.Read)
+                sr = New System.IO.StreamReader(file)
+                Dim xmlString As String = sr.ReadToEnd
+                sr.Close()
+                file.Close()
+                Return Deserialize(xmlString)
+            Finally
+                If (Not (file) Is Nothing) Then
+                    file.Dispose()
+                End If
+                If (Not (sr) Is Nothing) Then
+                    sr.Dispose()
+                End If
+            End Try
+        End Function
+#End Region
+    End Class
+
+
 
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.233"), _
      System.SerializableAttribute(), _

@@ -22,10 +22,11 @@ Partial Class MobileSearch
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.splContMainSearch = New System.Windows.Forms.SplitContainer()
         Me.pnlSearch = New System.Windows.Forms.GroupBox()
+        Me.btnWaypointSearch = New System.Windows.Forms.Button()
         Me.btnBuffer = New System.Windows.Forms.CheckBox()
         Me.cboBufferVal = New System.Windows.Forms.ComboBox()
         Me.lblSearchGeo = New System.Windows.Forms.Label()
@@ -43,6 +44,7 @@ Partial Class MobileSearch
         Me.lblSearchLayer = New System.Windows.Forms.Label()
         Me.pnlAddress = New System.Windows.Forms.GroupBox()
         Me.gpInterSearch = New System.Windows.Forms.GroupBox()
+        Me.btnWaypoint = New System.Windows.Forms.Button()
         Me.cboStreetLayer2 = New System.Windows.Forms.ComboBox()
         Me.btnAddressReload = New System.Windows.Forms.Button()
         Me.lblAddressStreet1 = New System.Windows.Forms.Label()
@@ -55,15 +57,17 @@ Partial Class MobileSearch
         Me.gpBoxPreFiltInt = New System.Windows.Forms.GroupBox()
         Me.pnlAddressPoint = New System.Windows.Forms.GroupBox()
         Me.pnlAddPntButtons = New System.Windows.Forms.Panel()
-        Me.lblMatchingResults = New System.Windows.Forms.Label()
+        Me.btnWaypointDrillDown = New System.Windows.Forms.Button()
         Me.btnAddressPointZoomTo = New System.Windows.Forms.Button()
+        Me.lblMatchingResults = New System.Windows.Forms.Label()
         Me.gpBxAddPntControls = New System.Windows.Forms.Panel()
         Me.gpBxAddPntControlsLayer = New System.Windows.Forms.Panel()
         Me.cboDrillDownLayer = New System.Windows.Forms.ComboBox()
         Me.pnlGeocode = New System.Windows.Forms.GroupBox()
         Me.pnlOnlineGC = New System.Windows.Forms.GroupBox()
-        Me.lblOnlineGCLabel = New System.Windows.Forms.Label()
+        Me.btnWaypointOnline = New System.Windows.Forms.Button()
         Me.btnOnlineGC = New System.Windows.Forms.Button()
+        Me.lblOnlineGCLabel = New System.Windows.Forms.Label()
         Me.txtbxOnlineGCAddress = New MobileControls.MobileSearch.MyTextBox()
         Me.pnlSDCGC = New System.Windows.Forms.Panel()
         Me.txtState = New System.Windows.Forms.TextBox()
@@ -77,6 +81,7 @@ Partial Class MobileSearch
         Me.label1 = New System.Windows.Forms.Label()
         Me.pnlMyGC = New System.Windows.Forms.Panel()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.btnWaypointGC = New System.Windows.Forms.Button()
         Me.lblGeocode = New System.Windows.Forms.Label()
         Me.btnRunGC = New System.Windows.Forms.Button()
         Me.txtGeocodeValue = New MobileControls.MobileSearch.MyTextBox()
@@ -144,12 +149,13 @@ Partial Class MobileSearch
         '
         Me.splContMainSearch.Panel2.Controls.Add(Me.pnResults)
         Me.splContMainSearch.Panel2.Controls.Add(Me.pnlResultsTools)
-        Me.splContMainSearch.Size = New System.Drawing.Size(629, 1073)
-        Me.splContMainSearch.SplitterDistance = 464
+        Me.splContMainSearch.Size = New System.Drawing.Size(629, 1606)
+        Me.splContMainSearch.SplitterDistance = 694
         Me.splContMainSearch.TabIndex = 6
         '
         'pnlSearch
         '
+        Me.pnlSearch.Controls.Add(Me.btnWaypointSearch)
         Me.pnlSearch.Controls.Add(Me.btnBuffer)
         Me.pnlSearch.Controls.Add(Me.cboBufferVal)
         Me.pnlSearch.Controls.Add(Me.lblSearchGeo)
@@ -167,11 +173,24 @@ Partial Class MobileSearch
         Me.pnlSearch.Controls.Add(Me.lblSearchLayer)
         Me.pnlSearch.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlSearch.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.pnlSearch.Location = New System.Drawing.Point(0, 444)
+        Me.pnlSearch.Location = New System.Drawing.Point(0, 479)
         Me.pnlSearch.Name = "pnlSearch"
-        Me.pnlSearch.Size = New System.Drawing.Size(629, 285)
+        Me.pnlSearch.Size = New System.Drawing.Size(629, 33)
         Me.pnlSearch.TabIndex = 7
         Me.pnlSearch.TabStop = False
+        '
+        'btnWaypointSearch
+        '
+        Me.btnWaypointSearch.BackgroundImage = Global.MobileControls.My.Resources.Resources.NavTooBlue
+        Me.btnWaypointSearch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btnWaypointSearch.FlatAppearance.BorderSize = 0
+        Me.btnWaypointSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnWaypointSearch.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnWaypointSearch.Location = New System.Drawing.Point(8, 251)
+        Me.btnWaypointSearch.Name = "btnWaypointSearch"
+        Me.btnWaypointSearch.Size = New System.Drawing.Size(50, 50)
+        Me.btnWaypointSearch.TabIndex = 16
+        Me.btnWaypointSearch.UseVisualStyleBackColor = True
         '
         'btnBuffer
         '
@@ -230,7 +249,7 @@ Partial Class MobileSearch
         '
         'picSearching
         '
-        Me.picSearching.Location = New System.Drawing.Point(114, 256)
+        Me.picSearching.Location = New System.Drawing.Point(123, 256)
         Me.picSearching.Name = "picSearching"
         Me.picSearching.Size = New System.Drawing.Size(92, 24)
         Me.picSearching.TabIndex = 10
@@ -240,7 +259,7 @@ Partial Class MobileSearch
         'lblNumResults
         '
         Me.lblNumResults.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblNumResults.Location = New System.Drawing.Point(111, 256)
+        Me.lblNumResults.Location = New System.Drawing.Point(118, 256)
         Me.lblNumResults.Name = "lblNumResults"
         Me.lblNumResults.Size = New System.Drawing.Size(112, 24)
         Me.lblNumResults.TabIndex = 9
@@ -249,20 +268,23 @@ Partial Class MobileSearch
         '
         'btnSearchFind
         '
+        Me.btnSearchFind.BackgroundImage = Global.MobileControls.My.Resources.Resources.ZoomInOut
+        Me.btnSearchFind.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.btnSearchFind.Enabled = False
+        Me.btnSearchFind.FlatAppearance.BorderSize = 0
+        Me.btnSearchFind.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnSearchFind.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSearchFind.Location = New System.Drawing.Point(13, 253)
+        Me.btnSearchFind.Location = New System.Drawing.Point(66, 251)
         Me.btnSearchFind.Name = "btnSearchFind"
-        Me.btnSearchFind.Size = New System.Drawing.Size(90, 28)
+        Me.btnSearchFind.Size = New System.Drawing.Size(50, 50)
         Me.btnSearchFind.TabIndex = 8
-        Me.btnSearchFind.Text = "Search"
         Me.btnSearchFind.UseVisualStyleBackColor = True
         '
         'chkSearchSimliar
         '
         Me.chkSearchSimliar.AutoSize = True
         Me.chkSearchSimliar.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkSearchSimliar.Location = New System.Drawing.Point(40, 228)
+        Me.chkSearchSimliar.Location = New System.Drawing.Point(40, 226)
         Me.chkSearchSimliar.Name = "chkSearchSimliar"
         Me.chkSearchSimliar.Size = New System.Drawing.Size(152, 24)
         Me.chkSearchSimliar.TabIndex = 7
@@ -333,14 +355,15 @@ Partial Class MobileSearch
         Me.pnlAddress.Controls.Add(Me.gpBoxPreFiltInt)
         Me.pnlAddress.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlAddress.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.pnlAddress.Location = New System.Drawing.Point(0, 165)
+        Me.pnlAddress.Location = New System.Drawing.Point(0, 439)
         Me.pnlAddress.Name = "pnlAddress"
-        Me.pnlAddress.Size = New System.Drawing.Size(629, 279)
+        Me.pnlAddress.Size = New System.Drawing.Size(629, 40)
         Me.pnlAddress.TabIndex = 9
         Me.pnlAddress.TabStop = False
         '
         'gpInterSearch
         '
+        Me.gpInterSearch.Controls.Add(Me.btnWaypoint)
         Me.gpInterSearch.Controls.Add(Me.cboStreetLayer2)
         Me.gpInterSearch.Controls.Add(Me.btnAddressReload)
         Me.gpInterSearch.Controls.Add(Me.lblAddressStreet1)
@@ -351,11 +374,24 @@ Partial Class MobileSearch
         Me.gpInterSearch.Controls.Add(Me.rdoAddressStreet2)
         Me.gpInterSearch.Controls.Add(Me.cboStreetRange)
         Me.gpInterSearch.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gpInterSearch.Location = New System.Drawing.Point(3, 47)
+        Me.gpInterSearch.Location = New System.Drawing.Point(3, 181)
         Me.gpInterSearch.Name = "gpInterSearch"
-        Me.gpInterSearch.Size = New System.Drawing.Size(623, 229)
+        Me.gpInterSearch.Size = New System.Drawing.Size(623, 0)
         Me.gpInterSearch.TabIndex = 14
         Me.gpInterSearch.TabStop = False
+        '
+        'btnWaypoint
+        '
+        Me.btnWaypoint.BackgroundImage = Global.MobileControls.My.Resources.Resources.NavTooBlue
+        Me.btnWaypoint.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btnWaypoint.FlatAppearance.BorderSize = 0
+        Me.btnWaypoint.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnWaypoint.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnWaypoint.Location = New System.Drawing.Point(130, 191)
+        Me.btnWaypoint.Name = "btnWaypoint"
+        Me.btnWaypoint.Size = New System.Drawing.Size(50, 50)
+        Me.btnWaypoint.TabIndex = 14
+        Me.btnWaypoint.UseVisualStyleBackColor = True
         '
         'cboStreetLayer2
         '
@@ -371,13 +407,17 @@ Partial Class MobileSearch
         '
         'btnAddressReload
         '
+        Me.btnAddressReload.BackColor = System.Drawing.Color.Transparent
+        Me.btnAddressReload.BackgroundImage = Global.MobileControls.My.Resources.Resources.refresh
+        Me.btnAddressReload.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btnAddressReload.FlatAppearance.BorderSize = 0
+        Me.btnAddressReload.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnAddressReload.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnAddressReload.Location = New System.Drawing.Point(248, 191)
+        Me.btnAddressReload.Location = New System.Drawing.Point(188, 191)
         Me.btnAddressReload.Name = "btnAddressReload"
-        Me.btnAddressReload.Size = New System.Drawing.Size(99, 34)
+        Me.btnAddressReload.Size = New System.Drawing.Size(50, 50)
         Me.btnAddressReload.TabIndex = 13
-        Me.btnAddressReload.Text = "Reload"
-        Me.btnAddressReload.UseVisualStyleBackColor = True
+        Me.btnAddressReload.UseVisualStyleBackColor = False
         '
         'lblAddressStreet1
         '
@@ -391,12 +431,15 @@ Partial Class MobileSearch
         '
         'btnAddressRouteTo
         '
+        Me.btnAddressRouteTo.BackgroundImage = Global.MobileControls.My.Resources.Resources.BlueTruckSmall
+        Me.btnAddressRouteTo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btnAddressRouteTo.FlatAppearance.BorderSize = 0
+        Me.btnAddressRouteTo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnAddressRouteTo.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnAddressRouteTo.Location = New System.Drawing.Point(160, 191)
+        Me.btnAddressRouteTo.Location = New System.Drawing.Point(74, 190)
         Me.btnAddressRouteTo.Name = "btnAddressRouteTo"
-        Me.btnAddressRouteTo.Size = New System.Drawing.Size(99, 34)
+        Me.btnAddressRouteTo.Size = New System.Drawing.Size(50, 50)
         Me.btnAddressRouteTo.TabIndex = 12
-        Me.btnAddressRouteTo.Text = "Route To"
         Me.btnAddressRouteTo.UseVisualStyleBackColor = True
         '
         'cboStreetLayer1
@@ -413,12 +456,15 @@ Partial Class MobileSearch
         '
         'btnAddressZoomTo
         '
+        Me.btnAddressZoomTo.BackgroundImage = Global.MobileControls.My.Resources.Resources.ZoomIn1
+        Me.btnAddressZoomTo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btnAddressZoomTo.FlatAppearance.BorderSize = 0
+        Me.btnAddressZoomTo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnAddressZoomTo.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnAddressZoomTo.Location = New System.Drawing.Point(65, 191)
+        Me.btnAddressZoomTo.Location = New System.Drawing.Point(13, 191)
         Me.btnAddressZoomTo.Name = "btnAddressZoomTo"
-        Me.btnAddressZoomTo.Size = New System.Drawing.Size(99, 34)
+        Me.btnAddressZoomTo.Size = New System.Drawing.Size(50, 50)
         Me.btnAddressZoomTo.TabIndex = 11
-        Me.btnAddressZoomTo.Text = "Zoom To"
         Me.btnAddressZoomTo.UseVisualStyleBackColor = True
         '
         'rdoAddressRange
@@ -462,7 +508,7 @@ Partial Class MobileSearch
         Me.gpBoxPreFiltInt.Dock = System.Windows.Forms.DockStyle.Top
         Me.gpBoxPreFiltInt.Location = New System.Drawing.Point(3, 22)
         Me.gpBoxPreFiltInt.Name = "gpBoxPreFiltInt"
-        Me.gpBoxPreFiltInt.Size = New System.Drawing.Size(623, 25)
+        Me.gpBoxPreFiltInt.Size = New System.Drawing.Size(623, 159)
         Me.gpBoxPreFiltInt.TabIndex = 15
         Me.gpBoxPreFiltInt.TabStop = False
         Me.gpBoxPreFiltInt.Text = "PreFilter"
@@ -474,22 +520,49 @@ Partial Class MobileSearch
         Me.pnlAddressPoint.Controls.Add(Me.gpBxAddPntControlsLayer)
         Me.pnlAddressPoint.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlAddressPoint.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.pnlAddressPoint.Location = New System.Drawing.Point(0, 165)
+        Me.pnlAddressPoint.Location = New System.Drawing.Point(0, 439)
         Me.pnlAddressPoint.Name = "pnlAddressPoint"
-        Me.pnlAddressPoint.Size = New System.Drawing.Size(629, 299)
+        Me.pnlAddressPoint.Size = New System.Drawing.Size(629, 255)
         Me.pnlAddressPoint.TabIndex = 9
         Me.pnlAddressPoint.TabStop = False
         Me.pnlAddressPoint.Visible = False
         '
         'pnlAddPntButtons
         '
-        Me.pnlAddPntButtons.Controls.Add(Me.lblMatchingResults)
+        Me.pnlAddPntButtons.Controls.Add(Me.btnWaypointDrillDown)
         Me.pnlAddPntButtons.Controls.Add(Me.btnAddressPointZoomTo)
+        Me.pnlAddPntButtons.Controls.Add(Me.lblMatchingResults)
         Me.pnlAddPntButtons.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlAddPntButtons.Location = New System.Drawing.Point(3, 114)
+        Me.pnlAddPntButtons.Location = New System.Drawing.Point(3, 134)
         Me.pnlAddPntButtons.Name = "pnlAddPntButtons"
-        Me.pnlAddPntButtons.Size = New System.Drawing.Size(623, 182)
+        Me.pnlAddPntButtons.Size = New System.Drawing.Size(623, 118)
         Me.pnlAddPntButtons.TabIndex = 13
+        '
+        'btnWaypointDrillDown
+        '
+        Me.btnWaypointDrillDown.BackgroundImage = Global.MobileControls.My.Resources.Resources.NavTooBlue
+        Me.btnWaypointDrillDown.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btnWaypointDrillDown.FlatAppearance.BorderSize = 0
+        Me.btnWaypointDrillDown.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnWaypointDrillDown.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnWaypointDrillDown.Location = New System.Drawing.Point(10, 3)
+        Me.btnWaypointDrillDown.Name = "btnWaypointDrillDown"
+        Me.btnWaypointDrillDown.Size = New System.Drawing.Size(50, 50)
+        Me.btnWaypointDrillDown.TabIndex = 17
+        Me.btnWaypointDrillDown.UseVisualStyleBackColor = True
+        '
+        'btnAddressPointZoomTo
+        '
+        Me.btnAddressPointZoomTo.BackgroundImage = Global.MobileControls.My.Resources.Resources.ZoomInOut
+        Me.btnAddressPointZoomTo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btnAddressPointZoomTo.FlatAppearance.BorderSize = 0
+        Me.btnAddressPointZoomTo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnAddressPointZoomTo.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnAddressPointZoomTo.Location = New System.Drawing.Point(68, 4)
+        Me.btnAddressPointZoomTo.Name = "btnAddressPointZoomTo"
+        Me.btnAddressPointZoomTo.Size = New System.Drawing.Size(50, 50)
+        Me.btnAddressPointZoomTo.TabIndex = 16
+        Me.btnAddressPointZoomTo.UseVisualStyleBackColor = True
         '
         'lblMatchingResults
         '
@@ -500,21 +573,12 @@ Partial Class MobileSearch
         Me.lblMatchingResults.TabIndex = 15
         Me.lblMatchingResults.Text = "Matching Results: "
         '
-        'btnAddressPointZoomTo
-        '
-        Me.btnAddressPointZoomTo.Location = New System.Drawing.Point(18, 6)
-        Me.btnAddressPointZoomTo.Name = "btnAddressPointZoomTo"
-        Me.btnAddressPointZoomTo.Size = New System.Drawing.Size(86, 30)
-        Me.btnAddressPointZoomTo.TabIndex = 14
-        Me.btnAddressPointZoomTo.Text = "Locate"
-        Me.btnAddressPointZoomTo.UseVisualStyleBackColor = True
-        '
         'gpBxAddPntControls
         '
         Me.gpBxAddPntControls.Dock = System.Windows.Forms.DockStyle.Top
         Me.gpBxAddPntControls.Location = New System.Drawing.Point(3, 68)
         Me.gpBxAddPntControls.Name = "gpBxAddPntControls"
-        Me.gpBxAddPntControls.Size = New System.Drawing.Size(623, 46)
+        Me.gpBxAddPntControls.Size = New System.Drawing.Size(623, 66)
         Me.gpBxAddPntControls.TabIndex = 13
         '
         'gpBxAddPntControlsLayer
@@ -543,16 +607,17 @@ Partial Class MobileSearch
         Me.pnlGeocode.Controls.Add(Me.pnlMyGC)
         Me.pnlGeocode.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlGeocode.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.pnlGeocode.Location = New System.Drawing.Point(0, 77)
+        Me.pnlGeocode.Location = New System.Drawing.Point(0, 82)
         Me.pnlGeocode.Name = "pnlGeocode"
-        Me.pnlGeocode.Size = New System.Drawing.Size(629, 88)
+        Me.pnlGeocode.Size = New System.Drawing.Size(629, 357)
         Me.pnlGeocode.TabIndex = 8
         Me.pnlGeocode.TabStop = False
         '
         'pnlOnlineGC
         '
-        Me.pnlOnlineGC.Controls.Add(Me.lblOnlineGCLabel)
+        Me.pnlOnlineGC.Controls.Add(Me.btnWaypointOnline)
         Me.pnlOnlineGC.Controls.Add(Me.btnOnlineGC)
+        Me.pnlOnlineGC.Controls.Add(Me.lblOnlineGCLabel)
         Me.pnlOnlineGC.Controls.Add(Me.txtbxOnlineGCAddress)
         Me.pnlOnlineGC.Location = New System.Drawing.Point(326, 193)
         Me.pnlOnlineGC.Name = "pnlOnlineGC"
@@ -560,6 +625,32 @@ Partial Class MobileSearch
         Me.pnlOnlineGC.TabIndex = 13
         Me.pnlOnlineGC.TabStop = False
         Me.pnlOnlineGC.Text = "Online Services"
+        '
+        'btnWaypointOnline
+        '
+        Me.btnWaypointOnline.BackgroundImage = Global.MobileControls.My.Resources.Resources.NavTooBlue
+        Me.btnWaypointOnline.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btnWaypointOnline.FlatAppearance.BorderSize = 0
+        Me.btnWaypointOnline.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnWaypointOnline.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnWaypointOnline.Location = New System.Drawing.Point(9, 77)
+        Me.btnWaypointOnline.Name = "btnWaypointOnline"
+        Me.btnWaypointOnline.Size = New System.Drawing.Size(50, 50)
+        Me.btnWaypointOnline.TabIndex = 14
+        Me.btnWaypointOnline.UseVisualStyleBackColor = True
+        '
+        'btnOnlineGC
+        '
+        Me.btnOnlineGC.BackgroundImage = Global.MobileControls.My.Resources.Resources.ZoomInOut
+        Me.btnOnlineGC.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btnOnlineGC.FlatAppearance.BorderSize = 0
+        Me.btnOnlineGC.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnOnlineGC.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnOnlineGC.Location = New System.Drawing.Point(65, 77)
+        Me.btnOnlineGC.Name = "btnOnlineGC"
+        Me.btnOnlineGC.Size = New System.Drawing.Size(50, 50)
+        Me.btnOnlineGC.TabIndex = 13
+        Me.btnOnlineGC.UseVisualStyleBackColor = True
         '
         'lblOnlineGCLabel
         '
@@ -570,16 +661,6 @@ Partial Class MobileSearch
         Me.lblOnlineGCLabel.Size = New System.Drawing.Size(265, 20)
         Me.lblOnlineGCLabel.TabIndex = 10
         Me.lblOnlineGCLabel.Text = "Address to locate (Ex: 10 Main):"
-        '
-        'btnOnlineGC
-        '
-        Me.btnOnlineGC.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnOnlineGC.Location = New System.Drawing.Point(16, 77)
-        Me.btnOnlineGC.Name = "btnOnlineGC"
-        Me.btnOnlineGC.Size = New System.Drawing.Size(98, 29)
-        Me.btnOnlineGC.TabIndex = 12
-        Me.btnOnlineGC.Text = "Geocode"
-        Me.btnOnlineGC.UseVisualStyleBackColor = True
         '
         'txtbxOnlineGCAddress
         '
@@ -693,6 +774,7 @@ Partial Class MobileSearch
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.btnWaypointGC)
         Me.GroupBox1.Controls.Add(Me.lblGeocode)
         Me.GroupBox1.Controls.Add(Me.btnRunGC)
         Me.GroupBox1.Controls.Add(Me.txtGeocodeValue)
@@ -703,6 +785,19 @@ Partial Class MobileSearch
         Me.GroupBox1.Size = New System.Drawing.Size(314, 295)
         Me.GroupBox1.TabIndex = 12
         Me.GroupBox1.TabStop = False
+        '
+        'btnWaypointGC
+        '
+        Me.btnWaypointGC.BackgroundImage = Global.MobileControls.My.Resources.Resources.NavTooBlue
+        Me.btnWaypointGC.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btnWaypointGC.FlatAppearance.BorderSize = 0
+        Me.btnWaypointGC.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnWaypointGC.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnWaypointGC.Location = New System.Drawing.Point(8, 77)
+        Me.btnWaypointGC.Name = "btnWaypointGC"
+        Me.btnWaypointGC.Size = New System.Drawing.Size(50, 50)
+        Me.btnWaypointGC.TabIndex = 11
+        Me.btnWaypointGC.UseVisualStyleBackColor = True
         '
         'lblGeocode
         '
@@ -716,12 +811,15 @@ Partial Class MobileSearch
         '
         'btnRunGC
         '
+        Me.btnRunGC.BackgroundImage = Global.MobileControls.My.Resources.Resources.ZoomInOut
+        Me.btnRunGC.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btnRunGC.FlatAppearance.BorderSize = 0
+        Me.btnRunGC.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnRunGC.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnRunGC.Location = New System.Drawing.Point(11, 77)
+        Me.btnRunGC.Location = New System.Drawing.Point(63, 77)
         Me.btnRunGC.Name = "btnRunGC"
-        Me.btnRunGC.Size = New System.Drawing.Size(98, 29)
+        Me.btnRunGC.Size = New System.Drawing.Size(50, 50)
         Me.btnRunGC.TabIndex = 9
-        Me.btnRunGC.Text = "Geocode"
         Me.btnRunGC.UseVisualStyleBackColor = True
         '
         'txtGeocodeValue
@@ -735,7 +833,7 @@ Partial Class MobileSearch
         'lblGCNumResults
         '
         Me.lblGCNumResults.AutoSize = True
-        Me.lblGCNumResults.Location = New System.Drawing.Point(111, 81)
+        Me.lblGCNumResults.Location = New System.Drawing.Point(117, 81)
         Me.lblGCNumResults.Name = "lblGCNumResults"
         Me.lblGCNumResults.Size = New System.Drawing.Size(110, 20)
         Me.lblGCNumResults.TabIndex = 10
@@ -762,7 +860,7 @@ Partial Class MobileSearch
         Me.pnlSearchOptions.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.pnlSearchOptions.Location = New System.Drawing.Point(0, 0)
         Me.pnlSearchOptions.Name = "pnlSearchOptions"
-        Me.pnlSearchOptions.Size = New System.Drawing.Size(629, 77)
+        Me.pnlSearchOptions.Size = New System.Drawing.Size(629, 82)
         Me.pnlSearchOptions.TabIndex = 6
         Me.pnlSearchOptions.TabStop = False
         '
@@ -909,7 +1007,7 @@ Partial Class MobileSearch
         Me.pnResults.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnResults.Location = New System.Drawing.Point(0, 52)
         Me.pnResults.Name = "pnResults"
-        Me.pnResults.Size = New System.Drawing.Size(629, 553)
+        Me.pnResults.Size = New System.Drawing.Size(629, 856)
         Me.pnResults.TabIndex = 5
         Me.pnResults.TabStop = False
         '
@@ -917,7 +1015,7 @@ Partial Class MobileSearch
         '
         Me.HScrollBar1.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.HScrollBar1.LargeChange = 2
-        Me.HScrollBar1.Location = New System.Drawing.Point(3, 520)
+        Me.HScrollBar1.Location = New System.Drawing.Point(3, 823)
         Me.HScrollBar1.Name = "HScrollBar1"
         Me.HScrollBar1.Size = New System.Drawing.Size(593, 30)
         Me.HScrollBar1.TabIndex = 2
@@ -927,7 +1025,7 @@ Partial Class MobileSearch
         Me.VScrollBar1.Dock = System.Windows.Forms.DockStyle.Right
         Me.VScrollBar1.Location = New System.Drawing.Point(596, 16)
         Me.VScrollBar1.Name = "VScrollBar1"
-        Me.VScrollBar1.Size = New System.Drawing.Size(30, 534)
+        Me.VScrollBar1.Size = New System.Drawing.Size(30, 837)
         Me.VScrollBar1.TabIndex = 1
         '
         'dgResults
@@ -937,14 +1035,14 @@ Partial Class MobileSearch
         Me.dgResults.AllowUserToResizeRows = False
         Me.dgResults.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
         Me.dgResults.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells
-        DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle11.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgResults.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle11
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgResults.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.dgResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgResults.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgResults.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
@@ -954,14 +1052,14 @@ Partial Class MobileSearch
         Me.dgResults.ReadOnly = True
         Me.dgResults.RowHeadersVisible = False
         Me.dgResults.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToFirstHeader
-        DataGridViewCellStyle12.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle12.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle12.ForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle12.SelectionBackColor = System.Drawing.Color.Black
-        DataGridViewCellStyle12.SelectionForeColor = System.Drawing.Color.White
-        Me.dgResults.RowsDefaultCellStyle = DataGridViewCellStyle12
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.Black
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.White
+        Me.dgResults.RowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgResults.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgResults.Size = New System.Drawing.Size(623, 534)
+        Me.dgResults.Size = New System.Drawing.Size(623, 837)
         Me.dgResults.TabIndex = 0
         '
         'pnlResultsTools
@@ -1016,7 +1114,7 @@ Partial Class MobileSearch
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.splContMainSearch)
         Me.Name = "MobileSearch"
-        Me.Size = New System.Drawing.Size(629, 1073)
+        Me.Size = New System.Drawing.Size(629, 1606)
         Me.splContMainSearch.Panel1.ResumeLayout(False)
         Me.splContMainSearch.Panel2.ResumeLayout(False)
         Me.splContMainSearch.ResumeLayout(False)
@@ -1112,7 +1210,6 @@ Partial Class MobileSearch
     Friend WithEvents gpBxAddPntControls As System.Windows.Forms.Panel
 
     Friend WithEvents pnlAddPntButtons As System.Windows.Forms.Panel
-    Friend WithEvents btnAddressPointZoomTo As System.Windows.Forms.Button
     Friend WithEvents lblMatchingResults As System.Windows.Forms.Label
     Friend WithEvents cboDrillDownLayer As System.Windows.Forms.ComboBox
     Friend WithEvents chkSearchField As System.Windows.Forms.CheckedListBox
@@ -1125,7 +1222,13 @@ Partial Class MobileSearch
     Friend WithEvents btnBuffer As System.Windows.Forms.CheckBox
     Friend WithEvents pnlOnlineGC As System.Windows.Forms.GroupBox
     Friend WithEvents lblOnlineGCLabel As System.Windows.Forms.Label
-    Friend WithEvents btnOnlineGC As System.Windows.Forms.Button
     Friend txtbxOnlineGCAddress As MobileControls.MobileSearch.MyTextBox
+    Friend WithEvents btnWaypoint As System.Windows.Forms.Button
+    Friend WithEvents btnWaypointSearch As System.Windows.Forms.Button
+    Friend WithEvents btnWaypointOnline As System.Windows.Forms.Button
+    Friend WithEvents btnOnlineGC As System.Windows.Forms.Button
+    Friend WithEvents btnWaypointGC As System.Windows.Forms.Button
+    Friend WithEvents btnAddressPointZoomTo As System.Windows.Forms.Button
+    Friend WithEvents btnWaypointDrillDown As System.Windows.Forms.Button
 
 End Class

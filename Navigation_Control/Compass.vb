@@ -1,20 +1,4 @@
-﻿' | Version 10.1.1
-' | Copyright 2012 Esri
-' |
-' | Licensed under the Apache License, Version 2.0 (the "License");
-' | you may not use this file except in compliance with the License.
-' | You may obtain a copy of the License at
-' |
-' |    http://www.apache.org/licenses/LICENSE-2.0
-' |
-' | Unless required by applicable law or agreed to in writing, software
-' | distributed under the License is distributed on an "AS IS" BASIS,
-' | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-' | See the License for the specific language governing permissions and
-' | limitations under the License.
-
-
-Imports ESRI.ArcGIS.Mobile.WinForms
+﻿Imports ESRI.ArcGIS.Mobile.WinForms
 Imports Esri.ArcGIS.Mobile.Gps
 Imports System.Threading
 Imports Esri.ArcGIS.Mobile.Geometries
@@ -30,6 +14,7 @@ Imports System.Windows.Forms
 Imports Esri.ArcGISTemplates
 
 Public Class Compass
+
     Private destY As Double
     Private destX As Double
 
@@ -37,45 +22,97 @@ Public Class Compass
     ' in WGS84
     Private currY As Double
     Private currX As Double
-    Private gps As GpsConnection
+
     Private validDest As Boolean
     Private destDir As Double
 
+    Private WithEvents m_Map As Esri.ArcGIS.Mobile.WinForms.Map
 
 
-    Public Sub New(gpsCon As GpsConnection)
+#Region "Properties"
+    Public WriteOnly Property map() As Esri.ArcGIS.Mobile.WinForms.Map
+
+        Set(ByVal value As Esri.ArcGIS.Mobile.WinForms.Map)
+            m_Map = value
+        End Set
+    End Property
+
+#End Region
+
+
+
+    Public Sub New()
         InitializeComponent()
+     
 
-        gps = gpsCon
-        AddHandler gps.GpsChanged, AddressOf gps_GpsChanged
 
-        AddHandler gps.GpsClosed, AddressOf gps_GpsClosed
+        If System.IO.File.Exists(Application.StartupPath & "\AppImages\" & "compass.png") Then
+            Try
+
+
+                picGPS.BackgroundImage = New Bitmap(Application.StartupPath & "\AppImages\" & "compass.png")
+            Catch ex As Exception
+
+            End Try
+
+
+        End If
+
+        If GlobalsFunctions.m_GPS Is Nothing Then Return
+        If GlobalsFunctions.m_GPS.GpsConnection Is Nothing Then Return
+
+
+        AddHandler GlobalsFunctions.m_GPS.GpsConnection.GpsChanged, AddressOf gps_GpsChanged
+
+        AddHandler GlobalsFunctions.m_GPS.GpsConnection.GpsClosed, AddressOf gps_GpsClosed
         validDest = False
 
 
         ' if gps is not on, open it.
-        If Not gps.IsOpen Then
-            If txtCurrLoc.InvokeRequired Then
+        If Not GlobalsFunctions.m_GPS.GpsConnection.IsOpen Then
+            If txtCurX.InvokeRequired Then
                 Dim display As New Action(Of String)(AddressOf DisplayOutputCurrLoc)
 
-                txtCurrLoc.Invoke(display, "GPS is not connected")
+                txtCurX.Invoke(display, "N/A")
             Else
-                DisplayOutputCurrLoc("GPS is not connected")
+                DisplayOutputCurrLoc("N/A")
 
             End If
-            
+
 
         End If
+
+
+    End Sub
+    Private pPicBox As MyPicBox
+    Public Sub addWayPointImage()
+        pPicBox = New MyPicBox
+        pPicBox.BorderStyle = Windows.Forms.BorderStyle.None
+        pPicBox.Width = 24
+        pPicBox.Height = 24
+        pPicBox.BackColor = Color.Transparent
+        pPicBox.BackgroundImage = Nothing
+
+        pPicBox.Image = Nothing
+
+        pPicBox.Visible = False
+        m_map.Controls.Add(pPicBox)
+        m_map.Controls.SetChildIndex(pPicBox, 0)
+
     End Sub
     Private Sub DisplayOutputCurrLoc(msg As String)
-        txtCurrLoc.Text = msg
+        txtCurX.Text = msg
 
     End Sub
     Private Sub DisplayOutputLatLong(msg As String)
         Dim strings() As String = msg.Split(",")
-
-        txtLongX.Text = strings(0)
-        txtLongY.Text = strings(1)
+        If strings.Length = 2 Then
+            txtLongX.Text = strings(0)
+            txtLongY.Text = strings(1)
+        Else
+            txtLongX.Text = "N/A"
+            txtLongY.Text = "N/A"
+        End If
         validateDestination()
 
     End Sub
@@ -95,18 +132,18 @@ Public Class Compass
         End If
 
 
-        
+
 
     End Sub
 
     Private Sub gps_GpsClosed(sender As Object, e As EventArgs)
-        If txtCurrLoc.InvokeRequired Then
+        If txtCurX.InvokeRequired Then
             Dim display As New Action(Of String)(AddressOf DisplayOutputCurrLoc)
 
-            txtCurrLoc.Invoke(display, "GPS Disconnected.")
+            txtCurX.Invoke(display, "")
             'lbTurnInfo.Text = ""
         Else
-            DisplayOutputCurrLoc("GPS Disconnected.")
+            DisplayOutputCurrLoc("")
             'lbTurnInfo.Text = ""
         End If
 
@@ -128,20 +165,45 @@ Public Class Compass
             destY = Double.Parse(txtLongY.Text.Trim())
             destX = Double.Parse(txtLongX.Text.Trim())
         Catch ex As Exception
-            MessageBox.Show("invalid longitude")
+            ' MessageBox.Show("invalid longitude")
             validDest = False
+            txtCurX.Text = "N/A"
+            txtCurY.Text = "N/A"
+
+            lblArriveIn.Text = "N/A"
+            lblDistance.Text = "N/A"
+            lblBearing.Text = "N/A"
+            lblTurnIn.Text = "N/A"
+            pPicBox.Visible = False
             Return
         End Try
 
         ' check X, longitude
         If (destX > 180) OrElse (destX < -180) Then
-            MessageBox.Show("invalid longitude")
+            ' MessageBox.Show("invalid longitude")
             validDest = False
+            txtCurX.Text = "N/A"
+            txtCurY.Text = "N/A"
+
+            lblArriveIn.Text = "N/A"
+            lblDistance.Text = "N/A"
+            lblBearing.Text = "N/A"
+            lblTurnIn.Text = "N/A"
+            pPicBox.Visible = False
             Return
         End If
         ' check Y, latitude
         If (destY > 90) OrElse (destY < -90) Then
-            MessageBox.Show("Invalid latitude")
+            ' MessageBox.Show("Invalid latitude")
+            txtCurX.Text = "N/A"
+            txtCurY.Text = "N/A"
+
+            lblArriveIn.Text = "N/A"
+            lblDistance.Text = "N/A"
+            lblBearing.Text = "N/A"
+            lblTurnIn.Text = "N/A"
+            pPicBox.Visible = False
+
             validDest = False
             Return
         End If
@@ -153,47 +215,62 @@ Public Class Compass
     Private Delegate Sub gps_GpsChangedDelegate(sender As Object, e As EventArgs)
 
     Private Sub gps_GpsChanged(sender As Object, e As EventArgs)
-        If txtCurrLoc.InvokeRequired Then
-            txtCurrLoc.Invoke(New gps_GpsChangedDelegate(AddressOf gps_GpsChanged), sender, e)
+        If txtCurX.InvokeRequired Then
+            txtCurX.Invoke(New gps_GpsChangedDelegate(AddressOf gps_GpsChanged), sender, e)
         Else
-                Try
-                    ' update current loc
-                    Dim gpsmsg As String = String.Format("Lati:{0:0.000000} Long:{1:0.000000}" & vbCr & vbLf & "{2} {3:0.0}km/h {4:0.0}degrees Sat#:{5}", gps.Latitude, gps.Longitude, gps.FixStatus.ToString(), gps.Speed, gps.Course, _
-                     gps.FixSatelliteCount)
+            Try
+                ' update current loc
 
-                txtCurrLoc.Text = gpsmsg
-                    currX = gps.Longitude
-                    currY = gps.Latitude
 
-                    ' if invalid current location
-                    If gps.FixStatus.ToString().ToLower() = "invalid" Then
+                txtCurY.Text = String.Format("{0:0.000000}", GlobalsFunctions.m_GPS.GpsConnection.Latitude)
+                txtCurX.Text = String.Format("{0:0.000000}", GlobalsFunctions.m_GPS.GpsConnection.Longitude)
+                lblFix.text = GlobalsFunctions.m_GPS.GpsConnection.FixStatus.ToString()
+                lblSpeed.text = String.Format("{0:0.0} km/h", GlobalsFunctions.m_GPS.GpsConnection.Speed)
+                lblCourse.text = String.Format("{0:0.0} degrees ", GlobalsFunctions.m_GPS.GpsConnection.Course)
+                lblNumSat.text = GlobalsFunctions.m_GPS.GpsConnection.FixSatelliteCount
+
+
+                currX = GlobalsFunctions.m_GPS.GpsConnection.Longitude
+                currY = GlobalsFunctions.m_GPS.GpsConnection.Latitude
+
+                ' if invalid current location
+                If GlobalsFunctions.m_GPS.GpsConnection.FixStatus.ToString().ToLower() = "invalid" Then
                     'lbTurnInfo.Text = "waiting for your current location"
-                        Return
-                    End If
+                    Return
+                End If
 
-                    ' if invalid dest, return 
-                    If Not validDest Then
+                ' if invalid dest, return 
+                If validDest Then
                     'lbTurnInfo.Text = "invalid destination !"
-                        Return
-                    End If
+                    ' Return
+
                     '''//////////////////////////////
 
                     'calculate bearing/distance
-                Dim distMile As Double = GlobalsFunctions.Distance(currX, currY, destX, destY, GlobalsFunctions.LengthUnit.Mile)
-                destDir = GlobalsFunctions.Bearing(currX, currY, destX, destY)
+                    Dim distMile As Double = GlobalsFunctions.Distance(currX, currY, destX, destY, GlobalsFunctions.LengthUnit.Mile)
+                    destDir = GlobalsFunctions.Bearing(currX, currY, destX, destY)
                     ' arrive time
-                    If (gps.Speed.ToString().ToLower() <> "nan") OrElse (gps.Speed <> 0) Then
-                        Dim t As Double = distMile * 1.609344 / gps.Speed
+                    If (GlobalsFunctions.m_GPS.GpsConnection.Speed.ToString().ToLower() <> "nan") OrElse (GlobalsFunctions.m_GPS.GpsConnection.Speed <> 0) Then
+                        Try
+
+                        
+                        Dim t As Double = distMile * 1.609344 / GlobalsFunctions.m_GPS.GpsConnection.Speed
                         Dim hr As Integer = CInt(Math.Truncate(t))
                         Dim min As Integer = CInt(Math.Truncate((t - hr) * 60.0))
-                    'lbTime.Text = String.Format("{0}hr,{1}min", hr, min)
+                            lblArriveIn.Text = String.Format("{0}hr,{1}min", hr, min)
+                        Catch ex As Exception
+                            lblArriveIn.Text = "waiting for gps speed"
+                        End Try
                     Else
-                    ' lbTime.Text = "waiting for gps speed"
+                        lblArriveIn.Text = "waiting for gps speed"
                     End If
 
                     Dim turntxt As String = ""
-                    If gps.Course.ToString().ToLower() <> "nan" Then
-                        Dim turndir As Double = destDir - gps.Course
+                    If GlobalsFunctions.m_GPS.GpsConnection.Course.ToString().ToLower() <> "nan" Then
+                        Try
+
+                        
+                        Dim turndir As Double = destDir - GlobalsFunctions.m_GPS.GpsConnection.Course
                         If turndir > 180 Then
                             turndir = turndir - 360
                         End If
@@ -207,72 +284,239 @@ Public Class Compass
                             turntxt = String.Format("Turn {0:0.0} degrees to your left.", Math.Abs(turndir))
                         Else
                             turntxt = "Right Direction."
-                        End If
+                            End If
+                        Catch ex As Exception
+                            turntxt = "waiting for GPS bearing..."
+                        End Try
                     Else
                         turntxt = "waiting for GPS bearing..."
                     End If
+                    If (distMile < 0.5) Then
 
-                ' lbdist.Text = String.Format("{0:0.000}", distMile)
-                'lbBearing.Text = String.Format("{0:0.0}", destDir)
-                'lbTurnInfo.Text = turntxt
+                        lblDistance.Text = String.Format("{0:0.000} feet", distMile * 5280)
+                    Else
+                        lblDistance.Text = String.Format("{0:0.000} miles", distMile)
+                    End If
 
-                    ' redraw the compass
-                    'drawcompass
-                    PictureBox1.Refresh()
-                Catch ex As Exception
-                    MessageBox.Show(ex.ToString())
-                End Try
+                    lblBearing.Text = String.Format("{0:0.0}", destDir)
+                    lblTurnIn.Text = turntxt
+
+                End If
+
+                ' redraw the compass
+                'drawcompass
+                picGPS.Refresh()
+
+                'If validDest Then
+                'Dim pCoord As Coordinate = m_map.SpatialReference.FromWgs84(destX, destY)
+
+                'Dim pPnt As System.Drawing.Point = m_map.ToClient(pCoord)
+                'If pPnt.X < 10 Then
+                '    pPnt.X = 10
+
+                'End If
+                'If pPnt.Y < 10 Then
+                '    pPnt.Y = 10
+
+                'End If
+                'm_map.navCoord = pPnt
+
+                'End If
+
+            Catch ex As Exception
+                '  MessageBox.Show(ex.ToString())
+            End Try
 
         End If
-      
+
     End Sub
 
-    Private Sub pictureBox1_Paint(ByVal sender As Object, ByVal e As PaintEventArgs)
-        Dim w As Integer = PictureBox1.Size.Width
-        Dim h As Integer = PictureBox1.Size.Height
+    Private Sub picGPS_Paint(ByVal sender As Object, ByVal e As PaintEventArgs) Handles picGPS.Paint
+        Dim wPic As Integer = picGPS.Height 'picGPS.BackgroundImage.Size.Width
+        Dim hPic As Integer = picGPS.Height 'picGPS.BackgroundImage.Size.Height
+
+        Dim w As Integer = picGPS.Width
+        Dim h As Integer = picGPS.Height
+
         Dim cx As Integer = (w / 2)
         Dim cy As Integer = (h / 2)
-        Dim rad As Integer = (cx - 10)
+
+        Dim cxPic As Integer = (wPic / 2)
+        Dim cyPic As Integer = (hPic / 2)
+        Dim rad As Integer = (cy + 10)
+        Dim radTo As Integer = (cy - 10)
         Dim apen As Pen = New Pen(Color.Black)
         apen.Width = 2
-        If (gps.FixStatus.ToString.ToLower = "invalid") Then
+        If (GlobalsFunctions.m_GPS.GpsConnection.FixStatus.ToString.ToLower = "invalid") Then
             Return
         End If
-        If (gps.Course.ToString.ToLower <> "nan") Then
+        If (GlobalsFunctions.m_GPS.GpsConnection.Course.ToString.ToLower <> "nan") Then
             ' current GPS bearing
             Dim gpsx As Integer = CType((cx _
                         + ((rad - 20) _
-                        * Math.Sin((gps.Course * (3.1416 / 180))))), Integer)
+                        * Math.Sin((GlobalsFunctions.m_GPS.GpsConnection.Course * (3.1416 / 180))))), Integer)
             Dim gpsy As Integer = CType((cy _
                         - ((rad - 20) _
-                        * Math.Cos((gps.Course * (3.1416 / 180))))), Integer)
+                        * Math.Cos((GlobalsFunctions.m_GPS.GpsConnection.Course * (3.1416 / 180))))), Integer)
             'arrow
             Dim t1x As Integer = CType((cx _
                         + ((rad - 30) _
-                        * Math.Sin(((gps.Course + 10) * (3.1416 / 180))))), Integer)
+                        * Math.Sin(((GlobalsFunctions.m_GPS.GpsConnection.Course + 10) * (3.1416 / 180))))), Integer)
             Dim t1y As Integer = CType((cy _
                         - ((rad - 30) _
-                        * Math.Cos(((gps.Course + 10) * (3.1416 / 180))))), Integer)
+                        * Math.Cos(((GlobalsFunctions.m_GPS.GpsConnection.Course + 10) * (3.1416 / 180))))), Integer)
             Dim t2x As Integer = CType((cx _
                         + ((rad - 30) _
-                        * Math.Sin(((gps.Course - 10) * (3.1416 / 180))))), Integer)
+                        * Math.Sin(((GlobalsFunctions.m_GPS.GpsConnection.Course - 10) * (3.1416 / 180))))), Integer)
             Dim t2y As Integer = CType((cy _
                         - ((rad - 30) _
-                        * Math.Cos(((gps.Course - 10) * (3.1416 / 180))))), Integer)
+                        * Math.Cos(((GlobalsFunctions.m_GPS.GpsConnection.Course - 10) * (3.1416 / 180))))), Integer)
             Dim gpsPen As Pen = New Pen(Color.Black)
-            gpsPen.Width = 2
-            e.Graphics.DrawLine(gpsPen, cx, cy, gpsx, gpsy)
+            gpsPen.Width = 5
+            e.Graphics.DrawLine(gpsPen, cx + 2, cy - 2, gpsx, gpsy)
             e.Graphics.DrawLine(gpsPen, t1x, t1y, gpsx, gpsy)
             e.Graphics.DrawLine(gpsPen, t2x, t2y, gpsx, gpsy)
         End If
         If validDest Then
             ' destination bearing
             Dim desx As Integer = CType((cx _
-                        + (rad * Math.Sin((destDir * (3.1416 / 180))))), Integer)
+                        + (radTo * Math.Sin((destDir * (3.1416 / 180))))), Integer)
             Dim desy As Integer = CType((cy _
-                        - (rad * Math.Cos((destDir * (3.1416 / 180))))), Integer)
+                        - (radTo * Math.Cos((destDir * (3.1416 / 180))))), Integer)
             Dim redbr As SolidBrush = New SolidBrush(Color.Red)
             e.Graphics.FillEllipse(redbr, (desx - 8), (desy - 8), 16, 16)
         End If
     End Sub
+
+
+
+    Private Sub SplitContainer1_Panel1_Resize(sender As System.Object, e As System.EventArgs) Handles SplitContainer1.Panel1.Resize
+        If picGPS Is Nothing Then Return
+        If picGPS.Parent Is Nothing Then Return
+
+        picGPS.Left = (picGPS.Parent.Width / 2) - (picGPS.Width / 2)
+
+    End Sub
+
+    Private Sub Map1_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles m_Map.Paint
+        If m_Map Is Nothing Then Return
+    
+        If validDest Then
+            Dim pCoord As Coordinate = m_Map.SpatialReference.FromWgs84(destX, destY)
+
+            Dim pPnt As System.Drawing.Point = m_Map.ToClient(pCoord)
+            pPnt.X = pPnt.X - (pPicBox.Width / 2)
+            pPnt.Y = pPnt.Y - (pPicBox.Height / 2)
+            If pPnt.X < (pPicBox.Width / 2) Then
+                pPnt.X = 0 '(pPicBox.Width / 2)
+
+            End If
+            If pPnt.Y < (pPicBox.Height / 2) Then
+                pPnt.Y = 0 ' (pPicBox.Height / 2)
+
+            End If
+
+
+
+            If pPnt.X > m_Map.Width - (pPicBox.Width) Then
+                pPnt.X = m_Map.Width - (pPicBox.Width)
+
+            End If
+            If pPnt.Y > m_Map.Height - (pPicBox.Height) Then
+                pPnt.Y = m_Map.Height - (pPicBox.Height)
+
+            End If
+            pPicBox.Visible = True
+
+            pPicBox.Location = pPnt
+
+
+            ' e.Graphics.DrawImage(My.Resources.RedCircle, pPnt)
+
+            ' e.Display.DrawGeometry(Pens.Black, New SolidBrush(Color.Aquamarine), 20, New Esri.ArcGIS.Mobile.Geometries.Point(pCoord))
+
+
+        End If
+
+    End Sub
+
+    'Private Sub m_Map_Paint(ByVal sender As Object, ByVal e As ESRI.ArcGIS.Mobile.WinForms.MapPaintEventArgs) Handles m_map.Paint
+    '    Try
+    '        If m_map Is Nothing Then Return
+    '        If e.MapSurface Is Nothing Then Return
+
+    '        If validDest Then
+    '            Dim pCoord As Coordinate = m_map.SpatialReference.FromWgs84(destX, destY)
+
+    '            Dim pPnt As System.Drawing.Point = m_map.ToClient(pCoord)
+    '            pPnt.X = pPnt.X - (pPicBox.Width / 2)
+    '            pPnt.Y = pPnt.Y - (pPicBox.Height / 2)
+    '            If pPnt.X < (pPicBox.Width / 2) Then
+    '                pPnt.X = 0 '(pPicBox.Width / 2)
+
+    '            End If
+    '            If pPnt.Y < (pPicBox.Height / 2) Then
+    '                pPnt.Y = 0 ' (pPicBox.Height / 2)
+
+    '            End If
+
+
+
+    '            If pPnt.X > m_map.Width - (pPicBox.Width) Then
+    '                pPnt.X = m_map.Width - (pPicBox.Width)
+
+    '            End If
+    '            If pPnt.Y > m_map.Height - (pPicBox.Height) Then
+    '                pPnt.Y = m_map.Height - (pPicBox.Height)
+
+    '            End If
+    '            pPicBox.Visible = True
+
+    '            pPicBox.Location = pPnt
+
+
+    '            ' e.Graphics.DrawImage(My.Resources.RedCircle, pPnt)
+
+    '            ' e.Display.DrawGeometry(Pens.Black, New SolidBrush(Color.Aquamarine), 20, New Esri.ArcGIS.Mobile.Geometries.Point(pCoord))
+
+
+
+    '        End If
+
+
+
+
+    '    Catch ex As Exception
+    '        Dim st As New StackTrace
+    '        MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+    '        st = Nothing
+
+    '    End Try
+
+    'End Sub
+
+
+    Private Sub btnClear_Click(sender As System.Object, e As System.EventArgs) Handles btnClear.Click
+        txtLongY.Text = "N/A"
+        txtLongX.Text = "N/A"
+        validateDestination()
+    End Sub
+
+    Private Sub Compass_Resize(sender As Object, e As System.EventArgs) Handles Me.Resize
+
+        Try
+
+            SplitContainer1.SplitterDistance = SplitContainer1.Parent.Width
+
+
+        Catch ex As Exception
+
+        End Try
+        'SplitContainer1.Panel1.Height = SplitContainer1.Parent.Height - 330
+
+
+
+        'lblTurnIn.Top = lblArriveIn.Top + lblArriveIn.Height + 50
+    End Sub
+
 End Class

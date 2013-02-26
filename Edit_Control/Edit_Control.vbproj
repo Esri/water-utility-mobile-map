@@ -102,6 +102,12 @@
     <Import Include="System.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttachmentControl.Designer.vb">
+      <DependentUpon>AttachmentControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AttachmentControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="CustomPanel.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -128,6 +134,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AttachmentControl.resx">
+      <DependentUpon>AttachmentControl.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EditControl.resx">
       <DependentUpon>EditControl.vb</DependentUpon>
     </EmbeddedResource>
@@ -219,6 +228,9 @@
     <None Include="Images\DeleteGray.png" />
     <None Include="Images\DeleteRed.png" />
     <None Include="Images\DeleteGreen.png" />
+    <Content Include="Images\AddAtt.png" />
+    <None Include="Images\AddCameraAtta.png" />
+    <Content Include="Images\DelAtt.png" />
     <Content Include="Images\Freehand.ico" />
     <None Include="Images\SatImageGraypng.png" />
   </ItemGroup>

@@ -47,6 +47,7 @@ Partial Class MobileMapConsole
         Me.gpBxSideBar = New System.Windows.Forms.GroupBox()
         Me.btnToggleScreens = New System.Windows.Forms.Button()
         Me.btnToggleDisplay = New System.Windows.Forms.Button()
+        Me.pnlWaypoint = New System.Windows.Forms.Panel()
         Me.spContMain.Panel1.SuspendLayout()
         Me.spContMain.Panel2.SuspendLayout()
         Me.spContMain.SuspendLayout()
@@ -94,6 +95,7 @@ Partial Class MobileMapConsole
         '
         'spContControls.Panel2
         '
+        Me.spContControls.Panel2.Controls.Add(Me.pnlWaypoint)
         Me.spContControls.Panel2.Controls.Add(Me.pnlGeonetTrace)
         Me.spContControls.Panel2.Controls.Add(Me.pnlRouting)
         Me.spContControls.Panel2.Controls.Add(Me.pnlInspect)
@@ -312,6 +314,16 @@ Partial Class MobileMapConsole
         Me.btnToggleDisplay.TabIndex = 0
         Me.btnToggleDisplay.Tag = "PanelVert"
         Me.btnToggleDisplay.UseVisualStyleBackColor = True
+
+        'pnlWaypoint
+        '
+        Me.pnlWaypoint.Location = New System.Drawing.Point(73, 329)
+        Me.pnlWaypoint.Name = "pnlWaypoint"
+        Me.pnlWaypoint.Size = New System.Drawing.Size(86, 76)
+        Me.pnlWaypoint.TabIndex = 7
+        Me.pnlWaypoint.Visible = False
+        '
+
         '
         'MobileMapConsole
         '
@@ -362,4 +374,5 @@ Partial Class MobileMapConsole
     Friend WithEvents btnToggleScreens As System.Windows.Forms.Button
     Friend WithEvents btnToggleDisplay As System.Windows.Forms.Button
     Friend WithEvents btnTakeImage As System.Windows.Forms.Button
+    Friend WithEvents pnlWaypoint As System.Windows.Forms.Panel
 End Class

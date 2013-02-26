@@ -32,6 +32,8 @@ Public Class MobileAttributes
 
     'Public WithEvents m_EditPanel As EditControl
     Public Event RouteTo(ByVal location As Geometry, ByVal LocationName As String)
+    Public Event Waypoint(ByVal location As Geometry, ByVal LocationName As String)
+
     Public Event HyperClick(ByVal PathToFile As String)
     Public Event LocationIdentified(ByVal fdr As FeatureDataRow)
     Public Event CheckGPS()
@@ -70,6 +72,7 @@ Public Class MobileAttributes
 
     Private m_CurrentRow As FeatureDataRow
     Private m_RouteToOption As Boolean
+    Private m_wayPoint As Boolean
     Private m_LastScale As Double = 0
     Private m_showCombo As Boolean = False
 
@@ -812,6 +815,8 @@ Public Class MobileAttributes
 
             Dim lastLay As String = m_Combo.Text
             Dim lastSelectedLay As String = m_attDis.CurrentLayer
+            Dim currentRow As FeatureDataRow = m_attDis.CurrentRow
+            
             Dim layList As List(Of String) = getLayerList()
 
             If layList Is Nothing Then
@@ -864,17 +869,35 @@ Public Class MobileAttributes
 
                 Else
                     gpBxLayer.Visible = m_showCombo
-                    'gpBxLayer.Visible = True
-                    If Not layList.Contains(lastSelectedLay) Then
+                    If currentRow IsNot Nothing Then
+                        If layList.Contains(currentRow.FeatureSource.Name) Then
+                        Else
+                            If Not layList.Contains(lastSelectedLay) Then
 
-                        m_attDis.CurrentLayer = ""
-                        If m_attDis.m_TabControl IsNot Nothing Then
+                                m_attDis.CurrentLayer = ""
+                                If m_attDis.m_TabControl IsNot Nothing Then
 
-                            m_attDis.m_TabControl.TabPages.Clear()
-                            m_attDis.m_TabControl.Visible = False
+                                    m_attDis.m_TabControl.TabPages.Clear()
+                                    m_attDis.m_TabControl.Visible = False
+                                End If
+
+                            End If
                         End If
 
                     End If
+                    'gpBxLayer.Visible = True
+                    'If Not layList.Contains(lastSelectedLay) Then
+
+                    '    m_attDis.CurrentLayer = ""
+                    '    If m_attDis.m_TabControl IsNot Nothing Then
+
+                    '        m_attDis.m_TabControl.TabPages.Clear()
+                    '        m_attDis.m_TabControl.Visible = False
+                    '    End If
+
+                    'End If
+                    'm_attDis.CurrentRow = currentRow
+
                 End If
 
             End If
@@ -953,6 +976,12 @@ Public Class MobileAttributes
 
     Private Sub m_attDis_RouteTo(ByVal location As Esri.ArcGIS.Mobile.Geometries.Geometry, ByVal LocationName As String) Handles m_attDis.RouteTo
         RaiseEvent RouteTo(location, LocationName)
+
+
+
+    End Sub
+    Private Sub m_attDis_Waypoint(ByVal location As Esri.ArcGIS.Mobile.Geometries.Geometry, ByVal LocationName As String) Handles m_attDis.Waypoint
+        RaiseEvent Waypoint(location, LocationName)
 
 
 

@@ -85,7 +85,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ESRI.ALNRemote">
-      <HintPath>..\..\..\SourceCodeSupport\Development Support\ALNSupport\ESRI.ALNRemote.dll</HintPath>
+      <HintPath>..\..\..\Local Government - 10_1\SourceCodeSupport\Development Support\ALNSupport\ESRI.ALNRemote.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="ESRI.ArcGIS.Mobile">

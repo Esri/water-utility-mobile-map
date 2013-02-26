@@ -1224,148 +1224,189 @@ Public Class MobileServiceSync
     'End Sub
 #End Region
 #Region "Private Functions"
-   
+
     Private Function loadDataSources() As Boolean
         Try
 
-        
-        If GlobalsFunctions.appConfig.LayerOptions.MobileServices.MobileService.Count > 1 Then
-            MsgBox("Two map services are not supported at this time")
-            Return False
 
-        End If
+            If GlobalsFunctions.appConfig.LayerOptions.MobileServices.MobileService.Count > 1 Then
+                MsgBox("Two map services are not supported at this time")
+                Return False
 
-        For Each strURL In GlobalsFunctions.appConfig.LayerOptions.MobileServices.MobileService
-            If strURL.StorageLocation = "" Then
-                m_MobileCache = New MobileCache(GlobalsFunctions.generateCachePath)
-            Else
-                m_MobileCache = New MobileCache(strURL.StorageLocation)
             End If
 
-            m_MobileConnect = New Esri.ArcGIS.Mobile.FeatureCaching.Synchronization.MobileServiceConnection
-            If GlobalsFunctions.UrlIsValid(strURL.Value) Then
-                m_MobileConnect.Url = strURL.Value
-                If strURL.UserName <> "" Then
-                    Try
-                        GlobalsFunctions.OverrideCertificateValidation()
-
-
-                        'Dim webRequest_401 As HttpWebRequest = Nothing
-
-                        'webRequest_401 = HttpWebRequest.Create(New Uri(strURL.Value & "?wsdl"))
-
-                        'webRequest_401.ContentType = "text/xml;charset=""utf-8"""
-
-                        'webRequest_401.Method = "GET"
-                        'webRequest_401.Accept = "text/xml"
-                        ''  webRequest_401.Credentials = New NetworkCredential(strURL.UserName, strURL.Password, strURL.Domain)
-
-                        'Dim webResponse_401 As HttpWebResponse
-                        'Try
-
-                        '    webResponse_401 = webRequest_401.GetResponse()
-                        'Catch webex As System.Net.WebException
-                        '    Dim webexResponse As HttpWebResponse = webex.Response
-                        '    If webexResponse.StatusCode = HttpStatusCode.Unauthorized Then
-
-                        '        If (webRequest_401.Credentials Is Nothing) Then
-
-                        '            webRequest_401 = HttpWebRequest.Create(New Uri(strURL.Value & "?wsdl"))
-
-                        '            webRequest_401.ContentType = "text/xml;charset=""utf-8"""
-
-                        '            webRequest_401.Method = "GET"
-                        '            webRequest_401.Accept = "text/xml"
-                        '            webRequest_401.Credentials = New NetworkCredential(strURL.UserName, strURL.Password, strURL.Domain)
-                        '            Try
-
-                        '                webResponse_401 = webRequest_401.GetResponse()
-                        '            Catch webex2 As System.Net.WebException
-                        '                MsgBox(webex2.Message)
-                        '            End Try
-
-                        '            If (webResponse_401 IsNot Nothing) Then
-                        '                webResponse_401.Close()
-                        '            End If
-                        '            '   m_MobileConnect.WebClientProtocol. = webRequest_401
-
-                        '            m_MobileConnect.WebClientProtocol.Credentials = webRequest_401.Credentials
-
-
-                        '        Else
-                        '        End If
-
-
-                        '    End If
-
-
-                        'End Try
-
-
-                        Dim myCache As CredentialCache = New CredentialCache()
-
-                        myCache.Add(New Uri(strURL.Value), "Basic", New NetworkCredential(strURL.UserName, strURL.Password))
-                        myCache.Add(New Uri(strURL.Value), "Digest", New NetworkCredential(strURL.UserName, strURL.Password, strURL.Domain))
-                        myCache.Add(New Uri(strURL.Value), "Negotiate", New NetworkCredential(strURL.UserName, strURL.Password, strURL.Domain))
-
-
-                        m_MobileConnect.WebClientProtocol.Credentials = myCache
-
-                    Catch exTm As Exception
-                        MsgBox(GlobalsFunctions.appConfig.ServicePanel.UIComponents.CacheNotValid & vbNewLine & exTm.Message)
-
-                        Return False
-                    End Try
+            For Each strURL In GlobalsFunctions.appConfig.LayerOptions.MobileServices.MobileService
+                If strURL.StorageLocation = "" Then
+                    m_MobileCache = New MobileCache(GlobalsFunctions.generateCachePath)
+                Else
+                    m_MobileCache = New MobileCache(strURL.StorageLocation)
                 End If
 
-                m_MobileConnect.WebClientProtocolType = WebClientProtocolType.BinaryWebService
-                'm_MobileConnect.WebClientProtocolType = WebClientProtocolType.SoapWebService
-            End If
 
 
-            If Not m_MobileCache.IsOpen Then
+                If GlobalsFunctions.UrlIsValid(strURL.Value) Then
+                    If GlobalsFunctions.URLIsMobileServer(strURL.Value) Then
+
+                        m_MobileConnect = New Esri.ArcGIS.Mobile.FeatureCaching.Synchronization.MobileServiceConnection
+                        m_MobileConnect.Url = strURL.Value
+                        If strURL.UserName <> "" Then
+                            Try
+                                GlobalsFunctions.OverrideCertificateValidation()
 
 
-                'If the service is valid
-                If m_MobileCache.IsValid Then
+                                'Dim webRequest_401 As HttpWebRequest = Nothing
 
-                    Try
+                                'webRequest_401 = HttpWebRequest.Create(New Uri(strURL.Value & "?wsdl"))
 
-                        m_MobileSyncAgent = New Esri.ArcGIS.Mobile.FeatureCaching.Synchronization.MobileCacheSyncAgent(m_MobileCache, m_MobileConnect)
-                        m_MobileSyncResults = New Esri.ArcGIS.Mobile.FeatureCaching.Synchronization.MobileCacheSyncResults()
-                        m_MobileCache.Open()
-                        m_Map.MapLayers.Add(m_MobileCache)
-                    Catch ex As Exception
+                                'webRequest_401.ContentType = "text/xml;charset=""utf-8"""
+
+                                'webRequest_401.Method = "GET"
+                                'webRequest_401.Accept = "text/xml"
+                                ''  webRequest_401.Credentials = New NetworkCredential(strURL.UserName, strURL.Password, strURL.Domain)
+
+                                'Dim webResponse_401 As HttpWebResponse
+                                'Try
+
+                                '    webResponse_401 = webRequest_401.GetResponse()
+                                'Catch webex As System.Net.WebException
+                                '    Dim webexResponse As HttpWebResponse = webex.Response
+                                '    If webexResponse.StatusCode = HttpStatusCode.Unauthorized Then
+
+                                '        If (webRequest_401.Credentials Is Nothing) Then
+
+                                '            webRequest_401 = HttpWebRequest.Create(New Uri(strURL.Value & "?wsdl"))
+
+                                '            webRequest_401.ContentType = "text/xml;charset=""utf-8"""
+
+                                '            webRequest_401.Method = "GET"
+                                '            webRequest_401.Accept = "text/xml"
+                                '            webRequest_401.Credentials = New NetworkCredential(strURL.UserName, strURL.Password, strURL.Domain)
+                                '            Try
+
+                                '                webResponse_401 = webRequest_401.GetResponse()
+                                '            Catch webex2 As System.Net.WebException
+                                '                MsgBox(webex2.Message)
+                                '            End Try
+
+                                '            If (webResponse_401 IsNot Nothing) Then
+                                '                webResponse_401.Close()
+                                '            End If
+                                '            '   m_MobileConnect.WebClientProtocol. = webRequest_401
+
+                                '            m_MobileConnect.WebClientProtocol.Credentials = webRequest_401.Credentials
+
+
+                                '        Else
+                                '        End If
+
+
+                                '    End If
+
+
+                                'End Try
+
+
+                                Dim myCache As CredentialCache = New CredentialCache()
+
+                                myCache.Add(New Uri(strURL.Value), "Basic", New NetworkCredential(strURL.UserName, strURL.Password))
+                                myCache.Add(New Uri(strURL.Value), "Digest", New NetworkCredential(strURL.UserName, strURL.Password, strURL.Domain))
+                                myCache.Add(New Uri(strURL.Value), "Negotiate", New NetworkCredential(strURL.UserName, strURL.Password, strURL.Domain))
+
+
+                                m_MobileConnect.WebClientProtocol.Credentials = myCache
+
+                            Catch exTm As Exception
+                                MsgBox(GlobalsFunctions.appConfig.ServicePanel.UIComponents.CacheNotValid & vbNewLine & exTm.Message)
+
+                                Return False
+                            End Try
+
+                            m_MobileConnect.WebClientProtocolType = WebClientProtocolType.BinaryWebService
+                        End If
+                    Else
+                        Dim pFSRep As FeatureServiceReplicaManager = New FeatureServiceReplicaManager()
+                        pFSRep.MobileCache = m_MobileCache
+                        pFSRep.Url = strURL.Value
+
+                        If strURL.UserName <> "" Then
+                            Try
+                                GlobalsFunctions.OverrideCertificateValidation()
+
+
+                                Dim myCache As CredentialCache = New CredentialCache()
+
+                                myCache.Add(New Uri(strURL.Value), "Basic", New NetworkCredential(strURL.UserName, strURL.Password))
+                                myCache.Add(New Uri(strURL.Value), "Digest", New NetworkCredential(strURL.UserName, strURL.Password, strURL.Domain))
+                                myCache.Add(New Uri(strURL.Value), "Negotiate", New NetworkCredential(strURL.UserName, strURL.Password, strURL.Domain))
+
+
+                                pFSRep.Credentials = myCache
+
+                            Catch exTm As Exception
+                                MsgBox(GlobalsFunctions.appConfig.ServicePanel.UIComponents.CacheNotValid & vbNewLine & exTm.Message)
+
+                                Return False
+                            End Try
+                        End If
+                        pFSRep.Initialize()
+
+                        ' pFSRep.Synchronize()
+                        'm_MobileCache.Open()
+
+                        pFSRep.CreateReplica()
+                        
+
+                        ' m_MobileCache.Open()
+
+
+                    End If
+
+                End If
+
+
+                If Not m_MobileCache.IsOpen Then
+
+
+                    'If the service is valid
+                    If m_MobileCache.IsValid Then
+
                         Try
-                            m_MobileConnect.CreateCache(m_MobileCache)
+
+                            m_MobileSyncAgent = New Esri.ArcGIS.Mobile.FeatureCaching.Synchronization.MobileCacheSyncAgent(m_MobileCache, m_MobileConnect)
+                            m_MobileSyncResults = New Esri.ArcGIS.Mobile.FeatureCaching.Synchronization.MobileCacheSyncResults()
                             m_MobileCache.Open()
                             m_Map.MapLayers.Add(m_MobileCache)
-                            'setCacheDateConfig("")
-                        Catch exin As Exception
+                        Catch ex As Exception
+                            Try
+                                m_MobileConnect.CreateCache(m_MobileCache)
+                                m_MobileCache.Open()
+                                m_Map.MapLayers.Add(m_MobileCache)
+                                'setCacheDateConfig("")
+                            Catch exin As Exception
 
-                            MsgBox(GlobalsFunctions.appConfig.ServicePanel.UIComponents.CacheNotValid)
+                                MsgBox(GlobalsFunctions.appConfig.ServicePanel.UIComponents.CacheNotValid)
 
-                            Return False
+                                Return False
 
-                            'setCacheDateConfig("")
+                                'setCacheDateConfig("")
+                            End Try
+
                         End Try
-
-                    End Try
+                        m_SyncToolsInit = True
+                        loadLayers()
+                    End If
+                Else
                     m_SyncToolsInit = True
                     loadLayers()
                 End If
-            Else
-                m_SyncToolsInit = True
-                loadLayers()
-            End If
-        Next
+            Next
 
-        If GlobalsFunctions.appConfig.LayerOptions.CachedMaps.CachedMap.Count > 0 Then
+            If GlobalsFunctions.appConfig.LayerOptions.CachedMaps.CachedMap.Count > 0 Then
 
 
-            For Each strLocalCache In GlobalsFunctions.appConfig.LayerOptions.CachedMaps.CachedMap
+                For Each strLocalCache In GlobalsFunctions.appConfig.LayerOptions.CachedMaps.CachedMap
 
-                If strLocalCache.Value IsNot Nothing Then
+                    If strLocalCache.Value IsNot Nothing Then
 
 
                         If System.IO.Directory.Exists(strLocalCache.Value) Then
@@ -1439,15 +1480,15 @@ Public Class MobileServiceSync
 
                         End If
 
-                End If
-            Next
-        End If
+                    End If
+                Next
+            End If
 
 
-        If GlobalsFunctions.appConfig.LayerOptions.WebMaps.WebMap.Count > 0 Then
-            Dim strPath As String = GlobalsFunctions.generateWebMapsCachePath()
+            If GlobalsFunctions.appConfig.LayerOptions.WebMaps.WebMap.Count > 0 Then
+                Dim strPath As String = GlobalsFunctions.generateWebMapsCachePath()
 
-            For Each strLocalCache In GlobalsFunctions.appConfig.LayerOptions.WebMaps.WebMap
+                For Each strLocalCache In GlobalsFunctions.appConfig.LayerOptions.WebMaps.WebMap
                     If strLocalCache.Value IsNot Nothing Then
 
 
@@ -1472,11 +1513,11 @@ Public Class MobileServiceSync
 
 
                 Next
-        End If
-        bkGrnOpenLayers.WorkerReportsProgress = True
+            End If
+            bkGrnOpenLayers.WorkerReportsProgress = True
 
-        bkGrnOpenLayers.RunWorkerAsync()
-        Return True
+            bkGrnOpenLayers.RunWorkerAsync()
+            Return True
 
 
 
@@ -1636,7 +1677,7 @@ Public Class MobileServiceSync
                 GlobalsFunctions.SetDefQueryOnLayers(GlobalsFunctions.appConfig.LayerOptions.MobileServices.LimitQuery, m_Map)
 
             End If
-            
+
             'Loop through all layers and add/remove the handlers
             loadSyncLayers()
 
@@ -2005,7 +2046,7 @@ Public Class MobileServiceSync
                     If TypeOf pL Is MobileCacheMapLayer Then
 
                         For Each pFS As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource In CType(pL, Esri.ArcGIS.Mobile.FeatureCaching.MobileCacheMapLayer).MobileCache.FeatureSources
-                          
+
 
 
                             If pFS.HasEdits = False And syncDir = Esri.ArcGIS.Mobile.FeatureCaching.Synchronization.SyncDirection.UploadOnly Then
@@ -2014,6 +2055,8 @@ Public Class MobileServiceSync
 
                                 pFLSyncAgent = New Esri.ArcGIS.Mobile.FeatureCaching.Synchronization.FeatureSyncAgent(pFS)
                                 pFLSyncAgent.SynchronizationDirection = syncDir
+                                pFLSyncAgent.SynchronizeAttachments = True
+
                                 pFLSyncAgent.MapDocumentConnection = m_MobileConnect
                                 If extent IsNot Nothing Then
 
@@ -2053,6 +2096,8 @@ Public Class MobileServiceSync
 
                             pFLSyncAgent = New Esri.ArcGIS.Mobile.FeatureCaching.Synchronization.FeatureSyncAgent(pFS)
                             pFLSyncAgent.SynchronizationDirection = syncDir
+                            pFLSyncAgent.SynchronizeAttachments = True
+
                             pFLSyncAgent.MapDocumentConnection = m_MobileConnect
                             If extent IsNot Nothing Then
 
@@ -2087,6 +2132,8 @@ Public Class MobileServiceSync
 
                         pFLSyncAgent = New Esri.ArcGIS.Mobile.FeatureCaching.Synchronization.FeatureSyncAgent(pFS)
                         pFLSyncAgent.SynchronizationDirection = syncDir
+                        pFLSyncAgent.SynchronizeAttachments = True
+
 
                         pFLSyncAgent.MapDocumentConnection = m_MobileConnect
                         If extent IsNot Nothing Then

@@ -64,6 +64,8 @@ Public Class MobileMapConsole
     Private WithEvents m_MCToggleGroup As MobileControls.mobileGroupToggle
     Private WithEvents m_MCALNInt As MobileControls.ALNIntegration
     'Private WithEvents m_MCMeasureMA As MobileControls.MeasureMapAction
+    Private WithEvents m_MCCompass As MobileControls.Compass
+
 
 
     Private WithEvents m_MCNav As MobileControls.mobileNavigation
@@ -183,6 +185,8 @@ Public Class MobileMapConsole
             pnlWO.Visible = False
             pnlWO.Dock = DockStyle.Fill
 
+            pnlWaypoint.Visible = False
+            pnlWaypoint.Dock = DockStyle.Fill
 
             pnlSketch.Visible = False
             pnlSketch.Dock = DockStyle.Fill
@@ -246,6 +250,7 @@ Public Class MobileMapConsole
             pnlTrace.Controls.Clear()
             pnlWeb.Controls.Clear()
             pnlGeonetTrace.Controls.Clear()
+            pnlWaypoint.Controls.Clear()
             '  pnlMeasure.Controls.Clear()
 
             'Collapse the control panel
@@ -268,6 +273,7 @@ Public Class MobileMapConsole
 
             Dim pBtn As Button = Nothing
 
+            Dim pNavBtn As Button = Nothing
 
 
             'Service tools
@@ -362,6 +368,64 @@ Public Class MobileMapConsole
 
                     End If
                 End If
+
+                If appConfig.NavigationOptions.GPS.WaypointControl IsNot Nothing Then
+                    If appConfig.NavigationOptions.GPS.WaypointControl.Visible IsNot Nothing Then
+
+
+                        If (appConfig.NavigationOptions.GPS.WaypointControl.Visible.ToUpper() = "TRUE") Then
+
+                            Try
+
+                                pNavBtn = New Button
+
+                                pNavBtn.BackgroundImage = My.Resources.Square___Blue
+                                pNavBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+                                pNavBtn.Dock = System.Windows.Forms.DockStyle.Fill
+                                pNavBtn.FlatAppearance.BorderSize = 0
+                                pNavBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+                                pNavBtn.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+                                pNavBtn.ForeColor = System.Drawing.Color.White
+                                pNavBtn.Location = New System.Drawing.Point(4, 4)
+                                pNavBtn.Margin = New System.Windows.Forms.Padding(1)
+                                pNavBtn.Name = "btnWaypoint"
+                                pNavBtn.Size = New System.Drawing.Size(105, 33)
+                                pNavBtn.TabIndex = 8
+                                If GlobalsFunctions.appConfig.SearchPanel.DisplayText <> "" Then
+                                    pNavBtn.Text = GlobalsFunctions.appConfig.NavigationOptions.GPS.WaypointControl.DisplayText
+                                Else
+                                    pNavBtn.Text = "Waypoint"
+                                End If
+
+                                pNavBtn.UseVisualStyleBackColor = True
+
+
+
+                                AddHandler pNavBtn.Click, AddressOf PanelButtonClick
+
+
+                                'Create a new search control
+
+                                m_MCCompass = New MobileControls.Compass()
+                                m_MCCompass.map = Map1
+
+                                'Set it to fill the container
+                                m_MCCompass.Dock = DockStyle.Fill
+                                'Add it to the container
+                                pnlWaypoint.Controls.Add(m_MCCompass)
+                                'Set the map
+                                ' m_MCCompass.map = Map1
+
+                                'Initilize the search and address lookup
+                                'm_MCCompass.InitSearch()
+                            Catch
+                            End Try
+                        End If
+                    End If
+                End If
+
+
+
                 statTool.Text = appConfig.NavigationOptions.ZoomPan.PanToolMessage '"Active Tool: Pan"
             Catch ex As Exception
                 Dim st As New StackTrace
@@ -1034,6 +1098,17 @@ Public Class MobileMapConsole
             '    End Try
 
             'End If
+
+            If pNavBtn IsNot Nothing Then
+
+                If intCol > 2 Then
+                    intRow = intRow + 1
+                    intCol = 0
+                End If
+                tblLayoutWidgets.Controls.Add(pNavBtn, intCol, intRow)
+                intCol = intCol + 1
+
+            End If
             If appConfig.WebPanel.Visible.ToUpper <> UCase("False") Then
 
                 Try
@@ -1307,6 +1382,10 @@ Public Class MobileMapConsole
             'Add the handler for each tick
             AddHandler m_TxtTimer.Tick, AddressOf m_TxtTimer_Tick
 
+            If m_MCCompass IsNot Nothing Then
+                m_MCCompass.addWayPointImage()
+
+            End If
         Catch ex As Exception
             Dim st As New StackTrace
             MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
@@ -1528,6 +1607,7 @@ Public Class MobileMapConsole
         Web
         '      Measure
         TOC
+        Waypoint
     End Enum
     Private Sub showPanel(ByVal MobilePanel As TemplatePanels)
         pnlSync.Visible = False
@@ -1545,6 +1625,8 @@ Public Class MobileMapConsole
         pnlCreateFeature.Visible = False
         pnlInspect.Visible = False
         pnlRouting.Visible = False
+        pnlWaypoint.Visible = False
+
         ' pnlMeasure.Visible = False
         RemoveHandler spContMain.Panel1.Resize, AddressOf spContMain_Panel1_Resize
         RemoveHandler spContMain.Panel2.Resize, AddressOf spContMain_Panel1_Resize
@@ -1662,6 +1744,12 @@ Public Class MobileMapConsole
 
                 statLabel.Text = appConfig.WorkorderPanel.StatusBarMessage '"Activitiy List:  Shows a list of assigned activities, opening a activity sets up an inspection"
                 pnlWO.Visible = True
+            Case TemplatePanels.Waypoint
+
+                adjustimages("btnWaypoint")
+
+                statLabel.Text = appConfig.NavigationOptions.GPS.WaypointControl.StatusBarMessage '"Activitiy List:  Shows a list of assigned activities, opening a activity sets up an inspection"
+                pnlWaypoint.Visible = True
         End Select
     End Sub
 
@@ -2322,7 +2410,9 @@ Public Class MobileMapConsole
             Case UCase("btnSketch")
                 'showSketchPanel()
                 showPanel(TemplatePanels.Sketch)
+            Case UCase("btnWaypoint")
 
+                showPanel(TemplatePanels.Waypoint)
                 'Case UCase("btnIsolate")
                 '    'showTracePanel()
                 '    showPanel(TemplatePanels.Trace)
@@ -3193,6 +3283,18 @@ Public Class MobileMapConsole
             End If
 
         End If
+
+    End Sub
+    Private Sub m_MCIDMA_Waypoint(location As ArcGIS.Mobile.Geometries.Geometry, LocationName As String) Handles m_MCIDMA.Waypoint, m_MCSearch.Waypoint
+        If location Is Nothing Then Return
+
+        Dim pCoord As Esri.ArcGIS.Mobile.Geometries.Coordinate = GlobalsFunctions.GetGeometryCenter(location)
+        If pCoord Is Nothing Then Return
+
+        pCoord = Map1.SpatialReference.ToWgs84(pCoord)
+
+        m_MCCompass.setDestination(pCoord.X, pCoord.Y)
+        showPanel(TemplatePanels.Waypoint)
 
     End Sub
 End Class

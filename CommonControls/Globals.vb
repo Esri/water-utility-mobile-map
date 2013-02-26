@@ -41,6 +41,7 @@ Imports System.Net.Security
 
 Public Class GlobalsFunctions
 
+    Public Shared WithEvents m_GPS As Gps.GpsDisplay
 
     Public Shared appConfig As MobileConfigClass.MobileConfigMobileMapConfig = Nothing
     Public Shared conParent As MobileConfigClass.MobileConfig = Nothing
@@ -668,6 +669,12 @@ IL_1EE:
 
     Private Shared Function RemoteCertValidate(ByVal sender As Object, ByVal cert As X509Certificate, ByVal chain As X509Chain, ByVal [error] As System.Net.Security.SslPolicyErrors) As Boolean
         Return True
+    End Function
+    Public Shared Function URLIsMobileServer(ByVal url As String) As Boolean
+        If url Is Nothing Then Return False
+        If url.Contains("/MobileServer") Then Return True
+        Return False
+
     End Function
     Public Shared Function UrlIsValid(ByVal url As String) As Boolean
         If url Is Nothing Then Return False

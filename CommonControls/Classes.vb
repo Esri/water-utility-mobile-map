@@ -25,6 +25,36 @@ Imports System.Xml.Serialization
 Imports Esri.ArcGIS.Mobile
 Imports Esri.ArcGIS.Mobile.Geometries
 Imports Esri.ArcGIS.Mobile.SpatialReferences
+Public Class attFiles
+    Private m_filePath As String
+    Private m_fileName As String
+
+    Public Property fileName() As String
+        Get
+            Return m_fileName
+
+        End Get
+
+        Set(ByVal value As String)
+            m_fileName = value
+
+        End Set
+
+    End Property
+    Public Property filePath() As String
+        Get
+            Return m_filePath
+
+        End Get
+
+        Set(ByVal value As String)
+            m_filePath = value
+
+        End Set
+
+    End Property
+End Class
+
 Public Class FeatureSourceWithDef
     Private m_FeatureSource As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource
     Private m_MobileCacheMapLayer As Esri.ArcGIS.Mobile.FeatureCaching.MobileCacheMapLayer

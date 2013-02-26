@@ -108,6 +108,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="MyPicBox.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="NavigationControl.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -125,6 +128,10 @@
     <Content Include="bookmarks.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
+    </Content>
+    <None Include="Images\ClearGreen.png" />
+    <Content Include="Images\Compass.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Images\rightDown.png" />
     <None Include="Images\RedCircle.png" />

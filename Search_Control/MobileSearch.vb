@@ -81,6 +81,44 @@ Public Class MobileSearch
     'Private houseNumberFilter As LocatorFilter
 
 #Region "Public Functions"
+
+
+    Private m_GPSStatus As String = "Off"
+
+    Public Property GPSStatus As String
+        Get
+            Return m_GPSStatus
+        End Get
+        Set(ByVal value As String)
+            m_GPSStatus = value
+            If m_GPSStatus = "On" Then
+
+                btnWaypoint.Enabled = True
+                btnWaypointDrillDown.Enabled = True
+                btnWaypointGC.Enabled = True
+                btnWaypointOnline.Enabled = True
+                btnWaypointSearch.Enabled = True
+            Else
+
+                btnWaypoint.Enabled = False
+                btnWaypointDrillDown.Enabled = False
+                btnWaypointGC.Enabled = False
+                btnWaypointOnline.Enabled = False
+                btnWaypointSearch.Enabled = False
+            End If
+
+        End Set
+    End Property
+    Private Sub btnWaypoint_EnabledChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnWaypoint.EnabledChanged, btnWaypointDrillDown.EnabledChanged, btnWaypointGC.EnabledChanged, btnWaypointOnline.EnabledChanged, btnWaypointSearch.EnabledChanged
+        If CType(sender, Button).Enabled Then
+            CType(sender, Button).BackgroundImage = My.Resources.NavTooBlue
+
+        Else
+            CType(sender, Button).BackgroundImage = My.Resources.NavTooGray
+
+        End If
+    End Sub
+
     Public Sub New(Optional ByVal RouteToOption As Boolean = False, Optional ByVal LoadSearchType As String = "Loop")
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
@@ -105,6 +143,23 @@ Public Class MobileSearch
             End If
 
         End If
+        If GlobalsFunctions.appConfig.NavigationOptions.GPS.WaypointControl.Visible.ToUpper = "TRUE" Then
+
+            btnWaypoint.Visible = True
+            btnWaypointDrillDown.Visible = True
+            btnWaypointGC.Visible = True
+            btnWaypointOnline.Visible = True
+            btnWaypointSearch.Visible = True
+
+        Else
+            btnWaypoint.Visible = False
+            btnWaypointDrillDown.Visible = False
+            btnWaypointGC.Visible = False
+            btnWaypointOnline.Visible = False
+            btnWaypointSearch.Visible = False
+
+        End If
+
         'set the panels to dock full
         pnlSearch.Dock = DockStyle.Fill
         pnlAddress.Dock = DockStyle.Fill
@@ -117,21 +172,26 @@ Public Class MobileSearch
         picSearching.Width = picSearching.Image.Width
         picSearching.Height = picSearching.Image.Height
 
-        btnAddressPointZoomTo.Text = GlobalsFunctions.appConfig.SearchPanel.UIComponents.ButtonShowText
-        btnAddressZoomTo.Text = GlobalsFunctions.appConfig.SearchPanel.UIComponents.ButtonShowText
+        'btnAddressPointZoomTo.Text = GlobalsFunctions.appConfig.SearchPanel.UIComponents.ButtonShowText
+        'btnAddressZoomTo.Text = GlobalsFunctions.appConfig.SearchPanel.UIComponents.ButtonShowText
+        'btnDGZoomTo.Text = GlobalsFunctions.appConfig.SearchPanel.UIComponents.ButtonShowText
+        'btnDGFlash.Text = GlobalsFunctions.appConfig.SearchPanel.UIComponents.ButtonFlashText
+
         btnDGZoomTo.Text = GlobalsFunctions.appConfig.SearchPanel.UIComponents.ButtonShowText
         btnDGFlash.Text = GlobalsFunctions.appConfig.SearchPanel.UIComponents.ButtonFlashText
 
-        btnAddressRouteTo.Text = GlobalsFunctions.appConfig.SearchPanel.UIComponents.IntersectionZoomToButtonText
-        btnAddressReload.Text = GlobalsFunctions.appConfig.SearchPanel.UIComponents.IntersectionReloadButtonText
         gpBxGoToXY.Text = GlobalsFunctions.appConfig.SearchPanel.UIComponents.GoToXYText
-        btnDGRouteTo.Text = GlobalsFunctions.appConfig.SearchPanel.UIComponents.ButtonRouteText
-        btnRunGC.Text = GlobalsFunctions.appConfig.SearchPanel.UIComponents.GeocodeLookupButtonText
-        btnOnlineGC.Text = GlobalsFunctions.appConfig.SearchPanel.UIComponents.GeocodeLookupButtonText
+        'btnDGRouteTo.Text = GlobalsFunctions.appConfig.SearchPanel.UIComponents.ButtonRouteText
+        ' btnRunGC.Text = GlobalsFunctions.appConfig.SearchPanel.UIComponents.GeocodeLookupButtonText
+        'btnOnlineGC.Text = GlobalsFunctions.appConfig.SearchPanel.UIComponents.GeocodeLookupButtonText
         btnRunXY.Text = GlobalsFunctions.appConfig.SearchPanel.UIComponents.GoToXYButtonText
         chkLatLong.Text = GlobalsFunctions.appConfig.SearchPanel.UIComponents.GoToXYLatLongText
-        btnSearchFind.Text = GlobalsFunctions.appConfig.SearchPanel.UIComponents.SearchButtonText
-        chkSearchSimliar.Text = GlobalsFunctions.appConfig.SearchPanel.UIComponents.SearchSimilarLabelText
+        'btnSearchFind.Text = GlobalsFunctions.appConfig.SearchPanel.UIComponents.SearchButtonText
+
+
+        'btnAddressRouteTo.Text = GlobalsFunctions.appConfig.SearchPanel.UIComponents.IntersectionZoomToButtonText
+        'btnAddressReload.Text = GlobalsFunctions.appConfig.SearchPanel.UIComponents.IntersectionReloadButtonText
+          chkSearchSimliar.Text = GlobalsFunctions.appConfig.SearchPanel.UIComponents.SearchSimilarLabelText
         If GlobalsFunctions.appConfig.SearchPanel.UIComponents.LatLongChecked.ToUpper = "TRUE" Then
             chkLatLong.Checked = True
             lblX.Text = GlobalsFunctions.appConfig.SearchPanel.UIComponents.LongText
@@ -1076,75 +1136,55 @@ Public Class MobileSearch
                 intNextLeft = CInt(intNextLeft + splDis)
             End If
 
-
-            'If btnAddressPnt.Visible Then
-            '    'btnAddress.Left = CInt((splContMainSearch.Width / 2) - btnAddress.Width - 10)
-            '    'btnAddressPnt.Left = CInt((splContMainSearch.Width / 2) + 10)
-
-            '    'btnGeocode.Left = btnAddressPnt.Left + btnAddressPnt.Width + 20
-            '    'btnLookup.Left = btnAddress.Left - 20 - btnAddress.Width
-            '    Dim btnDis As Double = btnAddress.Parent.Width / 5
-
-            '    btnLookup.Left = btnDis - (btnLookup.Width / 2)
-
-            '    btnAddress.Left = (btnDis + btnDis) - (btnAddress.Width / 2)
-
-            '    btnAddressPnt.Left = (btnDis + btnDis + btnDis) - (btnAddressPnt.Width / 2)
-
-            '    btnGeocode.Left = (btnDis + btnDis + btnDis + btnDis) - (btnGeocode.Width / 2)
-
-            'Else
-            '    Dim btnDis As Double = btnAddress.Parent.Width / 4
-
-            '    btnLookup.Left = btnDis - (btnLookup.Width / 2)
-
-            '    btnAddress.Left = (btnDis + btnDis) - (btnAddress.Width / 2)
-
-            '    btnGeocode.Left = (btnDis + btnDis + btnDis) - (btnGeocode.Width / 2)
-
-            'End If
-
-
-
-
-
-            'btnLookup.Left = btnAddress.Left - m_ButtonSpace - btnLookup.Width
-            'btnGeocode.Left = btnAddress.Left + m_ButtonSpace + btnAddress.Width
-            'btnAddressPnt.Left = btnAddress.Left + m_ButtonSpace + btnAddress.Width
             'Address Panel
             cboStreetLayer1.Width = splContMainSearch.Width - cboStreetLayer1.Left - m_Rightpad
             cboStreetLayer2.Width = splContMainSearch.Width - cboStreetLayer2.Left - m_Rightpad
             cboStreetRange.Width = splContMainSearch.Width - cboStreetRange.Left - m_Rightpad
-            btnAddressRouteTo.Left = CInt((splContMainSearch.Width / 2) - (btnAddressRouteTo.Width / 2))
-            btnAddressZoomTo.Left = btnAddressRouteTo.Left - btnAddressZoomTo.Width - m_ButtonSpace
-            btnAddressReload.Left = btnAddressRouteTo.Left + btnAddressRouteTo.Width + m_ButtonSpace
+
+
+
+
+
+            Dim visCnt As Integer = 0
+
+            For Each Control As Control In gpInterSearch.Controls
+                If TypeOf (Control) Is Button Then
+                    If Control.Visible Then
+                        visCnt = visCnt + 1
+                    End If
+
+
+                End If
+
+            Next
+            Dim spacing As Double = (gpInterSearch.Width) / (visCnt + 1)
+            Dim curloc As Double = spacing
+            For Each Control As Control In gpInterSearch.Controls
+                If TypeOf (Control) Is Button Then
+                    If Control.Visible Then
+                        Control.Left = curloc - (Control.Width / 2)
+
+                        curloc = curloc + spacing
+                    End If
+
+
+                End If
+
+            Next
+
+            'btnAddressRouteTo.Left = CInt((splContMainSearch.Width / 2) - (btnAddressRouteTo.Width / 2))
+            'btnAddressZoomTo.Left = btnAddressRouteTo.Left - btnAddressZoomTo.Width - m_ButtonSpace
+            'btnAddressReload.Left = btnAddressRouteTo.Left + btnAddressRouteTo.Width + m_ButtonSpace
+
+
+
+
+
+
             'GC Panel
             txtGeocodeValue.Width = splContMainSearch.Width - txtGeocodeValue.Left - m_Rightpad
             txtbxOnlineGCAddress.Width = splContMainSearch.Width - txtbxOnlineGCAddress.Left - m_Rightpad
-            'DG buttons
-            'btnRouteTo.Top = CInt((btnRouteTo.Parent.Height / 2) - (btnRouteTo.Height / 2) + 3)
-            'btnRouteTo.Left = CInt((splContMainSearch.Width / 2) - (btnRouteTo.Width) / 2)
 
-            'btnDGZoomTo.Top = CInt((btnDGZoomTo.Parent.Height / 2) - (btnDGZoomTo.Height / 2) + 3)
-            'btnDGZoomTo.Left = btnRouteTo.Left - btnDGZoomTo.Width - m_ButtonSpace
-
-            'btnIDEvent.Top = CInt((btnRouteTo.Parent.Height / 2) - (btnRouteTo.Height / 2) + 3)
-            'btnIDEvent.Left = btnRouteTo.Left + btnIDEvent.Width + m_ButtonSpace
-
-
-
-            'btnDGZoomTo.Top = CInt((btnDGZoomTo.Parent.Height / 2) - (btnDGZoomTo.Height / 2) + 3)
-            'btnDGZoomTo.Left = m_ButtonSpace
-
-            'btnDGFlash.Top = CInt((btnDGRouteTo.Parent.Height / 2) - (btnDGRouteTo.Height / 2) + 3)
-            'btnDGFlash.Left = btnDGZoomTo.Left + btnDGZoomTo.Width + m_ButtonSpace
-
-
-            ''btnIDEvent.Top = CInt((btnRouteTo.Parent.Height / 2) - (btnRouteTo.Height / 2) + 3)
-            ''btnIDEvent.Left = btnDGFlash.Left + btnDGFlash.Width + m_ButtonSpace
-
-            'btnDGRouteTo.Top = CInt((btnDGRouteTo.Parent.Height / 2) - (btnDGRouteTo.Height / 2) + 3)
-            'btnDGRouteTo.Left = btnDGFlash.Left + btnDGFlash.Width + m_ButtonSpace
 
             btnDGRouteTo.Left = CInt(btnDGRouteTo.Parent.Width / 2 - btnDGRouteTo.Width / 2)
             btnDGZoomTo.Left = 10
@@ -1187,6 +1227,170 @@ Public Class MobileSearch
 
         End Try
     End Sub
+
+    'Private Sub MobileSearch_Resize(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Resize
+    '    Try
+    '        'recenter the buttons and the splitter distance on a resize
+    '        splContMainSearch.SplitterDistance = 385
+    '        'Search panel
+    '        cboSearchField.Width = splContMainSearch.Width - cboSearchField.Left - m_Rightpad
+    '        cboSearchLayer.Width = splContMainSearch.Width - cboSearchLayer.Left - m_Rightpad
+    '        txtSearchValue.Width = splContMainSearch.Width - txtSearchValue.Left - m_Rightpad
+    '        cboSearchValue.Left = txtSearchValue.Left
+    '        cboSearchValue.Width = splContMainSearch.Width - txtSearchValue.Left - m_Rightpad
+    '        cboBufferVal.Width = splContMainSearch.Width - cboBufferVal.Left - m_Rightpad - btnBuffer.Width - 10
+    '        btnBuffer.Left = cboBufferVal.Left + cboBufferVal.Width + 5
+
+
+    '        Dim intBtn As Integer = 0
+
+    '        If btnLookup.Visible Then
+    '            intBtn = intBtn + 1
+    '        End If
+    '        If btnAddress.Visible Then
+    '            intBtn = intBtn + 1
+    '        End If
+
+    '        If btnAddressPnt.Visible Then
+    '            intBtn = intBtn + 1
+    '        End If
+    '        If btnGeocode.Visible Then
+    '            intBtn = intBtn + 1
+    '        End If
+
+    '        Dim splDis As Double = splContMainSearch.Width / (intBtn + 1)
+    '        Dim intNextLeft As Integer = CInt(splDis)
+
+    '        If btnLookup.Visible Then
+    '            btnLookup.Left = CInt(intNextLeft - btnLookup.Width / 2)
+    '            intNextLeft = CInt(intNextLeft + splDis)
+    '        End If
+    '        If btnAddress.Visible Then
+    '            btnAddress.Left = CInt(intNextLeft - btnAddress.Width / 2)
+    '            intNextLeft = CInt(intNextLeft + splDis)
+    '        End If
+
+    '        If btnAddressPnt.Visible Then
+    '            btnAddressPnt.Left = CInt(intNextLeft - btnAddressPnt.Width / 2)
+    '            intNextLeft = CInt(intNextLeft + splDis)
+    '        End If
+    '        If btnGeocode.Visible Then
+    '            btnGeocode.Left = CInt(intNextLeft - btnGeocode.Width / 2)
+    '            intNextLeft = CInt(intNextLeft + splDis)
+    '        End If
+
+
+    '        'If btnAddressPnt.Visible Then
+    '        '    'btnAddress.Left = CInt((splContMainSearch.Width / 2) - btnAddress.Width - 10)
+    '        '    'btnAddressPnt.Left = CInt((splContMainSearch.Width / 2) + 10)
+
+    '        '    'btnGeocode.Left = btnAddressPnt.Left + btnAddressPnt.Width + 20
+    '        '    'btnLookup.Left = btnAddress.Left - 20 - btnAddress.Width
+    '        '    Dim btnDis As Double = btnAddress.Parent.Width / 5
+
+    '        '    btnLookup.Left = btnDis - (btnLookup.Width / 2)
+
+    '        '    btnAddress.Left = (btnDis + btnDis) - (btnAddress.Width / 2)
+
+    '        '    btnAddressPnt.Left = (btnDis + btnDis + btnDis) - (btnAddressPnt.Width / 2)
+
+    '        '    btnGeocode.Left = (btnDis + btnDis + btnDis + btnDis) - (btnGeocode.Width / 2)
+
+    '        'Else
+    '        '    Dim btnDis As Double = btnAddress.Parent.Width / 4
+
+    '        '    btnLookup.Left = btnDis - (btnLookup.Width / 2)
+
+    '        '    btnAddress.Left = (btnDis + btnDis) - (btnAddress.Width / 2)
+
+    '        '    btnGeocode.Left = (btnDis + btnDis + btnDis) - (btnGeocode.Width / 2)
+
+    '        'End If
+
+
+
+
+
+    '        'btnLookup.Left = btnAddress.Left - m_ButtonSpace - btnLookup.Width
+    '        'btnGeocode.Left = btnAddress.Left + m_ButtonSpace + btnAddress.Width
+    '        'btnAddressPnt.Left = btnAddress.Left + m_ButtonSpace + btnAddress.Width
+    '        'Address Panel
+    '        cboStreetLayer1.Width = splContMainSearch.Width - cboStreetLayer1.Left - m_Rightpad
+    '        cboStreetLayer2.Width = splContMainSearch.Width - cboStreetLayer2.Left - m_Rightpad
+    '        cboStreetRange.Width = splContMainSearch.Width - cboStreetRange.Left - m_Rightpad
+    '        btnAddressRouteTo.Left = CInt((splContMainSearch.Width / 2) - (btnAddressRouteTo.Width / 2))
+    '        btnAddressZoomTo.Left = btnAddressRouteTo.Left - btnAddressZoomTo.Width - m_ButtonSpace
+    '        btnAddressReload.Left = btnAddressRouteTo.Left + btnAddressRouteTo.Width + m_ButtonSpace
+    '        'GC Panel
+    '        txtGeocodeValue.Width = splContMainSearch.Width - txtGeocodeValue.Left - m_Rightpad
+    '        txtbxOnlineGCAddress.Width = splContMainSearch.Width - txtbxOnlineGCAddress.Left - m_Rightpad
+    '        'DG buttons
+    '        'btnRouteTo.Top = CInt((btnRouteTo.Parent.Height / 2) - (btnRouteTo.Height / 2) + 3)
+    '        'btnRouteTo.Left = CInt((splContMainSearch.Width / 2) - (btnRouteTo.Width) / 2)
+
+    '        'btnDGZoomTo.Top = CInt((btnDGZoomTo.Parent.Height / 2) - (btnDGZoomTo.Height / 2) + 3)
+    '        'btnDGZoomTo.Left = btnRouteTo.Left - btnDGZoomTo.Width - m_ButtonSpace
+
+    '        'btnIDEvent.Top = CInt((btnRouteTo.Parent.Height / 2) - (btnRouteTo.Height / 2) + 3)
+    '        'btnIDEvent.Left = btnRouteTo.Left + btnIDEvent.Width + m_ButtonSpace
+
+
+
+    '        'btnDGZoomTo.Top = CInt((btnDGZoomTo.Parent.Height / 2) - (btnDGZoomTo.Height / 2) + 3)
+    '        'btnDGZoomTo.Left = m_ButtonSpace
+
+    '        'btnDGFlash.Top = CInt((btnDGRouteTo.Parent.Height / 2) - (btnDGRouteTo.Height / 2) + 3)
+    '        'btnDGFlash.Left = btnDGZoomTo.Left + btnDGZoomTo.Width + m_ButtonSpace
+
+
+    '        ''btnIDEvent.Top = CInt((btnRouteTo.Parent.Height / 2) - (btnRouteTo.Height / 2) + 3)
+    '        ''btnIDEvent.Left = btnDGFlash.Left + btnDGFlash.Width + m_ButtonSpace
+
+    '        'btnDGRouteTo.Top = CInt((btnDGRouteTo.Parent.Height / 2) - (btnDGRouteTo.Height / 2) + 3)
+    '        'btnDGRouteTo.Left = btnDGFlash.Left + btnDGFlash.Width + m_ButtonSpace
+
+    '        btnDGRouteTo.Left = CInt(btnDGRouteTo.Parent.Width / 2 - btnDGRouteTo.Width / 2)
+    '        btnDGZoomTo.Left = 10
+    '        btnDGFlash.Left = btnDGFlash.Parent.Width - 10 - btnDGFlash.Width
+
+
+    '        resizeDGandScrolls()
+
+    '        If lstPreFilterSt IsNot Nothing Then
+
+
+
+    '            For Each pCbo As ComboBox In lstPreFilterSt
+    '                If Me.Width < pCbo.Parent.Width Then
+    '                    pCbo.Width = Me.Width - pCbo.Left - 15
+    '                Else
+    '                    pCbo.Width = pCbo.Parent.Width - pCbo.Left - 15
+
+    '                End If
+
+    '            Next
+    '        End If
+    '        If lstPreFilterInt IsNot Nothing Then
+
+
+    '            For Each pCbo As ComboBox In lstPreFilterInt
+    '                If Me.Width < pCbo.Parent.Width Then
+    '                    pCbo.Width = Me.Width - pCbo.Left - 15
+    '                Else
+    '                    pCbo.Width = pCbo.Parent.Width - pCbo.Left - 15
+
+    '                End If
+    '            Next
+    '        End If
+    '        resizeDrillDown()
+    '    Catch ex As Exception
+    '        Dim st As New StackTrace
+    '        MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+    '        st = Nothing
+
+    '    End Try
+    'End Sub
+
     Private Sub resizeDrillDown()
         If lstPreFilterPnt IsNot Nothing Then
 
@@ -1261,6 +1465,53 @@ Public Class MobileSearch
         'Change the radio button to show the intersection is the search type
 
         rdoAddressStreet2.Checked = True
+    End Sub
+    Private Sub btnWaypointDrillDown_Click(sender As System.Object, e As System.EventArgs) Handles btnWaypointDrillDown.Click
+        Try
+
+
+
+            'Get the Street Layer
+            'Dim pML As MobileCacheMapLayer
+            'pML = CType(m_Map.MapLayers(GlobalsFunctions.appConfig.SearchPanel.DrillDownSearches.DrillDownSearch(cboDrillDownLayer.SelectedIndex).LayerName), MobileCacheMapLayer)
+            ''If not found return
+            'If pML Is Nothing Then Return
+            Dim pFL As FeatureSourceWithDef = GlobalsFunctions.GetFeatureSource(GlobalsFunctions.appConfig.SearchPanel.DrillDownSearches.DrillDownSearch(cboDrillDownLayer.SelectedIndex).LayerName, m_Map)
+            If pFL Is Nothing Then Return
+            'Get all streets names
+            Dim pFDT As FeatureDataTable
+            Dim strSQL As String = ""
+            Dim queryFilt As QueryFilter = New QueryFilter
+
+            queryFilt.WhereClause = GenerateSQLCombo(pFL.FeatureSource, "Pnt")
+
+
+            'End If
+            pFDT = pFL.FeatureSource.GetDataTable(queryFilt)
+            lblMatchingResults.Text = String.Format(GlobalsFunctions.appConfig.SearchPanel.UIComponents.DrillDownResultsText, pFDT.Rows.Count)
+
+            If pFDT.Rows.Count = 0 Then
+
+                Return
+
+            End If
+            '   dgResults.DataSource = pFDT
+            '   splContMainSearch.Panel2Collapsed = True
+
+            RaiseEvent Waypoint(CType(pFDT.Rows(0), FeatureDataRow).Geometry, "")
+
+
+        Catch ex As Exception
+            Dim st As New StackTrace
+            MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+            st = Nothing
+
+        End Try
+    End Sub
+
+    Private Sub btnWaypointGC_Click(sender As System.Object, e As System.EventArgs) Handles btnWaypointGC.Click
+        ZoomFlashRouteGC(recordClickType.Waypoint)
+
     End Sub
     Private Sub btnRunGC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRunGC.Click
         Try
@@ -1349,7 +1600,8 @@ Public Class MobileSearch
 
         End Try
     End Sub
-    Private Sub btnAddressZoomTo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddressZoomTo.Click
+    Public Event Waypoint(ByVal location As Geometry, ByVal LocationName As String)
+    Private Sub btnAddressZoomTo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddressZoomTo.Click, btnWaypoint.Click
         Try
             'Zooms to intersecting streets
 
@@ -1367,18 +1619,21 @@ Public Class MobileSearch
                 'Verify the intersection was found
                 If pGeoStreets IsNot Nothing Then
                     If pGeoStreets.IsEmpty = False Then
+                        If CType(sender, Button).Name.Contains("Waypoint") Then
+                            RaiseEvent Waypoint(pGeoStreets, (cboStreetLayer1.Text & ": " & cboStreetLayer2.Text))
 
-                        'Zoom and flash it
-                        GlobalsFunctions.zoomTo(pGeoStreets, m_Map)
-                        If pGeoStreets.GeometryType = GeometryType.Point Then
-                            GlobalsFunctions.flashGeo(pGeoStreets, m_Map, m_penLine, CType(m_brush, SolidBrush))
                         Else
-                            GlobalsFunctions.flashGeo(pGeoStreets, m_Map, m_pen, m_brush)
+                            'Zoom and flash it
+                            GlobalsFunctions.zoomTo(pGeoStreets, m_Map)
+                            If pGeoStreets.GeometryType = GeometryType.Point Then
+                                GlobalsFunctions.flashGeo(pGeoStreets, m_Map, m_penLine, CType(m_brush, SolidBrush))
+                            Else
+                                GlobalsFunctions.flashGeo(pGeoStreets, m_Map, m_pen, m_brush)
 
+                            End If
                         End If
-
                     End If
-                End If
+                    End If
                 'cleanup
                 pGeoStreets = Nothing
             Else
@@ -1395,15 +1650,20 @@ Public Class MobileSearch
                     If pDR IsNot Nothing Then
                         If pDR.Geometry IsNot Nothing Then
                             If pDR.Geometry.IsEmpty = False Then
+                                If CType(sender, Button).Name.Contains("Waypoint") Then
+                                    RaiseEvent Waypoint(pDR.Geometry, (cboStreetRange.Text & ": " & cboStreetLayer1.Text))
 
-                                GlobalsFunctions.zoomTo(pDR.Geometry, m_Map)
-                                If pDR.Geometry.GeometryType = GeometryType.Point Then
-                                    GlobalsFunctions.flashGeo(pDR.Geometry, m_Map, m_penLine, CType(m_brush, SolidBrush))
                                 Else
-                                    GlobalsFunctions.flashGeo(pDR.Geometry, m_Map, m_pen, m_brush)
+                                    GlobalsFunctions.zoomTo(pDR.Geometry, m_Map)
+                                    If pDR.Geometry.GeometryType = GeometryType.Point Then
+                                        GlobalsFunctions.flashGeo(pDR.Geometry, m_Map, m_penLine, CType(m_brush, SolidBrush))
+                                    Else
+                                        GlobalsFunctions.flashGeo(pDR.Geometry, m_Map, m_pen, m_brush)
 
+                                    End If
                                 End If
                             End If
+
                         End If
 
                     End If
@@ -1567,6 +1827,13 @@ Public Class MobileSearch
 
         End Try
     End Sub
+
+
+    Private Sub btnWaypointSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnWaypointSearch.Click
+        'If e.RowIndex = -1 Then Return
+        ZoomFlashRouteGC(recordClickType.Waypoint)
+    End Sub
+
     Private Sub btnSearchFind_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearchFind.Click
         If m_bSearchInit = False Then Return
         'List ot hold fields to search on
@@ -1970,6 +2237,8 @@ Public Class MobileSearch
         'update display
         pnlSearch.Visible = False
         pnlAddress.Visible = True
+        MobileSearch_Resize(Nothing, Nothing)
+
         pnlGeocode.Visible = False
         splContMainSearch.Panel2Collapsed = True
         btnLookup.Checked = False
@@ -2234,6 +2503,7 @@ Public Class MobileSearch
         ID
         Route
         IDLocation
+        Waypoint
     End Enum
 
     Private Sub ZoomFlashRouteGC(ByVal action As recordClickType)
@@ -2348,6 +2618,8 @@ Public Class MobileSearch
                             GlobalsFunctions.flashGeo(pGeo, m_Map, m_pen, m_brush)
 
                         End If
+                    ElseIf action = recordClickType.Waypoint Then
+                        RaiseEvent Waypoint(pGeo, "")
 
                     ElseIf action = recordClickType.flash Then
 
@@ -5214,7 +5486,24 @@ Public Class MobileSearch
     End Sub
 
 
+    Private Sub btnWaypointOnline_Click(sender As System.Object, e As System.EventArgs) Handles btnWaypointOnline.Click
 
+        Dim gcResp As gcResponse = GlobalsFunctions.GetAddressOnline(txtbxOnlineGCAddress.Text & " " & GlobalsFunctions.appConfig.SearchPanel.AddressSearch.OnlineServices.Geocode.TextToAdd, GlobalsFunctions.appConfig.SearchPanel.AddressSearch.OnlineServices.Geocode.GCUrl)
+        If gcResp IsNot Nothing Then
+
+
+            If gcResp.candidates IsNot Nothing Then
+                If gcResp.candidates.Length > 0 Then
+                    Dim pPnt As New Esri.ArcGIS.Mobile.Geometries.Point(m_Map.SpatialReference.FromWgs84(New Esri.ArcGIS.Mobile.Geometries.Coordinate(gcResp.candidates(0).location.x, gcResp.candidates(0).location.y)))
+
+
+                    RaiseEvent Waypoint(pPnt, "")
+
+
+                End If
+            End If
+        End If
+    End Sub
     Private Sub btnOnlineGC_Click(sender As System.Object, e As System.EventArgs) Handles btnOnlineGC.Click
 
         Dim gcResp As gcResponse = GlobalsFunctions.GetAddressOnline(txtbxOnlineGCAddress.Text & " " & GlobalsFunctions.appConfig.SearchPanel.AddressSearch.OnlineServices.Geocode.TextToAdd, GlobalsFunctions.appConfig.SearchPanel.AddressSearch.OnlineServices.Geocode.GCUrl)

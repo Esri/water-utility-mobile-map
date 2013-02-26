@@ -27,6 +27,7 @@ Imports System.Net
 Imports Esri.ArcGISTemplates
 
 Public Class AttributeDisplay
+    Private m_AttMan As AttachmentManager
 
 
 
@@ -34,6 +35,7 @@ Public Class AttributeDisplay
 
     ' Public WithEvents m_EditPanel As EditControl
     Public Event RouteTo(ByVal location As Geometry, ByVal LocationName As String)
+    Public Event Waypoint(ByVal location As Geometry, ByVal LocationName As String)
     Public Event HyperClick(ByVal PathToFile As String)
     Public Event LocationIdentified(ByVal fdr As FeatureDataRow)
     Public Event CheckGPS()
@@ -44,7 +46,7 @@ Public Class AttributeDisplay
     Private m_LengthFormat As String = "{0:0.00}"
     Private m_LengthUnit As Unit
 
-    Private WithEvents m_Map As Esri.ArcGIS.Mobile.Winforms.Map
+    Private WithEvents m_Map As Esri.ArcGIS.Mobile.WinForms.Map
     'Private m_cont As Control
     Public m_TabControl As TabControl
 
@@ -68,7 +70,7 @@ Public Class AttributeDisplay
     Public m_BufferDivideValue As Double = 15
     Private m_BaseColor As Color
 
-
+    Private m_WayPoint As Boolean
     Private m_CurrentRow As FeatureDataRow
     Private m_RouteToOption As Boolean
     Private m_LastScale As Double = 0
@@ -86,8 +88,10 @@ Public Class AttributeDisplay
             m_GPSStatus = value
             If m_GPSStatus = "On" Then
                 btnGPSLoc.Enabled = True
+                btnWaypoint.Enabled = True
             Else
                 btnGPSLoc.Enabled = False
+                btnWaypoint.Enabled = False
             End If
         End Set
     End Property
@@ -164,7 +168,7 @@ Public Class AttributeDisplay
         m_BColor = Nothing
 
     End Sub
-    Public Sub New(ByVal map As Esri.ArcGIS.Mobile.Winforms.Map, Optional ByVal LayerName As String = "", _
+    Public Sub New(ByVal map As Esri.ArcGIS.Mobile.WinForms.Map, Optional ByVal LayerName As String = "", _
                    Optional ByVal RouteToOption As Boolean = False, Optional ByVal fntSize As Single = 12.0F, _
                    Optional ByVal BoolLenFlds As Boolean = False, Optional ByVal LengthFormat As String = "{0:0.00}", _
                    Optional ByVal LengthUnit As String = "MAP", Optional ByVal showGPSButton As Boolean = True, Optional ByVal showLayerLabel As Boolean = True)
@@ -192,6 +196,14 @@ Public Class AttributeDisplay
         Else
             btnRouteTo.Visible = False
 
+        End If
+
+        If m_GPSStatus = "On" Then
+            btnGPSLoc.Enabled = True
+            btnWaypoint.Enabled = True
+        Else
+            btnGPSLoc.Enabled = False
+            btnWaypoint.Enabled = False
         End If
         toggleGPSButton = showGPSButton
 
@@ -301,6 +313,14 @@ Public Class AttributeDisplay
                 btnGPSLoc.Visible = False
 
             End If
+            If GlobalsFunctions.appConfig.NavigationOptions.GPS.WaypointControl.Visible.ToUpper = "TRUE" Then
+
+                btnWaypoint.Visible = value
+            Else
+                btnWaypoint.Visible = False
+
+            End If
+
         End Set
     End Property
     Public Property toggleLayerLabel() As Boolean
@@ -437,7 +457,7 @@ Public Class AttributeDisplay
     End Function
     Private Function spatialQFeature(ByVal layername As String, ByVal Location As Esri.ArcGIS.Mobile.Geometries.Geometry) As FeatureDataTable
         Dim pFS As FeatureSourceWithDef = Nothing
-        
+
         Dim pEnv As Envelope
         pFS = GlobalsFunctions.GetFeatureSource(layername, m_Map)
         If pFS IsNot Nothing Then
@@ -604,6 +624,8 @@ Public Class AttributeDisplay
 
         'Check if there is a subtype defined for this featureclass
         pFDT = m_CurrentRow.Table
+
+
         If pFDT.SubtypeColumnIndex >= 0 Then
             pSubTypeExist = True
 
@@ -615,9 +637,23 @@ Public Class AttributeDisplay
         For Each pCntrl As Control In pTabCntrl.Controls
             'If the control is a tabpage, loop through each control on the page
             If TypeOf pCntrl Is TabPage Then
-                For Each kCntrl As Control In pCntrl.Controls
+                'If pCntrl.Name.Contains("Attachments") Then
 
-                    If TypeOf kCntrl Is PictureBox Then
+                'End If
+                For Each kCntrl As Control In pCntrl.Controls
+                    If TypeOf kCntrl Is ListBox Then
+                        m_AttMan = m_CurrentRow.FeatureSource.AttachmentManager
+                        Dim pAttList As List(Of Attachment) = m_AttMan.GetAttachments(m_CurrentRow.Fid)
+                        CType(kCntrl, ListBox).DataSource = pAttList
+
+                        'm_AttMan.GetAttachments(m_CurrentRow.Fid)
+
+                        'For Each att As Attachment In pAttList
+                        '    pLstBox.Items.Add(att)
+
+                        'Next
+
+                    ElseIf TypeOf kCntrl Is PictureBox Then
                         'Field name from the tag
                         strFld = CType(kCntrl, PictureBox).Tag.ToString
                         'Get a refrence to the picture control
@@ -907,6 +943,7 @@ Public Class AttributeDisplay
                 Next
             End If
         Next
+
         'Flash geometry
         Dim pFLDT As Esri.ArcGIS.Mobile.FeatureCaching.FeatureDataTable = m_CurrentRow.Table
 
@@ -1000,6 +1037,8 @@ Public Class AttributeDisplay
             Dim pTbPg As TabPage = Nothing
             'TabControl for Pictures
             Dim pTbPgPic As TabPage = Nothing
+            Dim pTabAtt As TabPage = Nothing
+
             Dim pTxtBox As TextBox
             Dim pLbl As Label
             Dim pPic As PictureBox
@@ -1533,13 +1572,49 @@ Public Class AttributeDisplay
 
                     End If
 
-                    End If
+                End If
 
 
 
 
 
             Next 'pDC
+            m_AttMan = m_FS.AttachmentManager
+
+
+            If m_AttMan.HasAttachments Then
+                m_TabControl.TabPages.Add("Attachments", "Attachments") '("Image" & ":" & intPgIdxPic, "Image" & ":" & intPgIdxPic)
+                pTabAtt = m_TabControl.TabPages("Attachments")
+
+
+                Dim pLstBox As ListBox = New ListBox()
+                pLstBox.DrawMode = DrawMode.OwnerDrawVariable
+
+                pLstBox.Font = New System.Drawing.Font("Tahoma", 12.0F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+
+
+                pLstBox.HorizontalScrollbar = True
+                pLstBox.ItemHeight = 50
+                'pLstBox.Margin = New Padding(0, 25, 0, 0)
+
+                'pLstBox.Padding = New Padding(0, 25, 0, 0)
+
+                AddHandler pLstBox.MouseClick, AddressOf attlistclick
+                AddHandler pLstBox.DrawItem, AddressOf attdraw
+                pLstBox.ValueMember = "Name"
+                pLstBox.Dock = DockStyle.Fill
+                'Dim pAttList As List(Of Attachment) = m_AttMan.GetAttachments(m_CurrentRow.Fid)
+                ' pLstBox.DataSource = pAttList
+                'For Each att As Attachment In pAttList
+                '    pLstBox.Items.Add(att)
+
+                'Next
+                pTabAtt.Controls.Add(pLstBox)
+                pTabAtt.Visible = True
+                'm_TabControl.TabPages.Add(pTabAtt)
+
+                pTabAtt.Update()
+            End If
             If pTbPg.Controls.Count = 0 Then
                 'if a tabpage was added with no controls, remove it
                 m_TabControl.TabPages.Remove(pTbPg)
@@ -1596,6 +1671,7 @@ Public Class AttributeDisplay
 
         Dim pCurTabPage As TabPage = New TabPage
         Dim pCurTabPic As TabPage = New TabPage
+        Dim pTabAtt As TabPage = Nothing
 
         Dim idxPage As Integer = 1
 
@@ -1616,6 +1692,8 @@ Public Class AttributeDisplay
                 End If
                 pTbPageCoPic(pTbPageCoPic.Length - 1) = tb
 
+            ElseIf tb.Name.Contains("Attachment") Then
+                pTabAtt = tb
 
             Else
 
@@ -1691,18 +1769,18 @@ Public Class AttributeDisplay
                                                                 valsMatch = True
                                                                 Exit For
                                                             ElseIf vl = "[ISNULL]" And m_CurrentRow.Item(filtVal.FieldName) Is Nothing Then
-                                                                 valsMatch = True
+                                                                valsMatch = True
                                                                 Exit For
 
                                                             ElseIf vl = "[ISNULL]" And m_CurrentRow.Item(filtVal.FieldName) Is DBNull.Value Then
-                                                                 valsMatch = True
+                                                                valsMatch = True
                                                                 Exit For
 
                                                             ElseIf vl = "[NOTNULL]" And m_CurrentRow.Item(filtVal.FieldName) IsNot Nothing Then
-                                                                 valsMatch = True
+                                                                valsMatch = True
                                                                 Exit For
                                                             ElseIf vl = "[NOTNULL]" And m_CurrentRow.Item(filtVal.FieldName) IsNot DBNull.Value Then
-                                                                 valsMatch = True
+                                                                valsMatch = True
                                                                 Exit For
                                                             Else
                                                                 valsMatch = False
@@ -1843,6 +1921,14 @@ Public Class AttributeDisplay
                 tbp.Update()
             Next
         End If
+        If pTabAtt IsNot Nothing Then
+            m_TabControl.TabPages.Add(pTabAtt)
+
+
+            pTabAtt.Visible = True
+            pTabAtt.Update()
+
+        End If
         If pTbPageCoPic IsNot Nothing Then
 
             For Each tbp As TabPage In pTbPageCoPic
@@ -1944,22 +2030,49 @@ Public Class AttributeDisplay
 #Region "Events"
 
     Private Sub relocateButtons()
-        btnZoomTo.Left = 10
-        btnFlash.Left = btnFlash.Parent.Width - btnFlash.Width - 10
+        Dim visCnt As Integer = 0
 
-        If btnGPSLoc.Visible And btnRouteTo.Visible Then
-            btnGPSLoc.Left = btnGPSLoc.Parent.Width / 2 - btnGPSLoc.Width - 5
-            btnRouteTo.Left = btnRouteTo.Parent.Width / 2 + 5
+        For Each Control As Control In spltAttTools.Panel2.Controls
+            If TypeOf (Control) Is Button Then
+                If Control.Visible Then
+                    visCnt = visCnt + 1
+                End If
 
-        ElseIf btnGPSLoc.Visible Then
-            btnGPSLoc.Left = btnGPSLoc.Parent.Width / 2 - btnGPSLoc.Width / 2
-        ElseIf btnRouteTo.Visible Then
-            btnRouteTo.Left = btnRouteTo.Parent.Width / 2 - btnRouteTo.Width / 2
-        End If
+
+            End If
+
+        Next
+        Dim spacing As Double = (spltAttTools.Width) / (visCnt + 1)
+        Dim curloc As Double = spacing
+        For Each Control As Control In spltAttTools.Panel2.Controls
+            If TypeOf (Control) Is Button Then
+                If Control.Visible Then
+                    Control.Left = curloc - (Control.Width / 2)
+
+                    curloc = curloc + spacing
+                End If
+
+
+            End If
+
+        Next
+
+        'btnZoomTo.Left = 10
+        'btnFlash.Left = btnFlash.Parent.Width - btnFlash.Width - 10
+
+        'If btnGPSLoc.Visible And btnRouteTo.Visible Then
+        '    btnGPSLoc.Left = btnGPSLoc.Parent.Width / 2 - btnGPSLoc.Width - 5
+        '    btnRouteTo.Left = btnRouteTo.Parent.Width / 2 + 5
+
+        'ElseIf btnGPSLoc.Visible Then
+        '    btnGPSLoc.Left = btnGPSLoc.Parent.Width / 2 - btnGPSLoc.Width / 2
+        'ElseIf btnRouteTo.Visible Then
+        '    btnRouteTo.Left = btnRouteTo.Parent.Width / 2 - btnRouteTo.Width / 2
+        'End If
 
 
     End Sub
-    Private Sub pBtnFlashClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnZoomTo.Click, btnRouteTo.Click, btnGPSLoc.Click, btnFlash.Click
+    Private Sub pBtnFlashClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnZoomTo.Click, btnRouteTo.Click, btnGPSLoc.Click, btnFlash.Click, btnWaypoint.Click
         If CType(sender, Button).Name.Contains("btnGPSLoc") Then
             m_GPSVal = Nothing
 
@@ -1991,6 +2104,8 @@ Public Class AttributeDisplay
 
         ElseIf CType(sender, Button).Name.Contains("btnRouteTo") Then
             RaiseEvent RouteTo(m_CurrentRow.Geometry, m_CurrentRow(m_CurrentRow.FeatureSource.DisplayColumnIndex).ToString)
+        ElseIf CType(sender, Button).Name.Contains("btnWaypoint") Then
+            RaiseEvent Waypoint(m_CurrentRow.Geometry, m_CurrentRow(m_CurrentRow.FeatureSource.DisplayColumnIndex).ToString)
 
         Else
 
@@ -2056,7 +2171,15 @@ Public Class AttributeDisplay
 
         End If
     End Sub
+    Private Sub btnWaypoint_EnabledChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnWaypoint.EnabledChanged
+        If btnWaypoint.Enabled Then
+            btnWaypoint.BackgroundImage = My.Resources.NavTooBlue
 
+        Else
+            btnWaypoint.BackgroundImage = My.Resources.NavTooGray
+
+        End If
+    End Sub
     Private Sub spltAttTools_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles spltAttTools.Resize
         If spltAttTools.Height > 52 Then
             spltAttTools.SplitterDistance = spltAttTools.Height - 51
@@ -2064,4 +2187,43 @@ Public Class AttributeDisplay
 
 
     End Sub
+
+    Private Sub attlistclick(sender As Object, e As MouseEventArgs)
+        'MsgBox(CType(CType(sender, ListBox).SelectedItem, Attachment).FilePath)
+        Process.Start(CType(CType(sender, ListBox).SelectedItem, Attachment).FilePath)
+    End Sub
+
+    Private Sub attdraw(sender As Object, e As System.Windows.Forms.DrawItemEventArgs)
+
+        ' Draw the background of the ListBox control for each item.
+        ' e.DrawBackground()
+        ' Define the default color of the brush as black.
+        Dim myBrush As Brush = Brushes.Black
+
+        '' Determine the color of the brush to draw each item based  
+        '' on the index of the item to draw. 
+        Select Case e.Index Mod 3
+
+
+            Case 0
+                myBrush = Brushes.Red
+
+            Case 1
+                myBrush = Brushes.Blue
+
+            Case 2
+                myBrush = Brushes.Black
+
+        End Select
+
+
+        ' Draw the current item text based on the current Font  
+        ' and the custom brush settings.
+        e.Graphics.DrawString(CType(sender.Items(e.Index), Attachment).Name.ToString(), e.Font, myBrush, e.Bounds, StringFormat.GenericDefault)
+
+        ' If the ListBox has focus, draw a focus rectangle around the selected item.
+        e.DrawFocusRectangle()
+
+    End Sub
+
 End Class

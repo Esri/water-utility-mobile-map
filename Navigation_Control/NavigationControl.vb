@@ -53,7 +53,7 @@ Public Class mobileNavigation
     Private m_TopOffset As Integer = 0
     Private m_BottomOffset As Integer = 0
     Private m_EnableMouseWheelZoom As Boolean = True
-    Private WithEvents m_GPS As Gps.GpsDisplay
+    'Private WithEvents m_GPS As Gps.GpsDisplay
     Private WithEvents m_FileGPS As Gps.FileGpsConnection
     Private WithEvents m_SerialGPS As Gps.SerialPortGpsConnection
 
@@ -373,11 +373,12 @@ Public Class mobileNavigation
 
 
 
-
             'initialize the GPS display
-            m_GPS = New Gps.GpsDisplay
+            GlobalsFunctions.m_GPS = New Gps.GpsDisplay
+            AddHandler GlobalsFunctions.m_GPS.Disposed, AddressOf m_GPS_Disposed
+
             'Asign the map
-            m_GPS.Map = mobileMap
+            GlobalsFunctions.m_GPS.Map = mobileMap
             'Initilize both GPS types
             m_FileGPS = New Gps.FileGpsConnection
             m_SerialGPS = New Gps.SerialPortGpsConnection
@@ -386,7 +387,7 @@ Public Class mobileNavigation
             m_SerialGPS.PortName = "AUTO"
 
             'Set the GPS to serial by default
-            m_GPS.GpsConnection = m_SerialGPS
+            GlobalsFunctions.m_GPS.GpsConnection = m_SerialGPS
 
 
 
@@ -448,9 +449,9 @@ Public Class mobileNavigation
         End If
     End Function
     Private Function getGPSMobileVersion()
-        If m_GPS.GpsConnection IsNot Nothing Then
+        If GlobalsFunctions.m_GPS.GpsConnection IsNot Nothing Then
 
-            If m_GPS.GpsConnection.IsOpen Then
+            If GlobalsFunctions.m_GPS.GpsConnection.IsOpen Then
                 Dim pt As Esri.ArcGIS.Mobile.Geometries.Point
 
 
@@ -463,7 +464,7 @@ Public Class mobileNavigation
 
                 quality.FixStatus = GlobalsFunctions.GPSTextToFix(GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSFixType)
 
-                m_GPSAvgTool = New Esri.ArcGIS.Mobile.Gps.GpsAveragingTool(quality, m_GPS.GpsConnection, pt, m_Map.SpatialReference)
+                m_GPSAvgTool = New Esri.ArcGIS.Mobile.Gps.GpsAveragingTool(quality, GlobalsFunctions.m_GPS.GpsConnection, pt, m_Map.SpatialReference)
                 'm_GPSAvgTool.
                 m_GPSAvgTool.Start()
 
@@ -473,13 +474,13 @@ Public Class mobileNavigation
         Return Nothing
     End Function
     Private Function getGPSMine() As GPSLocationDetails
-        If m_GPS.GpsConnection IsNot Nothing Then
+        If GlobalsFunctions.m_GPS.GpsConnection IsNot Nothing Then
 
             Dim intMax As Integer = GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSPointMaxTries
             Dim numLoops As Integer = 0
             Dim gpsD As GPSLocationDetails = Nothing
 
-            If m_GPS.GpsConnection.IsOpen Then
+            If GlobalsFunctions.m_GPS.GpsConnection.IsOpen Then
                 Dim gpsDList As List(Of GPSLocationDetails) = New List(Of GPSLocationDetails)()
                 While True
                     If numLoops > intMax Then
@@ -493,34 +494,34 @@ Public Class mobileNavigation
                     'Dim pgs As ESRI.ArcGIS.Mobile.Gps.GpsConstructionTool = New ESRI.ArcGIS.Mobile.Gps.GpsConstructionTool
 
 
-                    If m_GPS.GpsConnection.FixStatus = GlobalsFunctions.GPSTextToFix(GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSFixType) And ((Double.IsNaN(m_GPS.GpsConnection.PositionDilutionOfPrecision)) Or CDbl(m_GPS.GpsConnection.PositionDilutionOfPrecision) <= CDbl(GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSPDOP)) Then
+                    If GlobalsFunctions.m_GPS.GpsConnection.FixStatus = GlobalsFunctions.GPSTextToFix(GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSFixType) And ((Double.IsNaN(GlobalsFunctions.m_GPS.GpsConnection.PositionDilutionOfPrecision)) Or CDbl(GlobalsFunctions.m_GPS.GpsConnection.PositionDilutionOfPrecision) <= CDbl(GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSPDOP)) Then
 
-                        ' Dim pNewCoord As Esri.ArcGIS.Mobile.Geometries.Coordinate = New Esri.ArcGIS.Mobile.Geometries.Coordinate(m_GPS.GpsConnection.Longitude, m_GPS.GpsConnection.Latitude)
+                        ' Dim pNewCoord As Esri.ArcGIS.Mobile.Geometries.Coordinate = New Esri.ArcGIS.Mobile.Geometries.Coordinate(GlobalsFunctions.m_GPS.GpsConnection.Longitude, GlobalsFunctions.GlobalsFunctions.m_GPS.GpsConnection.Latitude)
                         gpsD = New GPSLocationDetails()
-                        gpsD.Altitude = m_GPS.GpsConnection.Altitude
-                        gpsD.Course = m_GPS.GpsConnection.Course
-                        gpsD.CourseMagnetic = m_GPS.GpsConnection.CourseMagnetic
-                        gpsD.DateTime = m_GPS.GpsConnection.DateTime
-                        gpsD.FixSatelliteCount = m_GPS.GpsConnection.FixSatelliteCount
-                        gpsD.FixStatus = m_GPS.GpsConnection.FixStatus
+                        gpsD.Altitude = GlobalsFunctions.m_GPS.GpsConnection.Altitude
+                        gpsD.Course = GlobalsFunctions.m_GPS.GpsConnection.Course
+                        gpsD.CourseMagnetic = GlobalsFunctions.m_GPS.GpsConnection.CourseMagnetic
+                        gpsD.DateTime = GlobalsFunctions.m_GPS.GpsConnection.DateTime
+                        gpsD.FixSatelliteCount = GlobalsFunctions.m_GPS.GpsConnection.FixSatelliteCount
+                        gpsD.FixStatus = GlobalsFunctions.m_GPS.GpsConnection.FixStatus
 
-                        gpsD.GeoidHeight = m_GPS.GpsConnection.GeoidHeight
-                        gpsD.HorizontalDilutionOfPrecision = m_GPS.GpsConnection.HorizontalDilutionOfPrecision
-                        gpsD.Latitude = m_GPS.GpsConnection.Latitude
-                        ' gpsD.LatitudeToDegreeMinutesSeconds = m_GPS.GpsConnection.LatitudeToDegreeMinutesSeconds
-                        gpsD.Longitude = m_GPS.GpsConnection.Longitude
-                        ' gpsD.LongitudeToDegreeMinutesSeconds = m_GPS.GpsConnection.LongitudeToDegreeMinutesSeconds
-                        gpsD.PositionDilutionOfPrecision = m_GPS.GpsConnection.PositionDilutionOfPrecision
-                        gpsD.SpatialReference = m_GPS.GpsConnection.SpatialReference
-                        gpsD.Speed = m_GPS.GpsConnection.Speed
-                        gpsD.VerticalDilutionOfPrecision = m_GPS.GpsConnection.VerticalDilutionOfPrecision
+                        gpsD.GeoidHeight = GlobalsFunctions.m_GPS.GpsConnection.GeoidHeight
+                        gpsD.HorizontalDilutionOfPrecision = GlobalsFunctions.m_GPS.GpsConnection.HorizontalDilutionOfPrecision
+                        gpsD.Latitude = GlobalsFunctions.m_GPS.GpsConnection.Latitude
+                        ' gpsD.LatitudeToDegreeMinutesSeconds = GlobalsFunctions.m_GPS.GpsConnection.LatitudeToDegreeMinutesSeconds
+                        gpsD.Longitude = GlobalsFunctions.m_GPS.GpsConnection.Longitude
+                        ' gpsD.LongitudeToDegreeMinutesSeconds = GlobalsFunctions.m_GPS.GpsConnection.LongitudeToDegreeMinutesSeconds
+                        gpsD.PositionDilutionOfPrecision = GlobalsFunctions.m_GPS.GpsConnection.PositionDilutionOfPrecision
+                        gpsD.SpatialReference = GlobalsFunctions.m_GPS.GpsConnection.SpatialReference
+                        gpsD.Speed = GlobalsFunctions.m_GPS.GpsConnection.Speed
+                        gpsD.VerticalDilutionOfPrecision = GlobalsFunctions.m_GPS.GpsConnection.VerticalDilutionOfPrecision
 
                         gpsDList.Add(gpsD)
                         RaiseEvent RaiseStatMessage(GlobalsFunctions.GPSFixToText(gpsD.FixStatus) & " " & gpsDList.Count & " " & GlobalsFunctions.appConfig.NavigationOptions.UIComponents.PointsAvgText & " " & numLoops & "/" & intMax, False)
 
 
                     Else
-                        RaiseEvent RaiseStatMessage(GlobalsFunctions.GPSFixToText(m_GPS.GpsConnection.FixStatus) & " " & numLoops & "/" & intMax, False)
+                        RaiseEvent RaiseStatMessage(GlobalsFunctions.GPSFixToText(GlobalsFunctions.m_GPS.GpsConnection.FixStatus) & " " & numLoops & "/" & intMax, False)
 
                     End If
 
@@ -528,7 +529,7 @@ Public Class mobileNavigation
                     numLoops = numLoops + 1
 
                 End While
-                RaiseEvent RaiseStatMessage(GlobalsFunctions.GPSFixToText(m_GPS.GpsConnection.FixStatus), False)
+                RaiseEvent RaiseStatMessage(GlobalsFunctions.GPSFixToText(GlobalsFunctions.m_GPS.GpsConnection.FixStatus), False)
 
 
                 Return avgGPSMine(gpsDList)
@@ -603,7 +604,7 @@ Public Class mobileNavigation
                 Dim pDT As FeatureDataTable = m_GPSFL.GetDataTable()
                 Dim pFDR As FeatureDataRow = pDT.NewRow
 
-                pFDR.Geometry = New Esri.ArcGIS.Mobile.Geometries.Point(m_Map.SpatialReference.FromWgs84(m_GPS.GpsConnection.Longitude, m_GPS.GpsConnection.Latitude))
+                pFDR.Geometry = New ESRI.ArcGIS.Mobile.Geometries.Point(m_Map.SpatialReference.FromWgs84(GlobalsFunctions.m_GPS.GpsConnection.Longitude, GlobalsFunctions.m_GPS.GpsConnection.Latitude))
                 pDT.Rows.Add(pFDR)
                 m_GPSFL.SaveEdits(pDT)
                 pDT = Nothing
@@ -676,19 +677,23 @@ Public Class mobileNavigation
         'Sets up the GPS type
 
         'close the GPS if open
-        If m_GPS.GpsConnection.IsOpen Then
-            m_GPS.GpsConnection.Close()
+        If GlobalsFunctions.m_GPS.GpsConnection.IsOpen Then
+            GlobalsFunctions.m_GPS.GpsConnection.Close()
 
         End If
         'Determine the gps type
         If File Then
             'Set the file used to simulate GPS
             If FileName_Port <> "AUTO" Then
-                m_GPS.GpsConnection = m_FileGPS
+                GlobalsFunctions.m_GPS.GpsConnection = m_FileGPS
 
                 If System.IO.File.Exists(FileName_Port) Then
                     m_FileGPS.FileName = FileName_Port
-                    m_FileGPS.ReadInterval = 50
+                    m_FileGPS.Cycling = True
+                    m_FileGPS.Enabled = True
+
+
+                    m_FileGPS.ReadInterval = 125
 
                 Else
                     'MsgBox("GPS Sim File does not exist")
@@ -727,7 +732,7 @@ Public Class mobileNavigation
 
             End Select
 
-            m_GPS.GpsConnection = m_SerialGPS
+            GlobalsFunctions.m_GPS.GpsConnection = m_SerialGPS
 
 
         End If
@@ -736,12 +741,12 @@ Public Class mobileNavigation
     End Function
     Public Sub ActivateGPS()
         'Turn on the GPS
-        m_GPS.GpsConnection.Open()
+        GlobalsFunctions.m_GPS.GpsConnection.Open()
 
     End Sub
     Public Sub DeactivateGPS()
         'Close the GPS
-        m_GPS.GpsConnection.Close()
+        GlobalsFunctions.m_GPS.GpsConnection.Close()
 
     End Sub
     Public Sub Dispose()
@@ -763,13 +768,13 @@ Public Class mobileNavigation
         End If
         m_SerialGPS = Nothing
 
-        If m_GPS IsNot Nothing Then
-            If m_GPS.GpsConnection IsNot Nothing Then
-                m_GPS.GpsConnection.Close()
+        If GlobalsFunctions.m_GPS IsNot Nothing Then
+            If GlobalsFunctions.m_GPS.GpsConnection IsNot Nothing Then
+                GlobalsFunctions.m_GPS.GpsConnection.Close()
             End If
-            m_GPS.Dispose()
+            GlobalsFunctions.m_GPS.Dispose()
         End If
-        m_GPS = Nothing
+        GlobalsFunctions.m_GPS = Nothing
 
 
         If m_PanMA IsNot Nothing Then
@@ -1555,9 +1560,9 @@ Public Class mobileNavigation
     End Sub
 
     Private Sub m_Map_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_Map.Disposed
-        If m_GPS.GpsConnection IsNot Nothing Then
-            If m_GPS.GpsConnection.IsOpen Then
-                m_GPS.GpsConnection.Close()
+        If GlobalsFunctions.m_GPS.GpsConnection IsNot Nothing Then
+            If GlobalsFunctions.m_GPS.GpsConnection.IsOpen Then
+                GlobalsFunctions.m_GPS.GpsConnection.Close()
 
             End If
         End If
@@ -2222,20 +2227,20 @@ Public Class mobileNavigation
     End Sub
 
     Private Sub btnGPS_MouseDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs)
-        If m_GPS Is Nothing Then Return
-        If m_GPS.GpsConnection Is Nothing Then Return
+        If GlobalsFunctions.m_GPS Is Nothing Then Return
+        If GlobalsFunctions.m_GPS.GpsConnection Is Nothing Then Return
         'recenter if the user right clicks
         If e.Button = MouseButtons.Right Then
-            zoomTo(m_Map.SpatialReference.FromWgs84(m_GPS.GpsConnection.Longitude, m_GPS.GpsConnection.Latitude))
+            zoomTo(m_Map.SpatialReference.FromWgs84(GlobalsFunctions.m_GPS.GpsConnection.Longitude, GlobalsFunctions.m_GPS.GpsConnection.Latitude))
 
         ElseIf e.Clicks > 1 Then
-            zoomTo(m_Map.SpatialReference.FromWgs84(m_GPS.GpsConnection.Longitude, m_GPS.GpsConnection.Latitude))
+            zoomTo(m_Map.SpatialReference.FromWgs84(GlobalsFunctions.m_GPS.GpsConnection.Longitude, GlobalsFunctions.m_GPS.GpsConnection.Latitude))
 
         Else
 
             'if the gps is open, close it and reset button image
-            If m_GPS.GpsConnection.IsOpen Then
-                m_GPS.GpsConnection.Close()
+            If GlobalsFunctions.m_GPS.GpsConnection.IsOpen Then
+                GlobalsFunctions.m_GPS.GpsConnection.Close()
                 CType(sender, Button).BackgroundImage = My.Resources.SatBlue
                 If m_t IsNot Nothing Then
                     If m_t.IsAlive Then
@@ -2273,7 +2278,7 @@ Public Class mobileNavigation
     Private Sub OpenGPS()
         Try
             'Try to open the GPS
-            m_GPS.GpsConnection.Open()
+            GlobalsFunctions.m_GPS.GpsConnection.Open()
 
         Catch ex As Exception
             Try
@@ -2789,13 +2794,13 @@ Public Class mobileNavigation
 #End Region
     Private Sub GPS_GpsChanged(sender As Object, e As System.EventArgs) Handles m_SerialGPS.GpsChanged, m_FileGPS.GpsChanged
 
-        If CInt(m_GPS.GpsConnection.FixStatus) = CInt(GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSFixType) Then
+        If CInt(GlobalsFunctions.m_GPS.GpsConnection.FixStatus) = CInt(GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSFixType) Then
             m_GPSBtn.BackgroundImage = My.Resources.SatGreen
         Else
             m_GPSBtn.BackgroundImage = My.Resources.SatRed
         End If
 
-        RaiseEvent RaiseStatMessage(GlobalsFunctions.GPSFixToText(m_GPS.GpsConnection.FixStatus), False)
+        RaiseEvent RaiseStatMessage(GlobalsFunctions.GPSFixToText(GlobalsFunctions.m_GPS.GpsConnection.FixStatus), False)
 
 
         '0 - No Fix, 1 - Gps Fix, 2 - DGps Fix, 3 = PPS fix, 4 = Real Time Kinematic, 5 = Float RTK, 6 = estimated (dead reckoning), 7 = Manual input mode, 8 = Simulation mode
@@ -2809,12 +2814,11 @@ Public Class mobileNavigation
         '     MsgBox(e.Sentence)
 
     End Sub
+    Private Sub m_GPS_Disposed(ByVal sender As Object, ByVal e As System.EventArgs)
+        If GlobalsFunctions.m_GPS.GpsConnection IsNot Nothing Then
 
-    Private Sub m_GPS_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_GPS.Disposed
-        If m_GPS.GpsConnection IsNot Nothing Then
-
-            If m_GPS.GpsConnection.IsOpen Then
-                m_GPS.GpsConnection.Close()
+            If GlobalsFunctions.m_GPS.GpsConnection.IsOpen Then
+                GlobalsFunctions.m_GPS.GpsConnection.Close()
                 RaiseEvent RaiseStatMessage("", True)
 
             End If
@@ -2822,13 +2826,14 @@ Public Class mobileNavigation
         End If
     End Sub
 
+
     Protected Overrides Sub Finalize()
-        If m_GPS IsNot Nothing Then
+        If GlobalsFunctions.m_GPS IsNot Nothing Then
 
-            If m_GPS.GpsConnection IsNot Nothing Then
+            If GlobalsFunctions.m_GPS.GpsConnection IsNot Nothing Then
 
-                If m_GPS.GpsConnection.IsOpen Then
-                    m_GPS.GpsConnection.Close()
+                If GlobalsFunctions.m_GPS.GpsConnection.IsOpen Then
+                    GlobalsFunctions.m_GPS.GpsConnection.Close()
 
                 End If
             End If
@@ -2859,9 +2864,7 @@ Public Class mobileNavigation
 
     End Sub
 
-    Private Sub m_GPS_PropertyChanged(ByVal sender As Object, ByVal e As System.ComponentModel.PropertyChangedEventArgs) Handles m_GPS.PropertyChanged
 
-    End Sub
 
     Private Sub m_GPSAvgTool_GoodPositionAcquired(sender As Object, e As System.EventArgs) Handles m_GPSAvgTool.GoodPositionAcquired
         Dim str As String = ""
@@ -2876,6 +2879,6 @@ Public Class mobileNavigation
     End Sub
 
     Private Sub m_FileGPS_GpsError(sender As Object, e As Esri.ArcGIS.Mobile.Gps.GpsErrorEventArgs) Handles m_FileGPS.GpsError
-        MsgBox(e.Exception.Message)
+        ' MsgBox(e.Exception.Message)
     End Sub
 End Class

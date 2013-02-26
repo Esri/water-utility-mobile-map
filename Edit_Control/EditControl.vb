@@ -23,7 +23,12 @@ Imports Esri.ArcGISTemplates
 
 
 Public Class EditControl
+    Private m_lstAttToDel As List(Of Integer)
+
+    Private m_pTabPagAtt As TabPage = Nothing
+
     Private m_GPSStatus As String
+    Private m_AttMan As AttachmentManager
 
     Private m_EditOptions As MobileConfigClass.MobileConfigMobileMapConfigEditControlOptionsLayersLayer
     Public Event GetWorkorder()
@@ -713,7 +718,7 @@ Public Class EditControl
 
             'MsgBox("Record was not saved")
             Return False
-        
+
 
         End If
 
@@ -2071,6 +2076,7 @@ Public Class EditControl
         Dim pTbPageCo() As TabPage = Nothing
 
         Dim pCurTabPage As TabPage = Nothing
+        Dim pAttTabPage As TabPage = Nothing
         Try
 
             tbCntrlEdit.SuspendLayout()
@@ -2127,225 +2133,26 @@ Public Class EditControl
             pCurTabPage.Text = strName
             Dim pCntlNextTop As Integer = pTopPadding
             Dim pQFilt As QueryFilter = Nothing
+
             For Each tb As TabPage In tbCntrlEdit.TabPages
 
+                If tb.Name.Contains("Attachment") Then
+                    pAttTabPage = tb
+                Else
 
-                If tb.Controls IsNot Nothing Then
-                    While True
-                        If tb.Controls.Count = 0 Then Exit While
-                        Dim cnt As Control = tb.Controls(0)
+                    If tb.Controls IsNot Nothing Then
+                        While True
+                            If tb.Controls.Count = 0 Then Exit While
+                            Dim cnt As Control = tb.Controls(0)
 
-                        If TypeOf cnt Is Button Then
-                            tb.Controls.Remove(cnt)
+                            If TypeOf cnt Is Button Then
+                                tb.Controls.Remove(cnt)
 
-                        Else
+                            Else
 
-
-                            cnt.Top = pCntlNextTop
-                            If (cnt.Top + cnt.Height) > intform - pBottomPadding Then
-
-
-
-
-                                If pTbPageCo Is Nothing Then
-                                    ReDim Preserve pTbPageCo(0)
-                                Else
-                                    ReDim Preserve pTbPageCo(pTbPageCo.Length)
-                                End If
-                                pTbPageCo(pTbPageCo.Length - 1) = pCurTabPage
-                                pCurTabPage = New TabPage
-
-                                If m_FL.Name.Length > 30 Then
-                                    strName = m_FL.Name.Substring(0, 29) & ".."
-                                Else
-                                    strName = m_FL.Name & ":"
-                                End If
-                                pCurTabPage.Name = strName
-                                pCurTabPage.Text = strName
-
-                                pCntlNextTop = pTopPadding
-                                'pBtn = Nothing
 
                                 cnt.Top = pCntlNextTop
-                            End If
-                            cnt.Width = tbCntrlEdit.Width
-                            'Dim valsMatch As String = "NoEntry"
-                            'Dim visToSet As Boolean = True
-                            Dim entryFound As Boolean = False
-
-                            Dim controlVisible As Boolean = True
-                            Dim modeMatchs As Boolean = True
-
-
-                            If TypeOf cnt Is Panel Then
-                                If cnt.Tag IsNot Nothing Then
-                                    If TypeOf (cnt.Tag) Is MobileConfigClass.MobileConfigMobileMapConfigLayerOptionsLayersFieldOptionsLayerNameFieldOption Then
-                                        Dim fieldDet As MobileConfigClass.MobileConfigMobileMapConfigLayerOptionsLayersFieldOptionsLayerNameFieldOption = cnt.Tag
-                                        If fieldDet.FilterFields IsNot Nothing Then
-                                            If fieldDet.FilterFields.Count > 0 Then
-
-
-                                                For Each filtVals As MobileConfigClass.MobileConfigMobileMapConfigLayerOptionsLayersFieldOptionsLayerNameFieldOptionFilterFields In fieldDet.FilterFields
-                                                    If m_FDR IsNot Nothing Then
-
-
-
-                                                        If filtVals.Mode <> "" Then
-                                                            If m_Mode = filtVals.Mode Then
-                                                                modeMatchs = True
-                                                            Else
-                                                                modeMatchs = False
-                                                            End If
-                                                        Else
-                                                            modeMatchs = True
-                                                        End If
-                                                        If modeMatchs Then
-
-                                                            If filtVals.FilterInfo.Count = 0 Then
-                                                                Boolean.TryParse(filtVals.Visibility, controlVisible)
-                                                                Exit For
-
-                                                            Else
-
-
-                                                                For Each filtVal As MobileConfigClass.MobileConfigMobileMapConfigLayerOptionsLayersFieldOptionsLayerNameFieldOptionFilterFieldsFilterInfo In filtVals.FilterInfo
-                                                                    If entryFound Then
-                                                                        Exit For
-                                                                    End If
-                                                                    ' For Each filtInfo As MobileConfigClass.MobileConfigMobileMapConfigLayerOptionsLayersFieldOptionsLayerNameFieldOptionFilterFieldsFilterInfo In filtVal.FilterInfo
-                                                                    If m_FL.Columns(filtVal.FieldName) IsNot Nothing Then
-                                                                        For Each strVl As String In filtVal.FieldValue
-                                                                            If strVl.ToString().ToUpper() = "[ISNULL]" Then
-                                                                                If m_FDR IsNot Nothing Then
-                                                                                    If m_FDR.Item(filtVal.FieldName) IsNot DBNull.Value Then
-                                                                                        If m_FDR.Item(filtVal.FieldName).ToString().Trim() <> "" Then
-                                                                                            entryFound = False
-
-                                                                                        Else
-                                                                                            Boolean.TryParse(filtVals.Visibility, controlVisible)
-                                                                                            entryFound = True
-                                                                                            Exit For
-                                                                                        End If
-                                                                                    Else
-                                                                                        Boolean.TryParse(filtVals.Visibility, controlVisible)
-                                                                                        entryFound = True
-                                                                                        Exit For
-                                                                                    End If
-                                                                                End If
-
-                                                                            ElseIf strVl.ToString().ToUpper() = "[NOTNULL]" Then
-                                                                                If m_FDR IsNot Nothing Then
-
-
-                                                                                    If m_FDR.Item(filtVal.FieldName) IsNot DBNull.Value Then
-
-                                                                                        Boolean.TryParse(filtVals.Visibility, controlVisible)
-                                                                                        entryFound = True
-                                                                                        Exit For
-
-
-
-                                                                                    Else
-                                                                                        Boolean.TryParse(filtVals.Visibility, controlVisible)
-                                                                                        controlVisible = Not controlVisible
-
-                                                                                        entryFound = True
-                                                                                        Exit For
-
-                                                                                        ' Continue For
-                                                                                    End If
-                                                                                End If
-
-                                                                            Else
-                                                                                If m_FDR IsNot Nothing Then
-
-
-                                                                                    If m_FDR.Item(filtVal.FieldName).ToString() = strVl Then
-                                                                                        Boolean.TryParse(filtVals.Visibility, controlVisible)
-                                                                                        entryFound = True
-                                                                                        Exit For
-                                                                                    Else
-                                                                                        entryFound = False
-
-                                                                                    End If
-
-                                                                                End If
-
-                                                                            End If
-                                                                        Next
-
-
-                                                                    End If
-
-                                                                Next
-                                                                If entryFound = True Then
-                                                                    Boolean.TryParse(filtVals.Visibility, controlVisible)
-                                                                    Exit For
-                                                                Else
-                                                                    controlVisible = True
-
-                                                                End If
-
-                                                            End If
-                                                        End If
-                                                    End If
-
-
-                                                Next
-
-                                            End If
-
-                                        End If
-                                    End If
-                                End If
-                                'If valsMatch Then
-                                '    cnt.Visible = False
-                                'Else
-                                '    cnt.Visible = True
-                                'End If
-
-                                For Each pnlCnt As Control In cnt.Controls
-
-
-                                    'If TypeOf pnlCnt Is TextBox Then
-                                    'Else
-                                    If TypeOf pnlCnt Is Button Then
-                                        Dim controls() As Control = CType(CType(pnlCnt, Button).Parent, Panel).Controls.Find("txtEdit" & pnlCnt.Tag.ToString, False)
-                                        If controls.Length = 1 Then
-                                            controls(0).Width = controls(0).Width - pnlCnt.Width - 5
-                                            pnlCnt.Left = controls(0).Width + controls(0).Left + 5
-
-                                        End If
-                                    ElseIf TypeOf pnlCnt Is CustomPanel Then
-                                        pnlCnt.Width = cnt.Width - pRightPadding - pLeftPadding
-                                        If pnlCnt.Controls.Count = 2 Then
-                                            pnlCnt.Controls(0).Left = pLeftPadding
-                                            pnlCnt.Controls(1).Left = CInt((pnlCnt.Width / 2))
-                                        End If
-
-                                    Else
-                                        pnlCnt.Width = tbCntrlEdit.Width - pLeftPadding - pRightPadding
-                                    End If
-
-                                    'End If
-
-
-                                Next
-
-                            End If
-
-
-                            cnt.Visible = controlVisible
-                            If controlVisible Then
-                                pCntlNextTop = pCntlNextTop + cnt.Height + pTopPadding
-                            End If
-                            pCurTabPage.Controls.Add(cnt)
-
-
-                            If pCntlNextTop >= intform - pBottomPadding Then
-
-                                If pCurTabPage IsNot Nothing Then
-
+                                If (cnt.Top + cnt.Height) > intform - pBottomPadding Then
 
 
 
@@ -2368,11 +2175,215 @@ Public Class EditControl
 
                                     pCntlNextTop = pTopPadding
                                     'pBtn = Nothing
+
+                                    cnt.Top = pCntlNextTop
+                                End If
+                                cnt.Width = tbCntrlEdit.Width
+                                'Dim valsMatch As String = "NoEntry"
+                                'Dim visToSet As Boolean = True
+                                Dim entryFound As Boolean = False
+
+                                Dim controlVisible As Boolean = True
+                                Dim modeMatchs As Boolean = True
+
+
+                                If TypeOf cnt Is Panel Then
+                                    If cnt.Tag IsNot Nothing Then
+                                        If TypeOf (cnt.Tag) Is MobileConfigClass.MobileConfigMobileMapConfigLayerOptionsLayersFieldOptionsLayerNameFieldOption Then
+                                            Dim fieldDet As MobileConfigClass.MobileConfigMobileMapConfigLayerOptionsLayersFieldOptionsLayerNameFieldOption = cnt.Tag
+                                            If fieldDet.FilterFields IsNot Nothing Then
+                                                If fieldDet.FilterFields.Count > 0 Then
+
+
+                                                    For Each filtVals As MobileConfigClass.MobileConfigMobileMapConfigLayerOptionsLayersFieldOptionsLayerNameFieldOptionFilterFields In fieldDet.FilterFields
+                                                        If m_FDR IsNot Nothing Then
+
+
+
+                                                            If filtVals.Mode <> "" Then
+                                                                If m_Mode = filtVals.Mode Then
+                                                                    modeMatchs = True
+                                                                Else
+                                                                    modeMatchs = False
+                                                                End If
+                                                            Else
+                                                                modeMatchs = True
+                                                            End If
+                                                            If modeMatchs Then
+
+                                                                If filtVals.FilterInfo.Count = 0 Then
+                                                                    Boolean.TryParse(filtVals.Visibility, controlVisible)
+                                                                    Exit For
+
+                                                                Else
+
+
+                                                                    For Each filtVal As MobileConfigClass.MobileConfigMobileMapConfigLayerOptionsLayersFieldOptionsLayerNameFieldOptionFilterFieldsFilterInfo In filtVals.FilterInfo
+                                                                        If entryFound Then
+                                                                            Exit For
+                                                                        End If
+                                                                        ' For Each filtInfo As MobileConfigClass.MobileConfigMobileMapConfigLayerOptionsLayersFieldOptionsLayerNameFieldOptionFilterFieldsFilterInfo In filtVal.FilterInfo
+                                                                        If m_FL.Columns(filtVal.FieldName) IsNot Nothing Then
+                                                                            For Each strVl As String In filtVal.FieldValue
+                                                                                If strVl.ToString().ToUpper() = "[ISNULL]" Then
+                                                                                    If m_FDR IsNot Nothing Then
+                                                                                        If m_FDR.Item(filtVal.FieldName) IsNot DBNull.Value Then
+                                                                                            If m_FDR.Item(filtVal.FieldName).ToString().Trim() <> "" Then
+                                                                                                entryFound = False
+
+                                                                                            Else
+                                                                                                Boolean.TryParse(filtVals.Visibility, controlVisible)
+                                                                                                entryFound = True
+                                                                                                Exit For
+                                                                                            End If
+                                                                                        Else
+                                                                                            Boolean.TryParse(filtVals.Visibility, controlVisible)
+                                                                                            entryFound = True
+                                                                                            Exit For
+                                                                                        End If
+                                                                                    End If
+
+                                                                                ElseIf strVl.ToString().ToUpper() = "[NOTNULL]" Then
+                                                                                    If m_FDR IsNot Nothing Then
+
+
+                                                                                        If m_FDR.Item(filtVal.FieldName) IsNot DBNull.Value Then
+
+                                                                                            Boolean.TryParse(filtVals.Visibility, controlVisible)
+                                                                                            entryFound = True
+                                                                                            Exit For
+
+
+
+                                                                                        Else
+                                                                                            Boolean.TryParse(filtVals.Visibility, controlVisible)
+                                                                                            controlVisible = Not controlVisible
+
+                                                                                            entryFound = True
+                                                                                            Exit For
+
+                                                                                            ' Continue For
+                                                                                        End If
+                                                                                    End If
+
+                                                                                Else
+                                                                                    If m_FDR IsNot Nothing Then
+
+
+                                                                                        If m_FDR.Item(filtVal.FieldName).ToString() = strVl Then
+                                                                                            Boolean.TryParse(filtVals.Visibility, controlVisible)
+                                                                                            entryFound = True
+                                                                                            Exit For
+                                                                                        Else
+                                                                                            entryFound = False
+
+                                                                                        End If
+
+                                                                                    End If
+
+                                                                                End If
+                                                                            Next
+
+
+                                                                        End If
+
+                                                                    Next
+                                                                    If entryFound = True Then
+                                                                        Boolean.TryParse(filtVals.Visibility, controlVisible)
+                                                                        Exit For
+                                                                    Else
+                                                                        controlVisible = True
+
+                                                                    End If
+
+                                                                End If
+                                                            End If
+                                                        End If
+
+
+                                                    Next
+
+                                                End If
+
+                                            End If
+                                        End If
+                                    End If
+                                    'If valsMatch Then
+                                    '    cnt.Visible = False
+                                    'Else
+                                    '    cnt.Visible = True
+                                    'End If
+
+                                    For Each pnlCnt As Control In cnt.Controls
+
+
+                                        'If TypeOf pnlCnt Is TextBox Then
+                                        'Else
+                                        If TypeOf pnlCnt Is Button Then
+                                            Dim controls() As Control = CType(CType(pnlCnt, Button).Parent, Panel).Controls.Find("txtEdit" & pnlCnt.Tag.ToString, False)
+                                            If controls.Length = 1 Then
+                                                controls(0).Width = controls(0).Width - pnlCnt.Width - 5
+                                                pnlCnt.Left = controls(0).Width + controls(0).Left + 5
+
+                                            End If
+                                        ElseIf TypeOf pnlCnt Is CustomPanel Then
+                                            pnlCnt.Width = cnt.Width - pRightPadding - pLeftPadding
+                                            If pnlCnt.Controls.Count = 2 Then
+                                                pnlCnt.Controls(0).Left = pLeftPadding
+                                                pnlCnt.Controls(1).Left = CInt((pnlCnt.Width / 2))
+                                            End If
+
+                                        Else
+                                            pnlCnt.Width = tbCntrlEdit.Width - pLeftPadding - pRightPadding
+                                        End If
+
+                                        'End If
+
+
+                                    Next
+
+                                End If
+
+
+                                cnt.Visible = controlVisible
+                                If controlVisible Then
+                                    pCntlNextTop = pCntlNextTop + cnt.Height + pTopPadding
+                                End If
+                                pCurTabPage.Controls.Add(cnt)
+
+
+                                If pCntlNextTop >= intform - pBottomPadding Then
+
+                                    If pCurTabPage IsNot Nothing Then
+
+
+
+
+
+                                        If pTbPageCo Is Nothing Then
+                                            ReDim Preserve pTbPageCo(0)
+                                        Else
+                                            ReDim Preserve pTbPageCo(pTbPageCo.Length)
+                                        End If
+                                        pTbPageCo(pTbPageCo.Length - 1) = pCurTabPage
+                                        pCurTabPage = New TabPage
+
+                                        If m_FL.Name.Length > 30 Then
+                                            strName = m_FL.Name.Substring(0, 29) & ".."
+                                        Else
+                                            strName = m_FL.Name & ":"
+                                        End If
+                                        pCurTabPage.Name = strName
+                                        pCurTabPage.Text = strName
+
+                                        pCntlNextTop = pTopPadding
+                                        'pBtn = Nothing
+                                    End If
                                 End If
                             End If
-                        End If
 
-                    End While
+                        End While
+                    End If
                 End If
 
             Next
@@ -2423,6 +2434,7 @@ Public Class EditControl
                             tbp.Update()
                         Next
                     End If
+                    tbCntrlEdit.TabPages.Add(pAttTabPage)
 
                     If tbCntrlEdit.TabPages.Count >= pCurTabIdx Then
                         tbCntrlEdit.SelectedIndex = pCurTabIdx
@@ -2497,6 +2509,8 @@ Public Class EditControl
             'Controls to display attributes
             Dim pTbPg As TabPage = Nothing
             Dim pTbPgPic As TabPage = Nothing
+            Dim pTabAtt As TabPage = Nothing
+
             Dim pTxtBox As TextBox
             Dim pLbl As Label
             Dim pNumBox As NumericUpDown
@@ -3823,7 +3837,7 @@ Public Class EditControl
                                         pDcOpt.BackColor = GlobalsFunctions.ColorToString(pLbl.BackColor)
                                     End If
 
-                                   
+
                                     If pDcOpt.BoxColor <> "" Then
                                         pPnl.BackColor = GlobalsFunctions.stringToColor(pDcOpt.BoxColor)
                                     Else
@@ -4346,6 +4360,33 @@ Public Class EditControl
 
 
             Next 'pDC
+
+            m_AttMan = pfl.AttachmentManager
+
+
+            If m_AttMan.HasAttachments Then
+                tbCntrlEdit.TabPages.Add("Attachments", "Attachments") '("Image" & ":" & intPgIdxPic, "Image" & ":" & intPgIdxPic)
+                pTabAtt = tbCntrlEdit.TabPages("Attachments")
+
+
+                Dim pAttControlBox As AttachmentControl = New AttachmentControl()
+                AddHandler pAttControlBox.AttachmentSelected, AddressOf AttachmentSelected
+                AddHandler pAttControlBox.DeleteAttachment, AddressOf DeleteAttachment
+
+                ' pAttControlBox.ListBox.ValueMember = "Name"
+                pAttControlBox.Dock = DockStyle.Fill
+                'Dim pAttList As List(Of Attachment) = m_AttMan.GetAttachments(m_CurrentRow.Fid)
+                ' pLstBox.DataSource = pAttList
+                'For Each att As Attachment In pAttList
+                '    pLstBox.Items.Add(att)
+
+                'Next
+                pTabAtt.Controls.Add(pAttControlBox)
+                pTabAtt.Visible = True
+                'm_TabControl.TabPages.Add(pTabAtt)
+
+                pTabAtt.Update()
+            End If
             If pTbPg.Controls.Count = 0 Then
                 tbCntrlEdit.TabPages.Remove(pTbPg)
 
@@ -4414,6 +4455,7 @@ Public Class EditControl
     Private Function SaveFormToRecord() As Boolean
         Try
 
+
             'Make sure the row is valid
             If m_FDR Is Nothing Then Return False
             'Make sure there is valid Geometry
@@ -4422,248 +4464,258 @@ Public Class EditControl
             'Get the Data Table associated with the record
             Dim pDT As FeatureDataTable = m_FDR.Table
             'Loop through each tab page
+            m_pTabPagAtt = Nothing
+
+
             For Each tbpg As Control In tbCntrlEdit.TabPages
-                'Loop through all controls on a tab page
-                For Each cCntrl As Control In tbpg.Controls
-                    If TypeOf cCntrl Is Panel Then
+                If tbpg.Name.Contains("Attachments") Then
+                    m_pTabPagAtt = tbpg
 
-                        For Each cCntrlPnl As Control In cCntrl.Controls
-                            Dim strFld As String
-                            Dim pDC As DataColumn
-                            If TypeOf cCntrlPnl Is CustomPanel Then
-                                'RadioButtons
 
-                                Dim pCsPn As CustomPanel = CType(cCntrlPnl, CustomPanel)
-                                strFld = pCsPn.Tag.ToString
-                                If strFld.IndexOf("|") > 0 Then
-                                    strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
-                                End If
-                                For Each rdCn As Control In pCsPn.Controls
-                                    If TypeOf rdCn Is RadioButton Then
-                                        If CType(rdCn, RadioButton).Checked Then
-                                            m_FDR.Item(strFld) = CType(rdCn, RadioButton).Tag
-                                            Exit For
+                Else
+
+                    'Loop through all controls on a tab page
+                    For Each cCntrl As Control In tbpg.Controls
+                        If TypeOf cCntrl Is Panel Then
+
+                            For Each cCntrlPnl As Control In cCntrl.Controls
+                                Dim strFld As String
+                                Dim pDC As DataColumn
+                                If TypeOf cCntrlPnl Is CustomPanel Then
+                                    'RadioButtons
+
+                                    Dim pCsPn As CustomPanel = CType(cCntrlPnl, CustomPanel)
+                                    strFld = pCsPn.Tag.ToString
+                                    If strFld.IndexOf("|") > 0 Then
+                                        strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
+                                    End If
+                                    For Each rdCn As Control In pCsPn.Controls
+                                        If TypeOf rdCn Is RadioButton Then
+                                            If CType(rdCn, RadioButton).Checked Then
+                                                m_FDR.Item(strFld) = CType(rdCn, RadioButton).Tag
+                                                Exit For
+
+                                            End If
+                                        End If
+                                    Next
+
+                                ElseIf TypeOf cCntrlPnl Is TextBox Then
+                                    'TextBoxes
+                                    strFld = CType(cCntrlPnl, TextBox).Tag.ToString
+                                    If strFld.IndexOf("|") > 0 Then
+                                        strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
+                                    End If
+
+                                    pDC = pDT.Columns(strFld)
+
+                                    'Check input on the screen
+                                    If CType(cCntrlPnl, TextBox).Text Is DBNull.Value Then
+
+                                        If m_FDR.Item(strFld) Is DBNull.Value Then
+                                        ElseIf m_FDR.Item(strFld).ToString = "" Then
+                                        Else
+
+                                            If pDC.DataType Is System.Type.GetType("System.String") Then
+                                                m_FDR.Item(strFld) = String.Empty
+                                            Else
+                                                If pDC.AllowDBNull = False Then
+                                                    'MsgBox("A null value is entered were it is not allowed, exiting")
+                                                    Return False
+                                                End If
+                                                m_FDR.Item(strFld) = DBNull.Value '0
+                                            End If
 
                                         End If
-                                    End If
-                                Next
-
-                            ElseIf TypeOf cCntrlPnl Is TextBox Then
-                                'TextBoxes
-                                strFld = CType(cCntrlPnl, TextBox).Tag.ToString
-                                If strFld.IndexOf("|") > 0 Then
-                                    strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
-                                End If
-
-                                pDC = pDT.Columns(strFld)
-
-                                'Check input on the screen
-                                If CType(cCntrlPnl, TextBox).Text Is DBNull.Value Then
-
-                                    If m_FDR.Item(strFld) Is DBNull.Value Then
-                                    ElseIf m_FDR.Item(strFld).ToString = "" Then
-                                    Else
-
-                                        If pDC.DataType Is System.Type.GetType("System.String") Then
-                                            m_FDR.Item(strFld) = String.Empty
+                                    ElseIf CType(cCntrlPnl, TextBox).Text = "" Then
+                                        If m_FDR.Item(strFld) Is DBNull.Value Then
+                                        ElseIf m_FDR.Item(strFld).ToString = "" Then
                                         Else
-                                            If pDC.AllowDBNull = False Then
-                                                'MsgBox("A null value is entered were it is not allowed, exiting")
+
+                                            If pDC.DataType Is System.Type.GetType("System.String") Then
+                                                m_FDR.Item(strFld) = String.Empty
+                                            Else
+                                                If pDC.AllowDBNull = False Then
+                                                    'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
+                                                    Return False
+                                                End If
+                                                m_FDR.Item(strFld) = DBNull.Value '0
+                                            End If
+
+                                        End If
+                                    ElseIf m_FDR.Item(strFld).ToString = CType(cCntrlPnl, TextBox).Text Then
+                                    Else
+                                        If pDC.DataType Is System.Type.GetType("System.String") Then
+                                            m_FDR.Item(strFld) = CType(cCntrlPnl, TextBox).Text
+                                        ElseIf pDC.DataType Is System.Type.GetType("System.Byte[]") Then
+
+
+                                            Try
+
+
+                                                m_FDR.Item(strFld) = ConvertImageToByteArray(New Bitmap(CType(cCntrlPnl, TextBox).Text), GetImageFormat(CType(cCntrlPnl, TextBox).Text))
+                                            Catch ex As Exception
+                                                Dim st As New StackTrace
+                                                MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+                                                st = Nothing
+
+
+                                            End Try
+                                        ElseIf pDC.DataType.FullName = "System.Drawing.Bitmap" Then
+
+
+                                            Try
+
+
+                                                m_FDR.Item(strFld) = New Bitmap(CType(cCntrlPnl, TextBox).Text)
+
+                                            Catch ex As Exception
+                                                Dim st As New StackTrace
+                                                MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+                                                st = Nothing
+
+
+                                            End Try
+                                        Else
+                                            If IsNumeric(CType(cCntrlPnl, TextBox).Text) Then
+                                                m_FDR.Item(strFld) = CType(cCntrlPnl, TextBox).Text
+                                            Else
+                                                'MsgBox("Only enter Numeric values" & vbCrLf & "Field: " & pDC.ColumnName)
                                                 Return False
                                             End If
-                                            m_FDR.Item(strFld) = DBNull.Value '0
+
                                         End If
 
-                                    End If
-                                ElseIf CType(cCntrlPnl, TextBox).Text = "" Then
-                                    If m_FDR.Item(strFld) Is DBNull.Value Then
-                                    ElseIf m_FDR.Item(strFld).ToString = "" Then
-                                    Else
 
-                                        If pDC.DataType Is System.Type.GetType("System.String") Then
-                                            m_FDR.Item(strFld) = String.Empty
-                                        Else
+                                    End If
+
+                                ElseIf TypeOf cCntrlPnl Is ComboBox Then
+                                    strFld = CType(cCntrlPnl, ComboBox).Tag.ToString
+                                    If strFld.IndexOf("|") > 0 Then
+                                        strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
+                                    End If
+                                    pDC = pDT.Columns(strFld)
+                                    If CType(cCntrlPnl, ComboBox).SelectedItem Is DBNull.Value And CType(cCntrlPnl, ComboBox).SelectedValue Is DBNull.Value Then
+                                        If m_FDR.Item(strFld) Is DBNull.Value Then
                                             If pDC.AllowDBNull = False Then
                                                 'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
                                                 Return False
                                             End If
-                                            m_FDR.Item(strFld) = DBNull.Value '0
-                                        End If
-
-                                    End If
-                                ElseIf m_FDR.Item(strFld).ToString = CType(cCntrlPnl, TextBox).Text Then
-                                Else
-                                    If pDC.DataType Is System.Type.GetType("System.String") Then
-                                        m_FDR.Item(strFld) = CType(cCntrlPnl, TextBox).Text
-                                    ElseIf pDC.DataType Is System.Type.GetType("System.Byte[]") Then
-
-
-                                        Try
-
-
-                                            m_FDR.Item(strFld) = ConvertImageToByteArray(New Bitmap(CType(cCntrlPnl, TextBox).Text), GetImageFormat(CType(cCntrlPnl, TextBox).Text))
-                                        Catch ex As Exception
-                                            Dim st As New StackTrace
-                                            MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
-                                            st = Nothing
-
-
-                                        End Try
-                                    ElseIf pDC.DataType.FullName = "System.Drawing.Bitmap" Then
-
-
-                                        Try
-
-
-                                            m_FDR.Item(strFld) = New Bitmap(CType(cCntrlPnl, TextBox).Text)
-
-                                        Catch ex As Exception
-                                            Dim st As New StackTrace
-                                            MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
-                                            st = Nothing
-
-
-                                        End Try
-                                    Else
-                                        If IsNumeric(CType(cCntrlPnl, TextBox).Text) Then
-                                            m_FDR.Item(strFld) = CType(cCntrlPnl, TextBox).Text
-                                        Else
-                                            'MsgBox("Only enter Numeric values" & vbCrLf & "Field: " & pDC.ColumnName)
-                                            Return False
-                                        End If
-
-                                    End If
-
-
-                                End If
-
-                            ElseIf TypeOf cCntrlPnl Is ComboBox Then
-                                strFld = CType(cCntrlPnl, ComboBox).Tag.ToString
-                                If strFld.IndexOf("|") > 0 Then
-                                    strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
-                                End If
-                                pDC = pDT.Columns(strFld)
-                                If CType(cCntrlPnl, ComboBox).SelectedItem Is DBNull.Value And CType(cCntrlPnl, ComboBox).SelectedValue Is DBNull.Value Then
-                                    If m_FDR.Item(strFld) Is DBNull.Value Then
-                                        If pDC.AllowDBNull = False Then
-                                            'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
-                                            Return False
-                                        End If
-                                    Else
-
-                                        If pDC.AllowDBNull = False Then
-                                            'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
-                                            Return False
-                                        End If
-                                        If pDT.Columns(CType(cCntrlPnl, ComboBox).Tag.ToString).DataType Is System.Type.GetType("System.String") Then
-                                            m_FDR.Item(strFld) = DBNull.Value 'String.Empty
                                         Else
 
-                                            m_FDR.Item(strFld) = DBNull.Value '0
-                                        End If
+                                            If pDC.AllowDBNull = False Then
+                                                'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
+                                                Return False
+                                            End If
+                                            If pDT.Columns(CType(cCntrlPnl, ComboBox).Tag.ToString).DataType Is System.Type.GetType("System.String") Then
+                                                m_FDR.Item(strFld) = DBNull.Value 'String.Empty
+                                            Else
 
-                                    End If
-                                ElseIf CType(cCntrlPnl, ComboBox).SelectedItem Is Nothing And CType(cCntrlPnl, ComboBox).SelectedValue Is Nothing Then
-                                    If m_FDR.Item(strFld) Is DBNull.Value Then
-                                    ElseIf m_FDR.Item(strFld).ToString = "" Then
-                                    Else
+                                                m_FDR.Item(strFld) = DBNull.Value '0
+                                            End If
 
-                                        If pDC.AllowDBNull = False Then
-                                            'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
-                                            Return False
                                         End If
-                                        If pDT.Columns(CType(cCntrlPnl, ComboBox).Tag.ToString).DataType Is System.Type.GetType("System.String") Then
-                                            m_FDR.Item(strFld) = CType(pDT.Columns.Item(CType(cCntrlPnl, ComboBox).Tag.ToString), DataColumn).DefaultValue
+                                    ElseIf CType(cCntrlPnl, ComboBox).SelectedItem Is Nothing And CType(cCntrlPnl, ComboBox).SelectedValue Is Nothing Then
+                                        If m_FDR.Item(strFld) Is DBNull.Value Then
+                                        ElseIf m_FDR.Item(strFld).ToString = "" Then
                                         Else
 
-                                            m_FDR.Item(strFld) = CType(pDT.Columns.Item(CType(cCntrlPnl, ComboBox).Tag.ToString), DataColumn).DefaultValue
+                                            If pDC.AllowDBNull = False Then
+                                                'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
+                                                Return False
+                                            End If
+                                            If pDT.Columns(CType(cCntrlPnl, ComboBox).Tag.ToString).DataType Is System.Type.GetType("System.String") Then
+                                                m_FDR.Item(strFld) = CType(pDT.Columns.Item(CType(cCntrlPnl, ComboBox).Tag.ToString), DataColumn).DefaultValue
+                                            Else
+
+                                                m_FDR.Item(strFld) = CType(pDT.Columns.Item(CType(cCntrlPnl, ComboBox).Tag.ToString), DataColumn).DefaultValue
+                                            End If
+
                                         End If
+                                    ElseIf CType(cCntrlPnl, ComboBox).SelectedValue Is Nothing Or CType(cCntrlPnl, ComboBox).SelectedValue Is DBNull.Value Then
 
-                                    End If
-                                ElseIf CType(cCntrlPnl, ComboBox).SelectedValue Is Nothing Or CType(cCntrlPnl, ComboBox).SelectedValue Is DBNull.Value Then
-
-                                    m_FDR.Item(strFld) = CType(cCntrlPnl, ComboBox).SelectedItem.Value
-
-                                Else
-
-
-                                    m_FDR.Item(strFld) = CType(cCntrlPnl, ComboBox).SelectedValue
-
-
-
-                                End If
-
-                            ElseIf TypeOf cCntrlPnl Is DateTimePicker Then
-                                strFld = CType(cCntrlPnl, DateTimePicker).Tag.ToString
-                                If strFld.IndexOf("|") > 0 Then
-                                    strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
-                                End If
-
-                                pDC = pDT.Columns(strFld)
-                                If CType(cCntrlPnl, DateTimePicker).Checked = False Then
-                                    If m_FDR.Item(strFld) Is DBNull.Value Then
-                                    ElseIf m_FDR.Item(strFld).ToString = "" Then
-                                    Else
-
-                                        If pDC.AllowDBNull = False Then
-                                            'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
-                                            Return False
-                                        End If
-                                        m_FDR.Item(strFld) = DBNull.Value
-                                    End If
-                                ElseIf m_FDR.Item(strFld).ToString = CType(cCntrlPnl, DateTimePicker).Value.ToString Then
-                                Else
-                                    m_FDR.FeatureSource.Columns(strFld).ReadOnly = False
-
-                                    m_FDR.Item(strFld) = CType(cCntrlPnl, DateTimePicker).Value
-                                End If
-
-
-
-
-                            ElseIf TypeOf cCntrlPnl Is NumericUpDown Then
-                                strFld = CType(cCntrlPnl, NumericUpDown).Tag.ToString
-                                If strFld.IndexOf("|") > 0 Then
-                                    strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
-                                End If
-                                pDC = pDT.Columns(strFld)
-
-                                If CType(cCntrlPnl, NumericUpDown).ReadOnly = True Then
-                                    If m_FDR.Item(strFld) Is DBNull.Value Then
-                                    ElseIf m_FDR.Item(strFld).ToString = "" Then
-                                    Else
-
-                                        If pDC.AllowDBNull = False Then
-                                            'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
-                                            Return False
-                                        End If
-                                        m_FDR.Item(strFld) = DBNull.Value
-                                    End If
-                                ElseIf m_FDR.Item(strFld).ToString = CType(cCntrlPnl, NumericUpDown).Value.ToString Then
-                                Else
-                                    If m_FDR.Table.Columns(strFld).DataType Is System.Type.GetType("System.String") Then
-                                        m_FDR.Item(strFld) = CType(cCntrlPnl, NumericUpDown).Value.ToString
-                                    ElseIf m_FDR.Table.Columns(strFld).DataType Is System.Type.GetType("System.Double") Then
-                                        m_FDR.Item(strFld) = CDbl(CType(cCntrlPnl, NumericUpDown).Value)
-                                    ElseIf m_FDR.Table.Columns(strFld).DataType Is System.Type.GetType("System.Single") Then
-
-                                        m_FDR.Item(strFld) = CSng(CType(cCntrlPnl, NumericUpDown).Value)
+                                        m_FDR.Item(strFld) = CType(cCntrlPnl, ComboBox).SelectedItem.Value
 
                                     Else
 
-                                        m_FDR.Item(strFld) = CType(cCntrlPnl, NumericUpDown).Value
+
+                                        m_FDR.Item(strFld) = CType(cCntrlPnl, ComboBox).SelectedValue
+
+
+
+                                    End If
+
+                                ElseIf TypeOf cCntrlPnl Is DateTimePicker Then
+                                    strFld = CType(cCntrlPnl, DateTimePicker).Tag.ToString
+                                    If strFld.IndexOf("|") > 0 Then
+                                        strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
+                                    End If
+
+                                    pDC = pDT.Columns(strFld)
+                                    If CType(cCntrlPnl, DateTimePicker).Checked = False Then
+                                        If m_FDR.Item(strFld) Is DBNull.Value Then
+                                        ElseIf m_FDR.Item(strFld).ToString = "" Then
+                                        Else
+
+                                            If pDC.AllowDBNull = False Then
+                                                'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
+                                                Return False
+                                            End If
+                                            m_FDR.Item(strFld) = DBNull.Value
+                                        End If
+                                    ElseIf m_FDR.Item(strFld).ToString = CType(cCntrlPnl, DateTimePicker).Value.ToString Then
+                                    Else
+                                        m_FDR.FeatureSource.Columns(strFld).ReadOnly = False
+
+                                        m_FDR.Item(strFld) = CType(cCntrlPnl, DateTimePicker).Value
+                                    End If
+
+
+
+
+                                ElseIf TypeOf cCntrlPnl Is NumericUpDown Then
+                                    strFld = CType(cCntrlPnl, NumericUpDown).Tag.ToString
+                                    If strFld.IndexOf("|") > 0 Then
+                                        strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
+                                    End If
+                                    pDC = pDT.Columns(strFld)
+
+                                    If CType(cCntrlPnl, NumericUpDown).ReadOnly = True Then
+                                        If m_FDR.Item(strFld) Is DBNull.Value Then
+                                        ElseIf m_FDR.Item(strFld).ToString = "" Then
+                                        Else
+
+                                            If pDC.AllowDBNull = False Then
+                                                'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
+                                                Return False
+                                            End If
+                                            m_FDR.Item(strFld) = DBNull.Value
+                                        End If
+                                    ElseIf m_FDR.Item(strFld).ToString = CType(cCntrlPnl, NumericUpDown).Value.ToString Then
+                                    Else
+                                        If m_FDR.Table.Columns(strFld).DataType Is System.Type.GetType("System.String") Then
+                                            m_FDR.Item(strFld) = CType(cCntrlPnl, NumericUpDown).Value.ToString
+                                        ElseIf m_FDR.Table.Columns(strFld).DataType Is System.Type.GetType("System.Double") Then
+                                            m_FDR.Item(strFld) = CDbl(CType(cCntrlPnl, NumericUpDown).Value)
+                                        ElseIf m_FDR.Table.Columns(strFld).DataType Is System.Type.GetType("System.Single") Then
+
+                                            m_FDR.Item(strFld) = CSng(CType(cCntrlPnl, NumericUpDown).Value)
+
+                                        Else
+
+                                            m_FDR.Item(strFld) = CType(cCntrlPnl, NumericUpDown).Value
+
+                                        End If
+
 
                                     End If
 
 
                                 End If
-
-
-                            End If
-                            pDC = Nothing
-                        Next
-                    End If
-                Next
+                                pDC = Nothing
+                            Next
+                        End If
+                    Next
+                End If
 
             Next
             Try
@@ -4674,6 +4726,7 @@ Public Class EditControl
                 ElseIf m_FDR.RowState = DataRowState.Modified Then
                     'm_FDR.StoredEditSate
                 End If
+
             Catch ex As Exception
                 Dim st As New StackTrace
                 MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
@@ -4689,6 +4742,12 @@ Public Class EditControl
 
                 Next
                 Return False
+            Else
+                '  m_FDR.AcceptChanges()
+                '  pDT.SaveInFeatureSource()
+
+
+
             End If
 
 
@@ -4707,6 +4766,8 @@ Public Class EditControl
     End Function
     Private Function SaveRecordToLayer() As Boolean
         Try
+            Dim pAtt As Attachment = Nothing
+
             'Make sure the row is valid
             If m_FDR Is Nothing Then Return False
             'Make sure there is valid Geometry
@@ -4748,6 +4809,35 @@ Public Class EditControl
             pDT.AcceptChanges()
 
             pDT.FeatureSource.SaveEdits(pDT)
+            Dim lstAtt As List(Of Attachment) = New List(Of Attachment)
+
+            If m_pTabPagAtt IsNot Nothing Then
+
+                For j As Integer = CType(m_pTabPagAtt.Controls(0), AttachmentControl).ListBox.Items.Count - 1 To 0 Step -1
+                    Dim itm As Object = CType(m_pTabPagAtt.Controls(0), AttachmentControl).ListBox.Items(j)
+
+
+
+                    If TypeOf itm Is attFiles Then
+                        pAtt = New Attachment(m_FDR.FeatureSource, m_FDR.Fid, CType(itm, attFiles).fileName)
+                        m_AttMan.AddAttachment(pAtt, CType(itm, attFiles).filePath, FileOperation.CopyFile)
+                        CType(m_pTabPagAtt.Controls(0), AttachmentControl).ListBox.Items.Remove(itm)
+                        lstAtt.Add(pAtt)
+
+                        
+                    End If
+                Next
+                For Each att As Attachment In lstAtt
+                    CType(m_pTabPagAtt.Controls(0), AttachmentControl).ListBox.Items.Add(att)
+
+                Next
+                For Each attID As Integer In m_lstAttToDel
+                    m_AttMan.DeleteAttachment(attID)
+                Next
+             
+            End If
+
+
 
             If pDT.HasErrors Then
                 Dim rowsInError() As DataRow = pDT.GetErrors
@@ -4770,6 +4860,11 @@ Public Class EditControl
 
                 disableSaveBtn()
                 disableDeleteBtn()
+                If m_pTabPagAtt IsNot Nothing Then
+
+
+                    CType(m_pTabPagAtt.Controls(0), AttachmentControl).ListBox.Items.Clear()
+                End If
 
             End If
             'Raise the event to notify the record was saved
@@ -4989,6 +5084,7 @@ Public Class EditControl
         Try
             'Sub to load a record to the editor
             m_SettingAtts = True
+            m_lstAttToDel = New List(Of Integer)
 
             Dim strFld As String
             'Determine if the layer has subtypes
@@ -5071,14 +5167,28 @@ Public Class EditControl
             'Loop through all the controls and set their value
             For Each pCntrl As Control In tbCntrlEdit.Controls
                 If TypeOf pCntrl Is TabPage Then
+
                     Dim idxOut As Integer = 0
                     Dim cCntrl As Control
                     For idxOut = 0 To pCntrl.Controls.Count - 1
                         cCntrl = pCntrl.Controls(idxOut)
 
-                        'For Each cCntrl As Control In pCntrl.Controls
-                        '                            'If the control is a 2 value domain(Checkboxs)
-                        If TypeOf cCntrl Is Panel Then
+                        If TypeOf cCntrl Is AttachmentControl Then
+
+                            Dim pSpCont As SplitContainer = CType(CType(cCntrl, AttachmentControl).Controls(0), SplitContainer)
+
+                            CType(pSpCont.Panel2.Controls(0), ListBox).Items.Clear()
+
+                            m_AttMan = m_FDR.FeatureSource.AttachmentManager
+
+
+                            Dim pAttList As List(Of Attachment) = m_AttMan.GetAttachments(m_FDR.Fid)
+                            For Each att As Attachment In pAttList
+                                CType(pSpCont.Panel2.Controls(0), ListBox).Items.Add(att)
+
+                            Next
+
+                        ElseIf TypeOf cCntrl Is Panel Then
                             Dim cCntrlPnl As Control
                             Dim idx As Integer = 0
                             For idx = 0 To cCntrl.Controls.Count - 1
@@ -6486,6 +6596,17 @@ Public Class EditControl
 
     Private Sub btnSave_Validated(sender As System.Object, e As System.EventArgs) Handles btnSave.Validated
 
+    End Sub
+
+    Private Sub AttachmentSelected(filename As attFiles)
+
+
+    End Sub
+
+    Private Sub DeleteAttachment(id As Integer)
+        m_lstAttToDel.add(id)
+
+        
     End Sub
 
 

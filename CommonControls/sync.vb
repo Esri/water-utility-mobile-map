@@ -245,6 +245,8 @@ Public Class sync
 
                         pFLSyncAgent = New Esri.ArcGIS.Mobile.FeatureCaching.Synchronization.FeatureSyncAgent(pFL)
                         pFLSyncAgent.SynchronizationDirection = syncDir
+                        pFLSyncAgent.SynchronizeAttachments = True
+
                         pFLSyncAgent.MapDocumentConnection = m_MobileConnect
                         If extent IsNot Nothing Then
 
@@ -274,7 +276,9 @@ Public Class sync
                         Else
 
                             pFLSyncAgent = New Esri.ArcGIS.Mobile.FeatureCaching.Synchronization.FeatureSyncAgent(pFL)
-                            pFLSyncAgent.SynchronizationDirection = syncDir
+                        pFLSyncAgent.SynchronizationDirection = syncDir
+                        pFLSyncAgent.SynchronizeAttachments = True
+
 
                             pFLSyncAgent.MapDocumentConnection = m_MobileConnect
                             If extent IsNot Nothing Then

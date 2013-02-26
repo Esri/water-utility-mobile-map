@@ -235,6 +235,42 @@
   <ItemGroup>
     <None Include="Images\CircleGray.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\NavToo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\NavTooGray.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\NavTooBlue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\ZoomInOutDown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\ZoomIn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\ZoomInOut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\BlueFlashSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\BlueTruckSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\RedFlashSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\RedTruckSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\RefreshDown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\refresh.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

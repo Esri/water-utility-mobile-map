@@ -24,6 +24,8 @@ Public Class mobileIdentifyMapAction
     Public Event HyperClick(ByVal PathToFile As String)
 
     Public Event RouteTo(ByVal location As Esri.ArcGIS.Mobile.Geometries.Geometry, ByVal LocationName As String)
+    Public Event Waypoint(ByVal location As Esri.ArcGIS.Mobile.Geometries.Geometry, ByVal LocationName As String)
+
     Public Event LocationIdentified(ByVal fdr As FeatureDataRow)
     Public Event CheckGPS()
     Private m_GPSVal As GPSLocationDetails = Nothing
@@ -35,6 +37,7 @@ Public Class mobileIdentifyMapAction
     Private m_DownCur As System.Windows.Forms.Cursor
     Private m_NormCur As System.Windows.Forms.Cursor
     Private m_RouteToOption As Boolean
+    Private m_WayPoint As Boolean
     Private m_LastMouseLoc As Point = New Point
 
     Private WithEvents m_AttFrm As MobileControls.MobileAttributes
@@ -404,6 +407,12 @@ Public Class mobileIdentifyMapAction
     Private Sub m_Att_RouteTo(ByVal location As Esri.ArcGIS.Mobile.Geometries.Geometry, ByVal LocationName As String) Handles m_AttFrm.RouteTo
 
         RaiseEvent RouteTo(location, LocationName)
+
+
+    End Sub
+    Private Sub m_Att_Waypoint(ByVal location As Esri.ArcGIS.Mobile.Geometries.Geometry, ByVal LocationName As String) Handles m_AttFrm.Waypoint
+
+        RaiseEvent Waypoint(location, LocationName)
 
 
     End Sub
