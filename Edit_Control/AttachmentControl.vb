@@ -164,6 +164,20 @@ Public Class AttachmentControl
     End Sub
 
     Private Sub btnAttCam_Click(sender As System.Object, e As System.EventArgs) Handles btnAttCam.Click
+        Dim stPath As String = GlobalsFunctions.getImageFromCam()
+
+        If stPath <> "" Then
+            'Set the path of the image to the text box
+            Dim atfl As attFiles = New attFiles
+            atfl.filePath = stPath
+            atfl.fileName = Path.GetFileName(stPath)
+
+
+            RaiseEvent AttachmentSelected(atfl)
+
+            lstAtt.Items.Add(atfl)
+
+        End If
 
     End Sub
 End Class
