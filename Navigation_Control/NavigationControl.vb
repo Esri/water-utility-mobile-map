@@ -704,6 +704,9 @@ Public Class mobileNavigation
 
 
         Else
+            Try
+
+            
             m_SerialGPS.PortName = FileName_Port
             Select Case baudRate
                 Case "115200"
@@ -731,9 +734,12 @@ Public Class mobileNavigation
 
 
             End Select
+            Catch ex As Exception
+                MsgBox(GlobalsFunctions.appConfig.NavigationOptions.UIComponents.GPSNoConnect, MsgBoxStyle.Exclamation, "GPS Load")
 
+            End Try
             GlobalsFunctions.m_GPS.GpsConnection = m_SerialGPS
-
+            
 
         End If
         Return True
@@ -2283,7 +2289,8 @@ Public Class mobileNavigation
         Catch ex As Exception
             Try
                 Dim st As New StackTrace
-                MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+                MsgBox(GlobalsFunctions.appConfig.NavigationOptions.UIComponents.GPSNoConnect, MsgBoxStyle.Exclamation, "GPS")
+
                 st = Nothing
 
                 If m_GPSLoadingPic.InvokeRequired Then
@@ -2494,7 +2501,7 @@ Public Class mobileNavigation
     End Sub
 
     Private Sub m_SerialGPS_GpsError(ByVal sender As Object, ByVal e As Esri.ArcGIS.Mobile.Gps.GpsErrorEventArgs) Handles m_SerialGPS.GpsError
-        MsgBox(e.Exception.Message.ToString)
+        '  MsgBox(e.Exception.Message.ToString)
 
     End Sub
     Private Sub m_SerialGPS_GpsOpened(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_SerialGPS.GpsOpened

@@ -3340,6 +3340,8 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
 
         Private PointsAvgTextField As String
 
+        Private GPSNoConnectField As String
+
         Private Shared sSerializer As System.Xml.Serialization.XmlSerializer
 
         Public Sub New()
@@ -3376,6 +3378,15 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
             End Get
             Set(ByVal value As String)
                 Me.PointsAvgTextField = value
+            End Set
+        End Property
+        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=3)> _
+        Public Property GPSNoConnect() As String
+            Get
+                Return Me.GPSNoConnectField
+            End Get
+            Set(ByVal value As String)
+                Me.GPSNoConnectField = value
             End Set
         End Property
 

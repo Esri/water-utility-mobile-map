@@ -274,10 +274,6 @@
     <Content Include="AppImages\123.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Copy of MobileMapConfig.xml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="file.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
