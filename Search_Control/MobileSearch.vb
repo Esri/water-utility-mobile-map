@@ -1932,68 +1932,81 @@ Public Class MobileSearch
         Dim col As DataColumn
         Dim pHashcol As Hashtable = New Hashtable()
         Dim pCV As CodedValueDomain
+        Dim intSubCode As Integer = 0
+
+        If pfl.HasSubtypes Then
+
+            intSubCode = pfl.Columns(pfl.SubtypeColumnName).DefaultValue 'pfl.Subtypes.Rows.Item(0)(0)
+
+
+
+        End If
+
         For Each col In results.Columns
             Dim newcol As DataColumn = New DataColumn()
-            If pfl.HasSubtypes Then
+            'If pfl.HasSubtypes Then
 
 
 
-                newcol.ColumnName = col.ColumnName
-                newcol.DataType = System.Type.GetType("System.String")
-                thistable.Columns.Add(newcol)
-            Else
+            '    newcol.ColumnName = col.ColumnName
+            '    newcol.DataType = System.Type.GetType("System.String")
+            '    thistable.Columns.Add(newcol)
+            'Else
 
-                'MsgBox("Fix Domain")
-                Dim obj As Object
-                'Dim obj As Object = pfl.GetDomain(0, col.ColumnName)
-                If pfl.Columns(col.ColumnName) IsNot Nothing Then
+            'MsgBox("Fix Domain")
+            Dim obj As Object
+            'Dim obj As Object = pfl.GetDomain(0, col.ColumnName)
+            If pfl.Columns(col.ColumnName) IsNot Nothing Then
 
 
-                    obj = pfl.Columns(col.ColumnName).GetDomain(0)
+                obj = pfl.Columns(col.ColumnName).GetDomain(intSubCode)
+                If pfl.HasSubtypes And col.ColumnName = pfl.SubtypeColumnName Then
+                    newcol.ColumnName = col.ColumnName
+                    newcol.DataType = System.Type.GetType("System.String")
+                    thistable.Columns.Add(newcol)
+                ElseIf obj Is Nothing Then
+                    'Dim newcol As DataColumn = New DataColumn()
+                    newcol.ColumnName = col.ColumnName
+                    newcol.DataType = col.DataType
+                    thistable.Columns.Add(newcol)
+                ElseIf TypeOf obj Is CodedValueDomain Then
 
-                    If obj Is Nothing Then
-                        'Dim newcol As DataColumn = New DataColumn()
-                        newcol.ColumnName = col.ColumnName
-                        newcol.DataType = col.DataType
-                        thistable.Columns.Add(newcol)
-                    ElseIf TypeOf obj Is CodedValueDomain Then
-
-                        pCV = CType(obj, CodedValueDomain)
-                        Dim pHashT As Hashtable = New Hashtable()
-                        Dim cvrow As DataRow
-                        For Each cvrow In pCV.Rows
-                            pHashT.Add(cvrow("Code"), cvrow("Value"))
-                        Next
-                        pHashcol.Add(col, pHashT)
-                        'Dim newcol As DataColumn = New DataColumn()
-                        newcol.ColumnName = col.ColumnName
-                        newcol.DataType = System.Type.GetType("System.String")
-                        thistable.Columns.Add(newcol)
-                    Else
-                        newcol.ColumnName = col.ColumnName
-                        newcol.DataType = col.DataType
-                        thistable.Columns.Add(newcol)
-                    End If
+                    pCV = CType(obj, CodedValueDomain)
+                    Dim pHashT As Hashtable = New Hashtable()
+                    Dim cvrow As DataRow
+                    For Each cvrow In pCV.Rows
+                        pHashT.Add(cvrow("Code"), cvrow("Value"))
+                    Next
+                    pHashcol.Add(col, pHashT)
+                    'Dim newcol As DataColumn = New DataColumn()
+                    newcol.ColumnName = col.ColumnName
+                    newcol.DataType = System.Type.GetType("System.String")
+                    thistable.Columns.Add(newcol)
                 Else
                     newcol.ColumnName = col.ColumnName
                     newcol.DataType = col.DataType
                     thistable.Columns.Add(newcol)
-
                 End If
+            Else
+                newcol.ColumnName = col.ColumnName
+                newcol.DataType = col.DataType
+                thistable.Columns.Add(newcol)
+
             End If
+            'End If
 
         Next
 
 
-        Dim intSubCode As Integer = 0
-
+       
         Dim row As DataRow
         Dim newrow As DataRow
 
         For Each row In results.Rows
             newrow = thistable.NewRow()
             If pfl.HasSubtypes Then
-                intSubCode = row(pfl.SubtypeColumnIndex)
+
+                intSubCode = row(pfl.Columns(pfl.SubtypeColumnName).ColumnName)
                 For Each col In results.Columns
 
                     Dim obj As Object
@@ -2003,9 +2016,13 @@ Public Class MobileSearch
 
 
                     Else
-                        'MsgBox("Fix Domain")
+                        Try
+
+                      
                         obj = pfl.Columns(col.ColumnName).GetDomain(intSubCode)
-                        'obj = pfl.GetDomain(intSubCode, col.ColumnName)
+                        Catch ex As Exception
+                            obj = Nothing
+                        End Try
                     End If
 
 
