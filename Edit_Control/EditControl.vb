@@ -23,6 +23,7 @@ Imports Esri.ArcGISTemplates
 
 
 Public Class EditControl
+    Private m_AttControlBox As AttachmentControl
     Private m_lstAttToDel As List(Of Integer)
 
     Private m_pTabPagAtt As TabPage = Nothing
@@ -2499,9 +2500,12 @@ Public Class EditControl
             'If pfl Is Nothing Then Exit Sub
 
 
-
+            If m_AttControlBox IsNot Nothing Then
+                m_AttControlBox.ClearGraphLayer()
+            End If
             'Clear out the controls from the container
             tbCntrlEdit.TabPages.Clear()
+
             tbCntrlEdit.Controls.Clear()
 
 
@@ -4369,19 +4373,19 @@ Public Class EditControl
                 pTabAtt = tbCntrlEdit.TabPages("Attachments")
 
 
-                Dim pAttControlBox As AttachmentControl = New AttachmentControl()
-                AddHandler pAttControlBox.AttachmentSelected, AddressOf AttachmentSelected
-                AddHandler pAttControlBox.DeleteAttachment, AddressOf DeleteAttachment
+                m_AttControlBox = New AttachmentControl(m_Map)
+                AddHandler m_AttControlBox.AttachmentSelected, AddressOf AttachmentSelected
+                AddHandler m_AttControlBox.DeleteAttachment, AddressOf DeleteAttachment
 
                 ' pAttControlBox.ListBox.ValueMember = "Name"
-                pAttControlBox.Dock = DockStyle.Fill
+                m_AttControlBox.Dock = DockStyle.Fill
                 'Dim pAttList As List(Of Attachment) = m_AttMan.GetAttachments(m_CurrentRow.Fid)
                 ' pLstBox.DataSource = pAttList
                 'For Each att As Attachment In pAttList
                 '    pLstBox.Items.Add(att)
 
                 'Next
-                pTabAtt.Controls.Add(pAttControlBox)
+                pTabAtt.Controls.Add(m_AttControlBox)
                 pTabAtt.Visible = True
                 'm_TabControl.TabPages.Add(pTabAtt)
 
@@ -4824,7 +4828,7 @@ Public Class EditControl
                         CType(m_pTabPagAtt.Controls(0), AttachmentControl).ListBox.Items.Remove(itm)
                         lstAtt.Add(pAtt)
 
-                        
+
                     End If
                 Next
                 For Each att As Attachment In lstAtt
@@ -4834,7 +4838,7 @@ Public Class EditControl
                 For Each attID As Integer In m_lstAttToDel
                     m_AttMan.DeleteAttachment(attID)
                 Next
-             
+
             End If
 
 
@@ -5177,16 +5181,19 @@ Public Class EditControl
 
                             Dim pSpCont As SplitContainer = CType(CType(cCntrl, AttachmentControl).Controls(0), SplitContainer)
 
-                            CType(pSpCont.Panel2.Controls(0), ListBox).Items.Clear()
+                            Dim pLstBox As ListBox = CType(CType(pSpCont.Panel2.Controls(0), SplitContainer).Panel1.Controls(0), ListBox)
+
+                            pLstBox.Items.Clear()
 
                             m_AttMan = m_FDR.FeatureSource.AttachmentManager
 
 
                             Dim pAttList As List(Of Attachment) = m_AttMan.GetAttachments(m_FDR.Fid)
                             For Each att As Attachment In pAttList
-                                CType(pSpCont.Panel2.Controls(0), ListBox).Items.Add(att)
+                                pLstBox.Items.Add(att)
 
                             Next
+                            pLstBox = Nothing
 
                         ElseIf TypeOf cCntrl Is Panel Then
                             Dim cCntrlPnl As Control
@@ -6604,9 +6611,9 @@ Public Class EditControl
     End Sub
 
     Private Sub DeleteAttachment(id As Integer)
-        m_lstAttToDel.add(id)
+        m_lstAttToDel.Add(id)
 
-        
+
     End Sub
 
 

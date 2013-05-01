@@ -989,7 +989,7 @@
     <!--Options Table of Contents panel-->
     <TOCPanel>
       <!--Option to show or hide the Panel-->
-      <Visible>true</Visible>
+      <Visible>True</Visible>
       <!--The text to display in the button-->
       <DisplayText>Legend</DisplayText>
       <!--Message to show in the lower left status bar-->

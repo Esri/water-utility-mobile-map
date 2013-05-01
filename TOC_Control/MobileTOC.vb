@@ -14,7 +14,7 @@
 ' | limitations under the License.
 
 
-Imports ESRI.ArcGIS.Mobile
+Imports Esri.ArcGIS.Mobile
 Imports Esri.ArcGIS.Mobile.FeatureCaching
 Imports System.Windows.Forms
 Imports System.Runtime.InteropServices
@@ -79,11 +79,21 @@ Public Class MobileTOC
 
         End Try
     End Sub
+    Public Sub initTOC()
+        Try
 
+            loadLayers()
+        Catch ex As Exception
+            Dim st As New StackTrace
+            MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+            st = Nothing
+
+        End Try
+    End Sub
     Public Sub refreshTOC()
         Try
-            'Load the layers to the TOC
-            loadSetLayers()
+
+            setLayersProps()
         Catch ex As Exception
             Dim st As New StackTrace
             MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
@@ -148,10 +158,10 @@ Public Class MobileTOC
 
         End Try
     End Sub
-    Private Sub loadSetLayers()
+    Private Sub loadLayers()
         Try
             If m_Map Is Nothing Then Return
-          
+
             ' Total number of MapLayers in the current map
             Dim playersCount As Integer = m_Map.MapLayers.Count
 
@@ -182,6 +192,321 @@ Public Class MobileTOC
 
                 'Gets the map layer for that index
                 pMapLayer = m_Map.MapLayers(i)
+
+                'Gets the map layer's name
+                pMapLayerName = pMapLayer.Name
+
+
+                ' nodes count
+                pNodeCount = tvToc.Nodes.Count
+
+                'Checks if the map layers already exist in the treeview
+                For j As Integer = 0 To pNodeCount - 1
+
+                    If tvToc.Nodes(j).Text = pMapLayerName Then
+                        pNode = tvToc.Nodes(j)
+                        Exit For
+
+                    End If
+
+                Next j
+
+
+                'If map layer does not exist in treeview then add an entry
+                If pNode Is Nothing Then
+
+                    'Creates a map layer parent node
+                    pNode = New TreeNode(pMapLayerName, 0, 0)
+
+                    'Inserts the layer in the correct position in the treeview
+                    'tvToc.Nodes.Insert(pLayerIndex, pNode)
+                    tvToc.Nodes.Add(pNode)
+
+                End If
+
+                If TypeOf pMapLayer Is MobileCacheMapLayer Then
+
+                    'Current map layer
+                    Dim pMobileCacheLayer As MobileCacheMapLayer
+                    Dim pFLayDef As MobileCacheMapLayerDefinition
+
+                    pMobileCacheLayer = TryCast(pMapLayer, MobileCacheMapLayer)
+                    Dim pFS As FeatureSource
+                    For l As Integer = 0 To pMobileCacheLayer.MobileCache.FeatureSources.Count - 1
+
+                        pFS = pMobileCacheLayer.MobileCache.FeatureSources(l)
+                        pFLayDef = pMobileCacheLayer.LayerDefinitions(l)
+
+                        'Creates a map layer parent node
+                        pLayNode = New TreeNode(pFLayDef.Name, 0, 0)
+
+                        'Inserts the layer in the correct position in the treeview
+                        pNode.Nodes.Insert(l, pLayNode)
+
+
+                        If (pFLayDef.Visibility) Then
+                            pLayNode.Checked = True
+                        Else
+                            pLayNode.Checked = False
+
+
+                        End If
+                        If pFLayDef.MinScale = 0 And pFLayDef.MaxScale = 0 Then
+                            pLayNode.ForeColor = System.Drawing.Color.Black
+                        ElseIf pFLayDef.MinScale = 0 And m_Map.Scale > pFLayDef.MaxScale Then
+                            pLayNode.ForeColor = System.Drawing.Color.Black
+                        ElseIf m_Map.Scale < pFLayDef.MinScale And pFLayDef.MaxScale = 0 Then
+                            pLayNode.ForeColor = System.Drawing.Color.Black
+                        ElseIf m_Map.Scale < pFLayDef.MinScale And m_Map.Scale > pFLayDef.MaxScale Then
+                            pLayNode.ForeColor = System.Drawing.Color.Black
+                        Else
+                            pLayNode.ForeColor = System.Drawing.Color.DarkGray
+                        End If
+
+                        ' Contains the map layer legend swatches and labels 
+                        Dim legendSwatchesList As IList(Of LegendItem)
+
+                        legendSwatchesList = pFS.GetLegendItems(tvToc.BackColor, New Drawing.Size(tvToc.ItemHeight, tvToc.ItemHeight), True)
+                        If legendSwatchesList IsNot Nothing Then
+
+
+                            For k As Integer = legendSwatchesList.Count - 1 To 0 Step -1
+                                ' Adds the swatch image to the imagelist 
+                                imgList.Images.Add(legendSwatchesList(k).Swatch)
+                                Dim pLbl As String = legendSwatchesList(k).Symbol.Label
+                                If Trim(pLbl) = "" Then
+                                    pLbl = "Default"
+                                Else
+                                    pLbl = Trim(pLbl)
+                                End If
+                                ' Creates a new child node using the legend's swatch label 
+                                Dim childNode As New TreeNode(pLbl, imageIndex, imageIndex)
+
+
+                                ' Adds the layer node to the treeview 
+                                pLayNode.Nodes.Add(childNode)
+                                removeCheckBoxes(childNode)
+                                imageIndex += 1
+                            Next k
+                        End If
+
+                    Next
+
+
+                ElseIf TypeOf pMapLayer Is Esri.ArcGIS.Mobile.DataProducts.RasterData.TileCacheMapLayer Then
+
+                    ''Current map layer
+                    ''Dim pTileLayer As ESRI.ArcGIS.Mobile.DataProducts.RasterData.TileMapLayer
+                    '' Adds the swatch image to the imagelist 
+                    'Dim bmp1 As System.Drawing.Bitmap = My.Resources.cache 'EmbeddedImage("MobileTOCControls.cache.png") 'New System.Drawing.Bitmap(tvToc.ItemHeight, tvToc.ItemHeight, System.Drawing.Imaging.PixelFormat.Format24bppRgb)
+                    'bmp1.MakeTransparent(bmp1.GetPixel(1, 1))
+
+                    'imgList.Images.Add(bmp1)
+
+                    'Dim pLbl As String = "Basemap"
+
+                    '' Creates a new child node using the legend's swatch label 
+                    'Dim childNode As New TreeNode(pLbl, imageIndex, imageIndex)
+
+
+                    '' Adds the layer node to the treeview 
+                    'pNode.Nodes.Add(childNode)
+                    'removeCheckBoxes(childNode)
+
+                    'imageIndex += 1
+                ElseIf TypeOf pMapLayer Is Esri.ArcGIS.Mobile.DataProducts.StreetMapData.StreetMapLayer Then
+                    ' Adds the swatch image to the imagelist 
+                    Dim bmp1 As System.Drawing.Bitmap = My.Resources.cache 'My.Resources.cacheEmbeddedImage("cache.png") 'New System.Drawing.Bitmap(tvToc.ItemHeight, tvToc.ItemHeight, System.Drawing.Imaging.PixelFormat.Format24bppRgb)
+                    bmp1.MakeTransparent(bmp1.GetPixel(1, 1))
+
+                    imgList.Images.Add(bmp1)
+
+                    Dim pLbl As String = "Basemap"
+
+                    ' Creates a new child node using the legend's swatch label 
+                    Dim childNode As New TreeNode(pLbl, imageIndex, imageIndex)
+
+
+                    ' Adds the layer node to the treeview 
+                    pNode.Nodes.Add(childNode)
+                    removeCheckBoxes(childNode)
+
+                    imageIndex += 1
+                ElseIf TypeOf pMapLayer Is Esri.ArcGIS.Mobile.WebServices.ArcGISServices.MapServices.TileServiceMapLayer Then
+                    ' Adds the swatch image to the imagelist 
+                    'Dim bmp1 As System.Drawing.Bitmap = My.Resources.cache 'EmbeddedImage("cache.png") 'New System.Drawing.Bitmap(tvToc.ItemHeight, tvToc.ItemHeight, System.Drawing.Imaging.PixelFormat.Format24bppRgb)
+                    'bmp1.MakeTransparent(bmp1.GetPixel(1, 1))
+
+                    'imgList.Images.Add(bmp1)
+
+                    'Dim pLbl As String = "Basemap"
+
+                    '' Creates a new child node using the legend's swatch label 
+                    'Dim childNode As New TreeNode(pLbl, imageIndex, imageIndex)
+
+
+                    '' Adds the layer node to the treeview 
+                    'pNode.Nodes.Add(childNode)
+                    'removeCheckBoxes(childNode)
+
+                    'imageIndex += 1
+
+                Else
+
+
+
+                End If
+
+
+                pNode = Nothing
+
+
+
+
+
+            Next i
+            pChildNode = Nothing
+            pMapLayer = Nothing
+            '   pMblService = Nothing
+
+        Catch ex As Exception
+            Dim st As New StackTrace
+            MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+            st = Nothing
+
+        End Try
+    End Sub
+    Private Sub setLayersProps()
+        Try
+            If m_Map Is Nothing Then Return
+
+
+
+            For Each pParNode As TreeNode In tvToc.Nodes
+
+
+                Dim pMapLay As MapLayer = GlobalsFunctions.GetMapLayer(pParNode.Text, m_Map)
+
+                If pMapLay IsNot Nothing Then
+
+                    ' If node is not null and is in range then turn it black
+
+                    If pMapLay.MinScale = 0 And pMapLay.MaxScale = 0 Then
+                        pParNode.ForeColor = System.Drawing.Color.Black
+                    ElseIf pMapLay.MinScale = 0 And m_Map.Scale > pMapLay.MaxScale Then
+                        pParNode.ForeColor = System.Drawing.Color.Black
+                    ElseIf m_Map.Scale < pMapLay.MinScale And pMapLay.MaxScale = 0 Then
+                        pParNode.ForeColor = System.Drawing.Color.Black
+                    ElseIf m_Map.Scale < pMapLay.MinScale And m_Map.Scale > pMapLay.MaxScale Then
+                        pParNode.ForeColor = System.Drawing.Color.Black
+                    Else
+                        pParNode.ForeColor = System.Drawing.Color.DarkGray
+                    End If
+                    If (pMapLay.Visible) Then
+
+                        pParNode.Checked = True
+                    Else
+                        pParNode.Checked = False
+                    End If
+                    Dim pMobileCacheLayer As MobileCacheMapLayer
+                    Dim pFLayDef As MobileCacheMapLayerDefinition
+
+                    Dim pFS As FeatureSource
+
+
+                    For Each pCNode As TreeNode In pParNode.Nodes
+                        'Checks if the map layers already exist in the treeview
+
+
+                        If TypeOf pMapLay Is MobileCacheMapLayer Then
+
+                            pMobileCacheLayer = TryCast(pMapLay, MobileCacheMapLayer)
+                            pFS = pMobileCacheLayer.MobileCache.FeatureSources(pCNode.Text)
+                            If pFS IsNot Nothing Then
+
+
+                                pFLayDef = pMobileCacheLayer.LayerDefinitions(pMobileCacheLayer.MobileCache.FeatureSources.IndexOf(pFS))
+                                If pFLayDef.MinScale = 0 And pFLayDef.MaxScale = 0 Then
+                                    pCNode.ForeColor = System.Drawing.Color.Black
+                                ElseIf pFLayDef.MinScale = 0 And m_Map.Scale > pFLayDef.MaxScale Then
+                                    pCNode.ForeColor = System.Drawing.Color.Black
+                                ElseIf m_Map.Scale < pFLayDef.MinScale And pFLayDef.MaxScale = 0 Then
+                                    pCNode.ForeColor = System.Drawing.Color.Black
+                                ElseIf m_Map.Scale < pFLayDef.MinScale And m_Map.Scale > pFLayDef.MaxScale Then
+                                    pCNode.ForeColor = System.Drawing.Color.Black
+                                Else
+                                    pCNode.ForeColor = System.Drawing.Color.DarkGray
+                                End If
+                                If (pFLayDef.Visibility) Then
+
+                                    pCNode.Checked = True
+                                Else
+                                    pCNode.Checked = False
+                                End If
+                            End If
+
+
+
+
+
+
+
+
+                        Else
+
+
+                        End If
+                    Next
+                End If
+
+            Next
+
+
+        Catch ex As Exception
+            Dim st As New StackTrace
+            MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+            st = Nothing
+
+        End Try
+    End Sub
+    Private Sub loadSetLayers_old()
+        Try
+            If m_Map Is Nothing Then Return
+
+            ' Total number of MapLayers in the current map
+            Dim playersCount As Integer = m_Map.MapLayers.Count
+
+
+            'Current map layer
+            Dim pMapLayer As Esri.ArcGIS.Mobile.MapLayer
+
+            'map layer's name
+            Dim pMapLayerName As String = ""
+
+            'Map layer's index
+            Dim pLayerIndex As Integer = 0
+
+            'Map Layer's node
+            Dim pNode As TreeNode = Nothing
+            Dim pLayNode As TreeNode = Nothing
+
+            'Snapping layer's node
+            Dim pChildNode As TreeNode = Nothing
+
+            'Treeview nodes count
+            Dim pNodeCount As Integer = 0
+
+            'Image Index
+            Dim imageIndex As Integer = 1
+            'Loops through current map layers collection
+            For i As Integer = 0 To playersCount - 1
+
+                'Gets the map layer for that index
+                pMapLayer = m_Map.MapLayers(i)
+                'If TypeOf (pMapLayer) Is MobileCacheMapLayer Then
+                '    CType(pMapLayer, MobileCacheMapLayer).MobileCache.pa()
+
+                'End If
                 'pMobileCacheLayer = CType(m_Map.MapLayers(i), MobileCacheMapLayer)
 
                 'Checks if layer is not visible, or not within scale range
@@ -305,9 +630,9 @@ Public Class MobileTOC
                                     imageIndex += 1
                                 Next k
                             End If
-                            
+
                         Next
-                        
+
 
                     ElseIf TypeOf pMapLayer Is Esri.ArcGIS.Mobile.DataProducts.RasterData.TileCacheMapLayer Then
 
@@ -402,30 +727,104 @@ Public Class MobileTOC
                         pMobileCacheLayer = TryCast(pMapLayer, MobileCacheMapLayer)
                         Dim pFS As FeatureSource
                         'Checks if the map layers already exist in the treeview
+
+
+                        For l As Integer = 0 To pMobileCacheLayer.MobileCache.FeatureSources.Count - 1
+                            pFS = pMobileCacheLayer.MobileCache.FeatureSources(l)
+                            pFLayDef = pMobileCacheLayer.LayerDefinitions(l)
+
+                            If pNode.Nodes.Find(pFS.Name, True).Length = 0 Then
+
+                                'Creates a map layer parent node
+                                pLayNode = New TreeNode(pFLayDef.Name, 0, 0)
+
+                                'Inserts the layer in the correct position in the treeview
+                                pNode.Nodes.Insert(l, pLayNode)
+
+
+                                If (pFLayDef.Visibility) Then
+                                    pLayNode.Checked = True
+                                Else
+                                    pLayNode.Checked = False
+
+
+                                End If
+                                If pFLayDef.MinScale = 0 And pFLayDef.MaxScale = 0 Then
+                                    pLayNode.ForeColor = System.Drawing.Color.Black
+                                ElseIf pFLayDef.MinScale = 0 And m_Map.Scale > pFLayDef.MaxScale Then
+                                    pLayNode.ForeColor = System.Drawing.Color.Black
+                                ElseIf m_Map.Scale < pFLayDef.MinScale And pFLayDef.MaxScale = 0 Then
+                                    pLayNode.ForeColor = System.Drawing.Color.Black
+                                ElseIf m_Map.Scale < pFLayDef.MinScale And m_Map.Scale > pFLayDef.MaxScale Then
+                                    pLayNode.ForeColor = System.Drawing.Color.Black
+                                Else
+                                    pLayNode.ForeColor = System.Drawing.Color.DarkGray
+                                End If
+
+                                ' Contains the map layer legend swatches and labels 
+                                Dim legendSwatchesList As IList(Of LegendItem)
+
+                                legendSwatchesList = pFS.GetLegendItems(tvToc.BackColor, New Drawing.Size(tvToc.ItemHeight, tvToc.ItemHeight), True)
+                                If legendSwatchesList IsNot Nothing Then
+
+
+                                    For k As Integer = legendSwatchesList.Count - 1 To 0 Step -1
+                                        ' Adds the swatch image to the imagelist 
+                                        imgList.Images.Add(legendSwatchesList(k).Swatch)
+                                        Dim pLbl As String = legendSwatchesList(k).Symbol.Label
+                                        If Trim(pLbl) = "" Then
+                                            pLbl = "Default"
+                                        Else
+                                            pLbl = Trim(pLbl)
+                                        End If
+                                        ' Creates a new child node using the legend's swatch label 
+                                        Dim childNode As New TreeNode(pLbl, imageIndex, imageIndex)
+
+
+                                        ' Adds the layer node to the treeview 
+                                        pLayNode.Nodes.Add(childNode)
+                                        removeCheckBoxes(childNode)
+                                        imageIndex += 1
+                                    Next k
+                                End If
+
+
+                            Else
+
+
+                            End If
+
+                        Next
+
                         For p As Integer = 0 To pNode.Nodes.Count - 1
 
                             pFS = pMobileCacheLayer.MobileCache.FeatureSources(pNode.Nodes(p).Text)
+                            If pFS IsNot Nothing Then
 
-                            pFLayDef = pMobileCacheLayer.LayerDefinitions(pMobileCacheLayer.MobileCache.FeatureSources.IndexOf(pFS))
-                            If pFLayDef.MinScale = 0 And pFLayDef.MaxScale = 0 Then
-                                pNode.Nodes(p).ForeColor = System.Drawing.Color.Black
-                            ElseIf pFLayDef.MinScale = 0 And m_Map.Scale > pFLayDef.MaxScale Then
-                                pNode.Nodes(p).ForeColor = System.Drawing.Color.Black
-                            ElseIf m_Map.Scale < pFLayDef.MinScale And pFLayDef.MaxScale = 0 Then
-                                pNode.Nodes(p).ForeColor = System.Drawing.Color.Black
-                            ElseIf m_Map.Scale < pFLayDef.MinScale And m_Map.Scale > pFLayDef.MaxScale Then
-                                pNode.Nodes(p).ForeColor = System.Drawing.Color.Black
-                            Else
-                                pNode.Nodes(p).ForeColor = System.Drawing.Color.DarkGray
-                            End If
-                            If (pFLayDef.Visibility) Then
 
-                                pNode.Nodes(p).Checked = True
-                            Else
-                                pNode.Nodes(p).Checked = False
+                                pFLayDef = pMobileCacheLayer.LayerDefinitions(pMobileCacheLayer.MobileCache.FeatureSources.IndexOf(pFS))
+                                If pFLayDef.MinScale = 0 And pFLayDef.MaxScale = 0 Then
+                                    pNode.Nodes(p).ForeColor = System.Drawing.Color.Black
+                                ElseIf pFLayDef.MinScale = 0 And m_Map.Scale > pFLayDef.MaxScale Then
+                                    pNode.Nodes(p).ForeColor = System.Drawing.Color.Black
+                                ElseIf m_Map.Scale < pFLayDef.MinScale And pFLayDef.MaxScale = 0 Then
+                                    pNode.Nodes(p).ForeColor = System.Drawing.Color.Black
+                                ElseIf m_Map.Scale < pFLayDef.MinScale And m_Map.Scale > pFLayDef.MaxScale Then
+                                    pNode.Nodes(p).ForeColor = System.Drawing.Color.Black
+                                Else
+                                    pNode.Nodes(p).ForeColor = System.Drawing.Color.DarkGray
+                                End If
+                                If (pFLayDef.Visibility) Then
+
+                                    pNode.Nodes(p).Checked = True
+                                Else
+                                    pNode.Nodes(p).Checked = False
+                                End If
                             End If
 
                         Next p
+
+
 
                     End If
                     pLayerIndex = pLayerIndex + 1
@@ -458,7 +857,7 @@ Public Class MobileTOC
 
 
             'Gray out or activate layers that are visible
-            loadSetLayers()
+            setLayersProps()
         Catch ex As Exception
             Dim st As New StackTrace
             MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
@@ -492,7 +891,7 @@ Public Class MobileTOC
                 CType(m_Map.MapLayers(pFSwD.MapLayerIndex), MobileCacheMapLayer).LayerDefinitions(pFSwD.LayerIndex).Visibility = pNode.Checked
                 'Cleanup
             End If
-            
+
             pFSwD = Nothing
             pNode = Nothing
         Catch ex As Exception

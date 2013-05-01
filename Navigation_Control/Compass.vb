@@ -224,8 +224,13 @@ Public Class Compass
 
                 txtCurY.Text = String.Format("{0:0.000000}", GlobalsFunctions.m_GPS.GpsConnection.Latitude)
                 txtCurX.Text = String.Format("{0:0.000000}", GlobalsFunctions.m_GPS.GpsConnection.Longitude)
-                lblFix.text = GlobalsFunctions.m_GPS.GpsConnection.FixStatus.ToString()
-                lblSpeed.text = String.Format("{0:0.0} km/h", GlobalsFunctions.m_GPS.GpsConnection.Speed)
+                lblFix.Text = GlobalsFunctions.m_GPS.GpsConnection.FixStatus.ToString()
+                If GlobalsFunctions.appConfig.NavigationOptions.GPS.WaypointControl.DisplayUnits.ToString.ToUpper = "METRIC" Then
+                    lblSpeed.Text = String.Format("{0:0.0} km/h", GlobalsFunctions.m_GPS.GpsConnection.Speed)
+                Else
+                    lblSpeed.Text = String.Format("{0:0.0} m/h", GlobalsFunctions.m_GPS.GpsConnection.Speed * 0.621371)
+                End If
+
                 lblCourse.text = String.Format("{0:0.0} degrees ", GlobalsFunctions.m_GPS.GpsConnection.Course)
                 lblNumSat.text = GlobalsFunctions.m_GPS.GpsConnection.FixSatelliteCount
 
@@ -248,6 +253,7 @@ Public Class Compass
 
                     'calculate bearing/distance
                     Dim distMile As Double = GlobalsFunctions.Distance(currX, currY, destX, destY, GlobalsFunctions.LengthUnit.Mile)
+                    'Dim dist As Double = GlobalsFunctions.Distance(currX, currY, destX, destY)
                     destDir = GlobalsFunctions.Bearing(currX, currY, destX, destY)
                     ' arrive time
                     If (GlobalsFunctions.m_GPS.GpsConnection.Speed.ToString().ToLower() <> "nan") OrElse (GlobalsFunctions.m_GPS.GpsConnection.Speed <> 0) Then
@@ -291,13 +297,28 @@ Public Class Compass
                     Else
                         turntxt = "waiting for GPS bearing..."
                     End If
-                    If (distMile < 0.5) Then
+                    If GlobalsFunctions.appConfig.NavigationOptions.GPS.WaypointControl.DisplayUnits.ToString.ToUpper = "METRIC" Then
+                        distMile = GlobalsFunctions.ConvertDistance(distMile, m_Map.SpatialReference.Unit.Mile, Esri.ArcGIS.Mobile.SpatialReferences.Unit.Meter)
+                        If (distMile < 1000) Then
 
-                        lblDistance.Text = String.Format("{0:0.000} feet", distMile * 5280)
+                            lblDistance.Text = String.Format("{0:0.000} m", distMile)
+                        Else
+                            lblDistance.Text = String.Format("{0:0.000} km", distMile / 1000)
+                        End If
+
                     Else
-                        lblDistance.Text = String.Format("{0:0.000} miles", distMile)
+                        'dist = GlobalsFunctions.ConvertDistance(dist, m_Map.SpatialReference.Unit, Esri.ArcGIS.Mobile.SpatialReferences.Unit.FootUS)
+                        If (distMile < 0.5) Then
+
+                            lblDistance.Text = String.Format("{0:0.000} ft", distMile * 5280)
+                        Else
+                            lblDistance.Text = String.Format("{0:0.000} mi", distMile)
+                        End If
+
                     End If
 
+
+                    
                     lblBearing.Text = String.Format("{0:0.0}", destDir)
                     lblTurnIn.Text = turntxt
 

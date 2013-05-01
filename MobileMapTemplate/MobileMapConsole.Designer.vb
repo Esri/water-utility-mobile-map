@@ -26,6 +26,7 @@ Partial Class MobileMapConsole
         Me.spContMain = New System.Windows.Forms.SplitContainer()
         Me.spContControls = New System.Windows.Forms.SplitContainer()
         Me.tblLayoutWidgets = New System.Windows.Forms.TableLayoutPanel()
+        Me.pnlWaypoint = New System.Windows.Forms.Panel()
         Me.pnlGeonetTrace = New System.Windows.Forms.Panel()
         Me.pnlRouting = New System.Windows.Forms.Panel()
         Me.pnlInspect = New System.Windows.Forms.Panel()
@@ -47,7 +48,6 @@ Partial Class MobileMapConsole
         Me.gpBxSideBar = New System.Windows.Forms.GroupBox()
         Me.btnToggleScreens = New System.Windows.Forms.Button()
         Me.btnToggleDisplay = New System.Windows.Forms.Button()
-        Me.pnlWaypoint = New System.Windows.Forms.Panel()
         Me.spContMain.Panel1.SuspendLayout()
         Me.spContMain.Panel2.SuspendLayout()
         Me.spContMain.SuspendLayout()
@@ -129,6 +129,14 @@ Partial Class MobileMapConsole
         Me.tblLayoutWidgets.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.0!))
         Me.tblLayoutWidgets.Size = New System.Drawing.Size(289, 157)
         Me.tblLayoutWidgets.TabIndex = 1
+        '
+        'pnlWaypoint
+        '
+        Me.pnlWaypoint.Location = New System.Drawing.Point(73, 329)
+        Me.pnlWaypoint.Name = "pnlWaypoint"
+        Me.pnlWaypoint.Size = New System.Drawing.Size(86, 76)
+        Me.pnlWaypoint.TabIndex = 7
+        Me.pnlWaypoint.Visible = False
         '
         'pnlGeonetTrace
         '
@@ -314,16 +322,6 @@ Partial Class MobileMapConsole
         Me.btnToggleDisplay.TabIndex = 0
         Me.btnToggleDisplay.Tag = "PanelVert"
         Me.btnToggleDisplay.UseVisualStyleBackColor = True
-
-        'pnlWaypoint
-        '
-        Me.pnlWaypoint.Location = New System.Drawing.Point(73, 329)
-        Me.pnlWaypoint.Name = "pnlWaypoint"
-        Me.pnlWaypoint.Size = New System.Drawing.Size(86, 76)
-        Me.pnlWaypoint.TabIndex = 7
-        Me.pnlWaypoint.Visible = False
-        '
-
         '
         'MobileMapConsole
         '

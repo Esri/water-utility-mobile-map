@@ -494,7 +494,8 @@ Public Class mobileNavigation
                     'Dim pgs As ESRI.ArcGIS.Mobile.Gps.GpsConstructionTool = New ESRI.ArcGIS.Mobile.Gps.GpsConstructionTool
 
 
-                    If GlobalsFunctions.m_GPS.GpsConnection.FixStatus = GlobalsFunctions.GPSTextToFix(GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSFixType) And ((Double.IsNaN(GlobalsFunctions.m_GPS.GpsConnection.PositionDilutionOfPrecision)) Or CDbl(GlobalsFunctions.m_GPS.GpsConnection.PositionDilutionOfPrecision) <= CDbl(GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSPDOP)) Then
+                    ' If GlobalsFunctions.m_GPS.GpsConnection.FixStatus = GlobalsFunctions.GPSTextToFix(GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSFixType) And _
+                    If ((Double.IsNaN(GlobalsFunctions.m_GPS.GpsConnection.PositionDilutionOfPrecision)) Or CDbl(GlobalsFunctions.m_GPS.GpsConnection.PositionDilutionOfPrecision) <= CDbl(GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSPDOP)) Then
 
                         ' Dim pNewCoord As Esri.ArcGIS.Mobile.Geometries.Coordinate = New Esri.ArcGIS.Mobile.Geometries.Coordinate(GlobalsFunctions.m_GPS.GpsConnection.Longitude, GlobalsFunctions.GlobalsFunctions.m_GPS.GpsConnection.Latitude)
                         gpsD = New GPSLocationDetails()
@@ -739,7 +740,7 @@ Public Class mobileNavigation
 
             End Try
             GlobalsFunctions.m_GPS.GpsConnection = m_SerialGPS
-            
+
 
         End If
         Return True

@@ -132,6 +132,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="SketchMapAction.vb" />
+    <Compile Include="SketchMapGraphic.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AttachmentControl.resx">
@@ -189,6 +191,10 @@
       <Project>{49225870-D079-4557-B5FA-B23CE053284E}</Project>
       <Name>Esri.ArcGISTemplates.CommonControls</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NavigationPane\NavigationPane.csproj">
+      <Project>{7DC9A638-7BE8-4CF7-AC2E-57C77F1BF9BC}</Project>
+      <Name>NavigationPane</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Images\ClearGreen.png" />
@@ -224,13 +230,24 @@
     <None Include="Images\greenQuestion.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Images\RotateLeftGray.png" />
+    <None Include="Images\SaveSketchGray.png" />
+    <None Include="Images\RotateLeft.png" />
+    <None Include="Images\SaveSketch.png" />
+    <None Include="Images\target.ico" />
     <None Include="Images\Delete.png" />
     <None Include="Images\DeleteGray.png" />
     <None Include="Images\DeleteRed.png" />
     <None Include="Images\DeleteGreen.png" />
     <Content Include="Images\AddAtt.png" />
     <None Include="Images\AddCameraAtta.png" />
+    <None Include="Images\AddSketchAtt.png" />
+    <None Include="Images\ClearSketch.png" />
+    <None Include="Images\AddSketchAttFlip.png" />
+    <None Include="Images\AddSketchAttred.png" />
+    <None Include="Images\ClearSketchGray.png" />
     <Content Include="Images\DelAtt.png" />
+    <None Include="Images\DelAttBlue.png" />
     <Content Include="Images\Freehand.ico" />
     <None Include="Images\SatImageGraypng.png" />
   </ItemGroup>

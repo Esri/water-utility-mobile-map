@@ -1864,9 +1864,9 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
         Public Sub New()
             MyBase.New()
 
-            Me.layerNotFoundField = ""
+            Me.layerNotFoundField = "{0}"
 
-            Me.fieldNotFoundField = ""
+            Me.fieldNotFoundField = "{0}{1}"
             Me.yesTextField = "Yes"
             Me.noTextField = "No"
 
@@ -2590,11 +2590,12 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
 
         Private statusBarMessageField As String
 
+        Private DisplayUnitsField As String
 
         Public Sub New()
             MyBase.New()
             visibleField = False
-
+            DisplayUnitsField = "Imperial"
 
         End Sub
 
@@ -2625,6 +2626,17 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
             End Get
             Set(ByVal value As String)
                 Me.statusBarMessageField = value
+            End Set
+        End Property
+
+
+        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=3)> _
+        Public Property DisplayUnits() As String
+            Get
+                Return Me.DisplayUnitsField
+            End Get
+            Set(ByVal value As String)
+                Me.DisplayUnitsField = value
             End Set
         End Property
 
@@ -11404,7 +11416,20 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
         Private xmaxField As String = ""
         Private yminField As String = ""
         Private ymaxField As String = ""
+        Private displayTextField As String = ""
       
+        <System.Xml.Serialization.XmlAttributeAttribute()> _
+        Public Property DisplayText() As String
+            Get
+                If Me.displayTextField Is Nothing Then Return (Me.layerNameField)
+                If Me.displayTextField = "" Then Return (Me.layerNameField)
+                Return Me.displayTextField
+            End Get
+            Set(ByVal value As String)
+                Me.displayTextField = value
+            End Set
+        End Property
+
         <System.Xml.Serialization.XmlAttributeAttribute()> _
         Public Property xmin() As String
             Get
@@ -11463,6 +11488,8 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
         Public Sub New()
             MyBase.New()
             Me.pointFieldsField = New MobileConfigMobileMapConfigSearchPanelDrillDownSearchesDrillDownSearchPointFields
+            Me.displayTextField = ""
+
         End Sub
 
         '<System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=0)> _
@@ -16349,6 +16376,7 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
 
         Private toolMessageField As String
 
+        Private attachmentOptionsField As MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptions
         'Private layerNameField As String
 
         'Private redlineModeField As String
@@ -16397,15 +16425,15 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
             End Set
         End Property
 
-        '<System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=4)> _
-        'Public Property Layers() As MobileConfigMobileMapConfigCreateFeaturePanelLayers
-        '    Get
-        '        Return Me.layersField
-        '    End Get
-        '    Set(ByVal value As MobileConfigMobileMapConfigCreateFeaturePanelLayers)
-        '        Me.layersField = value
-        '    End Set
-        'End Property
+        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=4)> _
+        Public Property AttachmentOptions() As MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptions
+            Get
+                Return Me.attachmentOptionsField
+            End Get
+            Set(ByVal value As MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptions)
+                Me.attachmentOptionsField = value
+            End Set
+        End Property
 
         '<System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=4)> _
         'Public Property LayerName() As String
@@ -16574,177 +16602,599 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
 #End Region
     End Class
 
-    '    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.233"), _
-    '   System.SerializableAttribute(), _
-    '   System.ComponentModel.DesignerCategoryAttribute("code"), _
-    '   System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
-    '    Partial Public Class MobileConfigMobileMapConfigCreateFeaturePanelLayers
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.233"), _
+   System.SerializableAttribute(), _
+   System.ComponentModel.DesignerCategoryAttribute("code"), _
+   System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
+    Partial Public Class MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptions
 
-    '        Private layerField As List(Of MobileConfigMobileMapConfigCreateFeaturePanelLayersLayer)
+        Private attachmentSketchGroupsField As MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroups
 
-    '        Private Shared sSerializer As System.Xml.Serialization.XmlSerializer
 
-    '        Public Sub New()
-    '            MyBase.New()
-    '            Me.layerField = New List(Of MobileConfigMobileMapConfigCreateFeaturePanelLayersLayer)
-    '        End Sub
+       
+        Private Shared sSerializer As System.Xml.Serialization.XmlSerializer
 
-    '        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=0)> _
-    '        Public Property Layer() As List(Of MobileConfigMobileMapConfigCreateFeaturePanelLayersLayer)
-    '            Get
-    '                Return Me.layerField
-    '            End Get
-    '            Set(ByVal value As List(Of MobileConfigMobileMapConfigCreateFeaturePanelLayersLayer))
-    '                Me.layerField = value
-    '            End Set
-    '        End Property
+        Public Sub New()
+            MyBase.New()
 
-    '        Private Shared ReadOnly Property Serializer() As System.Xml.Serialization.XmlSerializer
-    '            Get
-    '                If (sSerializer Is Nothing) Then
-    '                    sSerializer = New System.Xml.Serialization.XmlSerializer(GetType(MobileConfigMobileMapConfigCreateFeaturePanelLayers))
-    '                End If
-    '                Return sSerializer
-    '            End Get
-    '        End Property
+        End Sub
 
-    '#Region "Serialize/Deserialize"
-    '        '''<summary>
-    '        '''Serializes current MobileConfigMobileMapConfigCreateFeaturePanelLayers object into an XML document
-    '        '''</summary>
-    '        '''<returns>string XML value</returns>
-    '        Public Overridable Function Serialize() As String
-    '            Dim streamReader As System.IO.StreamReader = Nothing
-    '            Dim memoryStream As System.IO.MemoryStream = Nothing
-    '            Try
-    '                memoryStream = New System.IO.MemoryStream()
-    '                Serializer.Serialize(memoryStream, Me)
-    '                memoryStream.Seek(0, System.IO.SeekOrigin.Begin)
-    '                streamReader = New System.IO.StreamReader(memoryStream)
-    '                Return streamReader.ReadToEnd
-    '            Finally
-    '                If (Not (streamReader) Is Nothing) Then
-    '                    streamReader.Dispose()
-    '                End If
-    '                If (Not (memoryStream) Is Nothing) Then
-    '                    memoryStream.Dispose()
-    '                End If
-    '            End Try
-    '        End Function
+        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=0)> _
+        Public Property AttachmentSketchGroups() As MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroups
+            Get
+                Return Me.attachmentSketchGroupsField
+            End Get
+            Set(ByVal value As MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroups)
+                Me.attachmentSketchGroupsField = value
+            End Set
+        End Property
 
-    '        '''<summary>
-    '        '''Deserializes workflow markup into an MobileConfigMobileMapConfigCreateFeaturePanelLayers object
-    '        '''</summary>
-    '        '''<param name="xml">string workflow markup to deserialize</param>
-    '        '''<param name="obj">Output MobileConfigMobileMapConfigCreateFeaturePanelLayers object</param>
-    '        '''<param name="exception">output Exception value if deserialize failed</param>
-    '        '''<returns>true if this XmlSerializer can deserialize the object; otherwise, false</returns>
-    '        Public Overloads Shared Function Deserialize(ByVal xml As String, ByRef obj As MobileConfigMobileMapConfigCreateFeaturePanelLayers, ByRef exception As System.Exception) As Boolean
-    '            exception = Nothing
-    '            obj = CType(Nothing, MobileConfigMobileMapConfigCreateFeaturePanelLayers)
-    '            Try
-    '                obj = Deserialize(xml)
-    '                Return True
-    '            Catch ex As System.Exception
-    '                exception = ex
-    '                Return False
-    '            End Try
-    '        End Function
+        Private Shared ReadOnly Property Serializer() As System.Xml.Serialization.XmlSerializer
+            Get
+                If (sSerializer Is Nothing) Then
+                    sSerializer = New System.Xml.Serialization.XmlSerializer(GetType(MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptions))
+                End If
+                Return sSerializer
+            End Get
+        End Property
 
-    '        Public Overloads Shared Function Deserialize(ByVal xml As String, ByRef obj As MobileConfigMobileMapConfigCreateFeaturePanelLayers) As Boolean
-    '            Dim exception As System.Exception = Nothing
-    '            Return Deserialize(xml, obj, exception)
-    '        End Function
+#Region "Serialize/Deserialize"
+        '''<summary>
+        '''Serializes current MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptions object into an XML document
+        '''</summary>
+        '''<returns>string XML value</returns>
+        Public Overridable Function Serialize() As String
+            Dim streamReader As System.IO.StreamReader = Nothing
+            Dim memoryStream As System.IO.MemoryStream = Nothing
+            Try
+                memoryStream = New System.IO.MemoryStream()
+                Serializer.Serialize(memoryStream, Me)
+                memoryStream.Seek(0, System.IO.SeekOrigin.Begin)
+                streamReader = New System.IO.StreamReader(memoryStream)
+                Return streamReader.ReadToEnd
+            Finally
+                If (Not (streamReader) Is Nothing) Then
+                    streamReader.Dispose()
+                End If
+                If (Not (memoryStream) Is Nothing) Then
+                    memoryStream.Dispose()
+                End If
+            End Try
+        End Function
 
-    '        Public Overloads Shared Function Deserialize(ByVal xml As String) As MobileConfigMobileMapConfigCreateFeaturePanelLayers
-    '            Dim stringReader As System.IO.StringReader = Nothing
-    '            Try
-    '                stringReader = New System.IO.StringReader(xml)
-    '                Return CType(Serializer.Deserialize(System.Xml.XmlReader.Create(stringReader)), MobileConfigMobileMapConfigCreateFeaturePanelLayers)
-    '            Finally
-    '                If (Not (stringReader) Is Nothing) Then
-    '                    stringReader.Dispose()
-    '                End If
-    '            End Try
-    '        End Function
+        '''<summary>
+        '''Deserializes workflow markup into an MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptions object
+        '''</summary>
+        '''<param name="xml">string workflow markup to deserialize</param>
+        '''<param name="obj">Output MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptions object</param>
+        '''<param name="exception">output Exception value if deserialize failed</param>
+        '''<returns>true if this XmlSerializer can deserialize the object; otherwise, false</returns>
+        Public Overloads Shared Function Deserialize(ByVal xml As String, ByRef obj As MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptions, ByRef exception As System.Exception) As Boolean
+            exception = Nothing
+            obj = CType(Nothing, MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptions)
+            Try
+                obj = Deserialize(xml)
+                Return True
+            Catch ex As System.Exception
+                exception = ex
+                Return False
+            End Try
+        End Function
 
-    '        '''<summary>
-    '        '''Serializes current MobileConfigMobileMapConfigCreateFeaturePanelLayers object into file
-    '        '''</summary>
-    '        '''<param name="fileName">full path of outupt xml file</param>
-    '        '''<param name="exception">output Exception value if failed</param>
-    '        '''<returns>true if can serialize and save into file; otherwise, false</returns>
-    '        Public Overridable Overloads Function SaveToFile(ByVal fileName As String, ByRef exception As System.Exception) As Boolean
-    '            exception = Nothing
-    '            Try
-    '                SaveToFile(fileName)
-    '                Return True
-    '            Catch e As System.Exception
-    '                exception = e
-    '                Return False
-    '            End Try
-    '        End Function
+        Public Overloads Shared Function Deserialize(ByVal xml As String, ByRef obj As MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptions) As Boolean
+            Dim exception As System.Exception = Nothing
+            Return Deserialize(xml, obj, exception)
+        End Function
 
-    '        Public Overridable Overloads Sub SaveToFile(ByVal fileName As String)
-    '            Dim streamWriter As System.IO.StreamWriter = Nothing
-    '            Try
-    '                Dim xmlString As String = Serialize()
-    '                Dim xmlFile As System.IO.FileInfo = New System.IO.FileInfo(fileName)
-    '                streamWriter = xmlFile.CreateText
-    '                streamWriter.WriteLine(xmlString)
-    '                streamWriter.Close()
-    '            Finally
-    '                If (Not (streamWriter) Is Nothing) Then
-    '                    streamWriter.Dispose()
-    '                End If
-    '            End Try
-    '        End Sub
+        Public Overloads Shared Function Deserialize(ByVal xml As String) As MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptions
+            Dim stringReader As System.IO.StringReader = Nothing
+            Try
+                stringReader = New System.IO.StringReader(xml)
+                Return CType(Serializer.Deserialize(System.Xml.XmlReader.Create(stringReader)), MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptions)
+            Finally
+                If (Not (stringReader) Is Nothing) Then
+                    stringReader.Dispose()
+                End If
+            End Try
+        End Function
 
-    '        '''<summary>
-    '        '''Deserializes xml markup from file into an MobileConfigMobileMapConfigCreateFeaturePanelLayers object
-    '        '''</summary>
-    '        '''<param name="fileName">string xml file to load and deserialize</param>
-    '        '''<param name="obj">Output MobileConfigMobileMapConfigCreateFeaturePanelLayers object</param>
-    '        '''<param name="exception">output Exception value if deserialize failed</param>
-    '        '''<returns>true if this XmlSerializer can deserialize the object; otherwise, false</returns>
-    '        Public Overloads Shared Function LoadFromFile(ByVal fileName As String, ByRef obj As MobileConfigMobileMapConfigCreateFeaturePanelLayers, ByRef exception As System.Exception) As Boolean
-    '            exception = Nothing
-    '            obj = CType(Nothing, MobileConfigMobileMapConfigCreateFeaturePanelLayers)
-    '            Try
-    '                obj = LoadFromFile(fileName)
-    '                Return True
-    '            Catch ex As System.Exception
-    '                exception = ex
-    '                Return False
-    '            End Try
-    '        End Function
+        '''<summary>
+        '''Serializes current MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptions object into file
+        '''</summary>
+        '''<param name="fileName">full path of outupt xml file</param>
+        '''<param name="exception">output Exception value if failed</param>
+        '''<returns>true if can serialize and save into file; otherwise, false</returns>
+        Public Overridable Overloads Function SaveToFile(ByVal fileName As String, ByRef exception As System.Exception) As Boolean
+            exception = Nothing
+            Try
+                SaveToFile(fileName)
+                Return True
+            Catch e As System.Exception
+                exception = e
+                Return False
+            End Try
+        End Function
 
-    '        Public Overloads Shared Function LoadFromFile(ByVal fileName As String, ByRef obj As MobileConfigMobileMapConfigCreateFeaturePanelLayers) As Boolean
-    '            Dim exception As System.Exception = Nothing
-    '            Return LoadFromFile(fileName, obj, exception)
-    '        End Function
+        Public Overridable Overloads Sub SaveToFile(ByVal fileName As String)
+            Dim streamWriter As System.IO.StreamWriter = Nothing
+            Try
+                Dim xmlString As String = Serialize()
+                Dim xmlFile As System.IO.FileInfo = New System.IO.FileInfo(fileName)
+                streamWriter = xmlFile.CreateText
+                streamWriter.WriteLine(xmlString)
+                streamWriter.Close()
+            Finally
+                If (Not (streamWriter) Is Nothing) Then
+                    streamWriter.Dispose()
+                End If
+            End Try
+        End Sub
 
-    '        Public Overloads Shared Function LoadFromFile(ByVal fileName As String) As MobileConfigMobileMapConfigCreateFeaturePanelLayers
-    '            Dim file As System.IO.FileStream = Nothing
-    '            Dim sr As System.IO.StreamReader = Nothing
-    '            Try
-    '                file = New System.IO.FileStream(fileName, FileMode.Open, FileAccess.Read)
-    '                sr = New System.IO.StreamReader(file)
-    '                Dim xmlString As String = sr.ReadToEnd
-    '                sr.Close()
-    '                file.Close()
-    '                Return Deserialize(xmlString)
-    '            Finally
-    '                If (Not (file) Is Nothing) Then
-    '                    file.Dispose()
-    '                End If
-    '                If (Not (sr) Is Nothing) Then
-    '                    sr.Dispose()
-    '                End If
-    '            End Try
-    '        End Function
-    '#End Region
-    '    End Class
+        '''<summary>
+        '''Deserializes xml markup from file into an MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptions object
+        '''</summary>
+        '''<param name="fileName">string xml file to load and deserialize</param>
+        '''<param name="obj">Output MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptions object</param>
+        '''<param name="exception">output Exception value if deserialize failed</param>
+        '''<returns>true if this XmlSerializer can deserialize the object; otherwise, false</returns>
+        Public Overloads Shared Function LoadFromFile(ByVal fileName As String, ByRef obj As MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptions, ByRef exception As System.Exception) As Boolean
+            exception = Nothing
+            obj = CType(Nothing, MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptions)
+            Try
+                obj = LoadFromFile(fileName)
+                Return True
+            Catch ex As System.Exception
+                exception = ex
+                Return False
+            End Try
+        End Function
+
+        Public Overloads Shared Function LoadFromFile(ByVal fileName As String, ByRef obj As MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptions) As Boolean
+            Dim exception As System.Exception = Nothing
+            Return LoadFromFile(fileName, obj, exception)
+        End Function
+
+        Public Overloads Shared Function LoadFromFile(ByVal fileName As String) As MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptions
+            Dim file As System.IO.FileStream = Nothing
+            Dim sr As System.IO.StreamReader = Nothing
+            Try
+                file = New System.IO.FileStream(fileName, FileMode.Open, FileAccess.Read)
+                sr = New System.IO.StreamReader(file)
+                Dim xmlString As String = sr.ReadToEnd
+                sr.Close()
+                file.Close()
+                Return Deserialize(xmlString)
+            Finally
+                If (Not (file) Is Nothing) Then
+                    file.Dispose()
+                End If
+                If (Not (sr) Is Nothing) Then
+                    sr.Dispose()
+                End If
+            End Try
+        End Function
+#End Region
+    End Class
+
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.233"), _
+   System.SerializableAttribute(), _
+   System.ComponentModel.DesignerCategoryAttribute("code"), _
+   System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
+    Partial Public Class MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroups
+
+        Private AttachmentSketchGroupField As List(Of MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroupsAttachmentSketchGroup)
+        Private buttonSizeField As String
+        Private buttonFontSizeField As String
+        Private listFontSizeField As String
+
+        Private Shared sSerializer As System.Xml.Serialization.XmlSerializer
+
+        Public Sub New()
+            MyBase.New()
+            Me.AttachmentSketchGroupField = New List(Of MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroupsAttachmentSketchGroup)
+        End Sub
+
+
+        <System.Xml.Serialization.XmlAttributeAttribute()> _
+        Public Property ButtonSize() As String
+            Get
+                Return Me.buttonSizeField
+            End Get
+            Set(ByVal value As String)
+                Me.buttonSizeField = value
+            End Set
+        End Property
+
+
+        <System.Xml.Serialization.XmlAttributeAttribute()> _
+        Public Property ButtonFontSize() As String
+            Get
+                Return Me.buttonFontSizeField
+            End Get
+            Set(ByVal value As String)
+                Me.buttonFontSizeField = value
+            End Set
+        End Property
+        <System.Xml.Serialization.XmlAttributeAttribute()> _
+        Public Property ListFontSize() As String
+            Get
+                Return Me.listFontSizeField
+            End Get
+            Set(ByVal value As String)
+                Me.listFontSizeField = value
+            End Set
+        End Property
+        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=0)> _
+        Public Property AttachmentSketchGroup() As List(Of MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroupsAttachmentSketchGroup)
+            Get
+                Return Me.AttachmentSketchGroupField
+            End Get
+            Set(ByVal value As List(Of MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroupsAttachmentSketchGroup))
+                Me.AttachmentSketchGroupField = value
+            End Set
+        End Property
+
+        Private Shared ReadOnly Property Serializer() As System.Xml.Serialization.XmlSerializer
+            Get
+                If (sSerializer Is Nothing) Then
+                    sSerializer = New System.Xml.Serialization.XmlSerializer(GetType(MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroups))
+                End If
+                Return sSerializer
+            End Get
+        End Property
+
+#Region "Serialize/Deserialize"
+        '''<summary>
+        '''Serializes current MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroups object into an XML document
+        '''</summary>
+        '''<returns>string XML value</returns>
+        Public Overridable Function Serialize() As String
+            Dim streamReader As System.IO.StreamReader = Nothing
+            Dim memoryStream As System.IO.MemoryStream = Nothing
+            Try
+                memoryStream = New System.IO.MemoryStream()
+                Serializer.Serialize(memoryStream, Me)
+                memoryStream.Seek(0, System.IO.SeekOrigin.Begin)
+                streamReader = New System.IO.StreamReader(memoryStream)
+                Return streamReader.ReadToEnd
+            Finally
+                If (Not (streamReader) Is Nothing) Then
+                    streamReader.Dispose()
+                End If
+                If (Not (memoryStream) Is Nothing) Then
+                    memoryStream.Dispose()
+                End If
+            End Try
+        End Function
+
+        '''<summary>
+        '''Deserializes workflow markup into an MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroups object
+        '''</summary>
+        '''<param name="xml">string workflow markup to deserialize</param>
+        '''<param name="obj">Output MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroups object</param>
+        '''<param name="exception">output Exception value if deserialize failed</param>
+        '''<returns>true if this XmlSerializer can deserialize the object; otherwise, false</returns>
+        Public Overloads Shared Function Deserialize(ByVal xml As String, ByRef obj As MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroups, ByRef exception As System.Exception) As Boolean
+            exception = Nothing
+            obj = CType(Nothing, MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroups)
+            Try
+                obj = Deserialize(xml)
+                Return True
+            Catch ex As System.Exception
+                exception = ex
+                Return False
+            End Try
+        End Function
+
+        Public Overloads Shared Function Deserialize(ByVal xml As String, ByRef obj As MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroups) As Boolean
+            Dim exception As System.Exception = Nothing
+            Return Deserialize(xml, obj, exception)
+        End Function
+
+        Public Overloads Shared Function Deserialize(ByVal xml As String) As MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroups
+            Dim stringReader As System.IO.StringReader = Nothing
+            Try
+                stringReader = New System.IO.StringReader(xml)
+                Return CType(Serializer.Deserialize(System.Xml.XmlReader.Create(stringReader)), MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroups)
+            Finally
+                If (Not (stringReader) Is Nothing) Then
+                    stringReader.Dispose()
+                End If
+            End Try
+        End Function
+
+        '''<summary>
+        '''Serializes current MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroups object into file
+        '''</summary>
+        '''<param name="fileName">full path of outupt xml file</param>
+        '''<param name="exception">output Exception value if failed</param>
+        '''<returns>true if can serialize and save into file; otherwise, false</returns>
+        Public Overridable Overloads Function SaveToFile(ByVal fileName As String, ByRef exception As System.Exception) As Boolean
+            exception = Nothing
+            Try
+                SaveToFile(fileName)
+                Return True
+            Catch e As System.Exception
+                exception = e
+                Return False
+            End Try
+        End Function
+
+        Public Overridable Overloads Sub SaveToFile(ByVal fileName As String)
+            Dim streamWriter As System.IO.StreamWriter = Nothing
+            Try
+                Dim xmlString As String = Serialize()
+                Dim xmlFile As System.IO.FileInfo = New System.IO.FileInfo(fileName)
+                streamWriter = xmlFile.CreateText
+                streamWriter.WriteLine(xmlString)
+                streamWriter.Close()
+            Finally
+                If (Not (streamWriter) Is Nothing) Then
+                    streamWriter.Dispose()
+                End If
+            End Try
+        End Sub
+
+        '''<summary>
+        '''Deserializes xml markup from file into an MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroups object
+        '''</summary>
+        '''<param name="fileName">string xml file to load and deserialize</param>
+        '''<param name="obj">Output MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroups object</param>
+        '''<param name="exception">output Exception value if deserialize failed</param>
+        '''<returns>true if this XmlSerializer can deserialize the object; otherwise, false</returns>
+        Public Overloads Shared Function LoadFromFile(ByVal fileName As String, ByRef obj As MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroups, ByRef exception As System.Exception) As Boolean
+            exception = Nothing
+            obj = CType(Nothing, MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroups)
+            Try
+                obj = LoadFromFile(fileName)
+                Return True
+            Catch ex As System.Exception
+                exception = ex
+                Return False
+            End Try
+        End Function
+
+        Public Overloads Shared Function LoadFromFile(ByVal fileName As String, ByRef obj As MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroups) As Boolean
+            Dim exception As System.Exception = Nothing
+            Return LoadFromFile(fileName, obj, exception)
+        End Function
+
+        Public Overloads Shared Function LoadFromFile(ByVal fileName As String) As MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroups
+            Dim file As System.IO.FileStream = Nothing
+            Dim sr As System.IO.StreamReader = Nothing
+            Try
+                file = New System.IO.FileStream(fileName, FileMode.Open, FileAccess.Read)
+                sr = New System.IO.StreamReader(file)
+                Dim xmlString As String = sr.ReadToEnd
+                sr.Close()
+                file.Close()
+                Return Deserialize(xmlString)
+            Finally
+                If (Not (file) Is Nothing) Then
+                    file.Dispose()
+                End If
+                If (Not (sr) Is Nothing) Then
+                    sr.Dispose()
+                End If
+            End Try
+        End Function
+#End Region
+    End Class
+
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.233"), _
+System.SerializableAttribute(), _
+System.ComponentModel.DesignerCategoryAttribute("code"), _
+System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
+    Partial Public Class MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroupsAttachmentSketchGroup
+
+
+
+        Private labelField As String
+        Private layerField As String
+
+        
+        Private Shared sSerializer As System.Xml.Serialization.XmlSerializer
+
+        Public Sub New()
+            MyBase.New()
+            Me.layerField = ""
+            Me.labelField = ""
+            
+        End Sub
+
+        <System.Xml.Serialization.XmlAttributeAttribute()> _
+        Public Property Label() As String
+            Get
+                Return Me.labelField
+            End Get
+            Set(ByVal value As String)
+                Me.labelField = value
+            End Set
+        End Property
+
+        <System.Xml.Serialization.XmlAttributeAttribute()> _
+        Public Property Layer() As String
+            Get
+                Return Me.layerField
+            End Get
+            Set(ByVal value As String)
+                Me.layerField = value
+            End Set
+        End Property
+        
+        
+
+        Private Shared ReadOnly Property Serializer() As System.Xml.Serialization.XmlSerializer
+            Get
+                If (sSerializer Is Nothing) Then
+                    sSerializer = New System.Xml.Serialization.XmlSerializer(GetType(MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroupsAttachmentSketchGroup))
+                End If
+                Return sSerializer
+            End Get
+        End Property
+
+#Region "Serialize/Deserialize"
+        '''<summary>
+        '''Serializes current MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroupsAttachmentSketchGroup object into an XML document
+        '''</summary>
+        '''<returns>string XML value</returns>
+        Public Overridable Overloads Function Serialize(ByVal encoding As System.Text.Encoding) As String
+            Dim streamReader As System.IO.StreamReader = Nothing
+            Dim memoryStream As System.IO.MemoryStream = Nothing
+            Try
+                memoryStream = New System.IO.MemoryStream()
+                Dim xmlWriterSettings As System.Xml.XmlWriterSettings = New System.Xml.XmlWriterSettings()
+                xmlWriterSettings.Encoding = encoding
+                Dim xmlWriter As System.Xml.XmlWriter = xmlWriter.Create(memoryStream, xmlWriterSettings)
+                Serializer.Serialize(xmlWriter, Me)
+                memoryStream.Seek(0, System.IO.SeekOrigin.Begin)
+                streamReader = New System.IO.StreamReader(memoryStream)
+                Return streamReader.ReadToEnd
+            Finally
+                If (Not (streamReader) Is Nothing) Then
+                    streamReader.Dispose()
+                End If
+                If (Not (memoryStream) Is Nothing) Then
+                    memoryStream.Dispose()
+                End If
+            End Try
+        End Function
+
+        Public Overridable Overloads Function Serialize() As String
+            Return Serialize(Encoding.UTF8)
+        End Function
+
+        '''<summary>
+        '''Deserializes workflow markup into an MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroupsAttachmentSketchGroup object
+        '''</summary>
+        '''<param name="xml">string workflow markup to deserialize</param>
+        '''<param name="obj">Output MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroupsAttachmentSketchGroup object</param>
+        '''<param name="exception">output Exception value if deserialize failed</param>
+        '''<returns>true if this XmlSerializer can deserialize the object; otherwise, false</returns>
+        Public Overloads Shared Function Deserialize(ByVal xml As String, ByRef obj As MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroupsAttachmentSketchGroup, ByRef exception As System.Exception) As Boolean
+            exception = Nothing
+            obj = CType(Nothing, MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroupsAttachmentSketchGroup)
+            Try
+                obj = Deserialize(xml)
+                Return True
+            Catch ex As System.Exception
+                exception = ex
+                Return False
+            End Try
+        End Function
+
+        Public Overloads Shared Function Deserialize(ByVal xml As String, ByRef obj As MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroupsAttachmentSketchGroup) As Boolean
+            Dim exception As System.Exception = Nothing
+            Return Deserialize(xml, obj, exception)
+        End Function
+
+        Public Overloads Shared Function Deserialize(ByVal xml As String) As MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroupsAttachmentSketchGroup
+            Dim stringReader As System.IO.StringReader = Nothing
+            Try
+                stringReader = New System.IO.StringReader(xml)
+                Return CType(Serializer.Deserialize(System.Xml.XmlReader.Create(stringReader)), MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroupsAttachmentSketchGroup)
+            Finally
+                If (Not (stringReader) Is Nothing) Then
+                    stringReader.Dispose()
+                End If
+            End Try
+        End Function
+
+        '''<summary>
+        '''Serializes current MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroupsAttachmentSketchGroup object into file
+        '''</summary>
+        '''<param name="fileName">full path of outupt xml file</param>
+        '''<param name="exception">output Exception value if failed</param>
+        '''<returns>true if can serialize and save into file; otherwise, false</returns>
+        Public Overridable Overloads Function SaveToFile(ByVal fileName As String, ByVal encoding As System.Text.Encoding, ByRef exception As System.Exception) As Boolean
+            exception = Nothing
+            Try
+                SaveToFile(fileName, encoding)
+                Return True
+            Catch e As System.Exception
+                exception = e
+                Return False
+            End Try
+        End Function
+
+        Public Overridable Overloads Function SaveToFile(ByVal fileName As String, ByRef exception As System.Exception) As Boolean
+            Return SaveToFile(fileName, Encoding.UTF8, exception)
+        End Function
+
+        Public Overridable Overloads Sub SaveToFile(ByVal fileName As String)
+            SaveToFile(fileName, Encoding.UTF8)
+        End Sub
+
+        Public Overridable Overloads Sub SaveToFile(ByVal fileName As String, ByVal encoding As System.Text.Encoding)
+            Dim streamWriter As System.IO.StreamWriter = Nothing
+            Try
+                Dim xmlString As String = Serialize(encoding)
+                streamWriter = New System.IO.StreamWriter(fileName, False, encoding.UTF8)
+                streamWriter.WriteLine(xmlString)
+                streamWriter.Close()
+            Finally
+                If (Not (streamWriter) Is Nothing) Then
+                    streamWriter.Dispose()
+                End If
+            End Try
+        End Sub
+
+        '''<summary>
+        '''Deserializes xml markup from file into an MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroupsAttachmentSketchGroup object
+        '''</summary>
+        '''<param name="fileName">string xml file to load and deserialize</param>
+        '''<param name="obj">Output MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroupsAttachmentSketchGroup object</param>
+        '''<param name="exception">output Exception value if deserialize failed</param>
+        '''<returns>true if this XmlSerializer can deserialize the object; otherwise, false</returns>
+        Public Overloads Shared Function LoadFromFile(ByVal fileName As String, ByVal encoding As System.Text.Encoding, ByRef obj As MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroupsAttachmentSketchGroup, ByRef exception As System.Exception) As Boolean
+            exception = Nothing
+            obj = CType(Nothing, MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroupsAttachmentSketchGroup)
+            Try
+                obj = LoadFromFile(fileName, encoding)
+                Return True
+            Catch ex As System.Exception
+                exception = ex
+                Return False
+            End Try
+        End Function
+
+        Public Overloads Shared Function LoadFromFile(ByVal fileName As String, ByRef obj As MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroupsAttachmentSketchGroup, ByRef exception As System.Exception) As Boolean
+            Return LoadFromFile(fileName, Encoding.UTF8, obj, exception)
+        End Function
+
+        Public Overloads Shared Function LoadFromFile(ByVal fileName As String, ByRef obj As MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroupsAttachmentSketchGroup) As Boolean
+            Dim exception As System.Exception = Nothing
+            Return LoadFromFile(fileName, obj, exception)
+        End Function
+
+        Public Overloads Shared Function LoadFromFile(ByVal fileName As String) As MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroupsAttachmentSketchGroup
+            Return LoadFromFile(fileName, Encoding.UTF8)
+        End Function
+
+        Public Overloads Shared Function LoadFromFile(ByVal fileName As String, ByVal encoding As System.Text.Encoding) As MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroupsAttachmentSketchGroup
+            Dim file As System.IO.FileStream = Nothing
+            Dim sr As System.IO.StreamReader = Nothing
+            Try
+                file = New System.IO.FileStream(fileName, FileMode.Open, FileAccess.Read)
+                sr = New System.IO.StreamReader(file, encoding)
+                Dim xmlString As String = sr.ReadToEnd
+                sr.Close()
+                file.Close()
+                Return Deserialize(xmlString)
+            Finally
+                If (Not (file) Is Nothing) Then
+                    file.Dispose()
+                End If
+                If (Not (sr) Is Nothing) Then
+                    sr.Dispose()
+                End If
+            End Try
+        End Function
+#End Region
+    End Class
+
+
+
 
     '    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.233"), _
     '     System.SerializableAttribute(), _
@@ -16941,636 +17391,636 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
     '#End Region
     '    End Class
 
-
-
-    '    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.233"), _
-    '     System.SerializableAttribute(), _
-    '     System.ComponentModel.DesignerCategoryAttribute("code"), _
-    '     System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
-    '    Partial Public Class MobileConfigMobileMapConfigInspectionPanel
-
-    '        Private visibleField As String
-
-    '        Private displayTextField As String
-
-    '        Private statusBarMessageField As String
-
-    '        Private toolMessageField As String
-
-    '        Private searchTolerenceField As String
-
-    '        Private inspectionsField As MobileConfigMobileMapConfigInspectionPanelInspections
-
-    '        Private Shared sSerializer As System.Xml.Serialization.XmlSerializer
-
-    '        Public Sub New()
-    '            MyBase.New()
-    '            Me.inspectionsField = New MobileConfigMobileMapConfigInspectionPanelInspections()
-    '        End Sub
-
-    '        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=0)> _
-    '        Public Property Visible() As String
-    '            Get
-    '                Return Me.visibleField
-    '            End Get
-    '            Set(ByVal value As String)
-    '                Me.visibleField = value
-    '            End Set
-    '        End Property
-
-    '        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=1)> _
-    '        Public Property DisplayText() As String
-    '            Get
-    '                Return Me.displayTextField
-    '            End Get
-    '            Set(ByVal value As String)
-    '                Me.displayTextField = value
-    '            End Set
-    '        End Property
-
-    '        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=2)> _
-    '        Public Property StatusBarMessage() As String
-    '            Get
-    '                Return Me.statusBarMessageField
-    '            End Get
-    '            Set(ByVal value As String)
-    '                Me.statusBarMessageField = value
-    '            End Set
-    '        End Property
-
-    '        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=3)> _
-    '        Public Property ToolMessage() As String
-    '            Get
-    '                Return Me.toolMessageField
-    '            End Get
-    '            Set(ByVal value As String)
-    '                Me.toolMessageField = value
-    '            End Set
-    '        End Property
-
-    '        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=4)> _
-    '        Public Property SearchTolerence() As String
-    '            Get
-    '                Return Me.searchTolerenceField
-    '            End Get
-    '            Set(ByVal value As String)
-    '                Me.searchTolerenceField = value
-    '            End Set
-    '        End Property
-    '        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=5)> _
-    '        Public Property Inspections() As MobileConfigMobileMapConfigInspectionPanelInspections
-    '            Get
-    '                Return Me.inspectionsField
-    '            End Get
-    '            Set(ByVal value As MobileConfigMobileMapConfigInspectionPanelInspections)
-    '                Me.inspectionsField = value
-    '            End Set
-    '        End Property
-
-    '        Private Shared ReadOnly Property Serializer() As System.Xml.Serialization.XmlSerializer
-    '            Get
-    '                If (sSerializer Is Nothing) Then
-    '                    sSerializer = New System.Xml.Serialization.XmlSerializer(GetType(MobileConfigMobileMapConfigInspectionPanel))
-    '                End If
-    '                Return sSerializer
-    '            End Get
-    '        End Property
-
-    '#Region "Serialize/Deserialize"
-    '        '''<summary>
-    '        '''Serializes current MobileConfigMobileMapConfigInspectionPanel object into an XML document
-    '        '''</summary>
-    '        '''<returns>string XML value</returns>
-    '        Public Overridable Function Serialize() As String
-    '            Dim streamReader As System.IO.StreamReader = Nothing
-    '            Dim memoryStream As System.IO.MemoryStream = Nothing
-    '            Try
-    '                memoryStream = New System.IO.MemoryStream()
-    '                Serializer.Serialize(memoryStream, Me)
-    '                memoryStream.Seek(0, System.IO.SeekOrigin.Begin)
-    '                streamReader = New System.IO.StreamReader(memoryStream)
-    '                Return streamReader.ReadToEnd
-    '            Finally
-    '                If (Not (streamReader) Is Nothing) Then
-    '                    streamReader.Dispose()
-    '                End If
-    '                If (Not (memoryStream) Is Nothing) Then
-    '                    memoryStream.Dispose()
-    '                End If
-    '            End Try
-    '        End Function
-
-    '        '''<summary>
-    '        '''Deserializes workflow markup into an MobileConfigMobileMapConfigInspectionPanel object
-    '        '''</summary>
-    '        '''<param name="xml">string workflow markup to deserialize</param>
-    '        '''<param name="obj">Output MobileConfigMobileMapConfigInspectionPanel object</param>
-    '        '''<param name="exception">output Exception value if deserialize failed</param>
-    '        '''<returns>true if this XmlSerializer can deserialize the object; otherwise, false</returns>
-    '        Public Overloads Shared Function Deserialize(ByVal xml As String, ByRef obj As MobileConfigMobileMapConfigInspectionPanel, ByRef exception As System.Exception) As Boolean
-    '            exception = Nothing
-    '            obj = CType(Nothing, MobileConfigMobileMapConfigInspectionPanel)
-    '            Try
-    '                obj = Deserialize(xml)
-    '                Return True
-    '            Catch ex As System.Exception
-    '                exception = ex
-    '                Return False
-    '            End Try
-    '        End Function
-
-    '        Public Overloads Shared Function Deserialize(ByVal xml As String, ByRef obj As MobileConfigMobileMapConfigInspectionPanel) As Boolean
-    '            Dim exception As System.Exception = Nothing
-    '            Return Deserialize(xml, obj, exception)
-    '        End Function
-
-    '        Public Overloads Shared Function Deserialize(ByVal xml As String) As MobileConfigMobileMapConfigInspectionPanel
-    '            Dim stringReader As System.IO.StringReader = Nothing
-    '            Try
-    '                stringReader = New System.IO.StringReader(xml)
-    '                Return CType(Serializer.Deserialize(System.Xml.XmlReader.Create(stringReader)), MobileConfigMobileMapConfigInspectionPanel)
-    '            Finally
-    '                If (Not (stringReader) Is Nothing) Then
-    '                    stringReader.Dispose()
-    '                End If
-    '            End Try
-    '        End Function
-
-    '        '''<summary>
-    '        '''Serializes current MobileConfigMobileMapConfigInspectionPanel object into file
-    '        '''</summary>
-    '        '''<param name="fileName">full path of outupt xml file</param>
-    '        '''<param name="exception">output Exception value if failed</param>
-    '        '''<returns>true if can serialize and save into file; otherwise, false</returns>
-    '        Public Overridable Overloads Function SaveToFile(ByVal fileName As String, ByRef exception As System.Exception) As Boolean
-    '            exception = Nothing
-    '            Try
-    '                SaveToFile(fileName)
-    '                Return True
-    '            Catch e As System.Exception
-    '                exception = e
-    '                Return False
-    '            End Try
-    '        End Function
-
-    '        Public Overridable Overloads Sub SaveToFile(ByVal fileName As String)
-    '            Dim streamWriter As System.IO.StreamWriter = Nothing
-    '            Try
-    '                Dim xmlString As String = Serialize()
-    '                Dim xmlFile As System.IO.FileInfo = New System.IO.FileInfo(fileName)
-    '                streamWriter = xmlFile.CreateText
-    '                streamWriter.WriteLine(xmlString)
-    '                streamWriter.Close()
-    '            Finally
-    '                If (Not (streamWriter) Is Nothing) Then
-    '                    streamWriter.Dispose()
-    '                End If
-    '            End Try
-    '        End Sub
-
-    '        '''<summary>
-    '        '''Deserializes xml markup from file into an MobileConfigMobileMapConfigInspectionPanel object
-    '        '''</summary>
-    '        '''<param name="fileName">string xml file to load and deserialize</param>
-    '        '''<param name="obj">Output MobileConfigMobileMapConfigInspectionPanel object</param>
-    '        '''<param name="exception">output Exception value if deserialize failed</param>
-    '        '''<returns>true if this XmlSerializer can deserialize the object; otherwise, false</returns>
-    '        Public Overloads Shared Function LoadFromFile(ByVal fileName As String, ByRef obj As MobileConfigMobileMapConfigInspectionPanel, ByRef exception As System.Exception) As Boolean
-    '            exception = Nothing
-    '            obj = CType(Nothing, MobileConfigMobileMapConfigInspectionPanel)
-    '            Try
-    '                obj = LoadFromFile(fileName)
-    '                Return True
-    '            Catch ex As System.Exception
-    '                exception = ex
-    '                Return False
-    '            End Try
-    '        End Function
-
-    '        Public Overloads Shared Function LoadFromFile(ByVal fileName As String, ByRef obj As MobileConfigMobileMapConfigInspectionPanel) As Boolean
-    '            Dim exception As System.Exception = Nothing
-    '            Return LoadFromFile(fileName, obj, exception)
-    '        End Function
-
-    '        Public Overloads Shared Function LoadFromFile(ByVal fileName As String) As MobileConfigMobileMapConfigInspectionPanel
-    '            Dim file As System.IO.FileStream = Nothing
-    '            Dim sr As System.IO.StreamReader = Nothing
-    '            Try
-    '                file = New System.IO.FileStream(fileName, FileMode.Open, FileAccess.Read)
-    '                sr = New System.IO.StreamReader(file)
-    '                Dim xmlString As String = sr.ReadToEnd
-    '                sr.Close()
-    '                file.Close()
-    '                Return Deserialize(xmlString)
-    '            Finally
-    '                If (Not (file) Is Nothing) Then
-    '                    file.Dispose()
-    '                End If
-    '                If (Not (sr) Is Nothing) Then
-    '                    sr.Dispose()
-    '                End If
-    '            End Try
-    '        End Function
-    '#End Region
-    '    End Class
-
-    '    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.233"), _
-    '     System.SerializableAttribute(), _
-    '     System.ComponentModel.DesignerCategoryAttribute("code"), _
-    '     System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
-    '    Partial Public Class MobileConfigMobileMapConfigInspectionPanelInspections
-
-    '        Private inspectionField As List(Of MobileConfigMobileMapConfigInspectionPanelInspectionsInspection)
-
-    '        Private Shared sSerializer As System.Xml.Serialization.XmlSerializer
-
-    '        Public Sub New()
-    '            MyBase.New()
-    '            Me.inspectionField = New List(Of MobileConfigMobileMapConfigInspectionPanelInspectionsInspection)
-    '        End Sub
-
-    '        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=0)> _
-    '        Public Property Inspection() As List(Of MobileConfigMobileMapConfigInspectionPanelInspectionsInspection)
-    '            Get
-    '                Return Me.inspectionField
-    '            End Get
-    '            Set(ByVal value As List(Of MobileConfigMobileMapConfigInspectionPanelInspectionsInspection))
-    '                Me.inspectionField = value
-    '            End Set
-    '        End Property
-
-    '        Private Shared ReadOnly Property Serializer() As System.Xml.Serialization.XmlSerializer
-    '            Get
-    '                If (sSerializer Is Nothing) Then
-    '                    sSerializer = New System.Xml.Serialization.XmlSerializer(GetType(MobileConfigMobileMapConfigInspectionPanelInspections))
-    '                End If
-    '                Return sSerializer
-    '            End Get
-    '        End Property
-
-    '#Region "Serialize/Deserialize"
-    '        '''<summary>
-    '        '''Serializes current MobileConfigMobileMapConfigInspectionPanelInspections object into an XML document
-    '        '''</summary>
-    '        '''<returns>string XML value</returns>
-    '        Public Overridable Function Serialize() As String
-    '            Dim streamReader As System.IO.StreamReader = Nothing
-    '            Dim memoryStream As System.IO.MemoryStream = Nothing
-    '            Try
-    '                memoryStream = New System.IO.MemoryStream()
-    '                Serializer.Serialize(memoryStream, Me)
-    '                memoryStream.Seek(0, System.IO.SeekOrigin.Begin)
-    '                streamReader = New System.IO.StreamReader(memoryStream)
-    '                Return streamReader.ReadToEnd
-    '            Finally
-    '                If (Not (streamReader) Is Nothing) Then
-    '                    streamReader.Dispose()
-    '                End If
-    '                If (Not (memoryStream) Is Nothing) Then
-    '                    memoryStream.Dispose()
-    '                End If
-    '            End Try
-    '        End Function
-
-    '        '''<summary>
-    '        '''Deserializes workflow markup into an MobileConfigMobileMapConfigInspectionPanelInspections object
-    '        '''</summary>
-    '        '''<param name="xml">string workflow markup to deserialize</param>
-    '        '''<param name="obj">Output MobileConfigMobileMapConfigInspectionPanelInspections object</param>
-    '        '''<param name="exception">output Exception value if deserialize failed</param>
-    '        '''<returns>true if this XmlSerializer can deserialize the object; otherwise, false</returns>
-    '        Public Overloads Shared Function Deserialize(ByVal xml As String, ByRef obj As MobileConfigMobileMapConfigInspectionPanelInspections, ByRef exception As System.Exception) As Boolean
-    '            exception = Nothing
-    '            obj = CType(Nothing, MobileConfigMobileMapConfigInspectionPanelInspections)
-    '            Try
-    '                obj = Deserialize(xml)
-    '                Return True
-    '            Catch ex As System.Exception
-    '                exception = ex
-    '                Return False
-    '            End Try
-    '        End Function
-
-    '        Public Overloads Shared Function Deserialize(ByVal xml As String, ByRef obj As MobileConfigMobileMapConfigInspectionPanelInspections) As Boolean
-    '            Dim exception As System.Exception = Nothing
-    '            Return Deserialize(xml, obj, exception)
-    '        End Function
-
-    '        Public Overloads Shared Function Deserialize(ByVal xml As String) As MobileConfigMobileMapConfigInspectionPanelInspections
-    '            Dim stringReader As System.IO.StringReader = Nothing
-    '            Try
-    '                stringReader = New System.IO.StringReader(xml)
-    '                Return CType(Serializer.Deserialize(System.Xml.XmlReader.Create(stringReader)), MobileConfigMobileMapConfigInspectionPanelInspections)
-    '            Finally
-    '                If (Not (stringReader) Is Nothing) Then
-    '                    stringReader.Dispose()
-    '                End If
-    '            End Try
-    '        End Function
-
-    '        '''<summary>
-    '        '''Serializes current MobileConfigMobileMapConfigInspectionPanelInspections object into file
-    '        '''</summary>
-    '        '''<param name="fileName">full path of outupt xml file</param>
-    '        '''<param name="exception">output Exception value if failed</param>
-    '        '''<returns>true if can serialize and save into file; otherwise, false</returns>
-    '        Public Overridable Overloads Function SaveToFile(ByVal fileName As String, ByRef exception As System.Exception) As Boolean
-    '            exception = Nothing
-    '            Try
-    '                SaveToFile(fileName)
-    '                Return True
-    '            Catch e As System.Exception
-    '                exception = e
-    '                Return False
-    '            End Try
-    '        End Function
-
-    '        Public Overridable Overloads Sub SaveToFile(ByVal fileName As String)
-    '            Dim streamWriter As System.IO.StreamWriter = Nothing
-    '            Try
-    '                Dim xmlString As String = Serialize()
-    '                Dim xmlFile As System.IO.FileInfo = New System.IO.FileInfo(fileName)
-    '                streamWriter = xmlFile.CreateText
-    '                streamWriter.WriteLine(xmlString)
-    '                streamWriter.Close()
-    '            Finally
-    '                If (Not (streamWriter) Is Nothing) Then
-    '                    streamWriter.Dispose()
-    '                End If
-    '            End Try
-    '        End Sub
-
-    '        '''<summary>
-    '        '''Deserializes xml markup from file into an MobileConfigMobileMapConfigInspectionPanelInspections object
-    '        '''</summary>
-    '        '''<param name="fileName">string xml file to load and deserialize</param>
-    '        '''<param name="obj">Output MobileConfigMobileMapConfigInspectionPanelInspections object</param>
-    '        '''<param name="exception">output Exception value if deserialize failed</param>
-    '        '''<returns>true if this XmlSerializer can deserialize the object; otherwise, false</returns>
-    '        Public Overloads Shared Function LoadFromFile(ByVal fileName As String, ByRef obj As MobileConfigMobileMapConfigInspectionPanelInspections, ByRef exception As System.Exception) As Boolean
-    '            exception = Nothing
-    '            obj = CType(Nothing, MobileConfigMobileMapConfigInspectionPanelInspections)
-    '            Try
-    '                obj = LoadFromFile(fileName)
-    '                Return True
-    '            Catch ex As System.Exception
-    '                exception = ex
-    '                Return False
-    '            End Try
-    '        End Function
-
-    '        Public Overloads Shared Function LoadFromFile(ByVal fileName As String, ByRef obj As MobileConfigMobileMapConfigInspectionPanelInspections) As Boolean
-    '            Dim exception As System.Exception = Nothing
-    '            Return LoadFromFile(fileName, obj, exception)
-    '        End Function
-
-    '        Public Overloads Shared Function LoadFromFile(ByVal fileName As String) As MobileConfigMobileMapConfigInspectionPanelInspections
-    '            Dim file As System.IO.FileStream = Nothing
-    '            Dim sr As System.IO.StreamReader = Nothing
-    '            Try
-    '                file = New System.IO.FileStream(fileName, FileMode.Open, FileAccess.Read)
-    '                sr = New System.IO.StreamReader(file)
-    '                Dim xmlString As String = sr.ReadToEnd
-    '                sr.Close()
-    '                file.Close()
-    '                Return Deserialize(xmlString)
-    '            Finally
-    '                If (Not (file) Is Nothing) Then
-    '                    file.Dispose()
-    '                End If
-    '                If (Not (sr) Is Nothing) Then
-    '                    sr.Dispose()
-    '                End If
-    '            End Try
-    '        End Function
-    '#End Region
-    '    End Class
-
-    '    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.233"), _
-    '     System.SerializableAttribute(), _
-    '     System.ComponentModel.DesignerCategoryAttribute("code"), _
-    '     System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
-    '    Partial Public Class MobileConfigMobileMapConfigInspectionPanelInspectionsInspection
-
-    '        Private inspectedLayerField As String
-
-    '        Private inspectedResultField As String
-
-    '        Private displayTextField As String
-
-    '        'Private copySameFieldsField As String
-
-    '        'Private setFieldReadOnlyField As String
-    '        Private Shared sSerializer As System.Xml.Serialization.XmlSerializer
-    '        Public Sub New()
-
-    '            Me.inspectedLayerField = ""
-
-    '            Me.inspectedResultField = ""
-
-    '            Me.displayTextField = ""
-
-    '            'Me.copySameFieldsField = ""
-
-    '            'Me.setFieldReadOnlyField = ""
-    '        End Sub
-    '        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=0)> _
-    '        Public Property InspectedLayer() As String
-    '            Get
-    '                Return Me.inspectedLayerField
-    '            End Get
-    '            Set(ByVal value As String)
-    '                Me.inspectedLayerField = value
-    '            End Set
-    '        End Property
-
-    '        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=1)> _
-    '        Public Property InspectedResult() As String
-    '            Get
-    '                Return Me.inspectedResultField
-    '            End Get
-    '            Set(ByVal value As String)
-    '                Me.inspectedResultField = value
-    '            End Set
-    '        End Property
-
-    '        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=2)> _
-    '        Public Property DisplayText() As String
-    '            Get
-    '                Return Me.displayTextField
-    '            End Get
-    '            Set(ByVal value As String)
-    '                Me.displayTextField = value
-    '            End Set
-    '        End Property
-
-
-    '        '<System.Xml.Serialization.XmlAttributeAttribute()> _
-    '        '     Public Property CopySameFields() As String
-    '        '    Get
-    '        '        Return Me.copySameFieldsField
-    '        '    End Get
-    '        '    Set(ByVal value As String)
-    '        '        Me.copySameFieldsField = value
-    '        '    End Set
-    '        'End Property
-
-    '        '<System.Xml.Serialization.XmlAttributeAttribute()> _
-    '        'Public Property SetFieldReadOnly() As String
-    '        '    Get
-    '        '        Return Me.setFieldReadOnlyField
-    '        '    End Get
-    '        '    Set(ByVal value As String)
-    '        '        Me.setFieldReadOnlyField = value
-    '        '    End Set
-    '        'End Property
-
-    '        Private Shared ReadOnly Property Serializer() As System.Xml.Serialization.XmlSerializer
-    '            Get
-    '                If (sSerializer Is Nothing) Then
-    '                    sSerializer = New System.Xml.Serialization.XmlSerializer(GetType(MobileConfigMobileMapConfigInspectionPanelInspectionsInspection))
-    '                End If
-    '                Return sSerializer
-    '            End Get
-    '        End Property
-
-    '#Region "Serialize/Deserialize"
-    '        '''<summary>
-    '        '''Serializes current MobileConfigMobileMapConfigInspectionPanelInspectionsInspection object into an XML document
-    '        '''</summary>
-    '        '''<returns>string XML value</returns>
-    '        Public Overridable Function Serialize() As String
-    '            Dim streamReader As System.IO.StreamReader = Nothing
-    '            Dim memoryStream As System.IO.MemoryStream = Nothing
-    '            Try
-    '                memoryStream = New System.IO.MemoryStream()
-    '                Serializer.Serialize(memoryStream, Me)
-    '                memoryStream.Seek(0, System.IO.SeekOrigin.Begin)
-    '                streamReader = New System.IO.StreamReader(memoryStream)
-    '                Return streamReader.ReadToEnd
-    '            Finally
-    '                If (Not (streamReader) Is Nothing) Then
-    '                    streamReader.Dispose()
-    '                End If
-    '                If (Not (memoryStream) Is Nothing) Then
-    '                    memoryStream.Dispose()
-    '                End If
-    '            End Try
-    '        End Function
-
-    '        '''<summary>
-    '        '''Deserializes workflow markup into an MobileConfigMobileMapConfigInspectionPanelInspectionsInspection object
-    '        '''</summary>
-    '        '''<param name="xml">string workflow markup to deserialize</param>
-    '        '''<param name="obj">Output MobileConfigMobileMapConfigInspectionPanelInspectionsInspection object</param>
-    '        '''<param name="exception">output Exception value if deserialize failed</param>
-    '        '''<returns>true if this XmlSerializer can deserialize the object; otherwise, false</returns>
-    '        Public Overloads Shared Function Deserialize(ByVal xml As String, ByRef obj As MobileConfigMobileMapConfigInspectionPanelInspectionsInspection, ByRef exception As System.Exception) As Boolean
-    '            exception = Nothing
-    '            obj = CType(Nothing, MobileConfigMobileMapConfigInspectionPanelInspectionsInspection)
-    '            Try
-    '                obj = Deserialize(xml)
-    '                Return True
-    '            Catch ex As System.Exception
-    '                exception = ex
-    '                Return False
-    '            End Try
-    '        End Function
-
-    '        Public Overloads Shared Function Deserialize(ByVal xml As String, ByRef obj As MobileConfigMobileMapConfigInspectionPanelInspectionsInspection) As Boolean
-    '            Dim exception As System.Exception = Nothing
-    '            Return Deserialize(xml, obj, exception)
-    '        End Function
-
-    '        Public Overloads Shared Function Deserialize(ByVal xml As String) As MobileConfigMobileMapConfigInspectionPanelInspectionsInspection
-    '            Dim stringReader As System.IO.StringReader = Nothing
-    '            Try
-    '                stringReader = New System.IO.StringReader(xml)
-    '                Return CType(Serializer.Deserialize(System.Xml.XmlReader.Create(stringReader)), MobileConfigMobileMapConfigInspectionPanelInspectionsInspection)
-    '            Finally
-    '                If (Not (stringReader) Is Nothing) Then
-    '                    stringReader.Dispose()
-    '                End If
-    '            End Try
-    '        End Function
-
-    '        '''<summary>
-    '        '''Serializes current MobileConfigMobileMapConfigInspectionPanelInspectionsInspection object into file
-    '        '''</summary>
-    '        '''<param name="fileName">full path of outupt xml file</param>
-    '        '''<param name="exception">output Exception value if failed</param>
-    '        '''<returns>true if can serialize and save into file; otherwise, false</returns>
-    '        Public Overridable Overloads Function SaveToFile(ByVal fileName As String, ByRef exception As System.Exception) As Boolean
-    '            exception = Nothing
-    '            Try
-    '                SaveToFile(fileName)
-    '                Return True
-    '            Catch e As System.Exception
-    '                exception = e
-    '                Return False
-    '            End Try
-    '        End Function
-
-    '        Public Overridable Overloads Sub SaveToFile(ByVal fileName As String)
-    '            Dim streamWriter As System.IO.StreamWriter = Nothing
-    '            Try
-    '                Dim xmlString As String = Serialize()
-    '                Dim xmlFile As System.IO.FileInfo = New System.IO.FileInfo(fileName)
-    '                streamWriter = xmlFile.CreateText
-    '                streamWriter.WriteLine(xmlString)
-    '                streamWriter.Close()
-    '            Finally
-    '                If (Not (streamWriter) Is Nothing) Then
-    '                    streamWriter.Dispose()
-    '                End If
-    '            End Try
-    '        End Sub
-
-    '        '''<summary>
-    '        '''Deserializes xml markup from file into an MobileConfigMobileMapConfigInspectionPanelInspectionsInspection object
-    '        '''</summary>
-    '        '''<param name="fileName">string xml file to load and deserialize</param>
-    '        '''<param name="obj">Output MobileConfigMobileMapConfigInspectionPanelInspectionsInspection object</param>
-    '        '''<param name="exception">output Exception value if deserialize failed</param>
-    '        '''<returns>true if this XmlSerializer can deserialize the object; otherwise, false</returns>
-    '        Public Overloads Shared Function LoadFromFile(ByVal fileName As String, ByRef obj As MobileConfigMobileMapConfigInspectionPanelInspectionsInspection, ByRef exception As System.Exception) As Boolean
-    '            exception = Nothing
-    '            obj = CType(Nothing, MobileConfigMobileMapConfigInspectionPanelInspectionsInspection)
-    '            Try
-    '                obj = LoadFromFile(fileName)
-    '                Return True
-    '            Catch ex As System.Exception
-    '                exception = ex
-    '                Return False
-    '            End Try
-    '        End Function
-
-    '        Public Overloads Shared Function LoadFromFile(ByVal fileName As String, ByRef obj As MobileConfigMobileMapConfigInspectionPanelInspectionsInspection) As Boolean
-    '            Dim exception As System.Exception = Nothing
-    '            Return LoadFromFile(fileName, obj, exception)
-    '        End Function
-
-    '        Public Overloads Shared Function LoadFromFile(ByVal fileName As String) As MobileConfigMobileMapConfigInspectionPanelInspectionsInspection
-    '            Dim file As System.IO.FileStream = Nothing
-    '            Dim sr As System.IO.StreamReader = Nothing
-    '            Try
-    '                file = New System.IO.FileStream(fileName, FileMode.Open, FileAccess.Read)
-    '                sr = New System.IO.StreamReader(file)
-    '                Dim xmlString As String = sr.ReadToEnd
-    '                sr.Close()
-    '                file.Close()
-    '                Return Deserialize(xmlString)
-    '            Finally
-    '                If (Not (file) Is Nothing) Then
-    '                    file.Dispose()
-    '                End If
-    '                If (Not (sr) Is Nothing) Then
-    '                    sr.Dispose()
-    '                End If
-    '            End Try
-    '        End Function
-    '#End Region
-    '    End Class
+ 
+
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.233"), _
+     System.SerializableAttribute(), _
+     System.ComponentModel.DesignerCategoryAttribute("code"), _
+     System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
+    Partial Public Class MobileConfigMobileMapConfigInspectionPanel
+
+        Private visibleField As String
+
+        Private displayTextField As String
+
+        Private statusBarMessageField As String
+
+        Private toolMessageField As String
+
+        Private searchTolerenceField As String
+
+        Private inspectionsField As MobileConfigMobileMapConfigInspectionPanelInspections
+
+        Private Shared sSerializer As System.Xml.Serialization.XmlSerializer
+
+        Public Sub New()
+            MyBase.New()
+            Me.inspectionsField = New MobileConfigMobileMapConfigInspectionPanelInspections()
+        End Sub
+
+        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=0)> _
+        Public Property Visible() As String
+            Get
+                Return Me.visibleField
+            End Get
+            Set(ByVal value As String)
+                Me.visibleField = value
+            End Set
+        End Property
+
+        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=1)> _
+        Public Property DisplayText() As String
+            Get
+                Return Me.displayTextField
+            End Get
+            Set(ByVal value As String)
+                Me.displayTextField = value
+            End Set
+        End Property
+
+        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=2)> _
+        Public Property StatusBarMessage() As String
+            Get
+                Return Me.statusBarMessageField
+            End Get
+            Set(ByVal value As String)
+                Me.statusBarMessageField = value
+            End Set
+        End Property
+
+        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=3)> _
+        Public Property ToolMessage() As String
+            Get
+                Return Me.toolMessageField
+            End Get
+            Set(ByVal value As String)
+                Me.toolMessageField = value
+            End Set
+        End Property
+
+        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=4)> _
+        Public Property SearchTolerence() As String
+            Get
+                Return Me.searchTolerenceField
+            End Get
+            Set(ByVal value As String)
+                Me.searchTolerenceField = value
+            End Set
+        End Property
+        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=5)> _
+        Public Property Inspections() As MobileConfigMobileMapConfigInspectionPanelInspections
+            Get
+                Return Me.inspectionsField
+            End Get
+            Set(ByVal value As MobileConfigMobileMapConfigInspectionPanelInspections)
+                Me.inspectionsField = value
+            End Set
+        End Property
+
+        Private Shared ReadOnly Property Serializer() As System.Xml.Serialization.XmlSerializer
+            Get
+                If (sSerializer Is Nothing) Then
+                    sSerializer = New System.Xml.Serialization.XmlSerializer(GetType(MobileConfigMobileMapConfigInspectionPanel))
+                End If
+                Return sSerializer
+            End Get
+        End Property
+
+#Region "Serialize/Deserialize"
+        '''<summary>
+        '''Serializes current MobileConfigMobileMapConfigInspectionPanel object into an XML document
+        '''</summary>
+        '''<returns>string XML value</returns>
+        Public Overridable Function Serialize() As String
+            Dim streamReader As System.IO.StreamReader = Nothing
+            Dim memoryStream As System.IO.MemoryStream = Nothing
+            Try
+                memoryStream = New System.IO.MemoryStream()
+                Serializer.Serialize(memoryStream, Me)
+                memoryStream.Seek(0, System.IO.SeekOrigin.Begin)
+                streamReader = New System.IO.StreamReader(memoryStream)
+                Return streamReader.ReadToEnd
+            Finally
+                If (Not (streamReader) Is Nothing) Then
+                    streamReader.Dispose()
+                End If
+                If (Not (memoryStream) Is Nothing) Then
+                    memoryStream.Dispose()
+                End If
+            End Try
+        End Function
+
+        '''<summary>
+        '''Deserializes workflow markup into an MobileConfigMobileMapConfigInspectionPanel object
+        '''</summary>
+        '''<param name="xml">string workflow markup to deserialize</param>
+        '''<param name="obj">Output MobileConfigMobileMapConfigInspectionPanel object</param>
+        '''<param name="exception">output Exception value if deserialize failed</param>
+        '''<returns>true if this XmlSerializer can deserialize the object; otherwise, false</returns>
+        Public Overloads Shared Function Deserialize(ByVal xml As String, ByRef obj As MobileConfigMobileMapConfigInspectionPanel, ByRef exception As System.Exception) As Boolean
+            exception = Nothing
+            obj = CType(Nothing, MobileConfigMobileMapConfigInspectionPanel)
+            Try
+                obj = Deserialize(xml)
+                Return True
+            Catch ex As System.Exception
+                exception = ex
+                Return False
+            End Try
+        End Function
+
+        Public Overloads Shared Function Deserialize(ByVal xml As String, ByRef obj As MobileConfigMobileMapConfigInspectionPanel) As Boolean
+            Dim exception As System.Exception = Nothing
+            Return Deserialize(xml, obj, exception)
+        End Function
+
+        Public Overloads Shared Function Deserialize(ByVal xml As String) As MobileConfigMobileMapConfigInspectionPanel
+            Dim stringReader As System.IO.StringReader = Nothing
+            Try
+                stringReader = New System.IO.StringReader(xml)
+                Return CType(Serializer.Deserialize(System.Xml.XmlReader.Create(stringReader)), MobileConfigMobileMapConfigInspectionPanel)
+            Finally
+                If (Not (stringReader) Is Nothing) Then
+                    stringReader.Dispose()
+                End If
+            End Try
+        End Function
+
+        '''<summary>
+        '''Serializes current MobileConfigMobileMapConfigInspectionPanel object into file
+        '''</summary>
+        '''<param name="fileName">full path of outupt xml file</param>
+        '''<param name="exception">output Exception value if failed</param>
+        '''<returns>true if can serialize and save into file; otherwise, false</returns>
+        Public Overridable Overloads Function SaveToFile(ByVal fileName As String, ByRef exception As System.Exception) As Boolean
+            exception = Nothing
+            Try
+                SaveToFile(fileName)
+                Return True
+            Catch e As System.Exception
+                exception = e
+                Return False
+            End Try
+        End Function
+
+        Public Overridable Overloads Sub SaveToFile(ByVal fileName As String)
+            Dim streamWriter As System.IO.StreamWriter = Nothing
+            Try
+                Dim xmlString As String = Serialize()
+                Dim xmlFile As System.IO.FileInfo = New System.IO.FileInfo(fileName)
+                streamWriter = xmlFile.CreateText
+                streamWriter.WriteLine(xmlString)
+                streamWriter.Close()
+            Finally
+                If (Not (streamWriter) Is Nothing) Then
+                    streamWriter.Dispose()
+                End If
+            End Try
+        End Sub
+
+        '''<summary>
+        '''Deserializes xml markup from file into an MobileConfigMobileMapConfigInspectionPanel object
+        '''</summary>
+        '''<param name="fileName">string xml file to load and deserialize</param>
+        '''<param name="obj">Output MobileConfigMobileMapConfigInspectionPanel object</param>
+        '''<param name="exception">output Exception value if deserialize failed</param>
+        '''<returns>true if this XmlSerializer can deserialize the object; otherwise, false</returns>
+        Public Overloads Shared Function LoadFromFile(ByVal fileName As String, ByRef obj As MobileConfigMobileMapConfigInspectionPanel, ByRef exception As System.Exception) As Boolean
+            exception = Nothing
+            obj = CType(Nothing, MobileConfigMobileMapConfigInspectionPanel)
+            Try
+                obj = LoadFromFile(fileName)
+                Return True
+            Catch ex As System.Exception
+                exception = ex
+                Return False
+            End Try
+        End Function
+
+        Public Overloads Shared Function LoadFromFile(ByVal fileName As String, ByRef obj As MobileConfigMobileMapConfigInspectionPanel) As Boolean
+            Dim exception As System.Exception = Nothing
+            Return LoadFromFile(fileName, obj, exception)
+        End Function
+
+        Public Overloads Shared Function LoadFromFile(ByVal fileName As String) As MobileConfigMobileMapConfigInspectionPanel
+            Dim file As System.IO.FileStream = Nothing
+            Dim sr As System.IO.StreamReader = Nothing
+            Try
+                file = New System.IO.FileStream(fileName, FileMode.Open, FileAccess.Read)
+                sr = New System.IO.StreamReader(file)
+                Dim xmlString As String = sr.ReadToEnd
+                sr.Close()
+                file.Close()
+                Return Deserialize(xmlString)
+            Finally
+                If (Not (file) Is Nothing) Then
+                    file.Dispose()
+                End If
+                If (Not (sr) Is Nothing) Then
+                    sr.Dispose()
+                End If
+            End Try
+        End Function
+#End Region
+    End Class
+
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.233"), _
+     System.SerializableAttribute(), _
+     System.ComponentModel.DesignerCategoryAttribute("code"), _
+     System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
+    Partial Public Class MobileConfigMobileMapConfigInspectionPanelInspections
+
+        Private inspectionField As List(Of MobileConfigMobileMapConfigInspectionPanelInspectionsInspection)
+
+        Private Shared sSerializer As System.Xml.Serialization.XmlSerializer
+
+        Public Sub New()
+            MyBase.New()
+            Me.inspectionField = New List(Of MobileConfigMobileMapConfigInspectionPanelInspectionsInspection)
+        End Sub
+
+        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=0)> _
+        Public Property Inspection() As List(Of MobileConfigMobileMapConfigInspectionPanelInspectionsInspection)
+            Get
+                Return Me.inspectionField
+            End Get
+            Set(ByVal value As List(Of MobileConfigMobileMapConfigInspectionPanelInspectionsInspection))
+                Me.inspectionField = value
+            End Set
+        End Property
+
+        Private Shared ReadOnly Property Serializer() As System.Xml.Serialization.XmlSerializer
+            Get
+                If (sSerializer Is Nothing) Then
+                    sSerializer = New System.Xml.Serialization.XmlSerializer(GetType(MobileConfigMobileMapConfigInspectionPanelInspections))
+                End If
+                Return sSerializer
+            End Get
+        End Property
+
+#Region "Serialize/Deserialize"
+        '''<summary>
+        '''Serializes current MobileConfigMobileMapConfigInspectionPanelInspections object into an XML document
+        '''</summary>
+        '''<returns>string XML value</returns>
+        Public Overridable Function Serialize() As String
+            Dim streamReader As System.IO.StreamReader = Nothing
+            Dim memoryStream As System.IO.MemoryStream = Nothing
+            Try
+                memoryStream = New System.IO.MemoryStream()
+                Serializer.Serialize(memoryStream, Me)
+                memoryStream.Seek(0, System.IO.SeekOrigin.Begin)
+                streamReader = New System.IO.StreamReader(memoryStream)
+                Return streamReader.ReadToEnd
+            Finally
+                If (Not (streamReader) Is Nothing) Then
+                    streamReader.Dispose()
+                End If
+                If (Not (memoryStream) Is Nothing) Then
+                    memoryStream.Dispose()
+                End If
+            End Try
+        End Function
+
+        '''<summary>
+        '''Deserializes workflow markup into an MobileConfigMobileMapConfigInspectionPanelInspections object
+        '''</summary>
+        '''<param name="xml">string workflow markup to deserialize</param>
+        '''<param name="obj">Output MobileConfigMobileMapConfigInspectionPanelInspections object</param>
+        '''<param name="exception">output Exception value if deserialize failed</param>
+        '''<returns>true if this XmlSerializer can deserialize the object; otherwise, false</returns>
+        Public Overloads Shared Function Deserialize(ByVal xml As String, ByRef obj As MobileConfigMobileMapConfigInspectionPanelInspections, ByRef exception As System.Exception) As Boolean
+            exception = Nothing
+            obj = CType(Nothing, MobileConfigMobileMapConfigInspectionPanelInspections)
+            Try
+                obj = Deserialize(xml)
+                Return True
+            Catch ex As System.Exception
+                exception = ex
+                Return False
+            End Try
+        End Function
+
+        Public Overloads Shared Function Deserialize(ByVal xml As String, ByRef obj As MobileConfigMobileMapConfigInspectionPanelInspections) As Boolean
+            Dim exception As System.Exception = Nothing
+            Return Deserialize(xml, obj, exception)
+        End Function
+
+        Public Overloads Shared Function Deserialize(ByVal xml As String) As MobileConfigMobileMapConfigInspectionPanelInspections
+            Dim stringReader As System.IO.StringReader = Nothing
+            Try
+                stringReader = New System.IO.StringReader(xml)
+                Return CType(Serializer.Deserialize(System.Xml.XmlReader.Create(stringReader)), MobileConfigMobileMapConfigInspectionPanelInspections)
+            Finally
+                If (Not (stringReader) Is Nothing) Then
+                    stringReader.Dispose()
+                End If
+            End Try
+        End Function
+
+        '''<summary>
+        '''Serializes current MobileConfigMobileMapConfigInspectionPanelInspections object into file
+        '''</summary>
+        '''<param name="fileName">full path of outupt xml file</param>
+        '''<param name="exception">output Exception value if failed</param>
+        '''<returns>true if can serialize and save into file; otherwise, false</returns>
+        Public Overridable Overloads Function SaveToFile(ByVal fileName As String, ByRef exception As System.Exception) As Boolean
+            exception = Nothing
+            Try
+                SaveToFile(fileName)
+                Return True
+            Catch e As System.Exception
+                exception = e
+                Return False
+            End Try
+        End Function
+
+        Public Overridable Overloads Sub SaveToFile(ByVal fileName As String)
+            Dim streamWriter As System.IO.StreamWriter = Nothing
+            Try
+                Dim xmlString As String = Serialize()
+                Dim xmlFile As System.IO.FileInfo = New System.IO.FileInfo(fileName)
+                streamWriter = xmlFile.CreateText
+                streamWriter.WriteLine(xmlString)
+                streamWriter.Close()
+            Finally
+                If (Not (streamWriter) Is Nothing) Then
+                    streamWriter.Dispose()
+                End If
+            End Try
+        End Sub
+
+        '''<summary>
+        '''Deserializes xml markup from file into an MobileConfigMobileMapConfigInspectionPanelInspections object
+        '''</summary>
+        '''<param name="fileName">string xml file to load and deserialize</param>
+        '''<param name="obj">Output MobileConfigMobileMapConfigInspectionPanelInspections object</param>
+        '''<param name="exception">output Exception value if deserialize failed</param>
+        '''<returns>true if this XmlSerializer can deserialize the object; otherwise, false</returns>
+        Public Overloads Shared Function LoadFromFile(ByVal fileName As String, ByRef obj As MobileConfigMobileMapConfigInspectionPanelInspections, ByRef exception As System.Exception) As Boolean
+            exception = Nothing
+            obj = CType(Nothing, MobileConfigMobileMapConfigInspectionPanelInspections)
+            Try
+                obj = LoadFromFile(fileName)
+                Return True
+            Catch ex As System.Exception
+                exception = ex
+                Return False
+            End Try
+        End Function
+
+        Public Overloads Shared Function LoadFromFile(ByVal fileName As String, ByRef obj As MobileConfigMobileMapConfigInspectionPanelInspections) As Boolean
+            Dim exception As System.Exception = Nothing
+            Return LoadFromFile(fileName, obj, exception)
+        End Function
+
+        Public Overloads Shared Function LoadFromFile(ByVal fileName As String) As MobileConfigMobileMapConfigInspectionPanelInspections
+            Dim file As System.IO.FileStream = Nothing
+            Dim sr As System.IO.StreamReader = Nothing
+            Try
+                file = New System.IO.FileStream(fileName, FileMode.Open, FileAccess.Read)
+                sr = New System.IO.StreamReader(file)
+                Dim xmlString As String = sr.ReadToEnd
+                sr.Close()
+                file.Close()
+                Return Deserialize(xmlString)
+            Finally
+                If (Not (file) Is Nothing) Then
+                    file.Dispose()
+                End If
+                If (Not (sr) Is Nothing) Then
+                    sr.Dispose()
+                End If
+            End Try
+        End Function
+#End Region
+    End Class
+
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.233"), _
+     System.SerializableAttribute(), _
+     System.ComponentModel.DesignerCategoryAttribute("code"), _
+     System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
+    Partial Public Class MobileConfigMobileMapConfigInspectionPanelInspectionsInspection
+
+        Private inspectedLayerField As String
+
+        Private inspectedResultField As String
+
+        Private displayTextField As String
+
+        'Private copySameFieldsField As String
+
+        'Private setFieldReadOnlyField As String
+        Private Shared sSerializer As System.Xml.Serialization.XmlSerializer
+        Public Sub New()
+
+            Me.inspectedLayerField = ""
+
+            Me.inspectedResultField = ""
+
+            Me.displayTextField = ""
+
+            'Me.copySameFieldsField = ""
+
+            'Me.setFieldReadOnlyField = ""
+        End Sub
+        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=0)> _
+        Public Property InspectedLayer() As String
+            Get
+                Return Me.inspectedLayerField
+            End Get
+            Set(ByVal value As String)
+                Me.inspectedLayerField = value
+            End Set
+        End Property
+
+        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=1)> _
+        Public Property InspectedResult() As String
+            Get
+                Return Me.inspectedResultField
+            End Get
+            Set(ByVal value As String)
+                Me.inspectedResultField = value
+            End Set
+        End Property
+
+        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=2)> _
+        Public Property DisplayText() As String
+            Get
+                Return Me.displayTextField
+            End Get
+            Set(ByVal value As String)
+                Me.displayTextField = value
+            End Set
+        End Property
+
+
+        '<System.Xml.Serialization.XmlAttributeAttribute()> _
+        '     Public Property CopySameFields() As String
+        '    Get
+        '        Return Me.copySameFieldsField
+        '    End Get
+        '    Set(ByVal value As String)
+        '        Me.copySameFieldsField = value
+        '    End Set
+        'End Property
+
+        '<System.Xml.Serialization.XmlAttributeAttribute()> _
+        'Public Property SetFieldReadOnly() As String
+        '    Get
+        '        Return Me.setFieldReadOnlyField
+        '    End Get
+        '    Set(ByVal value As String)
+        '        Me.setFieldReadOnlyField = value
+        '    End Set
+        'End Property
+
+        Private Shared ReadOnly Property Serializer() As System.Xml.Serialization.XmlSerializer
+            Get
+                If (sSerializer Is Nothing) Then
+                    sSerializer = New System.Xml.Serialization.XmlSerializer(GetType(MobileConfigMobileMapConfigInspectionPanelInspectionsInspection))
+                End If
+                Return sSerializer
+            End Get
+        End Property
+
+#Region "Serialize/Deserialize"
+        '''<summary>
+        '''Serializes current MobileConfigMobileMapConfigInspectionPanelInspectionsInspection object into an XML document
+        '''</summary>
+        '''<returns>string XML value</returns>
+        Public Overridable Function Serialize() As String
+            Dim streamReader As System.IO.StreamReader = Nothing
+            Dim memoryStream As System.IO.MemoryStream = Nothing
+            Try
+                memoryStream = New System.IO.MemoryStream()
+                Serializer.Serialize(memoryStream, Me)
+                memoryStream.Seek(0, System.IO.SeekOrigin.Begin)
+                streamReader = New System.IO.StreamReader(memoryStream)
+                Return streamReader.ReadToEnd
+            Finally
+                If (Not (streamReader) Is Nothing) Then
+                    streamReader.Dispose()
+                End If
+                If (Not (memoryStream) Is Nothing) Then
+                    memoryStream.Dispose()
+                End If
+            End Try
+        End Function
+
+        '''<summary>
+        '''Deserializes workflow markup into an MobileConfigMobileMapConfigInspectionPanelInspectionsInspection object
+        '''</summary>
+        '''<param name="xml">string workflow markup to deserialize</param>
+        '''<param name="obj">Output MobileConfigMobileMapConfigInspectionPanelInspectionsInspection object</param>
+        '''<param name="exception">output Exception value if deserialize failed</param>
+        '''<returns>true if this XmlSerializer can deserialize the object; otherwise, false</returns>
+        Public Overloads Shared Function Deserialize(ByVal xml As String, ByRef obj As MobileConfigMobileMapConfigInspectionPanelInspectionsInspection, ByRef exception As System.Exception) As Boolean
+            exception = Nothing
+            obj = CType(Nothing, MobileConfigMobileMapConfigInspectionPanelInspectionsInspection)
+            Try
+                obj = Deserialize(xml)
+                Return True
+            Catch ex As System.Exception
+                exception = ex
+                Return False
+            End Try
+        End Function
+
+        Public Overloads Shared Function Deserialize(ByVal xml As String, ByRef obj As MobileConfigMobileMapConfigInspectionPanelInspectionsInspection) As Boolean
+            Dim exception As System.Exception = Nothing
+            Return Deserialize(xml, obj, exception)
+        End Function
+
+        Public Overloads Shared Function Deserialize(ByVal xml As String) As MobileConfigMobileMapConfigInspectionPanelInspectionsInspection
+            Dim stringReader As System.IO.StringReader = Nothing
+            Try
+                stringReader = New System.IO.StringReader(xml)
+                Return CType(Serializer.Deserialize(System.Xml.XmlReader.Create(stringReader)), MobileConfigMobileMapConfigInspectionPanelInspectionsInspection)
+            Finally
+                If (Not (stringReader) Is Nothing) Then
+                    stringReader.Dispose()
+                End If
+            End Try
+        End Function
+
+        '''<summary>
+        '''Serializes current MobileConfigMobileMapConfigInspectionPanelInspectionsInspection object into file
+        '''</summary>
+        '''<param name="fileName">full path of outupt xml file</param>
+        '''<param name="exception">output Exception value if failed</param>
+        '''<returns>true if can serialize and save into file; otherwise, false</returns>
+        Public Overridable Overloads Function SaveToFile(ByVal fileName As String, ByRef exception As System.Exception) As Boolean
+            exception = Nothing
+            Try
+                SaveToFile(fileName)
+                Return True
+            Catch e As System.Exception
+                exception = e
+                Return False
+            End Try
+        End Function
+
+        Public Overridable Overloads Sub SaveToFile(ByVal fileName As String)
+            Dim streamWriter As System.IO.StreamWriter = Nothing
+            Try
+                Dim xmlString As String = Serialize()
+                Dim xmlFile As System.IO.FileInfo = New System.IO.FileInfo(fileName)
+                streamWriter = xmlFile.CreateText
+                streamWriter.WriteLine(xmlString)
+                streamWriter.Close()
+            Finally
+                If (Not (streamWriter) Is Nothing) Then
+                    streamWriter.Dispose()
+                End If
+            End Try
+        End Sub
+
+        '''<summary>
+        '''Deserializes xml markup from file into an MobileConfigMobileMapConfigInspectionPanelInspectionsInspection object
+        '''</summary>
+        '''<param name="fileName">string xml file to load and deserialize</param>
+        '''<param name="obj">Output MobileConfigMobileMapConfigInspectionPanelInspectionsInspection object</param>
+        '''<param name="exception">output Exception value if deserialize failed</param>
+        '''<returns>true if this XmlSerializer can deserialize the object; otherwise, false</returns>
+        Public Overloads Shared Function LoadFromFile(ByVal fileName As String, ByRef obj As MobileConfigMobileMapConfigInspectionPanelInspectionsInspection, ByRef exception As System.Exception) As Boolean
+            exception = Nothing
+            obj = CType(Nothing, MobileConfigMobileMapConfigInspectionPanelInspectionsInspection)
+            Try
+                obj = LoadFromFile(fileName)
+                Return True
+            Catch ex As System.Exception
+                exception = ex
+                Return False
+            End Try
+        End Function
+
+        Public Overloads Shared Function LoadFromFile(ByVal fileName As String, ByRef obj As MobileConfigMobileMapConfigInspectionPanelInspectionsInspection) As Boolean
+            Dim exception As System.Exception = Nothing
+            Return LoadFromFile(fileName, obj, exception)
+        End Function
+
+        Public Overloads Shared Function LoadFromFile(ByVal fileName As String) As MobileConfigMobileMapConfigInspectionPanelInspectionsInspection
+            Dim file As System.IO.FileStream = Nothing
+            Dim sr As System.IO.StreamReader = Nothing
+            Try
+                file = New System.IO.FileStream(fileName, FileMode.Open, FileAccess.Read)
+                sr = New System.IO.StreamReader(file)
+                Dim xmlString As String = sr.ReadToEnd
+                sr.Close()
+                file.Close()
+                Return Deserialize(xmlString)
+            Finally
+                If (Not (file) Is Nothing) Then
+                    file.Dispose()
+                End If
+                If (Not (sr) Is Nothing) Then
+                    sr.Dispose()
+                End If
+            End Try
+        End Function
+#End Region
+    End Class
 
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.233"), _
      System.SerializableAttribute(), _

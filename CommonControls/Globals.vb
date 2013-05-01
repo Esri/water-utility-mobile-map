@@ -1407,7 +1407,42 @@ IL_1EE:
         Return Nothing
 
     End Function
+    Public Shared Function CenterButtonInControl(sender As Object)
+        Try
+            
+        Dim cntrCnt As Integer = 0
 
+        For Each btn As Control In sender.Controls
+            If TypeOf btn Is Button Then
+                If btn.Visible Then
+                    cntrCnt += 1
+
+                End If
+            End If
+        Next
+
+        Dim loc As Integer = sender.Width / (cntrCnt + 1)
+        Dim space As Integer = loc
+
+        Dim gap As Integer = 5
+        For Each btn As Control In sender.Controls
+            If btn.Visible Then
+                btn.Left = loc - (btn.Width / 2)
+                loc = loc + space
+
+            End If
+
+
+        Next
+
+        Catch ex As Exception
+            Dim st As New StackTrace
+            MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+            st = Nothing
+
+
+        End Try
+    End Function
     Public Shared Function GetFeatureSource(ByVal LayerName As String, ByVal thisMap As Esri.ArcGIS.Mobile.WinForms.Map) As FeatureSourceWithDef
         Try
             If thisMap Is Nothing Then Return Nothing
@@ -1531,6 +1566,9 @@ IL_1EE:
                     distance = distance * 1000
                     strUnit = "Meter"
                 Case "Mile"
+                    distance = distance * 5280
+                    strUnit = "Foot"
+                Case "Mile_US"
                     distance = distance * 5280
                     strUnit = "Foot"
                 Case "Yard"
@@ -2954,7 +2992,18 @@ IL_1EE:
         ' distance in nautical mile
         Return (distance__1)
     End Function
+    'return distance in Kilometer, Meter, or NaticalMile
+    Public Shared Function Distance(Longitude1 As Double, Latitude1 As Double, Longitude2 As Double, Latitude2 As Double) As Double
+        Dim deltaLong = Longitude1 - Longitude2
+        Dim distance__1 = Math.Sin(ToRadian(Latitude1)) * Math.Sin(ToRadian(Latitude2)) + Math.Cos(ToRadian(Latitude1)) * Math.Cos(ToRadian(Latitude2)) * Math.Cos(ToRadian(deltaLong))
 
+        ' distance is in miles
+        distance__1 = Math.Acos(distance__1)
+        distance__1 = ToDegree(distance__1) * 60 * 1.1515
+
+      
+        Return (distance__1)
+    End Function
     ''' Accepts two coordinates in degrees. double value in degrees.  From 0 to 360.
     Public Shared Function Bearing(Longitude1 As Double, Latitude1__1 As Double, Longitude2 As Double, Latitude2__2 As Double) As Double
         Dim latitude1__3 As Double = ToRadian(Latitude1__1)

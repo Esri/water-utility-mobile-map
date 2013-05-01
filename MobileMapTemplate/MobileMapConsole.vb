@@ -55,6 +55,7 @@ Public Class MobileMapConsole
     Private WithEvents m_MCService As MobileControls.MobileServiceSync
     Private WithEvents m_MCSearch As MobileControls.MobileSearch
     Private WithEvents m_MCCreateFeatureMA As MobileControls.EditFeaturesMapAction
+
     Private WithEvents m_MCActivityControl As MobileControls.AssignedWorkControl
     'Private WithEvents m_MCInspectMA As MobileControls.InspectMapAction
     Private WithEvents m_MCSketch As MobileControls.MobileSkecthPad
@@ -577,6 +578,8 @@ Public Class MobileMapConsole
                     'set it to fill control
                     m_MCToc.Dock = DockStyle.Fill
                     'initlize the control
+                    m_MCToc.initTOC()
+
                     m_MCToc.refreshTOC()
                     'add the control to the panel
                     pnlToc.Controls.Add(m_MCToc)
@@ -702,6 +705,73 @@ Public Class MobileMapConsole
                 End Try
 
             End If
+
+            'Private WithEvents m_MCSketchMA As MobileControls.SketchMapAction
+            'If GlobalsFunctions.appConfig.SketchPanel.Visible.ToUpper <> UCase("False") Then
+
+            '    Try
+
+            '        'pBtn = New Button
+
+            '        'pBtn.BackgroundImage = My.Resources.Square___Blue
+            '        'pBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+            '        'pBtn.Dock = System.Windows.Forms.DockStyle.Fill
+            '        'pBtn.FlatAppearance.BorderSize = 0
+            '        'pBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+            '        'pBtn.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            '        'pBtn.ForeColor = System.Drawing.Color.White
+            '        'pBtn.Location = New System.Drawing.Point(4, 4)
+            '        'pBtn.Margin = New System.Windows.Forms.Padding(1)
+            '        'pBtn.Name = "btnNote"
+            '        'pBtn.Size = New System.Drawing.Size(105, 33)
+            '        'pBtn.TabIndex = 8
+            '        'If GlobalsFunctions.appConfig.CreateFeaturePanel.DisplayText IsNot Nothing Then
+            '        '    pBtn.Text = GlobalsFunctions.appConfig.CreateFeaturePanel.DisplayText
+            '        'Else
+            '        '    pBtn.Text = "Note"
+            '        'End If
+
+
+            '        'pBtn.UseVisualStyleBackColor = True
+
+
+            '        'If intCol > 2 Then
+            '        '    intRow = intRow + 1
+            '        '    intCol = 0
+            '        'End If
+
+            '        'Create the Redline Map action
+            '        m_MCSketchMA = New MobileControls.SketchMapAction
+            '        m_MCSketchMA.ManualSetMap = Map1
+
+            '        'Add it to the map's map action collection
+            '        'Initilize the redline attribute form
+            '        If m_MCSketchMA.InitControl() = False Then
+
+            '        Else
+
+            '            'Add the button to toggle the redline map action
+            '            m_MCSketchMA.addMapButton()
+
+
+            '            'tblLayoutWidgets.Controls.Add(pBtn, intCol, intRow)
+            '            'intCol = intCol + 1
+            '            'AddHandler pBtn.Click, AddressOf PanelButtonClick
+
+            '        End If
+
+
+            '    Catch ex As Exception
+            '        'Capture any errors
+            '        'MsgBox("Please install the prerequisite Tablet PC Edition Software Development Kit 1.7 (available for download from Microsoft)")
+            '        Dim st As New StackTrace
+            '        MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+            '        st = Nothing
+            '    End Try
+
+            'End If
+
+
 
             'ID MA
             If GlobalsFunctions.appConfig.IDPanel.Visible.ToUpper <> UCase("False") Then
@@ -886,218 +956,7 @@ Public Class MobileMapConsole
             End If
 
 
-            'If UCase(#MEH#("Measure")) <> UCase("False") Then
-
-            '    'Inspection
-            '    Try
-
-            '        pBtn = New Button
-
-            '        pBtn.BackgroundImage = My.Resources.Square___Blue
-            '        pBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-            '        pBtn.Dock = System.Windows.Forms.DockStyle.Fill
-            '        pBtn.FlatAppearance.BorderSize = 0
-            '        pBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-            '        pBtn.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-            '        pBtn.ForeColor = System.Drawing.Color.White
-            '        pBtn.Location = New System.Drawing.Point(4, 4)
-            '        pBtn.Margin = New System.Windows.Forms.Padding(1)
-            '        pBtn.Name = "btnMeasure"
-            '        pBtn.Size = New System.Drawing.Size(105, 33)
-            '        pBtn.TabIndex = 8
-            '        If #MEH#("MeasureName") IsNot Nothing Then
-            '            pBtn.Text = #MEH#("MeasureName")
-            '        Else
-            '            pBtn.Text = "Measure"
-            '        End If
-
-            '        pBtn.UseVisualStyleBackColor = True
-
-
-            '        If intCol > 2 Then
-            '            intRow = intRow + 1
-            '            intCol = 0
-            '        End If
-            '        tblLayoutWidgets.Controls.Add(pBtn, intCol, intRow)
-            '        intCol = intCol + 1
-
-
-            '        AddHandler pBtn.Click, AddressOf PanelButtonClick
-            '        'Create the inspection map action
-            '        m_MCMeasureMA = New MobileControls.MeasureMapAction
-            '        m_MCMeasureMA.MeasureMethod = m_MCMeasureMA.EsriMeasureMethod.Freehand
-            '        m_MCMeasureMA.Font = m_Fnt
-            '        m_MCMeasureMA.FontColor = Color.Red
-            '        m_MCMeasureMA.DisplayedUnit = Map1.SpatialReference.Unit
-            '        m_MCMeasureMA.LineColor = Color.Red
-            '        m_MCMeasureMA.LineWidth = 6
-            '        m_MCMeasureMA.ShowSegmentMeasures = True
-            '        m_MCMeasureMA.SignificantDigits = 2
-
-            '        'Add to the map
-            '        Map1.MapActions.Add(m_MCMeasureMA)
-            '        'Initilize the measure form
-            '        'm_MCMeasureMA.InitMeasureForm(pnlMeasure)
-            '        'Add the button to toggle the measure map action
-            '        m_MCMeasureMA.addMeasureButton()
-            '    Catch ex As Exception
-            '        MsgBox("Error in init of measures control")
-            '    End Try
-
-            'End If
-
-
-            'If UCase(appConfig.InspectionPanel.Visible) <> UCase("False") Then
-
-            '    'Inspection
-            '    Try
-            '        MsgBox("This control is obselete, please move this function to the EditControl function")
-            '        If 1 = 0 Then
-
-
-            '            pBtn = New Button
-
-            '            pBtn.BackgroundImage = My.Resources.Square___Blue
-            '            pBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-            '            pBtn.Dock = System.Windows.Forms.DockStyle.Fill
-            '            pBtn.FlatAppearance.BorderSize = 0
-            '            pBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-            '            pBtn.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-            '            pBtn.ForeColor = System.Drawing.Color.White
-            '            pBtn.Location = New System.Drawing.Point(4, 4)
-            '            pBtn.Margin = New System.Windows.Forms.Padding(1)
-            '            pBtn.Name = "btnInspect"
-            '            pBtn.Size = New System.Drawing.Size(105, 33)
-            '            pBtn.TabIndex = 8
-            '            If appConfig.InspectionPanel.DisplayText IsNot Nothing Then
-            '                pBtn.Text = appConfig.InspectionPanel.DisplayText
-            '            Else
-            '                pBtn.Text = "Inspect"
-            '            End If
-
-            '            pBtn.UseVisualStyleBackColor = True
-
-
-            '            If intCol > 2 Then
-            '                intRow = intRow + 1
-            '                intCol = 0
-            '            End If
-            '            tblLayoutWidgets.Controls.Add(pBtn, intCol, intRow)
-            '            intCol = intCol + 1
-
-
-            '            AddHandler pBtn.Click, AddressOf PanelButtonClick
-            '            'Create the inspection map action
-            '            m_MCInspectMA = New MobileControls.InspectMapAction
-            '            'Add to the map
-            '            Map1.MapActions.Add(m_MCInspectMA)
-            '            'Initilize the edit form
-            '            m_MCInspectMA.InitEditForm(pnlInspect, redAdded)
-            '        End If
-
-            '    Catch ex As Exception
-
-            '        'MsgBox("Please install the prerequisite Tablet PC Edition Software Development Kit 1.7 (available for download from Microsoft)")
-            '    End Try
-
-            'End If
-
-
-            'If UCase(#MEH#("Isolate")) <> UCase("False") Then
-            '    Try
-
-            '        pBtn = New Button
-
-            '        pBtn.BackgroundImage = My.Resources.Square___Blue
-            '        pBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-            '        pBtn.Dock = System.Windows.Forms.DockStyle.Fill
-            '        pBtn.FlatAppearance.BorderSize = 0
-            '        pBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-            '        pBtn.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-            '        pBtn.ForeColor = System.Drawing.Color.White
-            '        pBtn.Location = New System.Drawing.Point(4, 4)
-            '        pBtn.Margin = New System.Windows.Forms.Padding(1)
-            '        pBtn.Name = "btnIsolate"
-            '        pBtn.Size = New System.Drawing.Size(105, 33)
-            '        pBtn.TabIndex = 8
-            '        If #MEH#("IsolateName") IsNot Nothing Then
-            '            pBtn.Text = #MEH#("IsolateName")
-            '        Else
-            '            pBtn.Text = "Isolate"
-            '        End If
-
-
-            '        pBtn.UseVisualStyleBackColor = True
-
-
-            '        If intCol > 2 Then
-            '            intRow = intRow + 1
-            '            intCol = 0
-            '        End If
-            '        tblLayoutWidgets.Controls.Add(pBtn, intCol, intRow)
-            '        intCol = intCol + 1
-
-            '        AddHandler pBtn.Click, AddressOf PanelButtonClick
-
-            '        m_MCTrace = New MobileControls.NetworkTraceMobile(Map1)
-
-            '        m_MCTrace.initTraceResults(pnlTrace)
-            '    Catch ex As Exception
-            '        MsgBox("Error loading Trace Controls" & vbCrLf & ex.Message)
-            '    End Try
-
-            'End If
-
-            'If UCase(#MEH#("GeonetTrace")) <> UCase("False") Then
-            '    Try
-
-            '        pBtn = New Button
-
-            '        pBtn.BackgroundImage = My.Resources.Square___Blue
-            '        pBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-            '        pBtn.Dock = System.Windows.Forms.DockStyle.Fill
-            '        pBtn.FlatAppearance.BorderSize = 0
-            '        pBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-            '        pBtn.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-            '        pBtn.ForeColor = System.Drawing.Color.White
-            '        pBtn.Location = New System.Drawing.Point(4, 4)
-            '        pBtn.Margin = New System.Windows.Forms.Padding(1)
-            '        pBtn.Name = "btnGeonetTrace"
-            '        pBtn.Size = New System.Drawing.Size(105, 33)
-            '        pBtn.TabIndex = 8
-            '        If #MEH#("GeonetTraceName") IsNot Nothing Then
-            '            pBtn.Text = #MEH#("GeonetTraceName")
-            '        Else
-            '            pBtn.Text = "Trace"
-            '        End If
-
-
-            '        pBtn.UseVisualStyleBackColor = True
-
-
-            '        If intCol > 2 Then
-            '            intRow = intRow + 1
-            '            intCol = 0
-            '        End If
-            '        tblLayoutWidgets.Controls.Add(pBtn, intCol, intRow)
-            '        intCol = intCol + 1
-
-            '        AddHandler pBtn.Click, AddressOf PanelButtonClick
-            '        'Initlize the Trace map action
-            '        m_MCGeonetTraceMA = New MobileControls.GeometricNetworkTraceMapAction()
-            '        'Add the map action to the map
-            '        Map1.MapActions.Add(m_MCGeonetTraceMA)
-            '        'Add the Trace button
-            '        m_MCGeonetTraceMA.addTraceButton()
-            '        'Init the Trace form
-            '        m_MCGeonetTraceMA.InitTraceForm(pnlGeonetTrace)
-
-
-            '    Catch ex As Exception
-            '        MsgBox("Error loading Trace Controls" & vbCrLf & ex.Message)
-            '    End Try
-
-            'End If
+ 
 
             If pNavBtn IsNot Nothing Then
 
@@ -1107,7 +966,7 @@ Public Class MobileMapConsole
                 End If
                 tblLayoutWidgets.Controls.Add(pNavBtn, intCol, intRow)
                 intCol = intCol + 1
-
+                pBtn = pNavBtn
             End If
             If appConfig.WebPanel.Visible.ToUpper <> UCase("False") Then
 

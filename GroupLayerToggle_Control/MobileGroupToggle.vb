@@ -225,9 +225,13 @@ Public Class mobileGroupToggle
                             'strPath = System.IO.Path.
                             '
                             Dim pMobileCache As MobileCache = pMobileCacheLayer.MobileCache
+                            Dim strLayLst As List(Of String) = New List(Of String)
 
+                            For Each Lay In pMobileCache.FeatureSources
+                                strLayLst.Add(Lay.Name)
+                            Next
 
-                            AddGroupButton(New List(Of String)(New String() {pL.Name}), strPath, layerTypes.LocalMobileCache, False)
+                            AddGroupButton(strLayLst, strPath, layerTypes.LocalMobileCache, False)
                             bButtonAdded = True
                         End If
 
@@ -447,6 +451,26 @@ Public Class mobileGroupToggle
 
                     End If
 
+                ElseIf lyrType = layerTypes.LocalCacheMaps Then
+                    pFSwD = GlobalsFunctions.GetFeatureSource(StrLay, m_Map)
+                    If pFSwD.FeatureSource IsNot Nothing Then
+                        pFLayDef = GlobalsFunctions.GetLayerDefinition(m_Map, pFSwD)
+
+                        pFLayDef.Visibility = LayerVisible
+
+                    Else
+                        pML = GlobalsFunctions.GetMapLayer(StrLay, m_Map)
+
+                        If pML IsNot Nothing Then
+
+                            pML.Visible = LayerVisible
+
+                            If LayerVisible And (lyrType = layerTypes.LocalCacheMaps Or lyrType = layerTypes.WebMaps) Then
+
+                                RaiseEvent syncBaseMapLayer(pML)
+                            End If
+                        End If
+                    End If
 
                 Else
                     pML = GlobalsFunctions.GetMapLayer(StrLay, m_Map)
@@ -461,7 +485,7 @@ Public Class mobileGroupToggle
                         End If
                     End If
                 End If
-                
+
             Next
             pML = Nothing
             'm_Map.ResumeLayout()

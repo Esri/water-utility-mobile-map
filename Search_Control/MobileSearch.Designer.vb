@@ -173,9 +173,9 @@ Partial Class MobileSearch
         Me.pnlSearch.Controls.Add(Me.lblSearchLayer)
         Me.pnlSearch.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlSearch.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.pnlSearch.Location = New System.Drawing.Point(0, 479)
+        Me.pnlSearch.Location = New System.Drawing.Point(0, 213)
         Me.pnlSearch.Name = "pnlSearch"
-        Me.pnlSearch.Size = New System.Drawing.Size(629, 33)
+        Me.pnlSearch.Size = New System.Drawing.Size(629, 337)
         Me.pnlSearch.TabIndex = 7
         Me.pnlSearch.TabStop = False
         '
@@ -249,7 +249,7 @@ Partial Class MobileSearch
         '
         'picSearching
         '
-        Me.picSearching.Location = New System.Drawing.Point(123, 256)
+        Me.picSearching.Location = New System.Drawing.Point(127, 251)
         Me.picSearching.Name = "picSearching"
         Me.picSearching.Size = New System.Drawing.Size(92, 24)
         Me.picSearching.TabIndex = 10
@@ -259,7 +259,7 @@ Partial Class MobileSearch
         'lblNumResults
         '
         Me.lblNumResults.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblNumResults.Location = New System.Drawing.Point(118, 256)
+        Me.lblNumResults.Location = New System.Drawing.Point(128, 253)
         Me.lblNumResults.Name = "lblNumResults"
         Me.lblNumResults.Size = New System.Drawing.Size(112, 24)
         Me.lblNumResults.TabIndex = 9
@@ -355,9 +355,9 @@ Partial Class MobileSearch
         Me.pnlAddress.Controls.Add(Me.gpBoxPreFiltInt)
         Me.pnlAddress.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlAddress.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.pnlAddress.Location = New System.Drawing.Point(0, 439)
+        Me.pnlAddress.Location = New System.Drawing.Point(0, 165)
         Me.pnlAddress.Name = "pnlAddress"
-        Me.pnlAddress.Size = New System.Drawing.Size(629, 40)
+        Me.pnlAddress.Size = New System.Drawing.Size(629, 48)
         Me.pnlAddress.TabIndex = 9
         Me.pnlAddress.TabStop = False
         '
@@ -520,9 +520,9 @@ Partial Class MobileSearch
         Me.pnlAddressPoint.Controls.Add(Me.gpBxAddPntControlsLayer)
         Me.pnlAddressPoint.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlAddressPoint.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.pnlAddressPoint.Location = New System.Drawing.Point(0, 439)
+        Me.pnlAddressPoint.Location = New System.Drawing.Point(0, 165)
         Me.pnlAddressPoint.Name = "pnlAddressPoint"
-        Me.pnlAddressPoint.Size = New System.Drawing.Size(629, 255)
+        Me.pnlAddressPoint.Size = New System.Drawing.Size(629, 529)
         Me.pnlAddressPoint.TabIndex = 9
         Me.pnlAddressPoint.TabStop = False
         Me.pnlAddressPoint.Visible = False
@@ -535,7 +535,7 @@ Partial Class MobileSearch
         Me.pnlAddPntButtons.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlAddPntButtons.Location = New System.Drawing.Point(3, 134)
         Me.pnlAddPntButtons.Name = "pnlAddPntButtons"
-        Me.pnlAddPntButtons.Size = New System.Drawing.Size(623, 118)
+        Me.pnlAddPntButtons.Size = New System.Drawing.Size(623, 392)
         Me.pnlAddPntButtons.TabIndex = 13
         '
         'btnWaypointDrillDown
@@ -607,9 +607,9 @@ Partial Class MobileSearch
         Me.pnlGeocode.Controls.Add(Me.pnlMyGC)
         Me.pnlGeocode.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlGeocode.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.pnlGeocode.Location = New System.Drawing.Point(0, 82)
+        Me.pnlGeocode.Location = New System.Drawing.Point(0, 103)
         Me.pnlGeocode.Name = "pnlGeocode"
-        Me.pnlGeocode.Size = New System.Drawing.Size(629, 357)
+        Me.pnlGeocode.Size = New System.Drawing.Size(629, 62)
         Me.pnlGeocode.TabIndex = 8
         Me.pnlGeocode.TabStop = False
         '
@@ -860,7 +860,7 @@ Partial Class MobileSearch
         Me.pnlSearchOptions.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.pnlSearchOptions.Location = New System.Drawing.Point(0, 0)
         Me.pnlSearchOptions.Name = "pnlSearchOptions"
-        Me.pnlSearchOptions.Size = New System.Drawing.Size(629, 82)
+        Me.pnlSearchOptions.Size = New System.Drawing.Size(629, 103)
         Me.pnlSearchOptions.TabIndex = 6
         Me.pnlSearchOptions.TabStop = False
         '
@@ -1005,9 +1005,9 @@ Partial Class MobileSearch
         Me.pnResults.Controls.Add(Me.VScrollBar1)
         Me.pnResults.Controls.Add(Me.dgResults)
         Me.pnResults.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnResults.Location = New System.Drawing.Point(0, 52)
+        Me.pnResults.Location = New System.Drawing.Point(0, 55)
         Me.pnResults.Name = "pnResults"
-        Me.pnResults.Size = New System.Drawing.Size(629, 856)
+        Me.pnResults.Size = New System.Drawing.Size(629, 853)
         Me.pnResults.TabIndex = 5
         Me.pnResults.TabStop = False
         '
@@ -1015,7 +1015,7 @@ Partial Class MobileSearch
         '
         Me.HScrollBar1.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.HScrollBar1.LargeChange = 2
-        Me.HScrollBar1.Location = New System.Drawing.Point(3, 823)
+        Me.HScrollBar1.Location = New System.Drawing.Point(3, 820)
         Me.HScrollBar1.Name = "HScrollBar1"
         Me.HScrollBar1.Size = New System.Drawing.Size(593, 30)
         Me.HScrollBar1.TabIndex = 2
@@ -1025,7 +1025,7 @@ Partial Class MobileSearch
         Me.VScrollBar1.Dock = System.Windows.Forms.DockStyle.Right
         Me.VScrollBar1.Location = New System.Drawing.Point(596, 16)
         Me.VScrollBar1.Name = "VScrollBar1"
-        Me.VScrollBar1.Size = New System.Drawing.Size(30, 837)
+        Me.VScrollBar1.Size = New System.Drawing.Size(30, 834)
         Me.VScrollBar1.TabIndex = 1
         '
         'dgResults
@@ -1059,7 +1059,7 @@ Partial Class MobileSearch
         DataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.White
         Me.dgResults.RowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgResults.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgResults.Size = New System.Drawing.Size(623, 837)
+        Me.dgResults.Size = New System.Drawing.Size(623, 834)
         Me.dgResults.TabIndex = 0
         '
         'pnlResultsTools
@@ -1070,7 +1070,7 @@ Partial Class MobileSearch
         Me.pnlResultsTools.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlResultsTools.Location = New System.Drawing.Point(0, 0)
         Me.pnlResultsTools.Name = "pnlResultsTools"
-        Me.pnlResultsTools.Size = New System.Drawing.Size(629, 52)
+        Me.pnlResultsTools.Size = New System.Drawing.Size(629, 55)
         Me.pnlResultsTools.TabIndex = 4
         Me.pnlResultsTools.TabStop = False
         Me.pnlResultsTools.Visible = False

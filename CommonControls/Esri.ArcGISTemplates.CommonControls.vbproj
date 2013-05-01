@@ -126,6 +126,18 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Classes.vb" />
+    <Compile Include="frmEnterText.Designer.vb">
+      <DependentUpon>frmEnterText.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmEnterText.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSelectOptionCombo.Designer.vb">
+      <DependentUpon>frmSelectOptionCombo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSelectOptionCombo.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmSelectOption.Designer.vb">
       <DependentUpon>frmSelectOption.vb</DependentUpon>
     </Compile>
@@ -139,12 +151,6 @@
       <DependentUpon>frmLink.vb</DependentUpon>
     </Compile>
     <Compile Include="frmLink.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmSelectOptionCombo.Designer.vb">
-      <DependentUpon>frmSelectOptionCombo.vb</DependentUpon>
-    </Compile>
-    <Compile Include="frmSelectOptionCombo.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Globals.vb" />
@@ -171,15 +177,18 @@
     <EmbeddedResource Include="CameraForm.resx">
       <DependentUpon>CameraForm.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmEnterText.resx">
+      <DependentUpon>frmEnterText.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSelectOptionCombo.resx">
+      <DependentUpon>frmSelectOptionCombo.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmSelectOption.resx">
       <DependentUpon>frmSelectOption.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmLink.resx">
       <DependentUpon>frmLink.vb</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmSelectOptionCombo.resx">
-      <DependentUpon>frmSelectOptionCombo.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <CustomToolNamespace>My.Resources</CustomToolNamespace>

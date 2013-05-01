@@ -263,7 +263,7 @@ Public Class MobileSearch
             btnAddressPnt.Visible = True
 
 
-            cboDrillDownLayer.DisplayMember = "LayerName"
+            cboDrillDownLayer.DisplayMember = "DisplayText"
             cboDrillDownLayer.ValueMember = "LayerName"
 
             cboDrillDownLayer.DataSource = GlobalsFunctions.appConfig.SearchPanel.DrillDownSearches.DrillDownSearch
@@ -1967,7 +1967,7 @@ Public Class MobileSearch
                 ElseIf obj Is Nothing Then
                     'Dim newcol As DataColumn = New DataColumn()
                     newcol.ColumnName = col.ColumnName
-                    newcol.DataType = col.DataType
+                    newcol.DataType = System.Type.GetType("System.String") 'col.DataType
                     thistable.Columns.Add(newcol)
                 ElseIf TypeOf obj Is CodedValueDomain Then
 
@@ -2561,44 +2561,50 @@ Public Class MobileSearch
                     Dim strCurAdd As String = CStr(dgResults.Tag)
                     'Determine side of the street
                     Dim bAddEven As Boolean = True
-                    If CDbl(strCurAdd) Mod 2 <> 0 Then
-                        bAddEven = False
-                    End If
-                    'Set up the side of the street to check for the address 
-                    Dim pFromField, pToField As String
-                    If IsNumeric(pFDR(m_AddressFieldLeftFrom)) And
-                        IsNumeric(pFDR(m_AddressFieldRightTo)) And
-                        IsNumeric(pFDR(m_AddressFieldRightFrom)) And
-                        IsNumeric(pFDR(m_AddressFieldLeftTo)) Then
+                    If IsNumeric(strCurAdd) Then
 
-                        If CDbl(pFDR(m_AddressFieldLeftFrom)) Mod 2 = 0 And bAddEven Then
 
-                            pFromField = m_AddressFieldLeftFrom
-                            pToField = m_AddressFieldRightTo
-                        ElseIf CDbl(pFDR(m_AddressFieldLeftFrom)) Mod 2 <> 0 And bAddEven Then
+                        If CDbl(strCurAdd) Mod 2 <> 0 Then
+                            bAddEven = False
+                        End If
+                        'Set up the side of the street to check for the address 
+                        Dim pFromField, pToField As String
+                        If IsNumeric(pFDR(m_AddressFieldLeftFrom)) And
+                            IsNumeric(pFDR(m_AddressFieldRightTo)) And
+                            IsNumeric(pFDR(m_AddressFieldRightFrom)) And
+                            IsNumeric(pFDR(m_AddressFieldLeftTo)) Then
 
-                            pFromField = m_AddressFieldLeftFrom
-                            pToField = m_AddressFieldRightTo
-                        ElseIf CDbl(pFDR(m_AddressFieldLeftFrom)) Mod 2 = 0 And bAddEven = False Then
+                            If CDbl(pFDR(m_AddressFieldLeftFrom)) Mod 2 = 0 And bAddEven Then
 
-                            pFromField = m_AddressFieldRightFrom
-                            pToField = m_AddressFieldLeftTo
+                                pFromField = m_AddressFieldLeftFrom
+                                pToField = m_AddressFieldRightTo
+                            ElseIf CDbl(pFDR(m_AddressFieldLeftFrom)) Mod 2 <> 0 And bAddEven Then
+
+                                pFromField = m_AddressFieldLeftFrom
+                                pToField = m_AddressFieldRightTo
+                            ElseIf CDbl(pFDR(m_AddressFieldLeftFrom)) Mod 2 = 0 And bAddEven = False Then
+
+                                pFromField = m_AddressFieldRightFrom
+                                pToField = m_AddressFieldLeftTo
+                            Else
+                                pFromField = m_AddressFieldRightFrom
+                                pToField = m_AddressFieldLeftTo
+
+                            End If
+                            'Get the Geocode Location
+
+                            pCoord = DetermineAddressLocation(pFDR.Geometry, CInt(strCurAdd), CInt(pFDR(pFromField)), CInt(pFDR(pToField)))
+                            If pCoord Is Nothing Then Return
+                            pGeo = New Esri.ArcGIS.Mobile.Geometries.Point(pCoord)
                         Else
-                            pFromField = m_AddressFieldRightFrom
-                            pToField = m_AddressFieldLeftTo
+                            pGeo = pFDR.Geometry
 
                         End If
-                        'Get the Geocode Location
 
-                        pCoord = DetermineAddressLocation(pFDR.Geometry, CInt(strCurAdd), CInt(pFDR(pFromField)), CInt(pFDR(pToField)))
-                        If pCoord Is Nothing Then Return
-                        pGeo = New Esri.ArcGIS.Mobile.Geometries.Point(pCoord)
+
                     Else
                         pGeo = pFDR.Geometry
-
                     End If
-
-
 
 
                 Else
