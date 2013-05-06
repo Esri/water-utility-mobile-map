@@ -82,5 +82,5 @@ limitations under the License.
 A copy of the license is available in the repository's
 [license.txt](https://raw.github.com/Esri/water-utility-mobile-map/master/license.txt) file.
 
-[](Esri Tags: Local Government Water Utility Mobile Map C-Sharp)
+[](Esri Tags: Local-Government Water-Utility Local Government Water Utility Mobile Map C-Sharp)
 [](Esri Language: Visual-Basic)
