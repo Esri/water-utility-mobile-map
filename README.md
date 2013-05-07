@@ -51,6 +51,8 @@ Learn more about Esri's [ArcGIS for Local Government maps and apps](http://resou
 
 Show me a list of other [Local Government GitHub repositories](http://esri.github.io/#Local%2DGovernment).
 
+Show me a list of other [Utilities GitHub repositories](http://esri.github.io/#Utilities).
+
 Additional [information and sample data](http://www.arcgis.com/home/item.html?id=a57e96b9240e4311b7fd863b80a6d389)
 are available for the application.
 
@@ -82,5 +84,5 @@ limitations under the License.
 A copy of the license is available in the repository's
 [license.txt](https://raw.github.com/Esri/water-utility-mobile-map/master/license.txt) file.
 
-[](Esri Tags: Local-Government Water-Utility Local Government Water Utility Mobile Map C-Sharp)
+[](Esri Tags: Local-Government Water-Utility Local Government Water Utility Mobile Map Utility Utilities C-Sharp)
 [](Esri Language: Visual-Basic)
