@@ -30,7 +30,7 @@
       <!--Option to show a side bar - Not functional yet-->
       <SideBarControl>False</SideBarControl>
       <CopyrightText>Esri, Inc.</CopyrightText>
-      <VersionInfo>Version: 10.1.1 Feb 2-25-2013</VersionInfo>
+      <VersionInfo>Version: 10.1.2 Feb 5-1-2013</VersionInfo>
       <!--The scale to zoom to for point feature results-->
       <ZoomExtent>600</ZoomExtent>
       <MultiLineThreshold Threshold ="125" SizeFactor="3"/>
@@ -989,7 +989,7 @@
     <!--Options Table of Contents panel-->
     <TOCPanel>
       <!--Option to show or hide the Panel-->
-      <Visible>True</Visible>
+      <Visible>true</Visible>
       <!--The text to display in the button-->
       <DisplayText>Legend</DisplayText>
       <!--Message to show in the lower left status bar-->

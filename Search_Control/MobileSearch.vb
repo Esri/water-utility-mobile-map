@@ -1731,6 +1731,8 @@ Public Class MobileSearch
             GlobalsFunctions.zoomTo(CType(pFDT.Rows(0), FeatureDataRow).Geometry, m_Map)
             If CType(pFDT.Rows(0), FeatureDataRow).Geometry.GeometryType = GeometryType.Point Then
                 GlobalsFunctions.flashGeo(CType(pFDT.Rows(0), FeatureDataRow).Geometry, m_Map, m_penLine, CType(m_brush, SolidBrush))
+            ElseIf CType(pFDT.Rows(0), FeatureDataRow).Geometry.GeometryType = GeometryType.Multipoint Then
+                GlobalsFunctions.flashGeo(CType(pFDT.Rows(0), FeatureDataRow).Geometry, m_Map, m_penLine, CType(m_brush, SolidBrush))
             Else
                 GlobalsFunctions.flashGeo(CType(pFDT.Rows(0), FeatureDataRow).Geometry, m_Map, m_pen, m_brush)
 

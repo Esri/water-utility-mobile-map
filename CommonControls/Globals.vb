@@ -973,13 +973,33 @@ IL_1EE:
                 Dim pIntExtGeo As Integer = CInt(ServerToMobileGeom(appConfig.ApplicationSettings.ZoomExtent, Map))
                 pEnv = New Envelope(0, 0, pIntExtGeo, pIntExtGeo)
                 pEnv.CenterAt(CType(pGeo, Esri.ArcGIS.Mobile.Geometries.Point).Coordinate)
-            Else
 
-                'Calc the envelope based on the map aspect ration
-                pEnv = CalcEnvelope(pGeo, Map.Width, Map.Height)
+            ElseIf pGeo.GeometryType = Esri.ArcGIS.Mobile.Geometries.GeometryType.Multipoint Then
+                If pGeo.Parts.Count = 1 Then
+                    If pGeo.Parts.Item(0).Count = 1 Then
+
+                        Dim pIntExtGeo As Integer = CInt(ServerToMobileGeom(appConfig.ApplicationSettings.ZoomExtent, Map))
+                        pEnv = New Envelope(0, 0, pIntExtGeo, pIntExtGeo)
+
+                        pEnv.CenterAt(pGeo.Parts.Item(0).Item(0))
+                    Else
+                        pEnv = CalcEnvelope(pGeo, Map.Width, Map.Height)
+
+                    End If
+
+                Else
+                    pEnv = CalcEnvelope(pGeo, Map.Width, Map.Height)
+
+                End If
+                    'If a point, center on it and create an envelope 50 around around it
+
+                Else
+
+                    'Calc the envelope based on the map aspect ration
+                    pEnv = CalcEnvelope(pGeo, Map.Width, Map.Height)
 
 
-            End If
+                End If
 
             'Set the extent to the map
             Map.Extent = pEnv
@@ -1034,8 +1054,21 @@ IL_1EE:
         Try
 
             If pGeo.IsEmpty Then Return
-            Map.FlashGeometry(pen, brush, 20, 100, 5, pGeo)
+            If pGeo.GeometryType = GeometryType.Multipoint Then
+                Dim pPnt As Esri.ArcGIS.Mobile.Geometries.Point
+                For Each pt As CoordinateCollection In pGeo.Parts
+                    For Each cord As Coordinate In pt
+                        pPnt = New Esri.ArcGIS.Mobile.Geometries.Point(cord)
+                        Map.FlashGeometry(pen, brush, 20, 100, 5, pPnt)
 
+                    Next
+                Next
+
+            Else
+                Map.FlashGeometry(pen, brush, 20, 100, 5, pGeo)
+
+            End If
+            
 
 
 
