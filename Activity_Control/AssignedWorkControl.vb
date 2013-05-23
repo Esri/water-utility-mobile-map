@@ -637,12 +637,12 @@ Public Class AssignedWorkControl
                     If FieldsList(i) <> pDr.FeatureSource.GeometryColumnName Then
 
                         If strDis = "" Then
-                            strDis = (pDr(i).ToString)
+                            strDis = pDr(DataTable.Columns(FieldsList(i))).ToString()
 
                             'pLstViewItm.Text = (pDr(i).ToString)
                         Else
                             'pLstViewItm.SubItems.Add(pDr(i).ToString)
-                            strDis = strDis & JoinString & (pDr(i).ToString)
+                            strDis = strDis & JoinString & pDr(DataTable.Columns(FieldsList(i))).ToString()
 
                         End If
                     End If

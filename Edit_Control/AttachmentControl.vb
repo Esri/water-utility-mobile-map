@@ -21,6 +21,18 @@ Public Class AttachmentControl
     Private WithEvents m_SketchMA As SketchMapAction
     Private m_lastMA As MapAction = Nothing
 
+    Public Function hasSketches() As Boolean
+        If m_SketchGraphics Is Nothing Then Return False
+        If m_SketchGraphics.Graphics Is Nothing Then Return False
+
+        If m_SketchGraphics.Graphics.Count > 0 Then
+            Return True
+        Else
+            Return False
+
+        End If
+    End Function
+
 
     Public Sub New(ByVal Map As Esri.ArcGIS.Mobile.WinForms.Map)
 
@@ -366,8 +378,8 @@ Public Class AttachmentControl
 
                     End If
 
-                    
-                    
+
+
                     lstItm.Tag = legendSwatchesList(k).Symbol
 
                     ' Adds the layer node to the treeview 
@@ -665,7 +677,7 @@ Public Class AttachmentControl
                     m_SketchGraphics.Graphics.Clear()
                 End If
             End If
-      
+
         End If
     End Sub
     Public Sub ClearGraphLayer()
@@ -756,7 +768,10 @@ Public Class AttachmentControl
     End Sub
 
     Private Sub btnSave_Click(sender As System.Object, e As System.EventArgs) Handles btnSave.Click
+        saveSketch()
 
+    End Sub
+    Public Sub saveSketch()
         Dim image As System.Drawing.Image = m_Map.ToBitmap
 
 
@@ -775,9 +790,7 @@ Public Class AttachmentControl
         m_SketchGraphics.Graphics.Clear()
         m_Map.Invalidate()
         Call btnAddSketch_Click(Nothing, Nothing)
-
     End Sub
-
     Private Sub m_SketchMA_SketchComplete() Handles m_SketchMA.SketchComplete
         If m_SketchMA Is Nothing Then Return
         If m_SketchMA.geometery Is Nothing Then Return
@@ -796,7 +809,7 @@ Public Class AttachmentControl
             pMpGp.Text = fm.m_Value
 
         End If
-        
+
         ' MsgBox(.ToString)
         If m_OutlookNavigatePane IsNot Nothing Then
             If m_OutlookNavigatePane.SelectedButton IsNot Nothing Then

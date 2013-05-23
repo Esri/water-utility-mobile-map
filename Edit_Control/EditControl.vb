@@ -6277,6 +6277,22 @@ Public Class EditControl
     End Sub
     Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
         'Saves the record
+        If m_AttControlBox IsNot Nothing Then
+            If m_AttControlBox.hasSketches Then
+                Dim pSelectFrm As New frmSelectOption(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.PromptForSaveSketch, GlobalsFunctions.appConfig.ApplicationSettings.UIComponents.YesText, GlobalsFunctions.appConfig.ApplicationSettings.UIComponents.NoText)
+
+                pSelectFrm.ShowDialog()
+                If pSelectFrm.selectedOption = GlobalsFunctions.appConfig.ApplicationSettings.UIComponents.YesText Then
+
+                    m_AttControlBox.saveSketch()
+
+                Else
+                    m_AttControlBox.ClearGraphLayer()
+
+                End If
+            End If
+
+        End If
         saveRecord()
 
         If CloseOnSave Then

@@ -842,7 +842,8 @@ IL_1EE:
 
     End Function
     Public Shared Function writeConfig()
-        appConfig.SaveToFile("MobileMapConfig.xml")
+
+        conParent.SaveToFile("MobileMapConfig.xml")
 
     End Function
     Public Shared Function CalcEnvelope(ByVal g As Geometry, ByVal mapWidth As Double, ByVal mapHeight As Double) As Envelope

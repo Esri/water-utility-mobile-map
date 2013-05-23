@@ -8803,6 +8803,7 @@ Public Property RequiredBackColor() As String
         Private deleteMessageField As String
         Private noGeometryMessageField As String
         Private promptforDeleteField As String
+        Private promptforSketchField As String
         Private Shared sSerializer As System.Xml.Serialization.XmlSerializer
 
         Public Sub New()
@@ -8814,6 +8815,7 @@ Public Property RequiredBackColor() As String
             Me.layerNotEditableMessageField = "Please set the layerNotEditableMessage Tag"""
             Me.noGeometryMessageField = "Please set the NoGeometryMessage Tag"
             Me.promptforDeleteField = "Please set the PromptForDelete Tag"
+            Me.promptforSketchField = "There are unsaved sketches, save?"
         End Sub
 
         <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=0)> _
@@ -8934,6 +8936,15 @@ Public Property RequiredBackColor() As String
             End Get
             Set(ByVal value As String)
                 Me.promptforDeleteField = value
+            End Set
+        End Property
+        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=12)> _
+        Public Property PromptForSaveSketch() As String
+            Get
+                Return Me.promptforSketchField
+            End Get
+            Set(ByVal value As String)
+                Me.promptforSketchField = value
             End Set
         End Property
         Private Shared ReadOnly Property Serializer() As System.Xml.Serialization.XmlSerializer
