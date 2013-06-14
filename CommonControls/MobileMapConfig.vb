@@ -605,7 +605,10 @@ Namespace MobileConfigClass
         Private uIComponentsField As MobileConfigMobileMapConfigApplicationSettingsUIComponents
 
         Private Shared sSerializer As System.Xml.Serialization.XmlSerializer
+        Public Sub New()
+            Me.mapExportField = New MobileConfigMobileMapConfigApplicationSettingsMapExport
 
+        End Sub
         <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=0)> _
         Public Property SplashLabel() As String
             Get

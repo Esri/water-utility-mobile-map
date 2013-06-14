@@ -32,25 +32,40 @@ Public Class MobileWebDisplay
         ' Add any initialization after the InitializeComponent() call.
 
     End Sub
-    Public Sub initControl(ByVal map As Esri.ArcGIS.Mobile.WinForms.Map)
-        m_Map = map
+    Public Sub initControlMobileWebDisplay(ByVal map As Esri.ArcGIS.Mobile.WinForms.Map)
+        Try
+            m_Map = map
 
 
 
-        m_WebBrowser = New BrowseDisplay
-        m_WebBrowser.Dock = DockStyle.Fill
-        m_WebBrowser.webDisplay.ScriptErrorsSuppressed = True
-        m_WebBrowser.webDisplay.WebBrowserShortcutsEnabled = True
+            m_WebBrowser = New BrowseDisplay
+            m_WebBrowser.Dock = DockStyle.Fill
+            m_WebBrowser.webDisplay.ScriptErrorsSuppressed = True
+            m_WebBrowser.webDisplay.WebBrowserShortcutsEnabled = True
 
-        m_WebBrowser.webDisplay.Dock = DockStyle.Fill
-        m_WebBrowser.Visible = False
+            m_WebBrowser.webDisplay.Dock = DockStyle.Fill
+          
+            m_Map.Parent.Controls.Add(m_WebBrowser)
+            Try
 
-        m_Map.Parent.Controls.Add(m_WebBrowser)
 
-        If Me.Parent IsNot Nothing Then
-            AddHandler Me.Parent.VisibleChanged, AddressOf parentVisibleChange
+                m_WebBrowser.Visible = False
+            Catch ex As Exception
 
-        End If
+            End Try
+
+            If Me.Parent IsNot Nothing Then
+                AddHandler Me.Parent.VisibleChanged, AddressOf parentVisibleChange
+
+            End If
+        Catch ex As Exception
+            Dim st As New StackTrace
+            MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+            st = Nothing
+
+
+        End Try
+
     End Sub
     Private Sub parentVisibleChange(ByVal sender As Object, ByVal e As System.EventArgs)
         If CType(sender, Control).Visible = False Then
@@ -60,6 +75,9 @@ Public Class MobileWebDisplay
         End If
     End Sub
     Public Sub initSites()
+        Try
+
+        
         Dim pl As ListViewItem
 
         For Each Site As MobileConfigClass.MobileConfigMobileMapConfigWebPanelWebSitesWebSite In GlobalsFunctions.appConfig.WebPanel.WebSites.WebSite
@@ -73,54 +91,88 @@ Public Class MobileWebDisplay
 
 
 
-        Next
+            Next
+        Catch ex As Exception
+            Dim st As New StackTrace
+            MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+            st = Nothing
+
+
+        End Try
+
     End Sub
     Public Sub AddSite(ByVal strLink As String, ByVal show As Boolean)
-        lstSites.Select()
+        Try
+            lstSites.Select()
 
-        Dim pl As ListViewItem
-        pl = lstSites.FindItemWithText(strLink) 'findItem(strLink)
+            Dim pl As ListViewItem
+            pl = lstSites.FindItemWithText(strLink) 'findItem(strLink)
 
-        If pl Is Nothing Then
-            pl = New ListViewItem(strLink, strLink)
-            pl.Tag = strLink
-            'file: // /
+            If pl Is Nothing Then
+                pl = New ListViewItem(strLink, strLink)
+                pl.Tag = strLink
+                'file: // /
 
-            pl.ImageKey = strLink
+                pl.ImageKey = strLink
 
-            lstSites.Items.Add(pl)
-       
+                lstSites.Items.Add(pl)
 
-        End If
-        pl.Selected = True
-        lstSites.Items(pl.Index).Selected = True
-
-        If show Then
-            toggleWebDisplay(True)
-            'lstSites.Items(lstSites.Items.Count - 1).Selected = True
-
-            ' MsgBox(lstSites.SelectedItems.Count)
-
-            navigateTo(strLink, strLink)
-        End If
-    End Sub
-    Private Function findItem(ByVal linkVal As String) As ListViewItem
-        For Each itm As ListViewItem In lstSites.Items
-            If itm.Text = linkVal Then
-                Return itm
 
             End If
-        Next
-        Return Nothing
+            pl.Selected = True
+            lstSites.Items(pl.Index).Selected = True
+
+            If show Then
+                toggleWebDisplay(True)
+                'lstSites.Items(lstSites.Items.Count - 1).Selected = True
+
+                ' MsgBox(lstSites.SelectedItems.Count)
+
+                navigateTo(strLink, strLink)
+            End If
+        Catch ex As Exception
+            Dim st As New StackTrace
+            MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+            st = Nothing
+
+
+        End Try
+
+    End Sub
+    Private Function findItem(ByVal linkVal As String) As ListViewItem
+        Try
+            For Each itm As ListViewItem In lstSites.Items
+                If itm.Text = linkVal Then
+                    Return itm
+
+                End If
+            Next
+            Return Nothing
+        Catch ex As Exception
+            Dim st As New StackTrace
+            MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+            st = Nothing
+
+
+        End Try
+
     End Function
     Public Sub toggleWebDisplay(ByVal Show As Boolean)
-        If Show Then
-            btnToggleLinkDisplay.BackgroundImage = My.Resources.globe
-        Else
-            btnToggleLinkDisplay.BackgroundImage = My.Resources.File
-        End If
-        m_WebBrowser.Visible = Show
-        m_Map.Visible = Not Show
+        Try
+            If Show Then
+                btnToggleLinkDisplay.BackgroundImage = My.Resources.globe
+            Else
+                btnToggleLinkDisplay.BackgroundImage = My.Resources.File
+            End If
+            m_WebBrowser.Visible = Show
+            m_Map.Visible = Not Show
+        Catch ex As Exception
+            Dim st As New StackTrace
+            MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+            st = Nothing
+
+
+        End Try
 
     End Sub
 
@@ -130,11 +182,19 @@ Public Class MobileWebDisplay
     End Sub
 
     Private Sub lstSites_MouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles lstSites.MouseClick
-        If lstSites.SelectedItems.Count <= 0 Then Return
-        toggleWebDisplay(True)
-      
+        Try
+            If lstSites.SelectedItems.Count <= 0 Then Return
+            toggleWebDisplay(True)
 
-        navigateTo(lstSites.SelectedItems(0).Tag.ToString(), lstSites.SelectedItems(0).Text)
+
+            navigateTo(lstSites.SelectedItems(0).Tag.ToString(), lstSites.SelectedItems(0).Text)
+        Catch ex As Exception
+            Dim st As New StackTrace
+            MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+            st = Nothing
+
+
+        End Try
 
     End Sub
     Private Sub navigateTo(ByVal strLink As String, ByVal strDis As String)

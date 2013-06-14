@@ -78,6 +78,18 @@ Public Class AttributeDisplay
     '__Private m_Distance As Integer = 5
     Private m_Mode As String = "ID"
 #Region "Public Functions"
+    Public Sub showEditButton()
+        btnEdit.Visible = True
+        relocateButtons()
+
+
+    End Sub
+    Public Sub hideEditButton()
+        btnEdit.Visible = False
+
+        relocateButtons()
+    End Sub
+
     Private m_GPSStatus As String = "Off"
 
     Public Property GPSStatus
@@ -277,6 +289,9 @@ Public Class AttributeDisplay
 
                 End If
             End If
+            btnEdit.Visible = False
+
+            relocateButtons()
             Return False
         Catch ex As Exception
             Return False
@@ -2225,5 +2240,9 @@ Public Class AttributeDisplay
         e.DrawFocusRectangle()
 
     End Sub
+    Public Event showEditor()
+    Private Sub btnEdit_Click(sender As System.Object, e As System.EventArgs) Handles btnEdit.Click
+        RaiseEvent showEditor()
 
+    End Sub
 End Class

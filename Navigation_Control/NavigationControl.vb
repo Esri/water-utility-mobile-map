@@ -1408,12 +1408,12 @@ Public Class mobileNavigation
             Dim cosAngle As Double = Math.Cos(angle)
 
             '// Convert the distance from pixels to map coordinates.
-            Dim mapDx As Integer
-            Dim mapDy As Integer
+            Dim mapDx As Double
+            Dim mapDy As Double
             Dim pSclFact As Double = 0.1
             pSclFact = pSclFact * mblMap.Scale
 
-            Dim dblPanVal As Integer = CInt(CustomServerToMobileGeom(pSclFact))
+            Dim dblPanVal As Double = CDbl(CustomServerToMobileGeom(pSclFact))
 
             'Set up pan value
             Select Case pPanDir

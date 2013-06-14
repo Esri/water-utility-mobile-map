@@ -78,6 +78,14 @@ Public Class MobileAttributes
 
     '__Private m_Distance As Integer = 5
 #Region "Public Functions"
+    Public Sub showEditButton()
+        m_attDis.showEditButton()
+
+    End Sub
+    Public Sub hideEditButton()
+        m_attDis.hideEditButton()
+    End Sub
+
     Private m_GPSStatus As String
 
     Public Property GPSStatus As String
@@ -286,10 +294,10 @@ Public Class MobileAttributes
 
 
                     Next
-
-                    RaiseEvent LocationIdentified(CType(pDT.Rows(idx), FeatureDataRow))
                     currentRecord(CType(pDT.Rows(idx), FeatureDataRow))
 
+                    RaiseEvent LocationIdentified(CType(pDT.Rows(idx), FeatureDataRow))
+                  
 
                     Return True
                     'double ddist = map.SpatialReference.FromGeometry(dist); 
@@ -978,6 +986,12 @@ Public Class MobileAttributes
         RaiseEvent RouteTo(location, LocationName)
 
 
+
+    End Sub
+    Public Event showEditor()
+
+    Private Sub m_attDis_showEditor() Handles m_attDis.showEditor
+        RaiseEvent showEditor()
 
     End Sub
     Private Sub m_attDis_Waypoint(ByVal location As Esri.ArcGIS.Mobile.Geometries.Geometry, ByVal LocationName As String) Handles m_attDis.Waypoint

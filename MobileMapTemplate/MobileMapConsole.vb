@@ -1014,7 +1014,7 @@ Public Class MobileMapConsole
                     pnlWeb.Dock = DockStyle.Fill
 
                     'Set the map control
-                    m_MCWeb.initControl(Map1)
+                    m_MCWeb.initControlMobileWebDisplay(Map1)
                     Try
 
 
@@ -3122,29 +3122,53 @@ Public Class MobileMapConsole
     End Sub
 
     Private Sub pnlCreateFeature_VisibleChanged(sender As System.Object, e As System.EventArgs) Handles pnlCreateFeature.VisibleChanged
-        m_MCCreateFeatureMA.reorderEditBtns()
+        Try
+
+        
+            m_MCCreateFeatureMA.reorderEditBtns()
+        Catch ex As Exception
+            Dim st As New StackTrace
+            MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+            st = Nothing
+        End Try
     End Sub
 
     Private Sub m_MCCreateFeatureMA_SyncLayer(layerName As String) Handles m_MCCreateFeatureMA.SyncLayer
-        Dim pLst As New List(Of FeatureSource)
-        pLst.Add(GlobalsFunctions.GetFeatureSource(layerName, Map1).FeatureSource)
-        m_MCService.PostData(pLst)
+        Try
+
+            Dim pLst As New List(Of FeatureSource)
+            pLst.Add(GlobalsFunctions.GetFeatureSource(layerName, Map1).FeatureSource)
+            m_MCService.PostData(pLst)
+        Catch ex As Exception
+            Dim st As New StackTrace
+            MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+            st = Nothing
+        End Try
     End Sub
 
     Private Sub m_MCWeb_WebPanelToggle(visible As Boolean) Handles m_MCWeb.WebPanelToggle
-        If btnTakeImage IsNot Nothing Then
-            If visible = False And UCase(appConfig.ApplicationSettings.MapExport.visible) = UCase("TRUE") Then
-                btnTakeImage.Visible = True
-            ElseIf UCase(appConfig.ApplicationSettings.MapExport.visible) = UCase("FALSE") Then
-                btnTakeImage.Visible = False
-            Else
-                btnTakeImage.Visible = False
+        Try
+            If btnTakeImage IsNot Nothing Then
+
+                If visible = False And UCase(appConfig.ApplicationSettings.MapExport.visible) = UCase("TRUE") Then
+                    btnTakeImage.Visible = True
+                ElseIf UCase(appConfig.ApplicationSettings.MapExport.visible) = UCase("FALSE") Then
+                    btnTakeImage.Visible = False
+                Else
+                    btnTakeImage.Visible = False
+                End If
+
             End If
-
-        End If
-
+        Catch ex As Exception
+            Dim st As New StackTrace
+            MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+            st = Nothing
+        End Try
     End Sub
     Private Sub m_MCIDMA_Waypoint(location As ArcGIS.Mobile.Geometries.Geometry, LocationName As String) Handles m_MCIDMA.Waypoint, m_MCSearch.Waypoint
+        Try
+
+        
         If location Is Nothing Then Return
 
         Dim pCoord As Esri.ArcGIS.Mobile.Geometries.Coordinate = GlobalsFunctions.GetGeometryCenter(location)
@@ -3154,6 +3178,10 @@ Public Class MobileMapConsole
 
         m_MCCompass.setDestination(pCoord.X, pCoord.Y)
         showPanel(TemplatePanels.Waypoint)
-
+        Catch ex As Exception
+            Dim st As New StackTrace
+            MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+            st = Nothing
+        End Try
     End Sub
 End Class

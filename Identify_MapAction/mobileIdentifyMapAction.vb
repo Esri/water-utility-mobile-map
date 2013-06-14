@@ -416,7 +416,9 @@ Public Class mobileIdentifyMapAction
 
 
     End Sub
+
     Private Sub m_Att_LocationIdentified(ByVal fdr As FeatureDataRow) Handles m_AttFrm.LocationIdentified
+        m_AttFrm.hideEditButton()
         Dim bEditFnd As Boolean = False
         For Each editLay In GlobalsFunctions.appConfig.EditControlOptions.Layers.Layer
             If editLay.Name = fdr.FeatureSource.Name Then
@@ -436,8 +438,9 @@ Public Class mobileIdentifyMapAction
 
 
                     End If
-                    m_AttFrm.Visible = False
-                    m_EditFrm.Visible = True
+                    ' m_AttFrm.Visible = False
+                    'm_EditFrm.Visible = True
+                    m_AttFrm.showEditButton()
                     m_EditFrm.setCurrentRecord(fdr, editLay)
 
                     bEditFnd = True
@@ -461,8 +464,9 @@ Public Class mobileIdentifyMapAction
 
 
                             End If
-                            m_AttFrm.Visible = False
-                            m_EditFrm.Visible = True
+                            ' m_AttFrm.Visible = False
+                            'm_EditFrm.Visible = True
+                            m_AttFrm.showEditButton()
                             m_EditFrm.setCurrentRecord(fdr, editLay)
                             bEditFnd = True
                         ElseIf fdr(editLay.EditOwnerField).ToString() = Environment.UserDomainName & "\\" & Environment.UserName Then
@@ -481,8 +485,9 @@ Public Class mobileIdentifyMapAction
 
 
                             End If
-                            m_AttFrm.Visible = False
-                            m_EditFrm.Visible = True
+                            ' m_AttFrm.Visible = False
+                            'm_EditFrm.Visible = True
+                            m_AttFrm.showEditButton()
                             m_EditFrm.setCurrentRecord(fdr, editLay)
                             bEditFnd = True
                         ElseIf fdr(editLay.EditOwnerField).ToString() = Environment.UserDomainName & "\" & Environment.UserName Then
@@ -501,8 +506,9 @@ Public Class mobileIdentifyMapAction
 
 
                             End If
-                            m_AttFrm.Visible = False
-                            m_EditFrm.Visible = True
+                            ' m_AttFrm.Visible = False
+                            'm_EditFrm.Visible = True
+                            m_AttFrm.showEditButton()
                             m_EditFrm.setCurrentRecord(fdr, editLay)
                             bEditFnd = True
                         End If
@@ -522,8 +528,9 @@ Public Class mobileIdentifyMapAction
 
 
                         End If
-                        m_AttFrm.Visible = False
-                        m_EditFrm.Visible = True
+                        ' m_AttFrm.Visible = False
+                        'm_EditFrm.Visible = True
+                        m_AttFrm.showEditButton()
 
                         m_EditFrm.setCurrentRecord(fdr, editLay)
                         bEditFnd = True
@@ -532,11 +539,10 @@ Public Class mobileIdentifyMapAction
                 End If
             End If
         Next
-        If bEditFnd = False Then
-            m_AttFrm.Visible = True
-            m_EditFrm.Visible = False
 
-        End If
+        m_AttFrm.Visible = True
+        m_EditFrm.Visible = False
+
         'RaiseEvent LocationIdentified(fdr)
     End Sub
 
@@ -1391,5 +1397,10 @@ Public Class mobileIdentifyMapAction
     Private Sub m_EditFrm_VisibleChanged(sender As Object, e As System.EventArgs) Handles m_EditFrm.VisibleChanged
         m_EditFrm.DrawGeo = m_EditFrm.Visible
 
+    End Sub
+
+    Private Sub m_AttFrm_showEditor() Handles m_AttFrm.showEditor
+        m_AttFrm.Visible = False
+        m_EditFrm.Visible = True
     End Sub
 End Class

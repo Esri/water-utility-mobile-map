@@ -28,11 +28,12 @@ Partial Class AttributeDisplay
         Me.spltAttTools = New System.Windows.Forms.SplitContainer()
         Me.pnlCurrentLayer = New System.Windows.Forms.Panel()
         Me.lblCurrentLayer = New System.Windows.Forms.Label()
+        Me.btnEdit = New System.Windows.Forms.Button()
+        Me.btnWaypoint = New System.Windows.Forms.Button()
         Me.btnGPSLoc = New System.Windows.Forms.Button()
         Me.btnFlash = New System.Windows.Forms.Button()
         Me.btnRouteTo = New System.Windows.Forms.Button()
         Me.btnZoomTo = New System.Windows.Forms.Button()
-        Me.btnWaypoint = New System.Windows.Forms.Button()
         Me.gpBoxAttLay.SuspendLayout()
         Me.pnlAttributes.SuspendLayout()
         Me.spltAttTools.Panel2.SuspendLayout()
@@ -69,6 +70,7 @@ Partial Class AttributeDisplay
         '
         'spltAttTools.Panel2
         '
+        Me.spltAttTools.Panel2.Controls.Add(Me.btnEdit)
         Me.spltAttTools.Panel2.Controls.Add(Me.btnWaypoint)
         Me.spltAttTools.Panel2.Controls.Add(Me.btnGPSLoc)
         Me.spltAttTools.Panel2.Controls.Add(Me.btnFlash)
@@ -96,6 +98,30 @@ Partial Class AttributeDisplay
         Me.lblCurrentLayer.TabIndex = 0
         Me.lblCurrentLayer.Text = "Label1"
         Me.lblCurrentLayer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'btnEdit
+        '
+        Me.btnEdit.BackgroundImage = Global.MobileControls.My.Resources.Resources.Pen
+        Me.btnEdit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btnEdit.FlatAppearance.BorderSize = 0
+        Me.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnEdit.Location = New System.Drawing.Point(80, 4)
+        Me.btnEdit.Name = "btnEdit"
+        Me.btnEdit.Size = New System.Drawing.Size(50, 50)
+        Me.btnEdit.TabIndex = 5
+        Me.btnEdit.UseVisualStyleBackColor = True
+        '
+        'btnWaypoint
+        '
+        Me.btnWaypoint.BackgroundImage = Global.MobileControls.My.Resources.Resources.NavTooBlue
+        Me.btnWaypoint.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btnWaypoint.FlatAppearance.BorderSize = 0
+        Me.btnWaypoint.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnWaypoint.Location = New System.Drawing.Point(126, 3)
+        Me.btnWaypoint.Name = "btnWaypoint"
+        Me.btnWaypoint.Size = New System.Drawing.Size(50, 50)
+        Me.btnWaypoint.TabIndex = 4
+        Me.btnWaypoint.UseVisualStyleBackColor = True
         '
         'btnGPSLoc
         '
@@ -145,18 +171,6 @@ Partial Class AttributeDisplay
         Me.btnZoomTo.TabIndex = 0
         Me.btnZoomTo.UseVisualStyleBackColor = True
         '
-        'btnWaypoint
-        '
-        Me.btnWaypoint.BackgroundImage = Global.MobileControls.My.Resources.Resources.NavTooBlue
-        Me.btnWaypoint.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.btnWaypoint.FlatAppearance.BorderSize = 0
-        Me.btnWaypoint.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnWaypoint.Location = New System.Drawing.Point(126, 3)
-        Me.btnWaypoint.Name = "btnWaypoint"
-        Me.btnWaypoint.Size = New System.Drawing.Size(50, 50)
-        Me.btnWaypoint.TabIndex = 4
-        Me.btnWaypoint.UseVisualStyleBackColor = True
-        '
         'AttributeDisplay
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -182,5 +196,6 @@ Partial Class AttributeDisplay
     Friend WithEvents pnlCurrentLayer As System.Windows.Forms.Panel
     Friend WithEvents lblCurrentLayer As System.Windows.Forms.Label
     Friend WithEvents btnWaypoint As System.Windows.Forms.Button
+    Friend WithEvents btnEdit As System.Windows.Forms.Button
 
 End Class

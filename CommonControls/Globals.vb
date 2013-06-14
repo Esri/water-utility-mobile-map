@@ -971,7 +971,7 @@ IL_1EE:
             'Determine type of feature
             If pGeo.GeometryType = Esri.ArcGIS.Mobile.Geometries.GeometryType.Point Then
                 'If a point, center on it and create an envelope 50 around around it
-                Dim pIntExtGeo As Integer = CInt(ServerToMobileGeom(appConfig.ApplicationSettings.ZoomExtent, Map))
+                Dim pIntExtGeo As Double = CDbl(ServerToMobileGeom(appConfig.ApplicationSettings.ZoomExtent, Map))
                 pEnv = New Envelope(0, 0, pIntExtGeo, pIntExtGeo)
                 pEnv.CenterAt(CType(pGeo, Esri.ArcGIS.Mobile.Geometries.Point).Coordinate)
 
@@ -979,7 +979,7 @@ IL_1EE:
                 If pGeo.Parts.Count = 1 Then
                     If pGeo.Parts.Item(0).Count = 1 Then
 
-                        Dim pIntExtGeo As Integer = CInt(ServerToMobileGeom(appConfig.ApplicationSettings.ZoomExtent, Map))
+                        Dim pIntExtGeo As Double = CDbl(ServerToMobileGeom(appConfig.ApplicationSettings.ZoomExtent, Map))
                         pEnv = New Envelope(0, 0, pIntExtGeo, pIntExtGeo)
 
                         pEnv.CenterAt(pGeo.Parts.Item(0).Item(0))
