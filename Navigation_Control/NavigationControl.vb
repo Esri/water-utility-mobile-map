@@ -2443,10 +2443,11 @@ Public Class mobileNavigation
     Private Sub m_FileGPS_GpsOpened(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_FileGPS.GpsOpened
 
         Try
+
             'Change the GPS button to show the active GPS icon
             m_GPSBtn.BackgroundImage = My.Resources.SatGreen
             'Invoke the parent thread to hide the initializing GPS box
-
+            
             If m_GPSLoadingPic.InvokeRequired Then
                 m_GPSLoadingPic.Invoke(New DelegatehidePicBox(AddressOf HidePicBox))
                 ' m_GPSLoadingPic.Invoke(New DelegateStartGPS(AddressOf StartGPS))

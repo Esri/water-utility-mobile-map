@@ -6378,6 +6378,10 @@ Public Class EditControl
                 RaiseEvent MoveGeo(True)
                 RaiseEvent RaisePermMessage(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.EditingGeoMessage, True)
                 btnMove.BackgroundImage = My.Resources.MoveRed
+                'If m_GPSVal = "" Then
+                '    btnGPSLoc.Enabled = True
+
+                'End If
             Else
 
                 RaiseEvent MoveGeo(False)

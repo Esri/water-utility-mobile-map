@@ -1211,6 +1211,10 @@ Public Class mobileIdentifyMapAction
                 m_AttFrm.GPSStatus = value
 
             End If
+            If m_EditFrm IsNot Nothing Then
+                m_EditFrm.GPSStatus = value
+
+            End If
         End Set
     End Property
     Public Property GPSLocation() As GPSLocationDetails
