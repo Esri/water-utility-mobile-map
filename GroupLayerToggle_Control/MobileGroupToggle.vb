@@ -479,6 +479,19 @@ Public Class mobileGroupToggle
 
                         pML.Visible = LayerVisible
 
+                        If lyrType = layerTypes.WebMaps And pML.Visible = True Then
+                            Dim pTML As Esri.ArcGIS.Mobile.WebServices.ArcGISServices.MapServices.TileServiceMapLayer = CType(pML, Esri.ArcGIS.Mobile.WebServices.ArcGISServices.MapServices.TileServiceMapLayer)
+
+
+                            pTML.Open()
+
+
+
+                       
+
+
+
+                        End If
                         If LayerVisible And (lyrType = layerTypes.LocalCacheMaps Or lyrType = layerTypes.WebMaps) Then
 
                             RaiseEvent syncBaseMapLayer(pML)

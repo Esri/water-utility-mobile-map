@@ -2844,8 +2844,10 @@ Public Class MobileServiceSync
 
                     If TypeOf mapLay Is Esri.ArcGIS.Mobile.WebServices.ArcGISServices.MapServices.TileServiceMapLayer Then
                         Dim pTileMapLay As Esri.ArcGIS.Mobile.WebServices.ArcGISServices.MapServices.TileServiceMapLayer = CType(mapLay, Esri.ArcGIS.Mobile.WebServices.ArcGISServices.MapServices.TileServiceMapLayer)
-
-                        pTileMapLay.Open()
+                        If pTileMapLay.Visible Then
+                            pTileMapLay.Open()
+                           
+                        End If
                         If pTileMapLay.SpatialReference IsNot Nothing Then
                             If m_Map.SpatialReference.CoordinateSystemString <> pTileMapLay.SpatialReference.CoordinateSystemString Then
                                 bkGrnOpenLayers.ReportProgress(0, String.Format(GlobalsFunctions.appConfig.LayerOptions.UIComponents.LayerSpatialReferenceDontMatch, pTileMapLay.Name))
