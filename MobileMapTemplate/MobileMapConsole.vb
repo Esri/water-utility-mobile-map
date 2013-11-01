@@ -57,14 +57,10 @@ Public Class MobileMapConsole
     Private WithEvents m_MCCreateFeatureMA As MobileControls.EditFeaturesMapAction
 
     Private WithEvents m_MCActivityControl As MobileControls.AssignedWorkControl
-    'Private WithEvents m_MCInspectMA As MobileControls.InspectMapAction
     Private WithEvents m_MCSketch As MobileControls.MobileSkecthPad
-    'Private WithEvents m_MCTrace As MobileControls.NetworkTraceMobile
-    'Private WithEvents m_MCGeonetTraceMA As MobileControls.GeometricNetworkTraceMapAction
-    'Private WithEvents m_MCRoutingMA As MobileControls.NetworkRoutingMapAction
     Private WithEvents m_MCToggleGroup As MobileControls.mobileGroupToggle
-    Private WithEvents m_MCALNInt As MobileControls.ALNIntegration
-    'Private WithEvents m_MCMeasureMA As MobileControls.MeasureMapAction
+
+    'Private WithEvents m_MCALNInt As MobileControls.ALNIntegration
     Private WithEvents m_MCCompass As MobileControls.Compass
 
 
@@ -435,19 +431,19 @@ Public Class MobileMapConsole
             End Try
 
             'ALN tools
-            If GlobalsFunctions.appConfig.NavigationOptions.ArcLogisticsNavigator.Installed.ToUpper <> "False".ToUpper Then
-                Try
+            'If GlobalsFunctions.appConfig.NavigationOptions.ArcLogisticsNavigator.Installed.ToUpper <> "False".ToUpper Then
+            '    Try
 
 
-                    m_MCALNInt = New MobileControls.ALNIntegration(Map1)
-                Catch ex As Exception
-                    MsgBox(GlobalsFunctions.appConfig.NavigationOptions.UIComponents.ALNNotInstalled)
+            '        m_MCALNInt = New MobileControls.ALNIntegration(Map1)
+            '    Catch ex As Exception
+            '        MsgBox(GlobalsFunctions.appConfig.NavigationOptions.UIComponents.ALNNotInstalled)
 
 
-                End Try
+            '    End Try
 
 
-            End If
+            'End If
 
             If GlobalsFunctions.appConfig.SearchPanel.Visible.ToUpper() <> "False".ToUpper() Then
 
@@ -488,7 +484,7 @@ Public Class MobileMapConsole
 
 
                     'Create a new search control
-                    m_MCSearch = New MobileControls.MobileSearch(Not (m_MCALNInt Is Nothing), appConfig.SearchPanel.SearchDataLoadType)
+                    m_MCSearch = New MobileControls.MobileSearch(False, appConfig.SearchPanel.SearchDataLoadType)
                     'Set it to fill the container
                     m_MCSearch.Dock = DockStyle.Fill
                     'Add it to the container
@@ -815,7 +811,7 @@ Public Class MobileMapConsole
 
                     'Add the map action to the map
                     'Init the ID form
-                    m_MCIDMA.InitIDForm(pnlID, "", Not (m_MCALNInt Is Nothing))
+                    m_MCIDMA.InitIDForm(pnlID, "", False)
                     'Add the ID button
                     m_MCIDMA.addIDButton()
                     'Set the default ID layer
@@ -2897,10 +2893,10 @@ Public Class MobileMapConsole
             End If
             m_MCNav = Nothing
 
-            If m_MCALNInt IsNot Nothing Then
-                m_MCALNInt.Dispose()
-            End If
-            m_MCALNInt = Nothing
+            'If m_MCALNInt IsNot Nothing Then
+            '    m_MCALNInt.Dispose()
+            'End If
+            'm_MCALNInt = Nothing
 
             'If m_MCInspectMA IsNot Nothing Then
             '    m_MCInspectMA.Dispose()

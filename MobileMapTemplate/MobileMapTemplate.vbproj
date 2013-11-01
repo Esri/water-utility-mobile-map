@@ -186,10 +186,6 @@
       <Project>{69260A52-9843-4EB4-A1E2-E8C890232DC2}</Project>
       <Name>Activity_Control</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ALN_Control\ALN_Control.vbproj">
-      <Project>{B27D140C-2849-4560-A98D-F0576B8E9995}</Project>
-      <Name>ALN_Control</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CommonControls\Esri.ArcGISTemplates.CommonControls.vbproj">
       <Project>{49225870-D079-4557-B5FA-B23CE053284E}</Project>
       <Name>Esri.ArcGISTemplates.CommonControls</Name>

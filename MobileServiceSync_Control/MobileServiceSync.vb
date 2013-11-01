@@ -1314,6 +1314,9 @@ Public Class MobileServiceSync
 
 
                                 m_MobileConnect.WebClientProtocol.Credentials = myCache
+                               
+
+
 
                             Catch exTm As Exception
                                 MsgBox(GlobalsFunctions.appConfig.ServicePanel.UIComponents.CacheNotValid & vbNewLine & exTm.Message)
@@ -1363,7 +1366,11 @@ Public Class MobileServiceSync
 
                 End If
 
+                'Dim proxy As WebProxy = WebRequest.DefaultWebProxy
+                'proxy.BypassList = New String() {strURL.Value}
 
+
+                'MsgBox(proxy.IsBypassed(New Uri(strURL.Value)))
                 If Not m_MobileCache.IsOpen Then
 
 
@@ -1384,7 +1391,7 @@ Public Class MobileServiceSync
                                 'setCacheDateConfig("")
                             Catch exin As Exception
 
-                                MsgBox(GlobalsFunctions.appConfig.ServicePanel.UIComponents.CacheNotValid)
+                                MsgBox(GlobalsFunctions.appConfig.ServicePanel.UIComponents.CacheNotValid & vbCrLf & exin.Message)
 
                                 Return False
 
@@ -1550,7 +1557,7 @@ Public Class MobileServiceSync
 
         'Try
 
-        '    Dim cs As CatalogService = New CatalogService()
+        '   Dim cs As CatalogService = New CatalogService()
 
         '    cs.Url = m_MobileConnect.Url
 

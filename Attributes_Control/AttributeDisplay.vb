@@ -2243,6 +2243,7 @@ Public Class AttributeDisplay
     Public Event showEditor()
     Private Sub btnEdit_Click(sender As System.Object, e As System.EventArgs) Handles btnEdit.Click
         RaiseEvent showEditor()
+        m_Map.Invalidate()
 
     End Sub
 End Class

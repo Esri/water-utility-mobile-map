@@ -30,7 +30,7 @@
       <!--Option to show a side bar - Not functional yet-->
       <SideBarControl>False</SideBarControl>
       <CopyrightText>Esri, Inc.</CopyrightText>
-      <VersionInfo>Version: 10.1.2 Feb 5-1-2013</VersionInfo>
+      <VersionInfo>Version: 10.2 Feb 10-16-2013</VersionInfo>
       <!--The scale to zoom to for point feature results-->
       <ZoomExtent>600</ZoomExtent>
       <MultiLineThreshold Threshold ="125" SizeFactor="3"/>
@@ -223,19 +223,7 @@
       </FlowArrowsLayers>
 
       <LayersFieldOptions>
-        <Layer Name="Markup Polygons"  Caption="Redlines" SpecialCase="">
 
-          <Field Name="PHOTO2" HyperFormat="" Options="Prompt" BoxColor="" BackColor="" ForeColor="" Caption="" >
-
-            <FilterFields Mode="" Visibility="False">
-              <FilterInfo FieldName="PHOTO1">
-
-                <FieldValue>[ISNULL]</FieldValue>
-                <FieldValue></FieldValue>
-              </FilterInfo>
-            </FilterFields>
-          </Field>
-        </Layer>
         <Layer Name="Markup Polygons"  Caption="Redlines" SpecialCase="">
 
           <Field Name="CREWNAME" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="" >
@@ -256,47 +244,7 @@
 
 
 
-          <!--<Field Name="PHOTO1" HyperFormat="" Options="Prompt" BoxColor="" BackColor="" ForeColor="" Caption="" >
 
-
-          </Field>
-          <Field Name="PHOTO2" HyperFormat="" Options="Prompt" BoxColor="" BackColor="" ForeColor="" Caption="" >
-
-            <FilterFields Mode="" Visibility="False">
-              <FilterInfo FieldName="PHOTO1">
-
-                <FieldValue>[ISNULL]</FieldValue>
-                <FieldValue></FieldValue>
-              </FilterInfo>
-            </FilterFields>
-          </Field>
-          <Field Name="PHOTO3" HyperFormat="" Options="Prompt" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="False">
-              <FilterInfo FieldName="PHOTO2">
-
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>
-            </FilterFields>
-          </Field>
-          <Field Name="PHOTO4" HyperFormat="" Options="Prompt" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="False">
-              <FilterInfo FieldName="PHOTO3">
-
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>
-            </FilterFields>
-          </Field>
-          <Field Name="PHOTO5" HyperFormat="" Options="Prompt" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="False">
-              <FilterInfo FieldName="PHOTO4">
-
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>
-            </FilterFields>
-          </Field>-->
         </Layer>
         <Layer Name="Water Hydrant Inspections"  Caption="Water Hydrant Inspections" SpecialCase="">
 
@@ -618,8 +566,13 @@
         </Layer>
         <Layer Name="Water Hydrant Inspections" EditExisting ="true" EditOwnerField ="" EditGeo ="True"  DisplayText="Hydrant Inspections" SketchMode="Tap" SketchColor="#FFFFFF00" SnapTo="Water Hydrants">
           <Field Name="INSSTART" OnNew="Date" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+          
+          
+          
           <Field Name="FACILITYKEY" OnNew="Intersect" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="Water Hydrants" IntersectField="FACILITYID" />
 
+          
+          
           <Field Name="LASTUPDATE" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
           <Field Name="LASTEDITOR" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
           <Field Name="WORKKEY" OnNew="WOCurrent" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />

@@ -2617,7 +2617,10 @@ Public Class EditControl
 
             For Each pDcOpt In pDcArrList
                 pDc = pfl.Columns(pDcOpt.Name)
+                If pDc.ReadOnly Then
+                    Continue For
 
+                End If
                 'For Each pDc In pDCs
 
                 obj = Nothing
