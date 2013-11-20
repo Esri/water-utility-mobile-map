@@ -8819,6 +8819,7 @@ Public Property RequiredBackColor() As String
             Me.noGeometryMessageField = "Please set the NoGeometryMessage Tag"
             Me.promptforDeleteField = "Please set the PromptForDelete Tag"
             Me.promptforSketchField = "There are unsaved sketches, save?"
+            Me.nullValueDropDownField = "<Null>"
         End Sub
 
         <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=0)> _

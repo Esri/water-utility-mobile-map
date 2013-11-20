@@ -1233,33 +1233,7 @@ Public Class EditControl
     End Function
 #End Region
 #Region "Private Methods"
-    'Private Sub loadAutoFields()
 
-
-
-    '    For Each autoPopFld As MobileConfigClass.MobileConfigMobileMapConfigEditControlOptionsAutoFieldPopulationAutoPopFieldsAutoPopField In GlobalsFunctions.appConfig.EditControlOptions.AutoFieldPopulation.AutoPopFields.AutoPopField
-
-    '        If m_FDR.Table.Columns(autoPopFld.Name) IsNot Nothing Then
-    '            Select Case autoPopFld.Type.ToUpper()
-    '                Case "TIME"
-    '                    UpdateField(autoPopFld.Name, CStr(Now.ToShortTimeString), True, False)
-    '                Case "USER"
-    '                    UpdateField(autoPopFld.Name, My.User.Name, True, False)
-    '                Case "DATE"
-    '                    UpdateField(autoPopFld.Name, My.User.Name, True, False)
-    '            End Select
-
-    '        End If
-
-    '    Next
-
-
-
-
-
-
-
-    'End Sub
     Private Function SnapToGeo() As FeatureDataRow
 
         Dim pFSwD As FeatureSourceWithDef = Nothing
@@ -1409,10 +1383,10 @@ Public Class EditControl
                                 Case "TIME".ToUpper
                                     UpdateField(autoAttFld.Name, CStr(Now.ToShortTimeString), True, setRead)
                                 Case "Date".ToUpper
-                                    UpdateField(autoAttFld.Name, Now.ToString(), True, setRead)
+                                    UpdateField(autoAttFld.Name, DateTime.Today.ToString("MM-dd-yyyy"), True, setRead)
                                 Case "CPUNAME".ToUpper
                                     UpdateField(autoAttFld.Name, Environment.MachineName.ToString(), True, setRead)
-                                Case "Date".ToUpper
+                                Case "DateTime".ToUpper
 
                                     UpdateField(autoAttFld.Name, Now.ToString(), True, setRead)
 
@@ -2956,6 +2930,8 @@ Public Class EditControl
                                     pCBox.Items.Add(New cValue(dr(1).ToString, dr(0)))
 
                                 Next
+                                pCBox.SelectedIndex = 0
+
                                 pDR = Nothing
                             Else
                                 'pCBox.DataSource = pCV
@@ -5148,7 +5124,12 @@ Public Class EditControl
                                             'Set the value
                                             If m_FDR.Item(strFld) IsNot DBNull.Value Then
 
-                                                CType(cCntrlPnl, ComboBox).SelectedValue = m_FDR.Item(strFld)
+                                                For Each itm As Esri.ArcGISTemplates.cValue In CType(cCntrlPnl, ComboBox).Items
+                                                    If itm.Value.ToString() = m_FDR.Item(strFld).ToString() Then
+                                                        CType(cCntrlPnl, ComboBox).SelectedItem = itm
+
+                                                    End If
+                                                Next
                                             Else
                                                 CType(cCntrlPnl, ComboBox).SelectedIndex = 0
                                             End If
@@ -5570,160 +5551,178 @@ Public Class EditControl
 #Region "Events"
     Private m_ExitValue As String
     Private Sub controlLeave(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        If m_Map.IsDisposed Then Return
-        If m_shuffling Then Return
-        If m_SettingAtts Then Return
-        Dim txtToSet As String
-        Dim valOfCombo As String
+        Try
 
-        If TypeOf (sender) Is DateTimePicker Then
-            If CType(sender, DateTimePicker).Checked = False Then
-                txtToSet = ""
+
+            If m_Map.IsDisposed Then Return
+            If m_shuffling Then Return
+            If m_SettingAtts Then Return
+            Dim txtToSet As String
+            Dim valOfCombo As String
+
+            If TypeOf (sender) Is DateTimePicker Then
+                If CType(sender, DateTimePicker).Checked = False Then
+                    txtToSet = ""
+                Else
+                    txtToSet = sender.text.ToString()
+                End If
+
+            ElseIf TypeOf (sender) Is RadioButton Then
+                If (sender.parent.controls.count = 2) Then
+
+                    If CType(sender.parent.controls(0), RadioButton).Checked = True Then
+                        txtToSet = CType(sender.parent.controls(0), RadioButton).Tag
+                        If sender.checked = False Then Return
+
+                    ElseIf CType(sender.parent.controls(1), RadioButton).Checked = True Then
+                        txtToSet = CType(sender.parent.controls(1), RadioButton).Tag
+                        If sender.checked = False Then Return
+
+                    Else
+                        txtToSet = ""
+                    End If
+
+                End If
+            ElseIf TypeOf (sender) Is ComboBox Then
+                If CType(sender, ComboBox).Text Is Nothing Then
+                    txtToSet = Nothing
+
+                ElseIf CType(sender, ComboBox).Text Is DBNull.Value Then
+                    txtToSet = Nothing
+
+                Else
+
+                    txtToSet = CType(sender, ComboBox).Text
+                    valOfCombo = txtToSet
+                    For Each item As cValue In CType(sender, ComboBox).Items
+                        If item.Display = CType(sender, ComboBox).Text Then
+                            If item.Value Is DBNull.Value Then
+                                valOfCombo = Nothing
+
+                            Else
+                                valOfCombo = item.Value
+                            End If
+
+
+                        End If
+                    Next
+
+                End If
+
             Else
                 txtToSet = sender.text.ToString()
             End If
 
-        ElseIf TypeOf (sender) Is RadioButton Then
-            If (sender.parent.controls.count = 2) Then
 
-                If CType(sender.parent.controls(0), RadioButton).Checked = True Then
-                    txtToSet = CType(sender.parent.controls(0), RadioButton).Tag
-                    If sender.checked = False Then Return
 
-                ElseIf CType(sender.parent.controls(1), RadioButton).Checked = True Then
-                    txtToSet = CType(sender.parent.controls(1), RadioButton).Tag
-                    If sender.checked = False Then Return
+            If (TypeOf (sender) Is RadioButton) Then
 
-                Else
-                    txtToSet = ""
+                If UpdateField(sender.parent.tag, txtToSet, False) = False Then
+
+
                 End If
+            ElseIf (TypeOf (sender) Is ComboBox) Then
+                If m_FDR IsNot Nothing Then
 
-            End If
-        ElseIf TypeOf (sender) Is ComboBox Then
-            If CType(sender, ComboBox).Text Is Nothing Then
-                txtToSet = Nothing
 
-            ElseIf CType(sender, ComboBox).Text Is DBNull.Value Then
-                txtToSet = Nothing
+                    If m_FDR(sender.tag.ToString()).ToString <> txtToSet Then
+                        If UpdateField(sender.tag, valOfCombo, False) = False Then
 
-            Else
 
-                txtToSet = CType(sender, ComboBox).Text
-                valOfCombo = txtToSet
-                For Each item In CType(sender, ComboBox).Items
-                    If item.display = CType(sender, ComboBox).Text Then
-                        If item.value Is DBNull.Value Then
-                            valOfCombo = Nothing
-
-                        Else
-                            valOfCombo = item.value
                         End If
-
+                    Else
+                        Exit Sub
 
                     End If
-                Next
-
-            End If
-
-        Else
-            txtToSet = sender.text.ToString()
-        End If
-
-
-
-        If (TypeOf (sender) Is RadioButton) Then
-
-            If UpdateField(sender.parent.tag, txtToSet, False) = False Then
-
-
-            End If
-        ElseIf (TypeOf (sender) Is ComboBox) Then
-            If m_FDR(sender.tag.ToString()).ToString <> txtToSet Then
-                If UpdateField(sender.tag, valOfCombo, False) = False Then
-
-
                 End If
             Else
-                Exit Sub
+                If m_FDR IsNot Nothing Then
 
-            End If
 
-        Else
+                    If m_FDR(sender.tag).ToString <> txtToSet Then 'If m_ExitValue <> txtToSet Then
 
-            If m_FDR(sender.tag).ToString <> txtToSet Then 'If m_ExitValue <> txtToSet Then
+                        If UpdateField(sender.tag, txtToSet, False) = False Then
 
-                If UpdateField(sender.tag, txtToSet, False) = False Then
-
-                    sender.text = m_ExitValue
+                            sender.text = m_ExitValue
+                        End If
+                    End If
                 End If
-            End If
-        End If
-        If m_EditOptions IsNot Nothing Then
-            If m_EditOptions.RequiredBackColor = "" And _
-                               m_EditOptions.RequiredBoxColor = "" And _
-                               m_EditOptions.RequiredForeColor = "" Then
-            Else
 
-                setRequiredColorsField(sender.tag.ToString(), False)
             End If
 
 
-        End If
-
-
-
-        'If m_FDR.HasErrors() Then
-        '    Dim colInError() As DataColumn = m_FDR.GetColumnsInError
-        '    For i As Integer = 0 To colInError.GetLength(0) - 1
-        '        '   MsgBox("The value in " + colInError(i).Caption & " is not valid or is required." & vbCrLf & m_FDR.GetColumnError(colInError(i).ColumnName))
-
-        '    Next
-
-        '    btnSave.Enabled = False
-        '    btnSave.BackgroundImage = My.Resources.SaveGray
-
-        '    'btnSave.BackgroundImage = My.Resources.SaveGray
-        'Else
-        '    btnSave.Enabled = True
-        '    btnSave.BackgroundImage = My.Resources.SaveGreen
-
-        'End If
-
-        If m_HasFilter Then
-            If TypeOf (sender) Is RadioButton Then
-
-                RemoveHandler CType(sender, RadioButton).CheckedChanged, AddressOf controlLeave
-                ShuffleControls()
-                AddHandler CType(sender, RadioButton).CheckedChanged, AddressOf controlLeave
-
-            ElseIf TypeOf (sender) Is ComboBox Then
-                RemoveHandler CType(sender, ComboBox).SelectedIndexChanged, AddressOf controlLeave
-                'RemoveHandler CType(sender, ComboBox).Leave, AddressOf controlLeave
-                RemoveHandler CType(sender, Control).Enter, AddressOf controlEntered
-
-                ShuffleControls()
-                If txtToSet Is Nothing Then
-                    CType(sender, ComboBox).SelectedValue = DBNull.Value
+            If m_EditOptions IsNot Nothing Then
+                If m_EditOptions.RequiredBackColor = "" And _
+                                   m_EditOptions.RequiredBoxColor = "" And _
+                                   m_EditOptions.RequiredForeColor = "" Then
                 Else
-                    CType(sender, ComboBox).SelectedValue = txtToSet
+
+                    setRequiredColorsField(sender.tag.ToString(), False)
                 End If
 
-                AddHandler CType(sender, ComboBox).SelectedIndexChanged, AddressOf controlLeave
-                'AddHandler CType(sender, ComboBox).Leave, AddressOf controlLeave
-                AddHandler CType(sender, Control).Enter, AddressOf controlEntered
-            Else
 
-                RemoveHandler CType(sender, Control).Leave, AddressOf controlLeave
-                RemoveHandler CType(sender, Control).Enter, AddressOf controlEntered
-
-                ShuffleControls()
-                AddHandler CType(sender, Control).Leave, AddressOf controlLeave
-                AddHandler CType(sender, Control).Enter, AddressOf controlEntered
             End If
 
-        End If
-        disableSaveBtn()
-        disableDeleteBtn()
+
+
+            'If m_FDR.HasErrors() Then
+            '    Dim colInError() As DataColumn = m_FDR.GetColumnsInError
+            '    For i As Integer = 0 To colInError.GetLength(0) - 1
+            '        '   MsgBox("The value in " + colInError(i).Caption & " is not valid or is required." & vbCrLf & m_FDR.GetColumnError(colInError(i).ColumnName))
+
+            '    Next
+
+            '    btnSave.Enabled = False
+            '    btnSave.BackgroundImage = My.Resources.SaveGray
+
+            '    'btnSave.BackgroundImage = My.Resources.SaveGray
+            'Else
+            '    btnSave.Enabled = True
+            '    btnSave.BackgroundImage = My.Resources.SaveGreen
+
+            'End If
+
+            If m_HasFilter Then
+                If TypeOf (sender) Is RadioButton Then
+
+                    RemoveHandler CType(sender, RadioButton).CheckedChanged, AddressOf controlLeave
+                    ShuffleControls()
+                    AddHandler CType(sender, RadioButton).CheckedChanged, AddressOf controlLeave
+
+                ElseIf TypeOf (sender) Is ComboBox Then
+                    RemoveHandler CType(sender, ComboBox).SelectedIndexChanged, AddressOf controlLeave
+                    'RemoveHandler CType(sender, ComboBox).Leave, AddressOf controlLeave
+                    RemoveHandler CType(sender, Control).Enter, AddressOf controlEntered
+
+                    ShuffleControls()
+                    If txtToSet Is Nothing Then
+                        CType(sender, ComboBox).SelectedValue = DBNull.Value
+                    Else
+                        CType(sender, ComboBox).SelectedValue = txtToSet
+                    End If
+
+                    AddHandler CType(sender, ComboBox).SelectedIndexChanged, AddressOf controlLeave
+                    'AddHandler CType(sender, ComboBox).Leave, AddressOf controlLeave
+                    AddHandler CType(sender, Control).Enter, AddressOf controlEntered
+                Else
+
+                    RemoveHandler CType(sender, Control).Leave, AddressOf controlLeave
+                    RemoveHandler CType(sender, Control).Enter, AddressOf controlEntered
+
+                    ShuffleControls()
+                    AddHandler CType(sender, Control).Leave, AddressOf controlLeave
+                    AddHandler CType(sender, Control).Enter, AddressOf controlEntered
+                End If
+
+            End If
+            disableSaveBtn()
+            disableDeleteBtn()
+        Catch ex As Exception
+            Dim st As New StackTrace
+            MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+            st = Nothing
+
+        End Try
     End Sub
 
     Private Sub controlChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
@@ -5771,13 +5770,10 @@ Public Class EditControl
         Try
             Dim intSubVal As Integer = value
 
-            'Feature layer being Identified
-            Dim pfl As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource = Nothing
-            'Map Layer from Cache
 
-            pfl = m_FDR.FeatureSource
+
             'Exit if the layer is not found
-            If pfl Is Nothing Then Exit Sub
+            If m_FL Is Nothing Then Exit Sub
 
             Dim strFld As String
             Dim pCBox As ComboBox
@@ -5816,8 +5812,8 @@ Public Class EditControl
                                     End If
                                     'Get the domain
                                     ' MsgBox("Fix Doma")
-                                    'pCV = CType(pfl.Domain(intSubVal, strFld), CodedValueDomain)
-                                    pCV = CType(pfl.Columns(strFld).GetDomain(intSubVal), CodedValueDomain)
+                                    'pCV = CType(m_FL.Domain(intSubVal, strFld), CodedValueDomain)
+                                    pCV = CType(m_FL.Columns(strFld).GetDomain(intSubVal), CodedValueDomain)
 
                                     If pCV Is Nothing Then
                                         pCBox.DataSource = Nothing
@@ -5825,7 +5821,7 @@ Public Class EditControl
                                     Else
                                         'If the domain has two values, remove the combo box and add a custompanel
                                         If pCV.Rows.Count = 0 Then
-                                            'MsgBox("ERROR: There are no values set up in the domain: " & pCV.TableName & " in layer: " & pfl.Name & ".  This field will be skipped")
+                                            'MsgBox("ERROR: There are no values set up in the domain: " & pCV.TableName & " in layer: " & m_FL.Name & ".  This field will be skipped")
                                         Else
                                             If pCV.Rows.Count = 2 And m_RadioOnTwo Then
                                                 Dim pNewGpBox As New CustomPanel
@@ -5918,11 +5914,12 @@ Public Class EditControl
                                                 'pCBox.DataSource = pCV
 
 
+                                                pCBox.Items.Clear()
 
                                                 pCBox.DataBindings.DefaultDataSourceUpdateMode = DataSourceUpdateMode.Never
                                                 pCV.Columns(0).AllowDBNull = True
                                                 pCV.Columns(1).AllowDBNull = True
-                                                If pfl.Columns(strFld).AllowDBNull Then
+                                                If m_FL.Columns(strFld).AllowDBNull Then
                                                     Dim pDT As DataTable
                                                     pDT = pCV.DefaultView.ToTable()
                                                     'pDT.Rows.Add(DBNull.Value, GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown)
@@ -5951,22 +5948,42 @@ Public Class EditControl
                                                 'pCBox.ValueMember = "Code"
                                                 pCBox.DisplayMember = "Display"
                                                 pCBox.ValueMember = "Value"
-                                                If pfl.Columns(strFld).DefaultValue IsNot Nothing Then
-                                                    If pfl.Columns(strFld).DefaultValue IsNot DBNull.Value Then
-                                                        pCBox.Text = pfl.Columns(strFld).DefaultValue.ToString()
-                                                    ElseIf pfl.Columns(strFld).AllowDBNull Then
-                                                        pCBox.Text = GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown
-                                                    Else
-                                                        pCBox.Text = pCBox.DataSource.Rows(0)("Value").ToString()
-                                                    End If
-                                                ElseIf pfl.Columns(strFld).AllowDBNull Then
-                                                    pCBox.Text = GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown
-                                                Else
-                                                    pCBox.Text = pCBox.DataSource.Rows(0)("Value").ToString
-                                                End If
                                                 pCBox.Visible = True
                                                 pCBox.Refresh()
-                                                pCBox.Text = pCV.Rows(0)("Value").ToString
+                                                If m_FL.Columns(strFld).DefaultValue IsNot Nothing Then
+                                                    If m_FL.Columns(strFld).DefaultValue IsNot DBNull.Value Then
+                                                        For Each itm As cValue In pCBox.Items
+                                                            If itm.Value = m_FL.Columns(strFld).DefaultValue Then
+                                                                pCBox.SelectedItem = itm
+
+                                                            End If
+                                                        Next
+                                                        '  pCBox.Text = m_FL.Columns(strFld).DefaultValue.ToString()
+                                                    ElseIf m_FL.Columns(strFld).AllowDBNull Then
+                                                        pCBox.SelectedItem = pCBox.Items.Item(0)
+
+
+                                                        'Try
+
+
+
+                                                        '    pCBox.Text = GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown.ToString()
+
+                                                        'Catch ex As Exception
+
+                                                        'End Try
+                                                    Else
+                                                        'pCBox.Text = pCBox.DataSource.Rows(0)("Value").ToString()
+                                                    End If
+                                                ElseIf m_FL.Columns(strFld).AllowDBNull Then
+                                                    ' pCBox.Text = GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown
+                                                Else
+                                                    pCBox.SelectedItem = pCBox.Items.Item(0)
+
+                                                    '  pCBox.Text = pCBox.DataSource.Rows(0)("Value").ToString
+                                                End If
+
+                                                ' pCBox.Text = pCV.Rows(0)("Value").ToString
                                             End If
 
                                         End If
@@ -5987,9 +6004,9 @@ Public Class EditControl
 
                                 'MsgBox("Fix Domain")
 
-                                pCV = CType(pfl.Columns(strFld).GetDomain(intSubVal), CodedValueDomain)
+                                pCV = CType(m_FL.Columns(strFld).GetDomain(intSubVal), CodedValueDomain)
 
-                                'pCV = CType(pfl.Domain(intSubVal, strFld), CodedValueDomain)
+                                'pCV = CType(m_FL.Domain(intSubVal, strFld), CodedValueDomain)
 
                                 If pCV Is Nothing Then
                                     cntrlPnl.Controls.Clear()
@@ -5998,7 +6015,7 @@ Public Class EditControl
                                 Else
                                     'If the domain has more than two values, remove the custompanel and add a combo box 
                                     If pCV.Rows.Count = 0 Then
-                                        'MsgBox("ERROR: There are no values set up in the domain: " & pCV.TableName & " in layer: " & pfl.Name & ".  This field will be skipped")
+                                        'MsgBox("ERROR: There are no values set up in the domain: " & pCV.TableName & " in layer: " & m_FL.Name & ".  This field will be skipped")
                                     Else
                                         If pCV.Rows.Count = 2 And m_RadioOnTwo Then
                                             Try
@@ -6042,7 +6059,7 @@ Public Class EditControl
                                             pCBox.DataBindings.DefaultDataSourceUpdateMode = DataSourceUpdateMode.Never
                                             pCV.Columns(0).AllowDBNull = True
                                             pCV.Columns(1).AllowDBNull = True
-                                            If pfl.Columns(strFld).AllowDBNull Then
+                                            If m_FL.Columns(strFld).AllowDBNull Then
                                                 Dim pDT As DataTable
                                                 pDT = pCV.DefaultView.ToTable()
                                                 'pDT.Rows.Add(DBNull.Value, GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown)
@@ -6071,15 +6088,15 @@ Public Class EditControl
                                             'pCBox.ValueMember = "Code"
                                             pCBox.DisplayMember = "Display"
                                             pCBox.ValueMember = "Value"
-                                            If pfl.Columns(strFld).DefaultValue IsNot Nothing Then
-                                                If pfl.Columns(strFld).DefaultValue IsNot DBNull.Value Then
-                                                    pCBox.Text = pfl.Columns(strFld).DefaultValue
-                                                ElseIf pfl.Columns(strFld).AllowDBNull Then
+                                            If m_FL.Columns(strFld).DefaultValue IsNot Nothing Then
+                                                If m_FL.Columns(strFld).DefaultValue IsNot DBNull.Value Then
+                                                    pCBox.Text = m_FL.Columns(strFld).DefaultValue
+                                                ElseIf m_FL.Columns(strFld).AllowDBNull Then
                                                     pCBox.Text = GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown
                                                 Else
                                                     pCBox.Text = pCBox.DataSource.Rows(0)("Value").ToString
                                                 End If
-                                            ElseIf pfl.Columns(strFld).AllowDBNull Then
+                                            ElseIf m_FL.Columns(strFld).AllowDBNull Then
                                                 pCBox.Text = GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown
                                             Else
                                                 pCBox.Text = pCBox.DataSource.Rows(0)("Value").ToString
@@ -6116,9 +6133,9 @@ Public Class EditControl
                                 'Get the domain
 
                                 'MsgBox("Fix Domain")
-                                pRg = CType(pfl.Columns(strFld).GetDomain(intSubVal), RangeValueDomain)
+                                pRg = CType(m_FL.Columns(strFld).GetDomain(intSubVal), RangeValueDomain)
 
-                                'pRg = CType(pfl.Domain(intSubVal, strFld), RangeValueDomain)
+                                'pRg = CType(m_FL.Domain(intSubVal, strFld), RangeValueDomain)
                                 If pRg Is Nothing Then
                                     pNUP.Enabled = False
 

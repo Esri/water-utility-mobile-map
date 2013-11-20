@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "MobileMapTemplate", "MobileMapTemplate\MobileMapTemplate.vbproj", "{73121AEE-7109-4538-8C14-A9835345CE22}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Navigation_Control", "Navigation_Control\Navigation_Control.vbproj", "{C421607F-27A0-449D-8815-9F6F31EB744E}"
@@ -38,8 +38,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavigationPane", "NavigationPane\NavigationPane.csproj", "{7DC9A638-7BE8-4CF7-AC2E-57C77F1BF9BC}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EditRetriever", "EditRetriever\EditRetriever.vbproj", "{679EACEC-DDB9-4C48-A959-000F99591C66}"
-EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "__BuildRCInstall", "__BuildRCInstall\__BuildRCInstall.vdproj", "{92FADB58-8515-4D4E-8439-F25A1AC0EA06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -275,17 +273,6 @@ Global
 		{679EACEC-DDB9-4C48-A959-000F99591C66}.Release|Mixed Platforms.Build.0 = Release|x86
 		{679EACEC-DDB9-4C48-A959-000F99591C66}.Release|x86.ActiveCfg = Release|x86
 		{679EACEC-DDB9-4C48-A959-000F99591C66}.Release|x86.Build.0 = Release|x86
-		{92FADB58-8515-4D4E-8439-F25A1AC0EA06}.Debug|Any CPU.ActiveCfg = Debug
-		{92FADB58-8515-4D4E-8439-F25A1AC0EA06}.Debug|Any CPU.Build.0 = Debug
-		{92FADB58-8515-4D4E-8439-F25A1AC0EA06}.Debug|Mixed Platforms.ActiveCfg = Debug
-		{92FADB58-8515-4D4E-8439-F25A1AC0EA06}.Debug|Mixed Platforms.Build.0 = Debug
-		{92FADB58-8515-4D4E-8439-F25A1AC0EA06}.Debug|x86.ActiveCfg = Debug
-		{92FADB58-8515-4D4E-8439-F25A1AC0EA06}.Release|Any CPU.ActiveCfg = Release
-		{92FADB58-8515-4D4E-8439-F25A1AC0EA06}.Release|Any CPU.Build.0 = Release
-		{92FADB58-8515-4D4E-8439-F25A1AC0EA06}.Release|Mixed Platforms.ActiveCfg = Release
-		{92FADB58-8515-4D4E-8439-F25A1AC0EA06}.Release|Mixed Platforms.Build.0 = Release
-		{92FADB58-8515-4D4E-8439-F25A1AC0EA06}.Release|x86.ActiveCfg = Release
-		{92FADB58-8515-4D4E-8439-F25A1AC0EA06}.Release|x86.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

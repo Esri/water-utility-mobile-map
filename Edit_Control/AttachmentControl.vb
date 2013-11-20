@@ -303,13 +303,14 @@ Public Class AttachmentControl
 
                 Dim pFSWDef As FeatureSourceWithDef = GlobalsFunctions.GetFeatureSource(skGrp.Layer, m_Map)
                 If pFSWDef IsNot Nothing Then
-                    nvBtn.RelatedControl.Tag = pFSWDef.FeatureSource
-                    If pFSWDef.FeatureSource.IsAnnotationSource Then
-                        CType(nvBtn.RelatedControl, ListView).SmallImageList = Nothing
+                    If pFSWDef.FeatureSource IsNot Nothing Then
+                        nvBtn.RelatedControl.Tag = pFSWDef.FeatureSource
+                        If pFSWDef.FeatureSource.IsAnnotationSource Then
+                            CType(nvBtn.RelatedControl, ListView).SmallImageList = Nothing
 
+                        End If
+                        LoadSketchItems(nvBtn.RelatedControl, pFSWDef)
                     End If
-                    LoadSketchItems(nvBtn.RelatedControl, pFSWDef)
-
                 End If
                 'LoadSketchItemsRenderer(nvBtn.RelatedControl, GlobalsFunctions.GetFeatureSource(skGrp.Layer, m_Map))
                 ' pFSWDef.FeatureSource.IsAnnotationSource
