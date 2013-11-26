@@ -1140,9 +1140,12 @@ Public Class EditControl
 
 
     End Sub
-    Public Function UpdateField(ByVal Field As String, ByVal Value As Object, ByVal pushChangeToForm As Boolean, Optional ByVal setReadOnly As String = "False") As Boolean
+    Public Function UpdateField(ByVal FieldInfo As String, ByVal Value As Object, ByVal pushChangeToForm As Boolean, Optional ByVal setReadOnly As String = "False") As Boolean
+        'Sub to load a record to the editor
+        Dim strFldInfo() As String = FieldInfo.Split("|")
+        Dim Field As String = strFldInfo(0)
+
         Try
-            'Sub to load a record to the editor
 
             If m_FDR.Table.Columns(Field) Is Nothing Then
                 Return False
@@ -1779,8 +1782,12 @@ Public Class EditControl
             pFl = Nothing
         End Try
     End Sub
-    Private Sub setRequiredColorsField(ByVal fieldName As String, ByVal RequiredColor As Boolean)
+    Private Sub setRequiredColorsField(ByVal fieldInfo As String, ByVal RequiredColor As Boolean)
         Try
+            Dim strArr() As String = fieldInfo.Split("|")
+
+            Dim fieldName As String = strArr(0)
+
 
 
             For Each tbPage As TabPage In tbCntrlEdit.TabPages
@@ -2912,60 +2919,81 @@ Public Class EditControl
                             '******
 
                             pCBox.DataBindings.DefaultDataSourceUpdateMode = DataSourceUpdateMode.Never
-                            pCV.Columns(0).AllowDBNull = True
-                            pCV.Columns(1).AllowDBNull = True
-                            If pDc.AllowDBNull Or 1 = 1 Then
-                                Dim pDT As DataTable
+                            'pCV.Columns(0).AllowDBNull = True
+                            'pCV.Columns(1).AllowDBNull = True
+                            'If pDc.AllowDBNull Or 1 = 1 Then
+                            '    Dim pDT As DataTable
 
-                                pDT = pCV.DefaultView.ToTable()
-                                Dim pDR As DataRow = pDT.NewRow
-                                pDR.Item(0) = DBNull.Value
-                                pDR.Item(1) = GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown
-                                pDT.Rows.InsertAt(pDR, 0)
+                            '    pDT = pCV.DefaultView.ToTable()
+                            '    Dim pDR As DataRow = pDT.NewRow
+                            '    pDR.Item(0) = DBNull.Value
+                            '    pDR.Item(1) = GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown
+                            '    pDT.Rows.InsertAt(pDR, 0)
 
-                                'pDT.Rows.Add(DBNull.Value, GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown)
+                            '    'pDT.Rows.Add(DBNull.Value, GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown)
 
-                                For Each dr As DataRow In pDT.Rows
+                            '    For Each dr As DataRow In pDT.Rows
 
-                                    pCBox.Items.Add(New cValue(dr(1).ToString, dr(0)))
+                            '        pCBox.Items.Add(New cValue(dr(1).ToString, dr(0)))
 
-                                Next
-                                pCBox.SelectedIndex = 0
+                            '    Next
+                            '    pCBox.SelectedIndex = 0
 
-                                pDR = Nothing
-                            Else
-                                'pCBox.DataSource = pCV
-                                For Each dr As DataRow In pCV.Rows
+                            '    pDR = Nothing
+                            'Else
+                            'pCBox.DataSource = pCV
+                            ' For Each dr As DataRow In pCV.Rows
 
-                                    pCBox.Items.Add(New cValue(dr(1).ToString, dr(0)))
+                            '    pCBox.Items.Add(New cValue(dr(1).ToString, dr(0)))
 
-                                Next
+                            'Next
 
-                            End If
+                            'End If
+                            Dim pDT As DataTable
 
+                            pDT = pCV.DefaultView.ToTable()
+                         
+
+                            Dim dr As DataRow
+                            Dim intSubIdx As Integer = -1
+
+                            For h As Integer = 0 To pDT.Rows.Count - 1
+                                dr = pDT.Rows(h)
+
+                                If dr(0) = pSubTypeDefValue Then
+                                    intSubIdx = h
+
+                                End If
+                                pCBox.Items.Add(New cValue(dr(1).ToString, dr(0)))
+
+                            Next
+                            pCBox.SelectedIndex = intSubIdx
+
+                          
 
 
                             'pCBox.DisplayMember = "Value"
                             'pCBox.ValueMember = "Code"
                             pCBox.DisplayMember = "Display"
                             pCBox.ValueMember = "Value"
-                            If pDc.DefaultValue IsNot Nothing Then
-                                If pDc.DefaultValue IsNot DBNull.Value Then
-                                    pCBox.Text = pDc.DefaultValue
-                                ElseIf pDc.AllowDBNull Or 1 = 1 Then
-                                    pCBox.Text = GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown
-                                Else
-                                    pCBox.Text = pCBox.DataSource.Rows(0)(1).ToString
-                                End If
-                            ElseIf pDc.AllowDBNull Or 1 = 1 Then
-                                pCBox.Text = GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown
-                            Else
-                                pCBox.Text = pCBox.DataSource.Rows(0)(1).ToString
-                            End If
+                            'If pDc.DefaultValue IsNot Nothing Then
+                            '    If pDc.DefaultValue IsNot DBNull.Value Then
+                            '        pCBox.Text = pDc.DefaultValue
+                            '    ElseIf pDc.AllowDBNull Or 1 = 1 Then
+                            '        pCBox.Text = GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown
+                            '    Else
+                            '        pCBox.Text = pCBox.DataSource.Rows(0)(1).ToString
+                            '    End If
+                            'ElseIf pDc.AllowDBNull Or 1 = 1 Then
+                            '    pCBox.Text = GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown
+                            'Else
+                            '    pCBox.Text = pCBox.DataSource.Rows(0)(1).ToString
+                            'End If
 
                             'pCBox.Text = pDc.DefaultValue
 
                             ' pCmdBox.MaxLength = pDc.MaxLength
+                            'pCBox.Text = pSubTypeDefValue
 
 
 
@@ -3053,7 +3081,7 @@ Public Class EditControl
                             'End Try
 
                         End If
-                    End If
+                End If
 
                 Else
                     If pfl.HasSubtypes Then
@@ -3678,7 +3706,7 @@ Public Class EditControl
                                 If pCV.Rows.Count = 2 And m_RadioOnTwo Then
                                     Dim pNewGpBox As New CustomPanel
 
-                                    pNewGpBox.Tag = strfld
+                                    pNewGpBox.Tag = strfld & "|" & pCV.TableName
 
                                     pNewGpBox.BackColor = Color.White
                                     ' pNewGpBox.BorderColor = Pens.Transparent
@@ -3855,7 +3883,7 @@ Public Class EditControl
 
                                 Else
                                     pCBox = New ComboBox
-                                    pCBox.Tag = strfld
+                                    pCBox.Tag = strfld & "|" & pCV.TableName
                                     pCBox.Name = "cboEdt" & strfld
                                     pCBox.Left = pLeftPadding
                                     pCBox.Top = pNextControlTop
@@ -4091,7 +4119,7 @@ Public Class EditControl
 
                             pNumBox.Accelerations.Add(pf)
 
-                            pNumBox.Tag = strfld
+                            pNumBox.Tag = strfld & "|" & pRV.Name
                             pNumBox.Name = "numEdt" & strfld
                             pNumBox.Left = pLeftPadding
                             pNumBox.BackColor = Color.White
@@ -4503,6 +4531,7 @@ Public Class EditControl
                                             Else
                                                 If pDC.AllowDBNull = False Then
                                                     'MsgBox("A null value is entered were it is not allowed, exiting")
+                                                    lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, pDC.Caption, "Null Not Allowed"))
                                                     Return False
                                                 End If
                                                 m_FDR.Item(strFld) = DBNull.Value '0
@@ -4518,6 +4547,7 @@ Public Class EditControl
                                                 m_FDR.Item(strFld) = String.Empty
                                             Else
                                                 If pDC.AllowDBNull = False Then
+                                                    lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, pDC.Caption, "Null Not Allowed"))
                                                     'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
                                                     Return False
                                                 End If
@@ -4563,6 +4593,7 @@ Public Class EditControl
                                                 m_FDR.Item(strFld) = CType(cCntrlPnl, TextBox).Text
                                             Else
                                                 'MsgBox("Only enter Numeric values" & vbCrLf & "Field: " & pDC.ColumnName)
+                                                lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, pDC.Caption, "Value is not the correct type"))
                                                 Return False
                                             End If
 
@@ -4581,12 +4612,14 @@ Public Class EditControl
                                         If m_FDR.Item(strFld) Is DBNull.Value Then
                                             If pDC.AllowDBNull = False Then
                                                 'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
+                                                lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, pDC.Caption, "Null Not Allowed"))
                                                 Return False
                                             End If
                                         Else
 
                                             If pDC.AllowDBNull = False Then
                                                 'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
+                                                lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, pDC.Caption, "Null Not Allowed"))
                                                 Return False
                                             End If
                                             If pDT.Columns(CType(cCntrlPnl, ComboBox).Tag.ToString).DataType Is System.Type.GetType("System.String") Then
@@ -4604,7 +4637,9 @@ Public Class EditControl
 
                                             If pDC.AllowDBNull = False Then
                                                 'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
+                                                lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, pDC.Caption, "Null Not Allowed"))
                                                 Return False
+
                                             End If
                                             If pDT.Columns(CType(cCntrlPnl, ComboBox).Tag.ToString).DataType Is System.Type.GetType("System.String") Then
                                                 m_FDR.Item(strFld) = CType(pDT.Columns.Item(CType(cCntrlPnl, ComboBox).Tag.ToString), DataColumn).DefaultValue
@@ -4641,6 +4676,7 @@ Public Class EditControl
 
                                             If pDC.AllowDBNull = False Then
                                                 'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
+                                                lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, pDC.Caption, "Null Not Allowed"))
                                                 Return False
                                             End If
                                             m_FDR.Item(strFld) = DBNull.Value
@@ -4669,6 +4705,7 @@ Public Class EditControl
 
                                             If pDC.AllowDBNull = False Then
                                                 'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
+                                                lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, pDC.Caption, "Null Not Allowed"))
                                                 Return False
                                             End If
                                             m_FDR.Item(strFld) = DBNull.Value
@@ -5124,11 +5161,26 @@ Public Class EditControl
                                             'Set the value
                                             If m_FDR.Item(strFld) IsNot DBNull.Value Then
 
-                                                For Each itm As Esri.ArcGISTemplates.cValue In CType(cCntrlPnl, ComboBox).Items
-                                                    If itm.Value.ToString() = m_FDR.Item(strFld).ToString() Then
-                                                        CType(cCntrlPnl, ComboBox).SelectedItem = itm
+                                                For Each rwItm As Object In CType(cCntrlPnl, ComboBox).Items
+
+                                                    If TypeOf rwItm Is cValue Then
+                                                        Dim drv As cValue = rwItm
+
+                                                        If drv.Value.ToString() = m_FDR.Item(strFld).ToString() Then
+                                                            CType(cCntrlPnl, ComboBox).SelectedItem = rwItm
+                                                        End If
+
+                                                    Else
+                                                        Dim drv As DataRow = rwItm
+
+                                                        If drv.Item(0).ToString() = m_FDR.Item(strFld).ToString() Then
+                                                            CType(cCntrlPnl, ComboBox).SelectedItem = rwItm
+                                                        End If
 
                                                     End If
+
+
+
                                                 Next
                                             Else
                                                 CType(cCntrlPnl, ComboBox).SelectedIndex = 0
@@ -5443,10 +5495,22 @@ Public Class EditControl
                                                 If m_FDR.Item(strFld).ToString <> "" And CType(cCntrlPnl, ComboBox).Text = "" Then
                                                     Dim intT As Integer = 0
 
-                                                    For Each drv As DataRow In CType(cCntrlPnl, ComboBox).Items
+                                                    For Each rwItm As Object In CType(cCntrlPnl, ComboBox).Items
+                                                        If TypeOf rwItm Is cValue Then
+                                                            Dim drv As cValue = rwItm
 
-                                                        If drv.Item(0).ToString = m_FDR.Item(strFld) Then
-                                                            CType(cCntrlPnl, ComboBox).SelectedIndex = intT
+                                                            If drv.Value.ToString = m_FDR.Item(strFld) Then
+                                                                CType(cCntrlPnl, ComboBox).SelectedIndex = intT
+
+                                                            End If
+
+                                                        Else
+                                                            Dim drv As DataRow = rwItm
+
+                                                            If drv.Item(0).ToString = m_FDR.Item(strFld) Then
+                                                                CType(cCntrlPnl, ComboBox).SelectedIndex = intT
+
+                                                            End If
 
                                                         End If
                                                         intT = intT + 1
@@ -5623,9 +5687,12 @@ Public Class EditControl
                 End If
             ElseIf (TypeOf (sender) Is ComboBox) Then
                 If m_FDR IsNot Nothing Then
+                  
+                        Dim strTagInfo() As String = sender.tag.ToString.Split("|")
 
 
-                    If m_FDR(sender.tag.ToString()).ToString <> txtToSet Then
+
+                    If m_FDR(strTagInfo(0).ToString()).ToString <> txtToSet Then
                         If UpdateField(sender.tag, valOfCombo, False) = False Then
 
 
@@ -5638,8 +5705,9 @@ Public Class EditControl
             Else
                 If m_FDR IsNot Nothing Then
 
+                    Dim strTagInfo() As String = sender.tag.ToString.Split("|")
 
-                    If m_FDR(sender.tag).ToString <> txtToSet Then 'If m_ExitValue <> txtToSet Then
+                    If m_FDR(strTagInfo(0)).ToString <> txtToSet Then 'If m_ExitValue <> txtToSet Then
 
                         If UpdateField(sender.tag, txtToSet, False) = False Then
 
@@ -5762,7 +5830,7 @@ Public Class EditControl
     Private Sub cmbSubTypChange_Click(ByVal sender As Object, ByVal e As System.EventArgs)
         If CType(sender, ComboBox).SelectedIndex = -1 Then Return
 
-        SubtypeChange(CInt(CType(sender, ComboBox).SelectedValue), CType(sender, ComboBox).Tag.ToString)
+        SubtypeChange(CInt(CType(sender, ComboBox).SelectedItem.value), CType(sender, ComboBox).Tag.ToString)
 
     End Sub
 
@@ -5792,14 +5860,18 @@ Public Class EditControl
             'Padding for the right of each control
             Dim pRightPadding As Integer = 10
 
+            Dim existDomName As String = ""
 
             'Loop through all controls 
             For Each tbPg As TabPage In tbCntrlEdit.TabPages
+
                 For Each cntrl As Control In tbPg.Controls
+
                     'If the control is a combobox, then reapply the domain
                     If TypeOf cntrl Is Panel Then
 
                         For Each cntrlPnl As Control In cntrl.Controls
+                            existDomName = ""
                             If TypeOf cntrlPnl Is ComboBox Then
 
                                 pCBox = CType(cntrlPnl, ComboBox)
@@ -5808,7 +5880,11 @@ Public Class EditControl
                                     'Get the Field
                                     strFld = pCBox.Tag.ToString
                                     If strFld.IndexOf("|") > 0 Then
-                                        strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
+                                        Dim strArr() As String = strFld.Split("|")
+
+
+                                        strFld = Trim(strArr(0))
+                                        existDomName = Trim(strArr(1))
                                     End If
                                     'Get the domain
                                     ' MsgBox("Fix Doma")
@@ -5819,102 +5895,264 @@ Public Class EditControl
                                         pCBox.DataSource = Nothing
 
                                     Else
-                                        'If the domain has two values, remove the combo box and add a custompanel
+                                        If existDomName <> pCV.TableName Then
+
+                                            pCBox.Tag = strFld & "|" & pCV.TableName
+
+                                            'If the domain has two values, remove the combo box and add a custompanel
+                                            If pCV.Rows.Count = 0 Then
+                                                'MsgBox("ERROR: There are no values set up in the domain: " & pCV.TableName & " in layer: " & m_FL.Name & ".  This field will be skipped")
+                                            Else
+                                                If pCV.Rows.Count = 2 And m_RadioOnTwo Then
+                                                    Dim pNewGpBox As New CustomPanel
+                                                    Dim pRDButton As RadioButton
+                                                    pNewGpBox.Tag = pCBox.Tag
+                                                    pNewGpBox.BorderStyle = Windows.Forms.BorderStyle.None
+                                                    pNewGpBox.BackColor = Color.White
+                                                    '  pNewGpBox.BorderColor = Pens.LightGray
+
+                                                    pNewGpBox.Width = pCBox.Width
+                                                    pNewGpBox.Top = pCBox.Top
+                                                    pNewGpBox.Left = pCBox.Left
+
+                                                    pRDButton = New RadioButton
+                                                    AddHandler pRDButton.CheckedChanged, AddressOf controlLeave
+
+                                                    pRDButton.Name = "Rdo1"
+                                                    pRDButton.Tag = pCV.Rows(0)("Code")
+                                                    ' pRDButton.Text = pCV.Rows(0)("Value").ToString
+                                                    If (pCV.Rows(0)("Value").ToString.Length > 14) Then
+                                                        pRDButton.Text = pCV.Rows(0)("Value").ToString.Substring(0, 14)
+
+                                                    Else
+                                                        pRDButton.Text = pCV.Rows(0)("Value").ToString
+
+                                                    End If
+                                                    pRDButton.Left = pLeftPadding
+
+                                                    pRDButton.AutoSize = True
+                                                    ' AddHandler pRDButton.CheckedChanged, AddressOf controlLeave
+                                                    'AddHandler pRDButton.Enter, AddressOf controlEntered
+                                                    pNewGpBox.Controls.Add(pRDButton)
+
+
+                                                    pNewGpBox.Height = pRDButton.Height + 12
+                                                    pRDButton.Top = CInt(pNewGpBox.Height / 2 - pRDButton.Height / 2 - 2)
+
+
+                                                    pRDButton = New RadioButton
+                                                    AddHandler pRDButton.CheckedChanged, AddressOf controlLeave
+                                                    pRDButton.Name = "Rdo2"
+
+                                                    pRDButton.Tag = pCV.Rows(1)("Code")
+                                                    'pRDButton.Text = pCV.Rows(1)("Value").ToString
+                                                    If (pCV.Rows(1)("Value").ToString.Length > 14) Then
+                                                        pRDButton.Text = pCV.Rows(1)("Value").ToString.Substring(0, 14)
+
+                                                    Else
+                                                        pRDButton.Text = pCV.Rows(1)("Value").ToString
+
+                                                    End If
+                                                    pRDButton.Left = CInt(pNewGpBox.Width / 2)
+
+                                                    pRDButton.AutoSize = True
+                                                    'AddHandler pRDButton.Leave, AddressOf controlLeave
+
+                                                    'AddHandler pRDButton.Enter, AddressOf controlEntered
+
+                                                    'AddHandler pNewGpBox.Leave, AddressOf controlLeave
+                                                    'AddHandler pNewGpBox.Enter, AddressOf controlEntered
+                                                    pNewGpBox.Controls.Add(pRDButton)
+
+                                                    pRDButton.Top = CInt(pNewGpBox.Height / 2 - pRDButton.Height / 2 - 2)
+
+
+                                                    tbPg.Controls.Add(pNewGpBox)
+                                                    Try
+
+                                                        tbPg.Controls.Remove(pCBox)
+                                                        'Dim cnts() As Control = tbPg.Controls.Find("lblEdit" & strFld, False)
+                                                        'If cnts.Length > 0 Then
+                                                        '    tbPg.Controls.Remove(cnts(0))
+                                                        'End If
+
+
+                                                    Catch ex As Exception
+
+                                                    End Try
+
+                                                    pNewGpBox = Nothing
+                                                    pRDButton = Nothing
+
+                                                Else
+                                                    'Set the domain value
+                                                    'pCV.Columns(0).AllowDBNull = True
+                                                    'pCV.Columns(1).AllowDBNull = True
+
+                                                    'pCBox.DataBindings.DefaultDataSourceUpdateMode = DataSourceUpdateMode.Never
+
+                                                    'pCBox.DataSource = pCV
+
+
+                                                    pCBox.Items.Clear()
+
+                                                    pCBox.DataBindings.DefaultDataSourceUpdateMode = DataSourceUpdateMode.Never
+                                                    pCV.Columns(0).AllowDBNull = True
+                                                    pCV.Columns(1).AllowDBNull = True
+                                                    If m_FL.Columns(strFld).AllowDBNull Then
+                                                        Dim pDT As DataTable
+                                                        pDT = pCV.DefaultView.ToTable()
+                                                        'pDT.Rows.Add(DBNull.Value, GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown)
+                                                        Dim pDR As DataRow = pDT.NewRow
+                                                        pDR.Item(0) = DBNull.Value
+                                                        pDR.Item(1) = GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown
+                                                        pDT.Rows.InsertAt(pDR, 0)
+                                                        For Each dr As DataRow In pDT.Rows
+
+                                                            pCBox.Items.Add(New cValue(dr(1).ToString, dr(0)))
+
+                                                        Next
+                                                    Else
+                                                        'pCBox.DataSource = pCV
+                                                        For Each dr As DataRow In pCV.Rows
+
+                                                            pCBox.Items.Add(New cValue(dr(1).ToString, dr(0)))
+
+                                                        Next
+
+                                                    End If
+
+
+
+                                                    'pCBox.DisplayMember = "Value"
+                                                    'pCBox.ValueMember = "Code"
+                                                    pCBox.DisplayMember = "Display"
+                                                    pCBox.ValueMember = "Value"
+                                                    pCBox.Visible = True
+                                                    pCBox.Refresh()
+                                                    If m_FL.Columns(strFld).DefaultValue IsNot Nothing Then
+                                                        If m_FL.Columns(strFld).DefaultValue IsNot DBNull.Value Then
+                                                            For Each itm As cValue In pCBox.Items
+                                                                If itm.Value = m_FL.Columns(strFld).DefaultValue Then
+                                                                    pCBox.SelectedItem = itm
+
+                                                                End If
+                                                            Next
+                                                            '  pCBox.Text = m_FL.Columns(strFld).DefaultValue.ToString()
+                                                        ElseIf m_FL.Columns(strFld).AllowDBNull Then
+                                                            pCBox.SelectedItem = pCBox.Items.Item(0)
+
+
+                                                            'Try
+
+
+
+                                                            '    pCBox.Text = GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown.ToString()
+
+                                                            'Catch ex As Exception
+
+                                                            'End Try
+                                                        Else
+                                                            If pCBox.DataSource Is Nothing Then
+                                                                pCBox.SelectedItem = pCBox.Items(0)
+                                                            Else
+                                                                pCBox.Text = pCBox.DataSource.Rows(0)("Value").ToString
+                                                            End If
+
+
+                                                        End If
+                                                    ElseIf m_FL.Columns(strFld).AllowDBNull Then
+                                                        ' pCBox.Text = GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown
+                                                    Else
+                                                        If pCBox.DataSource Is Nothing Then
+                                                            pCBox.SelectedItem = pCBox.Items(0)
+                                                            'pCBox.SelectedItem = pCBox.Items.Item(0)
+                                                        Else
+                                                            pCBox.Text = pCBox.DataSource.Rows(0)("Value").ToString
+                                                        End If
+
+
+                                                        '  pCBox.Text = pCBox.DataSource.Rows(0)("Value").ToString
+                                                    End If
+
+                                                    ' pCBox.Text = pCV.Rows(0)("Value").ToString
+                                                End If
+
+                                            End If
+                                        End If
+
+                                    End If
+                                End If
+                                'If the contorl is a coded value domain with two values
+                            ElseIf TypeOf cntrlPnl Is CustomPanel Then
+
+
+                                'Get the Field
+                                strFld = cntrlPnl.Tag.ToString
+                                If strFld.IndexOf("|") > 0 Then
+                                    Dim strArr() As String = strFld.Split("|")
+
+
+                                    strFld = Trim(strArr(0))
+                                    existDomName = Trim(strArr(1))
+                                End If
+                                'Get the domain
+
+                                'MsgBox("Fix Domain")
+
+                                pCV = CType(m_FL.Columns(strFld).GetDomain(intSubVal), CodedValueDomain)
+
+                                'pCV = CType(m_FL.Domain(intSubVal, strFld), CodedValueDomain)
+
+                                If pCV Is Nothing Then
+                                    cntrlPnl.Controls.Clear()
+
+
+                                Else
+                                    If existDomName <> pCV.TableName Then
+                                        pCBox.Tag = strFld & "|" & pCV.TableName
+                                        'If the domain has more than two values, remove the custompanel and add a combo box 
                                         If pCV.Rows.Count = 0 Then
                                             'MsgBox("ERROR: There are no values set up in the domain: " & pCV.TableName & " in layer: " & m_FL.Name & ".  This field will be skipped")
                                         Else
                                             If pCV.Rows.Count = 2 And m_RadioOnTwo Then
-                                                Dim pNewGpBox As New CustomPanel
-                                                Dim pRDButton As RadioButton
-                                                pNewGpBox.Tag = pCBox.Tag
-                                                pNewGpBox.BorderStyle = Windows.Forms.BorderStyle.None
-                                                pNewGpBox.BackColor = Color.White
-                                                '  pNewGpBox.BorderColor = Pens.LightGray
-
-                                                pNewGpBox.Width = pCBox.Width
-                                                pNewGpBox.Top = pCBox.Top
-                                                pNewGpBox.Left = pCBox.Left
-
-                                                pRDButton = New RadioButton
-                                                AddHandler pRDButton.CheckedChanged, AddressOf controlLeave
-
-                                                pRDButton.Name = "Rdo1"
-                                                pRDButton.Tag = pCV.Rows(0)("Code")
-                                                ' pRDButton.Text = pCV.Rows(0)("Value").ToString
-                                                If (pCV.Rows(0)("Value").ToString.Length > 14) Then
-                                                    pRDButton.Text = pCV.Rows(0)("Value").ToString.Substring(0, 14)
-
-                                                Else
-                                                    pRDButton.Text = pCV.Rows(0)("Value").ToString
-
-                                                End If
-                                                pRDButton.Left = pLeftPadding
-
-                                                pRDButton.AutoSize = True
-                                                ' AddHandler pRDButton.CheckedChanged, AddressOf controlLeave
-                                                'AddHandler pRDButton.Enter, AddressOf controlEntered
-                                                pNewGpBox.Controls.Add(pRDButton)
-
-
-                                                pNewGpBox.Height = pRDButton.Height + 12
-                                                pRDButton.Top = CInt(pNewGpBox.Height / 2 - pRDButton.Height / 2 - 2)
-
-
-                                                pRDButton = New RadioButton
-                                                AddHandler pRDButton.CheckedChanged, AddressOf controlLeave
-                                                pRDButton.Name = "Rdo2"
-
-                                                pRDButton.Tag = pCV.Rows(1)("Code")
-                                                'pRDButton.Text = pCV.Rows(1)("Value").ToString
-                                                If (pCV.Rows(1)("Value").ToString.Length > 14) Then
-                                                    pRDButton.Text = pCV.Rows(1)("Value").ToString.Substring(0, 14)
-
-                                                Else
-                                                    pRDButton.Text = pCV.Rows(1)("Value").ToString
-
-                                                End If
-                                                pRDButton.Left = CInt(pNewGpBox.Width / 2)
-
-                                                pRDButton.AutoSize = True
-                                                'AddHandler pRDButton.Leave, AddressOf controlLeave
-
-                                                'AddHandler pRDButton.Enter, AddressOf controlEntered
-
-                                                'AddHandler pNewGpBox.Leave, AddressOf controlLeave
-                                                'AddHandler pNewGpBox.Enter, AddressOf controlEntered
-                                                pNewGpBox.Controls.Add(pRDButton)
-
-                                                pRDButton.Top = CInt(pNewGpBox.Height / 2 - pRDButton.Height / 2 - 2)
-
-
-                                                tbPg.Controls.Add(pNewGpBox)
                                                 Try
+                                                    'Set up the proper domain values
+                                                    Dim pRdoBut As RadioButton
+                                                    pRdoBut = CType(cntrlPnl.Controls("Rdo1"), RadioButton)
+                                                    pRdoBut.Tag = pCV.Rows(0)("Code")
+                                                    pRdoBut.Text = pCV.Rows(0)("Value").ToString
 
-                                                    tbPg.Controls.Remove(pCBox)
-                                                    'Dim cnts() As Control = tbPg.Controls.Find("lblEdit" & strFld, False)
-                                                    'If cnts.Length > 0 Then
-                                                    '    tbPg.Controls.Remove(cnts(0))
-                                                    'End If
-
-
+                                                    pRdoBut = CType(cntrlPnl.Controls("Rdo2"), RadioButton)
+                                                    pRdoBut.Tag = pCV.Rows(1)("Code")
+                                                    pRdoBut.Text = pCV.Rows(1)("Value").ToString
                                                 Catch ex As Exception
 
                                                 End Try
 
-                                                pNewGpBox = Nothing
-                                                pRDButton = Nothing
-
                                             Else
-                                                'Set the domain value
+
+                                                pCBox = New ComboBox
+                                                pCBox.Tag = strFld & "|" & pCV.TableName
+                                                pCBox.Name = "cboEdt" & strFld
+                                                pCBox.Left = cntrlPnl.Left
+                                                pCBox.Top = cntrlPnl.Top
+                                                pCBox.Width = cntrlPnl.Width
+                                                pCBox.Height = pCBox.Height + 5
+                                                pCBox.DropDownStyle = ComboBoxStyle.DropDownList
+
                                                 'pCV.Columns(0).AllowDBNull = True
                                                 'pCV.Columns(1).AllowDBNull = True
+                                                ''If pCV.Rows(0).Item(0) IsNot DBNull.Value Then
+                                                ''    Dim pNR As DataRow = pCV.NewRow
 
+                                                ''    pNR.Item("Value") = GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown
+                                                ''    pCV.Rows.InsertAt(pNR, 0)
+                                                ''End If
                                                 'pCBox.DataBindings.DefaultDataSourceUpdateMode = DataSourceUpdateMode.Never
 
                                                 'pCBox.DataSource = pCV
 
-
-                                                pCBox.Items.Clear()
 
                                                 pCBox.DataBindings.DefaultDataSourceUpdateMode = DataSourceUpdateMode.Never
                                                 pCV.Columns(0).AllowDBNull = True
@@ -5948,175 +6186,36 @@ Public Class EditControl
                                                 'pCBox.ValueMember = "Code"
                                                 pCBox.DisplayMember = "Display"
                                                 pCBox.ValueMember = "Value"
-                                                pCBox.Visible = True
-                                                pCBox.Refresh()
                                                 If m_FL.Columns(strFld).DefaultValue IsNot Nothing Then
                                                     If m_FL.Columns(strFld).DefaultValue IsNot DBNull.Value Then
-                                                        For Each itm As cValue In pCBox.Items
-                                                            If itm.Value = m_FL.Columns(strFld).DefaultValue Then
-                                                                pCBox.SelectedItem = itm
-
-                                                            End If
-                                                        Next
-                                                        '  pCBox.Text = m_FL.Columns(strFld).DefaultValue.ToString()
+                                                        pCBox.Text = m_FL.Columns(strFld).DefaultValue
                                                     ElseIf m_FL.Columns(strFld).AllowDBNull Then
-                                                        pCBox.SelectedItem = pCBox.Items.Item(0)
-
-
-                                                        'Try
-
-
-
-                                                        '    pCBox.Text = GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown.ToString()
-
-                                                        'Catch ex As Exception
-
-                                                        'End Try
+                                                        pCBox.Text = GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown
                                                     Else
-                                                        'pCBox.Text = pCBox.DataSource.Rows(0)("Value").ToString()
+                                                        pCBox.Text = pCBox.DataSource.Rows(0)("Value").ToString
                                                     End If
-                                                ElseIf m_FL.Columns(strFld).AllowDBNull Then
-                                                    ' pCBox.Text = GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown
-                                                Else
-                                                    pCBox.SelectedItem = pCBox.Items.Item(0)
-
-                                                    '  pCBox.Text = pCBox.DataSource.Rows(0)("Value").ToString
-                                                End If
-
-                                                ' pCBox.Text = pCV.Rows(0)("Value").ToString
-                                            End If
-
-                                        End If
-
-
-                                    End If
-                                End If
-                                'If the contorl is a coded value domain with two values
-                            ElseIf TypeOf cntrlPnl Is CustomPanel Then
-
-
-                                'Get the Field
-                                strFld = cntrlPnl.Tag.ToString
-                                If strFld.IndexOf("|") > 0 Then
-                                    strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
-                                End If
-                                'Get the domain
-
-                                'MsgBox("Fix Domain")
-
-                                pCV = CType(m_FL.Columns(strFld).GetDomain(intSubVal), CodedValueDomain)
-
-                                'pCV = CType(m_FL.Domain(intSubVal, strFld), CodedValueDomain)
-
-                                If pCV Is Nothing Then
-                                    cntrlPnl.Controls.Clear()
-
-
-                                Else
-                                    'If the domain has more than two values, remove the custompanel and add a combo box 
-                                    If pCV.Rows.Count = 0 Then
-                                        'MsgBox("ERROR: There are no values set up in the domain: " & pCV.TableName & " in layer: " & m_FL.Name & ".  This field will be skipped")
-                                    Else
-                                        If pCV.Rows.Count = 2 And m_RadioOnTwo Then
-                                            Try
-                                                'Set up the proper domain values
-                                                Dim pRdoBut As RadioButton
-                                                pRdoBut = CType(cntrlPnl.Controls("Rdo1"), RadioButton)
-                                                pRdoBut.Tag = pCV.Rows(0)("Code")
-                                                pRdoBut.Text = pCV.Rows(0)("Value").ToString
-
-                                                pRdoBut = CType(cntrlPnl.Controls("Rdo2"), RadioButton)
-                                                pRdoBut.Tag = pCV.Rows(1)("Code")
-                                                pRdoBut.Text = pCV.Rows(1)("Value").ToString
-                                            Catch ex As Exception
-
-                                            End Try
-
-                                        Else
-
-                                            pCBox = New ComboBox
-                                            pCBox.Tag = strFld
-                                            pCBox.Name = "cboEdt" & strFld
-                                            pCBox.Left = cntrlPnl.Left
-                                            pCBox.Top = cntrlPnl.Top
-                                            pCBox.Width = cntrlPnl.Width
-                                            pCBox.Height = pCBox.Height + 5
-                                            pCBox.DropDownStyle = ComboBoxStyle.DropDownList
-
-                                            'pCV.Columns(0).AllowDBNull = True
-                                            'pCV.Columns(1).AllowDBNull = True
-                                            ''If pCV.Rows(0).Item(0) IsNot DBNull.Value Then
-                                            ''    Dim pNR As DataRow = pCV.NewRow
-
-                                            ''    pNR.Item("Value") = GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown
-                                            ''    pCV.Rows.InsertAt(pNR, 0)
-                                            ''End If
-                                            'pCBox.DataBindings.DefaultDataSourceUpdateMode = DataSourceUpdateMode.Never
-
-                                            'pCBox.DataSource = pCV
-
-
-                                            pCBox.DataBindings.DefaultDataSourceUpdateMode = DataSourceUpdateMode.Never
-                                            pCV.Columns(0).AllowDBNull = True
-                                            pCV.Columns(1).AllowDBNull = True
-                                            If m_FL.Columns(strFld).AllowDBNull Then
-                                                Dim pDT As DataTable
-                                                pDT = pCV.DefaultView.ToTable()
-                                                'pDT.Rows.Add(DBNull.Value, GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown)
-                                                Dim pDR As DataRow = pDT.NewRow
-                                                pDR.Item(0) = DBNull.Value
-                                                pDR.Item(1) = GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown
-                                                pDT.Rows.InsertAt(pDR, 0)
-                                                For Each dr As DataRow In pDT.Rows
-
-                                                    pCBox.Items.Add(New cValue(dr(1).ToString, dr(0)))
-
-                                                Next
-                                            Else
-                                                'pCBox.DataSource = pCV
-                                                For Each dr As DataRow In pCV.Rows
-
-                                                    pCBox.Items.Add(New cValue(dr(1).ToString, dr(0)))
-
-                                                Next
-
-                                            End If
-
-
-
-                                            'pCBox.DisplayMember = "Value"
-                                            'pCBox.ValueMember = "Code"
-                                            pCBox.DisplayMember = "Display"
-                                            pCBox.ValueMember = "Value"
-                                            If m_FL.Columns(strFld).DefaultValue IsNot Nothing Then
-                                                If m_FL.Columns(strFld).DefaultValue IsNot DBNull.Value Then
-                                                    pCBox.Text = m_FL.Columns(strFld).DefaultValue
                                                 ElseIf m_FL.Columns(strFld).AllowDBNull Then
                                                     pCBox.Text = GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown
                                                 Else
                                                     pCBox.Text = pCBox.DataSource.Rows(0)("Value").ToString
                                                 End If
-                                            ElseIf m_FL.Columns(strFld).AllowDBNull Then
-                                                pCBox.Text = GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NullValueDropDown
-                                            Else
-                                                pCBox.Text = pCBox.DataSource.Rows(0)("Value").ToString
+
+
+                                                ' pCmdBox.MaxLength = pDc.MaxLength
+
+
+                                                tbPg.Controls.Add(pCBox)
+                                                ' MsgBox(pCBox.Items.Count)
+
+                                                'pCBox.Text = pCV.Rows(0)("Value").ToString
+                                                pCBox.Visible = True
+                                                pCBox.Refresh()
+
+                                                tbPg.Controls.Remove(cntrlPnl)
+
+                                                pCBox = Nothing
+
                                             End If
-
-
-                                            ' pCmdBox.MaxLength = pDc.MaxLength
-
-
-                                            tbPg.Controls.Add(pCBox)
-                                            ' MsgBox(pCBox.Items.Count)
-
-                                            'pCBox.Text = pCV.Rows(0)("Value").ToString
-                                            pCBox.Visible = True
-                                            pCBox.Refresh()
-
-                                            tbPg.Controls.Remove(cntrlPnl)
-
-                                            pCBox = Nothing
-
                                         End If
                                     End If
 
@@ -6128,8 +6227,13 @@ Public Class EditControl
                                 'Get the field
                                 strFld = pNUP.Tag.ToString
                                 If strFld.IndexOf("|") > 0 Then
-                                    strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
+                                    Dim strArr() As String = strFld.Split("|")
+
+
+                                    strFld = Trim(strArr(0))
+                                    existDomName = Trim(strArr(1))
                                 End If
+
                                 'Get the domain
 
                                 'MsgBox("Fix Domain")
@@ -6140,9 +6244,12 @@ Public Class EditControl
                                     pNUP.Enabled = False
 
                                 Else
-                                    pNUP.Enabled = True
-                                    pNUP.Minimum = CDec(pRg.MinimumValue)
-                                    pNUP.Maximum = CDec(pRg.MaximumValue)
+                                    If existDomName <> pRg.Name Then
+                                        pNUP.Tag = strFld & "|" & pRg.Name
+                                        pNUP.Enabled = True
+                                        pNUP.Minimum = CDec(pRg.MinimumValue)
+                                        pNUP.Maximum = CDec(pRg.MaximumValue)
+                                    End If
                                 End If
 
 
