@@ -73,7 +73,7 @@
         <GPSPointMaxTries>2000</GPSPointMaxTries>
         <WaypointControl>
           <!--Option to show or hide the Panel-->
-          <Visible>true</Visible>
+          <Visible>false</Visible>
           <!--The text to display in the button-->
           <DisplayText>GPS</DisplayText>
           <!--Message to show in the lower left status bar-->
@@ -90,7 +90,7 @@
         <ZoomInToolMessage>Active Tool: Zoom In</ZoomInToolMessage>
         <ZoomOutToolMessage>Active Tool: Zoom Out</ZoomOutToolMessage>
         <ZoomInOutToolMessage>Active Tool: Zoom In/Out</ZoomInOutToolMessage>
-        <RotateVisible>True</RotateVisible>
+        <RotateVisible>False</RotateVisible>
       </ZoomPan>
       <Bookmarks>
         <!--Option to show the Bookmark button-->
@@ -134,7 +134,7 @@
       <UseGeodeticMeasure>True</UseGeodeticMeasure>
     </MeasureOptions>
     <!--Layer options-->
-<!--*************************************************************************************************************-->
+    <!--*************************************************************************************************************-->
     <LayerOptions>
       <!--The url of the mobile service, currently only one is supported-->
       <MobileServices LimitQuery ="">
@@ -144,38 +144,41 @@
       <!--The path to the local cache maps, these are tiles cache maps, if a full path is not listed, it will check the LocalCacheMap Folder-->
       <CachedMaps>
         <CachedMap DisplayName="DayMap">C:\AppletonTreeTest\LocalCacheMaps\Mobile Day Map</CachedMap>
- <!--       <CachedMap DisplayName="NightMap">C:\Projects\Caches\InfrastructureMobileNightBaseMap\Mobile Night Map</CachedMap>-->
+        <!--       <CachedMap DisplayName="NightMap">C:\Projects\Caches\InfrastructureMobileNightBaseMap\Mobile Night Map</CachedMap>-->
 
 
       </CachedMaps>
-<!--*************************************************************************************************************-->
-	  <!--     <WebMaps>
+      <!--*************************************************************************************************************-->
+      <!--     <WebMaps>
         <WebMap DisplayName="Streets">http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer</WebMap>
         <WebMap DisplayName="Imagery">http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer</WebMap>
 
       </WebMaps>-->
 
       <!--Option to display a layer group control, this will allow you to toggle a set of layers as a group-->
-<!--*************************************************************************************************************-->
+      <!--*************************************************************************************************************-->
       <LayerGroupings>
         <LayersGroup DisplayName="Trees" Visible="True">
           <LayerGroup Name="AppletonGIS.DBO.TreesTest" />
-
+        </LayersGroup>
+        <LayersGroup DisplayName="TreeMaint" Visible="True">
+          <LayerGroup Name="AppletonGIS.DBO.TreeMaintenance" />
         </LayersGroup>
 
       </LayerGroupings>
+      <!--*************************************************************************************************************-->
       <!--True to show toggle button, false to hide-->
       <ShowToggle>True</ShowToggle>
       <!--Option to show only one basemap at a time, True will turn off all basemaps when one is clicked-->
       <SingleBaseMap>True</SingleBaseMap>
       <!-- option to draw arrows that represent digitize direction-->
-  <!--    <FlowArrowsLayers ButtonText="Flow">
+      <!--    <FlowArrowsLayers ButtonText="Flow">
         <FlowArrowsLayer Name="Sewer Gravity Mains"/>
         <FlowArrowsLayer Name="Storm Gravity Mains"/>
 
       </FlowArrowsLayers>-->
 
-   <!--   <LayersFieldOptions>
+      <!--   <LayersFieldOptions>
 
         <Layer Name="Markup Polygons"  Caption="Redlines" SpecialCase="">
 
@@ -196,8 +199,8 @@
         </Layer>
 
       </LayersFieldOptions>-->
-  
-  <UIComponents>
+
+      <UIComponents>
         <LayerSpatialReferenceDontMatch>{0} Spatial Reference does not match the map</LayerSpatialReferenceDontMatch>
       </UIComponents>
     </LayerOptions>
@@ -215,20 +218,30 @@
 
 
 
-<!--***************************************************************************************************-->
-        <!--On New and onModify Options
+      <!--***************************************************************************************************-->
+      <!--On New and onModify Options
         TIME,CPUNAME,Date,User,FullUser,Value,WOCrew,GUID,WOCurrent,ADDRESS,None or "",Intersect-->
 
-  <Layers>
-
-      <Layer Name="AppletonGIS.DBO.TreesTest" EditExisting ="true" EditOwnerField ="" EditGeo ="true" DeleteFeature="true" DisplayText="Redline" SketchMode="Freehand" SketchColor="#FFFF0000" SnapTo="" SyncOnSave="0">
+      <Layers>
+        <Layer Name="AppletonGIS.DBO.TreeMaintenance" EditExisting ="false" EditOwnerField ="" EditGeo ="false" DeleteFeature="false" DisplayText="Maintenance" SketchMode="Freehand" SketchColor="#FFFF0000" SnapTo="AppletonGIS.DBO.TreesTest" SyncOnSave="0">
+          <Field Name="MaintenanceID" OnNew="Intersect" OnModify="Intersect"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="AppletonGIS.DBO.TreesTest" IntersectField="TreeID" ValueText=""/>
+          <Field Name="Address" OnNew="Intersect" OnModify="Intersect"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="AppletonGIS.DBO.TreesTest" IntersectField="Address" ValueText=""/>
+          <Field Name="Section" OnNew="Intersect" OnModify="Intersect"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="AppletonGIS.DBO.TreesTest" IntersectField="Section" ValueText=""/>
+          <Field Name="Species" OnNew="Intersect" OnModify="Intersect"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="AppletonGIS.DBO.TreesTest" IntersectField="Species" ValueText=""/>
+          <Field Name="Cultivar" OnNew="Intersect" OnModify="Intersect"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="AppletonGIS.DBO.TreesTest" IntersectField="Cultivar" ValueText=""/>
+          <Field Name="Diameter" OnNew="Intersect" OnModify="Intersect"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="AppletonGIS.DBO.TreesTest" IntersectField="Diameter" ValueText=""/>
+          <Field Name="Condition" OnNew="Intersect" OnModify="Intersect"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="AppletonGIS.DBO.TreesTest" IntersectField="Condition" ValueText=""/>
+          <Field Name="Action_Editor" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+          <Field Name="Action_Date" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+        </Layer>
+        <Layer Name="AppletonGIS.DBO.TreesTest" EditExisting ="true" EditOwnerField ="" EditGeo ="true" DeleteFeature="true" DisplayText="TreeTest" SketchMode="Freehand" SketchColor="#FFFF0000" SnapTo="" SyncOnSave="0">
           <Field Name="Field_Editor" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
           <Field Name="Field_Editor_Date" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="COMPLETED" OnNew="value" OnModify=""  OnNewReadOnly="false" OnModifyReadOnly ="false" IntersectLayer="" IntersectField="" ValueText="No"/>
+          <Field Name="TreeID" OnNew="value" OnModify=""  OnNewReadOnly="false" OnModifyReadOnly ="false" IntersectLayer="" IntersectField="" ValueText="No"/>
 
         </Layer>
       </Layers>
-<!--***************************************************************************************************-->
+      <!--***************************************************************************************************-->
 
       <DateTimeDisplayFormat>MM/dd/yyyy</DateTimeDisplayFormat>
       <!--Option to Log inspection information to an xml file for backup and recovery reasons-->
@@ -263,16 +276,16 @@
       <DisplayText>Sync</DisplayText>
       <!--Message to show in the lower left status bar-->
       <StatusBarMessage>Data Services: Post or get new data changes from your office's server</StatusBarMessage>
-<!--***************************************************************************************************-->
+      <!--***************************************************************************************************-->
       <!--layers to refresh-->
       <RefreshList ShowAllLayers="true">
         <RefreshGroup Name="Trees">
           <RefreshLayer Name="AppletonGIS.DBO.TreesTest" Extent="Full" WhereClause=""/>
-
+          <RefreshLayer Name="AppletonGIS.DBO.TreeMaintenance" Extent="Full" WhereClause=""/>
         </RefreshGroup >
 
       </RefreshList>
-<!--***************************************************************************************************-->
+      <!--***************************************************************************************************-->
       <UIComponents>
         <!--use {0} to insert the number of edits into text-->
         <EditMonitorLabel>{0} Changes that need to be posted</EditMonitorLabel>
@@ -297,7 +310,7 @@
     <!--Options Search tab, allows you to search an asset, address point, intersection or an address-->
     <SearchPanel>
       <!--Option to show or hide the Panel-->
-      <Visible>false</Visible>
+      <Visible>true</Visible>
       <!--The text to display in the button-->
       <DisplayText>Search</DisplayText>
       <!--Message to show in the lower left status bar-->
@@ -307,16 +320,18 @@
       <!-- How the unquie values are loaded, ADO data binding or Looping through-->
       <!-- ADO or Loop-->
       <SearchDataLoadType>ADO</SearchDataLoadType>
+      <!--***********************************************************************************************-->
       <!-- List of layers to allow the user to search on -->
       <SearchLayers>
-        <SearchLayer Name="Water Leaks" DefQuery="" xmin="" xmax="" ymin ="" ymax=""/>
-        <SearchLayer Name="Workorders" DefQuery="" xmin="" xmax="" ymin ="" ymax="" />
-        <SearchLayer Name="Markup Polygons" DefQuery="" xmin="" xmax="" ymin ="" ymax="" />
+        <SearchLayer Name="AppletonGIS.DBO.TreesTest" DefQuery="" xmin="" xmax="" ymin ="" ymax=""/>
+        <SearchLayer Name="AppletonGIS.DBO.TreeMaintenance" DefQuery="" xmin="" xmax="" ymin ="" ymax="" />
+        <!-- <SearchLayer Name="Markup Polygons" DefQuery="" xmin="" xmax="" ymin ="" ymax="" />
         <SearchLayer Name="Water Hydrants" DefQuery="" xmin="" xmax="" ymin ="" ymax="" />
         <SearchLayer Name="Water Mains" DefQuery="" xmin="" xmax="" ymin ="" ymax=""/>
         <SearchLayer Name="Water Service Connections" DefQuery="" xmin="" xmax="" ymin ="" ymax=""/>
-        <SearchLayer Name="Sewer Service Connections" DefQuery="" xmin="" xmax="" ymin ="" ymax=""/>
+        <SearchLayer Name="Sewer Service Connections" DefQuery="" xmin="" xmax="" ymin ="" ymax=""/>-->
       </SearchLayers>
+      <!--***********************************************************************************************-->
       <!--The drill down search control-->
       <DrillDownSearches>
         <DrillDownSearch LayerName="Site Address Points" DefQuery="" xmin="" xmax="" ymin ="" ymax="">
@@ -412,9 +427,11 @@
       <AreaSearchValues PointSize="6" PointColor="#FFFF0000" AreaColor="#FFFF0000">
         <AreaSearchValue AreaSize="{Empty}" Display="Clear" />
         <!--required, this allows for searches without geometry-->
-        <AreaSearchValue AreaSize="100" Display="100 Meters" />
-        <AreaSearchValue AreaSize="200" Display="200 Meters" />
-        <AreaSearchValue AreaSize="300" Display="300 Meters" />
+        <AreaSearchValue AreaSize="100" Display="100 Feet" />
+        <AreaSearchValue AreaSize="200" Display="200 Feet" />
+        <AreaSearchValue AreaSize="300" Display="300 Feet" />
+        <AreaSearchValue AreaSize="400" Display="400 Feet" />
+        <AreaSearchValue AreaSize="500" Display="500 Feet" />
         <AreaSearchValue AreaSize="{Extent}" Display="Extent" />
       </AreaSearchValues>
     </SearchPanel>
@@ -492,13 +509,14 @@
       <!--Length unit-->
       <!--"FOOT","FEET","METER","KILOMETER","MILE","INCH","YARD","NAUTICALMILE","MAP"-->
       <LengthUnit>Foot</LengthUnit>
-<!--***************************************************************************************************-->
+      <!--***************************************************************************************************-->
       <IDGroups AllLayersText="All Layers">
         <IDGroup DisplayName="Trees">
           <IDLayer Name="AppletonGIS.DBO.TreesTest" />
+          <IDLayer Name="AppletonGIS.DBO.TreeMaintenance" />
         </IDGroup>
       </IDGroups>
-<!--***************************************************************************************************-->
+      <!--***************************************************************************************************-->
       <UIComponents>
         <PageName>Page</PageName>
         <TopMostIDText>&lt;Top Most Layer&gt;</TopMostIDText>

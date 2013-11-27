@@ -2706,10 +2706,10 @@ Public Class MobileMapConsole
             m_MCCreateFeatureMA.currentCrew = m_MCActivityControl.getCrew
         End If
     End Sub
-    'Private Sub m_MCCreateFeatureMA_RaiseMessage(ByVal Message As String) Handles m_MCCreateFeatureMA.RaiseMessage, m_MCInspectMA.RaiseMessage
-    '    showMessage(Message)
+    Private Sub m_MCCreateFeatureMA_RaiseMessage(ByVal Message As String) Handles m_MCCreateFeatureMA.RaiseMessage
+        showMessage(Message)
 
-    'End Sub
+    End Sub
 
     'Private Sub m_MCInspectMA_RaisePermMessage(ByVal Message As String, ByVal Hide As Boolean) Handles m_MCInspectMA.RaisePermMessage
     '    showPermMessage(Message, Hide)

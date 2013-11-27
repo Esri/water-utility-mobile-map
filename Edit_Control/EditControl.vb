@@ -5168,6 +5168,7 @@ Public Class EditControl
 
                                                         If drv.Value.ToString() = m_FDR.Item(strFld).ToString() Then
                                                             CType(cCntrlPnl, ComboBox).SelectedItem = rwItm
+                                                            '  cmbSubTypChange_Click(CType(cCntrlPnl, ComboBox), Nothing)
                                                         End If
 
                                                     Else
@@ -5187,7 +5188,7 @@ Public Class EditControl
                                             End If
                                             setRequiredColorsField(cCntrlPnl.Parent, False)
 
-                                            'Raise the subtype change event, this loads all the proper domains based on the subtype value
+                                            ''Raise the subtype change event, this loads all the proper domains based on the subtype value
                                             Call cmbSubTypChange_Click(CType(cCntrlPnl, ComboBox), Nothing)
 
                                             Exit For
@@ -5490,16 +5491,17 @@ Public Class EditControl
 
                                             Else
 
-                                                CType(cCntrlPnl, ComboBox).SelectedValue = m_FDR.Item(strFld)
-                                                CType(cCntrlPnl, ComboBox).Text = m_FDR.Item(strFld).ToString
-                                                If m_FDR.Item(strFld).ToString <> "" And CType(cCntrlPnl, ComboBox).Text = "" Then
+                                                ' CType(cCntrlPnl, ComboBox).SelectedValue = m_FDR.Item(strFld)
+                                                ' CType(cCntrlPnl, ComboBox).Text = m_FDR.Item(strFld).ToString
+                                                'If m_FDR.Item(strFld).ToString <> "" And CType(cCntrlPnl, ComboBox).Text = "" Then
+                                                If True Then
                                                     Dim intT As Integer = 0
 
                                                     For Each rwItm As Object In CType(cCntrlPnl, ComboBox).Items
                                                         If TypeOf rwItm Is cValue Then
                                                             Dim drv As cValue = rwItm
 
-                                                            If drv.Value.ToString = m_FDR.Item(strFld) Then
+                                                            If drv.Value.ToString() = m_FDR.Item(strFld).ToString() Then
                                                                 CType(cCntrlPnl, ComboBox).SelectedIndex = intT
 
                                                             End If
