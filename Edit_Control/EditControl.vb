@@ -1,5 +1,5 @@
-﻿' | Version 10.1.1
-' | Copyright 2012 Esri
+﻿' | Version 10.2
+' | Copyright 2014 Esri
 ' |
 ' | Licensed under the Apache License, Version 2.0 (the "License");
 ' | you may not use this file except in compliance with the License.
@@ -145,6 +145,7 @@ Public Class EditControl
         End Get
         Set(ByVal value As Boolean)
             btnDelete.Visible = value
+            btnDelete.Enabled = True
 
 
 
@@ -919,7 +920,7 @@ Public Class EditControl
 
     End Sub
 
-    Public Sub UpdateForm(ByVal Field As String, ByVal Value As Object, ByVal setReadOnly As String)
+    Public Sub UpdateForm(ByVal Field As String, ByVal Value As Object, ByVal setReadOnly As String, Optional bSub As Boolean = False)
         Try
             m_SettingAtts = True
 
@@ -928,9 +929,15 @@ Public Class EditControl
             Dim pFL As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource = m_FDR.FeatureSource
             'If the layer has subtypes, load the subtype value first
             'Loop through all the controls and set their value
+            Dim bValSet As Boolean = False
+
             For Each tbPage As TabPage In tbCntrlEdit.TabPages
                 'If TypeOf pCntrl Is TabPage Then
+                If bValSet Then Exit For
+
                 For Each cCntrl As Control In tbPage.Controls
+                    If bValSet Then Exit For
+
                     'If the control is a 2 value domain(Checkboxs)
                     If TypeOf cCntrl Is Panel Then
                         For Each cCntrlPnl As Control In cCntrl.Controls
@@ -979,6 +986,8 @@ Public Class EditControl
                                                 End If
 
                                                 CType(rdCn, RadioButton).Checked = True
+                                                bValSet = True
+
 
                                                 Exit For
 
@@ -1011,8 +1020,10 @@ Public Class EditControl
 
                                         CType(cCntrlPnl, TextBox).Text = Value
                                     End If
+                                    bValSet = True
 
                                     ' CType(cCntrlPnl, TextBox).Text = ""
+                                    Exit For
 
                                 End If
 
@@ -1044,8 +1055,10 @@ Public Class EditControl
                                                     If Not item Is DBNull.Value Then
                                                         If item.value.ToString = Value.ToString Then
                                                             CType(cCntrlPnl, ComboBox).SelectedItem = item
-                                                            Exit For
+                                                            If bSub Then
+                                                                SubtypeChange(Value, Field)
 
+                                                            End If
                                                         End If
                                                     End If
                                                 End If
@@ -1053,6 +1066,10 @@ Public Class EditControl
                                             Next
 
                                         End If
+                                        bValSet = True
+
+                                        Exit For
+
 
                                     Catch ex As Exception
                                         cCntrlPnl.Enabled = True
@@ -1090,6 +1107,10 @@ Public Class EditControl
 
 
                                     End If
+                                    bValSet = True
+
+                                    Exit For
+
 
                                 End If
 
@@ -1114,6 +1135,9 @@ Public Class EditControl
                                         CType(cCntrlPnl, NumericUpDown).Value = CDec(Value)
 
                                     End If
+                                    bValSet = True
+
+                                    Exit For
 
                                 End If
 
@@ -1228,8 +1252,23 @@ Public Class EditControl
         Catch
         Finally
         End Try
+       
         If pushChangeToForm Then
-            UpdateForm(Field, Value, setReadOnly)
+            Dim bSub As Boolean = False
+
+            If m_FDR.FeatureSource.HasSubtypes Then
+                If m_FDR.FeatureSource.SubtypeColumnName = Field Then
+
+                    If Value.ToString <> "<NO_MOD>" Then
+
+                        bSub = True
+
+
+                    End If
+                End If
+            End If
+            UpdateForm(Field, Value, setReadOnly, bSub)
+
         End If
         Return True
 

@@ -244,11 +244,11 @@
     <None Include="Images\Square - Green.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\..\..\..\..\Program Files %28x86%29\ArcGIS SDKs\Windows Mobile\bin\ESRIMobileCore.dll">
+    <Content Include="C:\Program Files %28x86%29\ArcGIS SDKs\Windows Mobile\bin\ESRIMobileCore.dll">
       <Link>ESRIMobileCore.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\Program Files %28x86%29\ArcGIS SDKs\Windows Mobile\bin\esrigps.dll">
+    <Content Include="C:\Program Files %28x86%29\ArcGIS SDKs\Windows Mobile\bin\esrigps.dll">
       <Link>esrigps.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

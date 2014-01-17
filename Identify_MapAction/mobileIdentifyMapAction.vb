@@ -433,6 +433,7 @@ Public Class mobileIdentifyMapAction
                     End If
                     If editLay.DeleteFeature.ToUpper() = "TRUE" Then
                         m_EditFrm.DeleteButtonVisible = True
+
                     Else
                         m_EditFrm.DeleteButtonVisible = False
 
