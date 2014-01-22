@@ -20,8 +20,8 @@
     <ApplicationIcon>ico\123.ico</ApplicationIcon>
     <ManifestCertificateThumbprint>6BB95E950A812CB0792B309822C620EB2B628B29</ManifestCertificateThumbprint>
     <ManifestKeyFile>MobileMapTemplate_TemporaryKey.pfx</ManifestKeyFile>
-    <GenerateManifests>true</GenerateManifests>
-    <SignManifests>true</SignManifests>
+    <GenerateManifests>false</GenerateManifests>
+    <SignManifests>false</SignManifests>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
     <SignAssembly>false</SignAssembly>

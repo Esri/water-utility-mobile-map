@@ -5883,7 +5883,14 @@ Public Class EditControl
 
             'Exit if the layer is not found
             If m_FL Is Nothing Then Exit Sub
+            If m_FDR IsNot Nothing Then
+                If m_FDR.Item(m_FL.SubtypeColumnIndex).ToString() <> value.ToString() Then
 
+                    m_FDR.Item(m_FL.SubtypeColumnIndex) = value
+
+                End If
+
+            End If
             Dim strFld As String
             Dim pCBox As ComboBox
             Dim pNUP As NumericUpDown

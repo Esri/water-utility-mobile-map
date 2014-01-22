@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
  | Version 10.2
- | Copyright 2014 Esri
+ | Copyright 2013 Esri
  |
  | Licensed under the Apache License, Version 2.0 (the "License");
  | you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
   <MobileMapConfig>
     <ApplicationSettings>
       <!-- Label on splash screen-->
-      <SplashLabel>Water Utilities Mobile Map</SplashLabel>
+      <SplashLabel>Water Utilites Mobile Map</SplashLabel>
       <!--Image used on the splash screen-->
       <SplashImage>splash.png</SplashImage>
       <!--icon in the top left of the app-->
@@ -30,7 +30,7 @@
       <!--Option to show a side bar - Not functional yet-->
       <SideBarControl>False</SideBarControl>
       <CopyrightText>Esri, Inc.</CopyrightText>
-      <VersionInfo>Version: 10.2.0.2, 1-17-2014</VersionInfo>
+      <VersionInfo>Version: 10.2.0.2, 12-13-2013</VersionInfo>
       <!--The scale to zoom to for point feature results-->
       <ZoomExtent>600</ZoomExtent>
       <MultiLineThreshold Threshold ="125" SizeFactor="3"/>
@@ -864,7 +864,9 @@
           <DefaultCity>Naperville</DefaultCity>
           <DefaultState>Il</DefaultState>
         </SDC>
-       
+        <!--<OnlineServices>
+          <Geocode TextToAdd="Naperville, Il" GCUrl="http://tasks.arcgisonline.com/ArcGIS/rest/services/Locators/TA_Streets_US_10/GeocodeServer/findAddressCandidates?" />
+        </OnlineServices>-->
       </AddressSearch>
       <UIComponents>
         <!---->
