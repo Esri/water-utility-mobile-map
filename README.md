@@ -13,7 +13,7 @@ The mobile map application is optimized for a Windows Tablet PC with the followi
 
 This application will help you deploy a mobile mapping in a disconnected or connected network environment.
 
-![Image of Water Utility Mobile Map application](https://raw.github.com/Esri/water-utility-mobile-map/master/water-utility-mobile-map.png "Water Utility Mobile Map application")
+![Image of Water Utility Mobile Map application](water-utility-mobile-map.png "Water Utility Mobile Map application")
 
 ## Features
 
@@ -83,7 +83,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 A copy of the license is available in the repository's
-[LICENSE.txt](https://raw.github.com/Esri/water-utility-mobile-map/master/LICENSE.txt) file.
+[LICENSE.txt](LICENSE.txt) file.
 
 [](Esri Tags: Local-Government Water-Utility Local Government Water Utility Mobile Map Utility Utilities C-Sharp)
 [](Esri Language: Visual-Basic)
