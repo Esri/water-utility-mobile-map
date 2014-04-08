@@ -434,7 +434,7 @@ Public Class mobileGroupToggle
             ' m_Map.SuspendLayout()
             ' m_Map.RefreshOnDataChange = False
             'm_Map.UseThreadedDrawing = True
-            m_Map.DisableDrawing()
+            'm_Map.DisableDrawing()
 
 
             Dim pML As ESRI.ArcGIS.Mobile.MapLayer
@@ -483,9 +483,11 @@ Public Class mobileGroupToggle
                             Dim pTML As Esri.ArcGIS.Mobile.WebServices.ArcGISServices.MapServices.TileServiceMapLayer = CType(pML, Esri.ArcGIS.Mobile.WebServices.ArcGISServices.MapServices.TileServiceMapLayer)
 
 
+
                             pTML.Open()
-
-
+                            'pTML.ResumeOnError()
+                            'pTML.Open()
+                            'pTML.Visible = True
 
                        
 
@@ -503,7 +505,7 @@ Public Class mobileGroupToggle
             pML = Nothing
             'm_Map.ResumeLayout()
             ' m_Map.RefreshOnDataChange = True
-            m_Map.EnableDrawing()
+            ' m_Map.EnableDrawing()
             RaiseEvent LayersChange()
         Catch ex As Exception
             Dim st As New StackTrace

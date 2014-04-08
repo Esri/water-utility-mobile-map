@@ -2328,9 +2328,7 @@ Public Class MobileMapConsole
         End If
 
     End Sub
-    Private Sub btnOpenClosePanel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOpenClosePanel.Click
-
-    End Sub
+  
     Private Sub btnOpenClosePanel_MouseDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles btnOpenClosePanel.MouseDown
         'RemoveHandler spContMain.Panel1.Resize, AddressOf spContMain_Panel1_Resize
         'RemoveHandler spContMain.Panel2.Resize, AddressOf spContMain_Panel1_Resize
@@ -2348,6 +2346,11 @@ Public Class MobileMapConsole
 
 
             'spContMain.SplitterDistance = 345
+
+        Else
+            spContMain.Panel1Collapsed = False
+            spContMain.Panel2Collapsed = True
+
         End If
         RemoveHandler spContMain.Panel1.Resize, AddressOf spContMain_Panel1_Resize
         RemoveHandler spContMain.Panel2.Resize, AddressOf spContMain_Panel1_Resize

@@ -270,16 +270,18 @@
     <Content Include="AppImages\123.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="__Water_MobileMapConfig_Testing.xml">
+    <Content Include="__Release_MobileMapConfig.xml">
       <SubType>Designer</SubType>
-    </None>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="__Testing_MobileMapConfig.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="MobileMapConfig.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="__Water_MobileMapConfig_Release.xml">
-      <SubType>Designer</SubType>
-    </None>
     <Content Include="file.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

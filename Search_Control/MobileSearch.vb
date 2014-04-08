@@ -5004,7 +5004,16 @@ Public Class MobileSearch
                         ElseIf pDc.DataType Is System.Type.GetType("System.DateTime") Then
                             'Check to see if search value is a date
                             If IsDate(SearchValue) Then
-                                pStrWhere = pStrWhere & strFld & " = #" & Convert.ToDateTime(SearchValue) & "#"
+                                If FindAllSimilar Then
+                                    'YYYY -MM - DD
+
+                                    pStrWhere = pStrWhere & "(" & strFld & " BETWEEN '" & Convert.ToDateTime(SearchValue).ToString("yyyy-MM-dd  HH:mm:ss") & "' AND '" & Convert.ToDateTime(SearchValue).AddDays(1).ToString("yyyy-MM-dd HH:mm:ss") & "')"
+                                Else
+                                    pStrWhere = pStrWhere & strFld & "" & pStrFindOper & pStrFindAll & "'" & Convert.ToDateTime(SearchValue).ToString("yyyy-MM-dd HH:mm:ss") & "'" & pStrFindAll
+                                End If
+                                'pStrWhere = pStrWhere & "CAST(" & strFld & " as VARCHAR(20))" & "" & pStrFindOper & pStrFindAll & "" & Convert.ToDateTime(SearchValue) & "" & pStrFindAll
+
+                                '& pStrFindOper 
                             Else
                                 If pStrWhere.Length <= 4 Then
                                     pStrWhere = ""
