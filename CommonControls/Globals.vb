@@ -266,7 +266,7 @@ Public Class GlobalsFunctions
         'data.Append("&f=" + WebUtility.HtmlEncode(f))
         'data.Append("&outFields=" + WebUtility.HtmlEncode(outFields))
 
-        data.Append("Single+Line+Input=" + System.Web.HttpUtility.HtmlEncode(streetAddress))
+        data.Append("SingleLine=" + System.Web.HttpUtility.HtmlEncode(streetAddress))
 
         data.Append("&outSR=" + System.Web.HttpUtility.HtmlEncode("4326"))
         data.Append("&f=" + System.Web.HttpUtility.HtmlEncode(f))
