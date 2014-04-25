@@ -149,7 +149,7 @@
       <Name>Esri.ArcGISTemplates.CommonControls</Name>
     </ProjectReference>
     <ProjectReference Include="..\Edit_Control\Edit_Control.vbproj">
-      <Project>{4AB3A513-A0F2-478E-BB05-5C00DE65E47A}</Project>
+      <Project>{4ab3a513-a0f2-478e-bb05-5c00de65e47a}</Project>
       <Name>Edit_Control</Name>
     </ProjectReference>
   </ItemGroup>

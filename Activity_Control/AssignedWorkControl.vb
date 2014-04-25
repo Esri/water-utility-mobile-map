@@ -774,7 +774,7 @@ Public Class AssignedWorkControl
                 End If
                 m_EdtClose.Visible = True
 
-                m_EdtClose.setCurrentRecord(CType(CType(sender, ListView).SelectedItems(0), MyListViewItem).FeatureDataRow, Nothing)
+                m_EdtClose.setCurrentRecord(CType(CType(sender, ListView).SelectedItems(0), MyListViewItem).FeatureDataRow, m_EditOp)
                 m_AttInfoDisplay.IdentifyLocation(CType(CType(sender, ListView).SelectedItems(0), MyListViewItem).Geometry)
 
                 'm_EdtCreate.setCurrentRecord(CType(CType(sender, ListView).SelectedItems(0), MyListViewItem).FeatureDataRow, Nothing)

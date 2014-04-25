@@ -190,6 +190,10 @@
       <Project>{49225870-D079-4557-B5FA-B23CE053284E}</Project>
       <Name>Esri.ArcGISTemplates.CommonControls</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Edit_Control\Edit_Control.vbproj">
+      <Project>{4ab3a513-a0f2-478e-bb05-5c00de65e47a}</Project>
+      <Name>Edit_Control</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GroupLayerToggle_Control\GroupLayerToggle_Control.vbproj">
       <Project>{61BBC3E3-B530-41D7-A86E-EAB87CB766B8}</Project>
       <Name>GroupLayerToggle_Control</Name>

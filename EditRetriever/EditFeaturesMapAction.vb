@@ -377,12 +377,10 @@ Public Class EditFeaturesMapAction
 
 
             For Each createLay In GlobalsFunctions.appConfig.EditControlOptions.Layers.Layer
-                If createLay.AllowNew.ToUpper() = "TRUE" Then
-                    If createLay.Name.Length > m_LongString.Length Then
-                        m_LongString = createLay.Name
-                    End If
-                    m_cboCreateLayers.Items.Add(createLay)
+                If createLay.Name.Length > m_LongString.Length Then
+                    m_LongString = createLay.Name
                 End If
+                m_cboCreateLayers.Items.Add(createLay)
 
             Next
 

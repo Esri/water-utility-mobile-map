@@ -8016,6 +8016,7 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
             Me.snapToField = ""
             Me.displayTextField = ""
             Me.editExistingField = "FALSE"
+            Me.allowNewField = "TRUE"
             Me.editOwnerFieldField = ""
             Me.deleteFeatureField = "FALSE"
             Me.fieldField = New List(Of MobileConfigMobileMapConfigEditControlOptionsLayersLayerField)
@@ -8039,6 +8040,7 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
         Private snapToField As String
         Private displayTextField As String
         Private editExistingField As String
+        Private allowNewField As String
         Private editOwnerFieldField As String
         Private editGeoField As String
         Private deleteFeatureField As String
@@ -8178,6 +8180,15 @@ Public Property RequiredBackColor() As String
             End Get
             Set(ByVal value As String)
                 Me.editExistingField = value
+            End Set
+        End Property
+        <System.Xml.Serialization.XmlAttributeAttribute()> _
+        Public Property AllowNew() As String
+            Get
+                Return Me.allowNewField
+            End Get
+            Set(ByVal value As String)
+                Me.allowNewField = value
             End Set
         End Property
 
