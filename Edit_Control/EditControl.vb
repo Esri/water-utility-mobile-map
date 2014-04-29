@@ -4862,7 +4862,25 @@ Public Class EditControl
                 If m_FDR.Table.Columns("YCoord") IsNot Nothing Then
                     m_FDR("YCoord") = m_GPSVal.Latitude
                 End If
+                If m_FDR.Table.Columns("PDOP") IsNot Nothing Then
+                    m_FDR("PDOP") = m_GPSVal.PositionDilutionOfPrecision
+                End If
 
+                If m_FDR.Table.Columns("HDOP") IsNot Nothing Then
+                    m_FDR("HDOP") = m_GPSVal.HorizontalDilutionOfPrecision
+                End If
+
+                If m_FDR.Table.Columns("VDOP") IsNot Nothing Then
+                    m_FDR("VDOP") = m_GPSVal.VerticalDilutionOfPrecision
+                End If
+
+                If m_FDR.Table.Columns("SatCount") IsNot Nothing Then
+                    m_FDR("SatCount") = m_GPSVal.FixSatelliteCount
+                End If
+
+                If m_FDR.Table.Columns("FixStatus") IsNot Nothing Then
+                    m_FDR("FixStatus") = m_GPSVal.FixStatus
+                End If
             End If
             pDT.SaveInFeatureSource()
             pDT.AcceptChanges()
