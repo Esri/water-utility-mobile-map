@@ -258,6 +258,7 @@
     </Content>
     <Content Include="..\Navigation_Control\bookmarks.xml">
       <Link>bookmarks.xml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="AppImages\flow.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -274,14 +275,13 @@
     <Content Include="AppImages\123.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="__Release_MobileMapConfig.xml">
+    <None Include="MobileMapConfig_LeakSurvey.xml" />
+    <None Include="MobileMapConfig_Release.xml">
       <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="__Testing_MobileMapConfig.xml">
+    </None>
+    <None Include="MobileMapConfig_Testing.xml">
       <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
     <Content Include="MobileMapConfig.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
