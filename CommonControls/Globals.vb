@@ -228,7 +228,7 @@ Public Class GlobalsFunctions
                 Return -1
         End Select
     End Function
-    Public Shared Function GetAddressOnline(streetAddress As String, url As String) As gcResponse
+    Public Shared Function GetAddressOnline(streetAddress As String, url As String, searchParam As String) As gcResponse
 
         streetAddress = Trim(streetAddress)
 
@@ -260,13 +260,8 @@ Public Class GlobalsFunctions
 
         data = New StringBuilder()
 
-        'data.Append("Single+Line+Input=" + WebUtility.HtmlEncode(streetAddress))
-
-        'data.Append("&outSR=" + WebUtility.HtmlEncode("4326"))
-        'data.Append("&f=" + WebUtility.HtmlEncode(f))
-        'data.Append("&outFields=" + WebUtility.HtmlEncode(outFields))
-
-        data.Append("SingleLine=" + System.Web.HttpUtility.HtmlEncode(streetAddress))
+   
+        data.Append(searchParam + "=" + System.Web.HttpUtility.HtmlEncode(streetAddress))
 
         data.Append("&outSR=" + System.Web.HttpUtility.HtmlEncode("4326"))
         data.Append("&f=" + System.Web.HttpUtility.HtmlEncode(f))

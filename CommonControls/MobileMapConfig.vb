@@ -13144,11 +13144,11 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
 
         Private textToAddField As String
         Private gCUrlField As String
-
+        Private singleLineFieldNameField As String
         Private Shared sSerializer As System.Xml.Serialization.XmlSerializer
         Public Sub New()
             Me.gCUrlField = ""
-
+            Me.singleLineFieldNameField = "SingleLine"
         End Sub
         <System.Xml.Serialization.XmlAttributeAttribute()> _
         Public Property TextToAdd() As String
@@ -13168,7 +13168,15 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
                 Me.gCUrlField = value
             End Set
         End Property
-
+        <System.Xml.Serialization.XmlAttributeAttribute()> _
+        Public Property singleLineFieldName() As String
+            Get
+                Return Me.singleLineFieldNameField
+            End Get
+            Set(ByVal value As String)
+                Me.singleLineFieldNameField = value
+            End Set
+        End Property
 
         Private Shared ReadOnly Property Serializer() As System.Xml.Serialization.XmlSerializer
             Get

@@ -436,7 +436,7 @@
           <DefaultState>Il</DefaultState>
         </SDC>
         <OnlineServices>
-          <Geocode GCUrl="" />
+          <Geocode GCUrl="" singleLineFieldName="SingleLine"/>
         </OnlineServices>
       </AddressSearch>
       <UIComponents>

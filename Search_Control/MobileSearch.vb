@@ -5522,7 +5522,7 @@ Public Class MobileSearch
 
     Private Sub btnWaypointOnline_Click(sender As System.Object, e As System.EventArgs) Handles btnWaypointOnline.Click
 
-        Dim gcResp As gcResponse = GlobalsFunctions.GetAddressOnline(txtbxOnlineGCAddress.Text & " " & GlobalsFunctions.appConfig.SearchPanel.AddressSearch.OnlineServices.Geocode.TextToAdd, GlobalsFunctions.appConfig.SearchPanel.AddressSearch.OnlineServices.Geocode.GCUrl)
+        Dim gcResp As gcResponse = GlobalsFunctions.GetAddressOnline(txtbxOnlineGCAddress.Text & " " & GlobalsFunctions.appConfig.SearchPanel.AddressSearch.OnlineServices.Geocode.TextToAdd, GlobalsFunctions.appConfig.SearchPanel.AddressSearch.OnlineServices.Geocode.GCUrl, GlobalsFunctions.appConfig.SearchPanel.AddressSearch.OnlineServices.Geocode.singleLineFieldName)
         If gcResp IsNot Nothing Then
 
 
@@ -5540,7 +5540,7 @@ Public Class MobileSearch
     End Sub
     Private Sub btnOnlineGC_Click(sender As System.Object, e As System.EventArgs) Handles btnOnlineGC.Click
 
-        Dim gcResp As gcResponse = GlobalsFunctions.GetAddressOnline(txtbxOnlineGCAddress.Text & " " & GlobalsFunctions.appConfig.SearchPanel.AddressSearch.OnlineServices.Geocode.TextToAdd, GlobalsFunctions.appConfig.SearchPanel.AddressSearch.OnlineServices.Geocode.GCUrl)
+        Dim gcResp As gcResponse = GlobalsFunctions.GetAddressOnline(txtbxOnlineGCAddress.Text & " " & GlobalsFunctions.appConfig.SearchPanel.AddressSearch.OnlineServices.Geocode.TextToAdd, GlobalsFunctions.appConfig.SearchPanel.AddressSearch.OnlineServices.Geocode.GCUrl, GlobalsFunctions.appConfig.SearchPanel.AddressSearch.OnlineServices.Geocode.singleLineFieldName)
         If gcResp IsNot Nothing Then
 
 
