@@ -1132,8 +1132,16 @@ Public Class EditControl
                                     If Value = "<NO_MOD>" Then
 
                                     Else
-                                        CType(cCntrlPnl, NumericUpDown).Value = CDec(Value)
+                                        Try
+                                            If GlobalsFunctions.IsDouble(Value) Then
 
+                                                CType(cCntrlPnl, NumericUpDown).Value = CDec(Value)
+                                            End If
+
+                                        Catch ex As Exception
+
+                                        End Try
+                                    
                                     End If
                                     bValSet = True
 

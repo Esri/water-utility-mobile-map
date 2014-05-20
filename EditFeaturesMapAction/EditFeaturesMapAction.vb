@@ -15,9 +15,9 @@
 
 
 
-Imports ESRI.ArcGIS.Mobile
+Imports Esri.ArcGIS.Mobile
 Imports Esri.ArcGIS.Mobile.FeatureCaching
-Imports ESRI.ArcGIS.Mobile.Geometries
+Imports Esri.ArcGIS.Mobile.Geometries
 Imports System.Windows.Forms
 Imports System
 Imports System.Drawing
@@ -89,7 +89,7 @@ Public Class EditFeaturesMapAction
     Protected Overrides Sub OnSetMap(ByVal map As Esri.ArcGIS.Mobile.WinForms.Map)
         MyBase.OnSetMap(map)
         '  m_Map = map
-        
+
     End Sub
 #Region "Public Methods"
 
@@ -552,6 +552,8 @@ Public Class EditFeaturesMapAction
         Try
             'Convert the stoke to a mobile geo
             Dim pGeo As Geometry = Nothing
+            If m_DT Is Nothing Then Return
+
             If m_DT.FeatureSource.GeometryType = GeometryType.Polygon Then
 
                 'For Multipart
@@ -995,37 +997,44 @@ Public Class EditFeaturesMapAction
             Return m_GPSVal
         End Get
         Set(ByVal value As GPSLocationDetails)
-            m_GPSVal = value
-            If (m_GPSVal IsNot Nothing) Then
-                '    MsgBox("")
-                Dim newCoord As Coordinate
-                If m_GPSVal.SpatialReference Is Nothing Then
-                    newCoord = Map.SpatialReference.FromGps(m_GPSVal.Coordinate)
+            Try
 
-                ElseIf m_GPSVal.SpatialReference.FactoryCode <> Map.SpatialReference.FactoryCode Then
+                m_GPSVal = value
+                If (m_GPSVal IsNot Nothing) Then
+                    '    MsgBox("")
+                    Dim newCoord As Coordinate
+                    If m_GPSVal.SpatialReference Is Nothing Then
+                        newCoord = Map.SpatialReference.FromGps(m_GPSVal.Coordinate)
 
-                    newCoord = Map.SpatialReference.FromGps(m_GPSVal.Coordinate)
+                    ElseIf m_GPSVal.SpatialReference.FactoryCode <> Map.SpatialReference.FactoryCode Then
 
-                    'Me.Geometry = New Esri.ArcGIS.Mobile.Geometries.Point(m_Map.SpatialReference.FromDegreeMinuteSecond(m_GPSVal.LongitudeToDegreeMinutesSeconds), m_Map.SpatialReference.FromDegreeMinuteSecond(m_GPSVal.LatitudeToDegreeMinutesSeconds))
+                        newCoord = Map.SpatialReference.FromGps(m_GPSVal.Coordinate)
 
-                    'Me.Geometry = m_GPSVal()
-                Else
-                    newCoord = m_GPSVal.Coordinate
+                        'Me.Geometry = New Esri.ArcGIS.Mobile.Geometries.Point(m_Map.SpatialReference.FromDegreeMinuteSecond(m_GPSVal.LongitudeToDegreeMinutesSeconds), m_Map.SpatialReference.FromDegreeMinuteSecond(m_GPSVal.LatitudeToDegreeMinutesSeconds))
+
+                        'Me.Geometry = m_GPSVal()
+                    Else
+                        newCoord = m_GPSVal.Coordinate
 
 
 
+
+                    End If
+
+                    addCoordToGeo(newCoord)
+
+
+                    UpdateGeoWithCoordinate()
+
+                    m_EditPanel.EnableGPS()
+
+                    Map.Invalidate()
 
                 End If
+            Catch ex As Exception
 
-                addCoordToGeo(newCoord)
+            End Try
 
-
-                UpdateGeoWithCoordinate()
-                m_EditPanel.EnableGPS()
-
-                Map.Invalidate()
-
-            End If
         End Set
     End Property
     Private Sub addCoordToGeo(ByVal newCoord As Coordinate)
@@ -1121,7 +1130,7 @@ Public Class EditFeaturesMapAction
 
     End Sub
 
-    Private Sub m_EditPanel_getWorkorder() Handles m_EditPanel.getWorkorder
+    Private Sub m_EditPanel_getWorkorder() Handles m_EditPanel.GetWorkorder
         RaiseEvent GetWorkorder()
         m_EditPanel.currentWO = currentWO
         m_EditPanel.currentCrew = currentCrew
