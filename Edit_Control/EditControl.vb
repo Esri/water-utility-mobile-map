@@ -1141,7 +1141,7 @@ Public Class EditControl
                                         Catch ex As Exception
 
                                         End Try
-                                    
+
                                     End If
                                     bValSet = True
 
@@ -1260,7 +1260,7 @@ Public Class EditControl
         Catch
         Finally
         End Try
-       
+
         If pushChangeToForm Then
             Dim bSub As Boolean = False
 
@@ -2999,7 +2999,7 @@ Public Class EditControl
                             Dim pDT As DataTable
 
                             pDT = pCV.DefaultView.ToTable()
-                         
+
 
                             Dim dr As DataRow
                             Dim intSubIdx As Integer = -1
@@ -3016,7 +3016,7 @@ Public Class EditControl
                             Next
                             pCBox.SelectedIndex = intSubIdx
 
-                          
+
 
 
                             'pCBox.DisplayMember = "Value"
@@ -3128,7 +3128,7 @@ Public Class EditControl
                             'End Try
 
                         End If
-                End If
+                    End If
 
                 Else
                     If pfl.HasSubtypes Then
@@ -4537,249 +4537,254 @@ Public Class EditControl
                         If TypeOf cCntrl Is Panel Then
 
                             For Each cCntrlPnl As Control In cCntrl.Controls
-                                Dim strFld As String
-                                Dim pDC As DataColumn
-                                If TypeOf cCntrlPnl Is CustomPanel Then
-                                    'RadioButtons
+                                If cCntrlPnl.Visible Then
 
-                                    Dim pCsPn As CustomPanel = CType(cCntrlPnl, CustomPanel)
-                                    strFld = pCsPn.Tag.ToString
-                                    If strFld.IndexOf("|") > 0 Then
-                                        strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
-                                    End If
-                                    For Each rdCn As Control In pCsPn.Controls
-                                        If TypeOf rdCn Is RadioButton Then
-                                            If CType(rdCn, RadioButton).Checked Then
-                                                m_FDR.Item(strFld) = CType(rdCn, RadioButton).Tag
-                                                Exit For
 
-                                            End If
+                                    Dim strFld As String
+                                    Dim pDC As DataColumn
+                                    If TypeOf cCntrlPnl Is CustomPanel Then
+                                        'RadioButtons
+
+                                        Dim pCsPn As CustomPanel = CType(cCntrlPnl, CustomPanel)
+                                        strFld = pCsPn.Tag.ToString
+                                        If strFld.IndexOf("|") > 0 Then
+                                            strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
                                         End If
-                                    Next
+                                        For Each rdCn As Control In pCsPn.Controls
+                                            If TypeOf rdCn Is RadioButton Then
+                                                If CType(rdCn, RadioButton).Checked Then
+                                                    m_FDR.Item(strFld) = CType(rdCn, RadioButton).Tag
+                                                    Exit For
 
-                                ElseIf TypeOf cCntrlPnl Is TextBox Then
-                                    'TextBoxes
-                                    strFld = CType(cCntrlPnl, TextBox).Tag.ToString
-                                    If strFld.IndexOf("|") > 0 Then
-                                        strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
-                                    End If
-
-                                    pDC = pDT.Columns(strFld)
-
-                                    'Check input on the screen
-                                    If CType(cCntrlPnl, TextBox).Text Is DBNull.Value Then
-
-                                        If m_FDR.Item(strFld) Is DBNull.Value Then
-                                        ElseIf m_FDR.Item(strFld).ToString = "" Then
-                                        Else
-
-                                            If pDC.DataType Is System.Type.GetType("System.String") Then
-                                                m_FDR.Item(strFld) = String.Empty
-                                            Else
-                                                If pDC.AllowDBNull = False Then
-                                                    'MsgBox("A null value is entered were it is not allowed, exiting")
-                                                    lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, pDC.Caption, "Null Not Allowed"))
-                                                    Return False
                                                 End If
-                                                m_FDR.Item(strFld) = DBNull.Value '0
                                             End If
+                                        Next
 
+                                    ElseIf TypeOf cCntrlPnl Is TextBox Then
+                                        'TextBoxes
+                                        strFld = CType(cCntrlPnl, TextBox).Tag.ToString
+                                        If strFld.IndexOf("|") > 0 Then
+                                            strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
                                         End If
-                                    ElseIf CType(cCntrlPnl, TextBox).Text = "" Then
-                                        If m_FDR.Item(strFld) Is DBNull.Value Then
-                                        ElseIf m_FDR.Item(strFld).ToString = "" Then
-                                        Else
 
-                                            If pDC.DataType Is System.Type.GetType("System.String") Then
-                                                m_FDR.Item(strFld) = String.Empty
+                                        pDC = pDT.Columns(strFld)
+
+                                        'Check input on the screen
+                                        If CType(cCntrlPnl, TextBox).Text Is DBNull.Value Then
+
+                                            If m_FDR.Item(strFld) Is DBNull.Value Then
+                                            ElseIf m_FDR.Item(strFld).ToString = "" Then
                                             Else
-                                                If pDC.AllowDBNull = False Then
-                                                    lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, pDC.Caption, "Null Not Allowed"))
-                                                    'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
-                                                    Return False
+
+                                                If pDC.DataType Is System.Type.GetType("System.String") Then
+                                                    m_FDR.Item(strFld) = String.Empty
+                                                Else
+                                                    If pDC.AllowDBNull = False Then
+                                                        'MsgBox("A null value is entered were it is not allowed, exiting")
+                                                        lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, pDC.Caption, "Null Not Allowed"))
+                                                        Return False
+                                                    End If
+                                                    m_FDR.Item(strFld) = DBNull.Value '0
                                                 End If
-                                                m_FDR.Item(strFld) = DBNull.Value '0
+
                                             End If
+                                        ElseIf CType(cCntrlPnl, TextBox).Text = "" Then
+                                            If m_FDR.Item(strFld) Is DBNull.Value Then
+                                            ElseIf m_FDR.Item(strFld).ToString = "" Then
+                                            Else
 
-                                        End If
-                                    ElseIf m_FDR.Item(strFld).ToString = CType(cCntrlPnl, TextBox).Text Then
-                                    Else
-                                        If pDC.DataType Is System.Type.GetType("System.String") Then
-                                            m_FDR.Item(strFld) = CType(cCntrlPnl, TextBox).Text
-                                        ElseIf pDC.DataType Is System.Type.GetType("System.Byte[]") Then
+                                                If pDC.DataType Is System.Type.GetType("System.String") Then
+                                                    m_FDR.Item(strFld) = String.Empty
+                                                Else
+                                                    If pDC.AllowDBNull = False Then
+                                                        lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, pDC.Caption, "Null Not Allowed"))
+                                                        'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
+                                                        Return False
+                                                    End If
+                                                    m_FDR.Item(strFld) = DBNull.Value '0
+                                                End If
 
-
-                                            Try
-
-
-                                                m_FDR.Item(strFld) = ConvertImageToByteArray(New Bitmap(CType(cCntrlPnl, TextBox).Text), GetImageFormat(CType(cCntrlPnl, TextBox).Text))
-                                            Catch ex As Exception
-                                                Dim st As New StackTrace
-                                                MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
-                                                st = Nothing
-
-
-                                            End Try
-                                        ElseIf pDC.DataType.FullName = "System.Drawing.Bitmap" Then
-
-
-                                            Try
-
-
-                                                m_FDR.Item(strFld) = New Bitmap(CType(cCntrlPnl, TextBox).Text)
-
-                                            Catch ex As Exception
-                                                Dim st As New StackTrace
-                                                MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
-                                                st = Nothing
-
-
-                                            End Try
+                                            End If
+                                        ElseIf m_FDR.Item(strFld).ToString = CType(cCntrlPnl, TextBox).Text Then
                                         Else
-                                            If IsNumeric(CType(cCntrlPnl, TextBox).Text) Then
+                                            If pDC.DataType Is System.Type.GetType("System.String") Then
                                                 m_FDR.Item(strFld) = CType(cCntrlPnl, TextBox).Text
+                                            ElseIf pDC.DataType Is System.Type.GetType("System.Byte[]") Then
+
+
+                                                Try
+
+
+                                                    m_FDR.Item(strFld) = ConvertImageToByteArray(New Bitmap(CType(cCntrlPnl, TextBox).Text), GetImageFormat(CType(cCntrlPnl, TextBox).Text))
+                                                Catch ex As Exception
+                                                    Dim st As New StackTrace
+                                                    MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+                                                    st = Nothing
+
+
+                                                End Try
+                                            ElseIf pDC.DataType.FullName = "System.Drawing.Bitmap" Then
+
+
+                                                Try
+
+
+                                                    m_FDR.Item(strFld) = New Bitmap(CType(cCntrlPnl, TextBox).Text)
+
+                                                Catch ex As Exception
+                                                    Dim st As New StackTrace
+                                                    MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+                                                    st = Nothing
+
+
+                                                End Try
                                             Else
-                                                'MsgBox("Only enter Numeric values" & vbCrLf & "Field: " & pDC.ColumnName)
-                                                lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, pDC.Caption, "Value is not the correct type"))
-                                                Return False
+                                                If IsNumeric(CType(cCntrlPnl, TextBox).Text) Then
+                                                    m_FDR.Item(strFld) = CType(cCntrlPnl, TextBox).Text
+                                                Else
+                                                    'MsgBox("Only enter Numeric values" & vbCrLf & "Field: " & pDC.ColumnName)
+                                                    lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, pDC.Caption, "Value is not the correct type"))
+                                                    Return False
+                                                End If
+
                                             End If
+
 
                                         End If
 
-
-                                    End If
-
-                                ElseIf TypeOf cCntrlPnl Is ComboBox Then
-                                    strFld = CType(cCntrlPnl, ComboBox).Tag.ToString
-                                    If strFld.IndexOf("|") > 0 Then
-                                        strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
-                                    End If
-                                    pDC = pDT.Columns(strFld)
-                                    If CType(cCntrlPnl, ComboBox).SelectedItem Is DBNull.Value And CType(cCntrlPnl, ComboBox).SelectedValue Is DBNull.Value Then
-                                        If m_FDR.Item(strFld) Is DBNull.Value Then
-                                            If pDC.AllowDBNull = False Then
-                                                'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
-                                                lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, pDC.Caption, "Null Not Allowed"))
-                                                Return False
-                                            End If
-                                        Else
-
-                                            If pDC.AllowDBNull = False Then
-                                                'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
-                                                lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, pDC.Caption, "Null Not Allowed"))
-                                                Return False
-                                            End If
-                                            If pDT.Columns(CType(cCntrlPnl, ComboBox).Tag.ToString).DataType Is System.Type.GetType("System.String") Then
-                                                m_FDR.Item(strFld) = DBNull.Value 'String.Empty
+                                    ElseIf TypeOf cCntrlPnl Is ComboBox Then
+                                        strFld = CType(cCntrlPnl, ComboBox).Tag.ToString
+                                        If strFld.IndexOf("|") > 0 Then
+                                            strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
+                                        End If
+                                        pDC = pDT.Columns(strFld)
+                                        If CType(cCntrlPnl, ComboBox).SelectedItem Is DBNull.Value And CType(cCntrlPnl, ComboBox).SelectedValue Is DBNull.Value Then
+                                            If m_FDR.Item(strFld) Is DBNull.Value Then
+                                                If pDC.AllowDBNull = False Then
+                                                    'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
+                                                    lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, pDC.Caption, "Null Not Allowed"))
+                                                    Return False
+                                                End If
                                             Else
 
-                                                m_FDR.Item(strFld) = DBNull.Value '0
-                                            End If
+                                                If pDC.AllowDBNull = False Then
+                                                    'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
+                                                    lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, pDC.Caption, "Null Not Allowed"))
+                                                    Return False
+                                                End If
+                                                If pDT.Columns(CType(cCntrlPnl, ComboBox).Tag.ToString).DataType Is System.Type.GetType("System.String") Then
+                                                    m_FDR.Item(strFld) = DBNull.Value 'String.Empty
+                                                Else
 
-                                        End If
-                                    ElseIf CType(cCntrlPnl, ComboBox).SelectedItem Is Nothing And CType(cCntrlPnl, ComboBox).SelectedValue Is Nothing Then
-                                        If m_FDR.Item(strFld) Is DBNull.Value Then
-                                        ElseIf m_FDR.Item(strFld).ToString = "" Then
-                                        Else
-
-                                            If pDC.AllowDBNull = False Then
-                                                'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
-                                                lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, pDC.Caption, "Null Not Allowed"))
-                                                Return False
+                                                    m_FDR.Item(strFld) = DBNull.Value '0
+                                                End If
 
                                             End If
-                                            If pDT.Columns(CType(cCntrlPnl, ComboBox).Tag.ToString).DataType Is System.Type.GetType("System.String") Then
-                                                m_FDR.Item(strFld) = CType(pDT.Columns.Item(CType(cCntrlPnl, ComboBox).Tag.ToString), DataColumn).DefaultValue
+                                        ElseIf CType(cCntrlPnl, ComboBox).SelectedItem Is Nothing And CType(cCntrlPnl, ComboBox).SelectedValue Is Nothing Then
+                                            If m_FDR.Item(strFld) Is DBNull.Value Then
+                                            ElseIf m_FDR.Item(strFld).ToString = "" Then
                                             Else
 
-                                                m_FDR.Item(strFld) = CType(pDT.Columns.Item(CType(cCntrlPnl, ComboBox).Tag.ToString), DataColumn).DefaultValue
+                                                If pDC.AllowDBNull = False Then
+                                                    'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
+                                                    lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, pDC.Caption, "Null Not Allowed"))
+                                                    Return False
+
+                                                End If
+                                                If pDT.Columns(CType(cCntrlPnl, ComboBox).Tag.ToString).DataType Is System.Type.GetType("System.String") Then
+                                                    m_FDR.Item(strFld) = CType(pDT.Columns.Item(CType(cCntrlPnl, ComboBox).Tag.ToString), DataColumn).DefaultValue
+                                                Else
+
+                                                    m_FDR.Item(strFld) = CType(pDT.Columns.Item(CType(cCntrlPnl, ComboBox).Tag.ToString), DataColumn).DefaultValue
+                                                End If
+
                                             End If
+                                        ElseIf CType(cCntrlPnl, ComboBox).SelectedValue Is Nothing Or CType(cCntrlPnl, ComboBox).SelectedValue Is DBNull.Value Then
 
-                                        End If
-                                    ElseIf CType(cCntrlPnl, ComboBox).SelectedValue Is Nothing Or CType(cCntrlPnl, ComboBox).SelectedValue Is DBNull.Value Then
-
-                                        m_FDR.Item(strFld) = CType(cCntrlPnl, ComboBox).SelectedItem.Value
-
-                                    Else
-
-
-                                        m_FDR.Item(strFld) = CType(cCntrlPnl, ComboBox).SelectedValue
-
-
-
-                                    End If
-
-                                ElseIf TypeOf cCntrlPnl Is DateTimePicker Then
-                                    strFld = CType(cCntrlPnl, DateTimePicker).Tag.ToString
-                                    If strFld.IndexOf("|") > 0 Then
-                                        strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
-                                    End If
-
-                                    pDC = pDT.Columns(strFld)
-                                    If CType(cCntrlPnl, DateTimePicker).Checked = False Then
-                                        If m_FDR.Item(strFld) Is DBNull.Value Then
-                                        ElseIf m_FDR.Item(strFld).ToString = "" Then
-                                        Else
-
-                                            If pDC.AllowDBNull = False Then
-                                                'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
-                                                lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, pDC.Caption, "Null Not Allowed"))
-                                                Return False
-                                            End If
-                                            m_FDR.Item(strFld) = DBNull.Value
-                                        End If
-                                    ElseIf m_FDR.Item(strFld).ToString = CType(cCntrlPnl, DateTimePicker).Value.ToString Then
-                                    Else
-                                        m_FDR.FeatureSource.Columns(strFld).ReadOnly = False
-
-                                        m_FDR.Item(strFld) = CType(cCntrlPnl, DateTimePicker).Value
-                                    End If
-
-
-
-
-                                ElseIf TypeOf cCntrlPnl Is NumericUpDown Then
-                                    strFld = CType(cCntrlPnl, NumericUpDown).Tag.ToString
-                                    If strFld.IndexOf("|") > 0 Then
-                                        strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
-                                    End If
-                                    pDC = pDT.Columns(strFld)
-
-                                    If CType(cCntrlPnl, NumericUpDown).ReadOnly = True Then
-                                        If m_FDR.Item(strFld) Is DBNull.Value Then
-                                        ElseIf m_FDR.Item(strFld).ToString = "" Then
-                                        Else
-
-                                            If pDC.AllowDBNull = False Then
-                                                'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
-                                                lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, pDC.Caption, "Null Not Allowed"))
-                                                Return False
-                                            End If
-                                            m_FDR.Item(strFld) = DBNull.Value
-                                        End If
-                                    ElseIf m_FDR.Item(strFld).ToString = CType(cCntrlPnl, NumericUpDown).Value.ToString Then
-                                    Else
-                                        If m_FDR.Table.Columns(strFld).DataType Is System.Type.GetType("System.String") Then
-                                            m_FDR.Item(strFld) = CType(cCntrlPnl, NumericUpDown).Value.ToString
-                                        ElseIf m_FDR.Table.Columns(strFld).DataType Is System.Type.GetType("System.Double") Then
-                                            m_FDR.Item(strFld) = CDbl(CType(cCntrlPnl, NumericUpDown).Value)
-                                        ElseIf m_FDR.Table.Columns(strFld).DataType Is System.Type.GetType("System.Single") Then
-
-                                            m_FDR.Item(strFld) = CSng(CType(cCntrlPnl, NumericUpDown).Value)
+                                            m_FDR.Item(strFld) = CType(cCntrlPnl, ComboBox).SelectedItem.Value
 
                                         Else
 
-                                            m_FDR.Item(strFld) = CType(cCntrlPnl, NumericUpDown).Value
+
+                                            m_FDR.Item(strFld) = CType(cCntrlPnl, ComboBox).SelectedValue
+
+
+
+                                        End If
+
+                                    ElseIf TypeOf cCntrlPnl Is DateTimePicker Then
+                                        strFld = CType(cCntrlPnl, DateTimePicker).Tag.ToString
+                                        If strFld.IndexOf("|") > 0 Then
+                                            strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
+                                        End If
+
+                                        pDC = pDT.Columns(strFld)
+                                        If CType(cCntrlPnl, DateTimePicker).Checked = False Then
+                                            If m_FDR.Item(strFld) Is DBNull.Value Then
+                                            ElseIf m_FDR.Item(strFld).ToString = "" Then
+                                            Else
+
+                                                If pDC.AllowDBNull = False Then
+                                                    'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
+                                                    lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, pDC.Caption, "Null Not Allowed"))
+                                                    Return False
+                                                End If
+                                                m_FDR.Item(strFld) = DBNull.Value
+                                            End If
+                                        ElseIf m_FDR.Item(strFld).ToString = CType(cCntrlPnl, DateTimePicker).Value.ToString Then
+                                        Else
+                                            m_FDR.FeatureSource.Columns(strFld).ReadOnly = False
+
+                                            m_FDR.Item(strFld) = CType(cCntrlPnl, DateTimePicker).Value
+                                        End If
+
+
+
+
+                                    ElseIf TypeOf cCntrlPnl Is NumericUpDown Then
+                                        strFld = CType(cCntrlPnl, NumericUpDown).Tag.ToString
+                                        If strFld.IndexOf("|") > 0 Then
+                                            strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
+                                        End If
+                                        pDC = pDT.Columns(strFld)
+
+                                        If CType(cCntrlPnl, NumericUpDown).ReadOnly = True Then
+                                            If m_FDR.Item(strFld) Is DBNull.Value Then
+                                            ElseIf m_FDR.Item(strFld).ToString = "" Then
+                                            Else
+
+                                                If pDC.AllowDBNull = False Then
+                                                    'MsgBox("A null value is entered were it is not allowed, exiting" & vbCrLf & "Field: " & pDC.ColumnName)
+                                                    lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, pDC.Caption, "Null Not Allowed"))
+                                                    Return False
+                                                End If
+                                                m_FDR.Item(strFld) = DBNull.Value
+                                            End If
+                                        ElseIf m_FDR.Item(strFld).ToString = CType(cCntrlPnl, NumericUpDown).Value.ToString Then
+                                        Else
+                                            If m_FDR.Table.Columns(strFld).DataType Is System.Type.GetType("System.String") Then
+                                                m_FDR.Item(strFld) = CType(cCntrlPnl, NumericUpDown).Value.ToString
+                                            ElseIf m_FDR.Table.Columns(strFld).DataType Is System.Type.GetType("System.Double") Then
+                                                m_FDR.Item(strFld) = CDbl(CType(cCntrlPnl, NumericUpDown).Value)
+                                            ElseIf m_FDR.Table.Columns(strFld).DataType Is System.Type.GetType("System.Single") Then
+
+                                                m_FDR.Item(strFld) = CSng(CType(cCntrlPnl, NumericUpDown).Value)
+
+                                            Else
+
+                                                m_FDR.Item(strFld) = CType(cCntrlPnl, NumericUpDown).Value
+
+                                            End If
+
 
                                         End If
 
 
                                     End If
-
-
+                                    pDC = Nothing
                                 End If
-                                pDC = Nothing
                             Next
+
                         End If
                     Next
                 End If
@@ -5754,8 +5759,8 @@ Public Class EditControl
                 End If
             ElseIf (TypeOf (sender) Is ComboBox) Then
                 If m_FDR IsNot Nothing Then
-                  
-                        Dim strTagInfo() As String = sender.tag.ToString.Split("|")
+
+                    Dim strTagInfo() As String = sender.tag.ToString.Split("|")
 
 
 

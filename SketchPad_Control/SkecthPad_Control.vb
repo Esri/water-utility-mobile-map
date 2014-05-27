@@ -113,7 +113,8 @@ Public Class MobileSkecthPad
                     Case DrawTypes.Text
                         'Add Text.
 
-                        Dim pStr As String = appConfig.SketchPanel.UIComponents.TextPromptText
+                        Dim pStr As String = InputBox(appConfig.SketchPanel.UIComponents.TextPromptText)
+
                         Dim gr As Graphics = m_picCanvas.CreateGraphics()
                         Dim pSz As SizeF = gr.MeasureString(pStr, New Font("Veranda", 10, FontStyle.Bold))
 

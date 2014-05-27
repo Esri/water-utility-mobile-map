@@ -543,6 +543,10 @@ Public Class AssignedWorkControl
                     End If
                     nvBtn.Caption = woFilt.Label & ": " & m_WOFSwD.FeatureSource.GetFeatureCount(pQF)
                     ' nvBtn.PerformClick()
+                Else
+                    nvBtn.Caption = woFilt.Label
+                   
+                    clearDG(nvBtn.RelatedControl)
 
                 End If
 
@@ -719,6 +723,52 @@ Public Class AssignedWorkControl
 
 
 
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+    Private Sub clearDG(ByVal control As Object)
+        Try
+            If TypeOf (control) Is DataGridView Then
+                Dim DGView As DataGridView = control
+                DGView.AllowUserToAddRows = False
+                DGView.AllowUserToDeleteRows = False
+                DGView.AllowUserToOrderColumns = False
+                DGView.AllowUserToResizeRows = False
+                DGView.AllowUserToResizeColumns = False
+                DGView.Font = New Font("Tahoma", 12, FontStyle.Bold)
+                'DGView.GridColor = Color.Transparent
+                DGView.BackgroundColor = Color.White
+                DGView.ColumnHeadersVisible = False
+                DGView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
+                DGView.EditMode = DataGridViewEditMode.EditProgrammatically
+                DGView.AutoSize = True
+                DGView.ColumnHeadersVisible = False
+                DGView.MultiSelect = False
+                DGView.ReadOnly = True
+                DGView.RowHeadersVisible = False
+                DGView.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+
+
+                DGView.DataSource = Nothing
+                DGView.AutoResizeColumns(System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader)
+
+                DGView.AutoResizeRows(System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells)
+                If DGView.Columns.Count > 0 Then
+                    DGView.Columns(DGView.Columns.Count - 1).Visible = False
+                End If
+
+
+
+
+            ElseIf TypeOf (control) Is ListView Then
+
+                Dim LstView As ListView = control
+
+                LstView.Items.Clear()
+
+            End If
         Catch ex As Exception
 
         End Try
@@ -1091,7 +1141,8 @@ Public Class AssignedWorkControl
         RaiseEvent RaiseMessage(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.SavedMessage)
         LoadWorkOrders()
         Call btnViewAllWork_Click(Nothing, Nothing)
-
+        m_OutlookNavigatePane.SelectedButton.PerformClick()
+        
     End Sub
 
     Private Sub m_EdtCreate_RecordSaved(LayerName As String, pGeo As Esri.ArcGIS.Mobile.Geometries.Geometry, OID As Integer) Handles m_EdtCreate.RecordSaved

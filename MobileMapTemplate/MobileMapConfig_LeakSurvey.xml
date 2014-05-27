@@ -8,7 +8,7 @@
       <FontSize>10</FontSize>
       <SideBarControl>False</SideBarControl>
       <CopyrightText>Esri, Inc.</CopyrightText>
-      <VersionInfo>Version: 10.2.0.4, 6-19-2014</VersionInfo>
+      <VersionInfo>Version: 10.2.0.2, 1-17-2014</VersionInfo>
       <ZoomExtent>600</ZoomExtent>
       <MultiLineThreshold Threshold="125" SizeFactor="3" />
       <MapExport visible="true" mailClient="Outlook" textToInclude="" />
@@ -77,11 +77,11 @@
     </MeasureOptions>
     <LayerOptions>
       <MobileServices ymax="" LimitQuery="" ymin="" xmin="" xmax="">
-        <MobileService StorageLocation="" UserName="" Password="" Domain="">http://utilsolutions:6080/arcgis/services/Gas/LeakSurvey/MapServer/MobileServer</MobileService>
+        <MobileService StorageLocation="" UserName="" Password="" Domain="">http://localhost:6080/arcgis/services/LeakSurvey/MapServer/MobileServer</MobileService>
       </MobileServices>
       <CachedMaps>
-        <CachedMap DisplayName="" />
-        <CachedMap DisplayName="" />
+        <CachedMap DisplayName="DayMap">Mobile Day Map</CachedMap>
+        <CachedMap DisplayName="NightMap">Mobile Night Map</CachedMap>
       </CachedMaps>
       <WebMaps>
         <WebMap DisplayName="Streets">http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer</WebMap>
@@ -285,7 +285,7 @@
           <Field Name="CreationUser" OnNew="User" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
           <Field Name="DateReported" OnNew="Date" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
         </Layer>
-        <Layer AllowNew="TRUE" EditExisting="false" DisplayText="Gas Leak Inspections" EditOwnerField="" SyncOnSave="0" EditGeo="false" DeleteFeature="false" RequiredBoxColor="" RequiredForeColor="" RequiredBackColor="" Name="Gas Leak Inspection" SnapTo="Gas Leaks" SketchColor="#FFFF0000" SketchMode="Tap">
+        <Layer AllowNew="TRUE" EditExisting="false" DisplayText="Leak Inspections" EditOwnerField="" SyncOnSave="0" EditGeo="false" DeleteFeature="false" RequiredBoxColor="" RequiredForeColor="" RequiredBackColor="" Name="Gas Leak Inspection" SnapTo="Gas Leaks" SketchColor="#FFFF0000" SketchMode="Tap">
           <Field Name="GasLeaksID" OnNew="Intersect" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="Gas Leaks" IntersectField="GasLeakID" />
           <Field Name="SurfaceType" OnNew="Intersect" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="Gas Leaks" IntersectField="SurfaceType" />
           <Field Name="DateInspected" OnNew="Date" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
@@ -436,7 +436,7 @@
           <DefaultState>Il</DefaultState>
         </SDC>
         <OnlineServices>
-          <Geocode GCUrl="" singleLineFieldName="SingleLine"/>
+          <Geocode GCUrl="" />
         </OnlineServices>
       </AddressSearch>
       <UIComponents>

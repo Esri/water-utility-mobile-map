@@ -1580,7 +1580,9 @@ namespace MobileControls
 
             // Zaten seçili ise 
             // If already selected return
+            this.SetCaptionText(e.NavigateBarButton);
 
+            
             if (this.SelectedButton != null &&
                 this.SelectedButton.Equals(e.NavigateBarButton))
                 return;
