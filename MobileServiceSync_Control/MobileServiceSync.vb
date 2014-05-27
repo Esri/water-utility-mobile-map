@@ -643,6 +643,23 @@ Public Class MobileServiceSync
         End If
     End Sub
 
+    Private Sub m_Map_DataSynchronizationFinished(sender As Object, e As EventArgs) Handles m_Map.DataSynchronizationFinished
+
+        If m_MobileSyncAgent.State = Synchronization.SyncState.Ready Then
+            'Hide the indicator
+            RaiseEvent showIndicator(False)
+            '  m_SyncIndicator.Visible = False
+        End If
+    End Sub
+
+    Private Sub m_Map_DataSynchronizationStarted(sender As Object, e As EventArgs) Handles m_Map.DataSynchronizationStarted
+        If m_SyncToolsInit = False Then Return
+        If m_ShowSyncIndicator Then
+            RaiseEvent showIndicator(True)
+
+        End If
+    End Sub
+
     'Private Sub m_MobileSyncAgent_ProgressChanged(ByVal sender As Object, ByVal e As Esri.ArcGIS.Mobile.FeatureCaching.MobileCacheSyncAgentProgressEventArgs) Handles m_MobileSyncAgent.ProgressChanged
 
     '    Try
@@ -2853,7 +2870,7 @@ Public Class MobileServiceSync
                         Dim pTileMapLay As Esri.ArcGIS.Mobile.WebServices.ArcGISServices.MapServices.TileServiceMapLayer = CType(mapLay, Esri.ArcGIS.Mobile.WebServices.ArcGISServices.MapServices.TileServiceMapLayer)
                         If pTileMapLay.Visible Then
                             pTileMapLay.Open()
-                           
+
                         End If
                         If pTileMapLay.SpatialReference IsNot Nothing Then
                             If m_Map.SpatialReference.CoordinateSystemString <> pTileMapLay.SpatialReference.CoordinateSystemString Then
