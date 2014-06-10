@@ -248,6 +248,7 @@
     <None Include="Images\Square - Green.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="AppImages\loader.gif" />
     <Content Include="C:\Program Files %28x86%29\ArcGIS SDKs\Windows Mobile\bin\ESRIMobileCore.dll">
       <Link>ESRIMobileCore.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -275,7 +276,9 @@
     <Content Include="AppImages\123.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="MobileMapConfig_LeakSurvey.xml" />
+    <None Include="MobileMapConfig_LeakSurvey.xml">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="MobileMapConfig_Release.xml">
       <SubType>Designer</SubType>
     </None>

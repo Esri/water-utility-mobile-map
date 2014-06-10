@@ -26,7 +26,7 @@
     <NavigationOptions>
       <GPS>
         <Visible>True</Visible>
-        <COMFile>file.txt</COMFile>
+        <COMFile>COM7</COMFile>
         <GPSBaud>4800</GPSBaud>
         <GPSTrackLog>True</GPSTrackLog>
         <GPSLogLayer>GPSLog</GPSLogLayer>
@@ -42,6 +42,9 @@
           <StatusBarMessage>Navigate to an Asset</StatusBarMessage>
           <DisplayUnits>Imperial</DisplayUnits>
         </WaypointControl>
+        <GPSLogLayer_UserNameField>UserID</GPSLogLayer_UserNameField>
+        <GPSLogLayer_DateField>TimeStamp</GPSLogLayer_DateField>
+        <GPSLogLayer_TruncateAfterPost>True</GPSLogLayer_TruncateAfterPost>
       </GPS>
       <ZoomPan>
         <FixZoom>True</FixZoom>

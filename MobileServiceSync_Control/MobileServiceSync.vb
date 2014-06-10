@@ -168,6 +168,7 @@ Public Class MobileServiceSync
     End Sub
 
     Public Function refreshBaseMapLayer(ByVal layer As Esri.ArcGIS.Mobile.MapLayer) As Boolean
+        Dim lay As Esri.ArcGIS.Mobile.WebServices.ArcGISServices.MapServices.TileServiceMapLayer = layer
 
     End Function
 
@@ -653,6 +654,7 @@ Public Class MobileServiceSync
     End Sub
 
     Private Sub m_Map_DataSynchronizationStarted(sender As Object, e As EventArgs) Handles m_Map.DataSynchronizationStarted
+
         If m_SyncToolsInit = False Then Return
         If m_ShowSyncIndicator Then
             RaiseEvent showIndicator(True)
@@ -1673,16 +1675,19 @@ Public Class MobileServiceSync
                 'Only for feature layers
 
 
+                If pFS.Name = GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSLogLayer Then
+                    'pass
+                Else
 
-                Select Case Add
-                    Case True
-                        AddHandler pFS.DataChanged, AddressOf layer_DataChanged
+                    Select Case Add
+                        Case True
+                            AddHandler pFS.DataChanged, AddressOf layer_DataChanged
 
-                    Case Else
-                        RemoveHandler pFS.DataChanged, AddressOf layer_DataChanged
+                        Case Else
+                            RemoveHandler pFS.DataChanged, AddressOf layer_DataChanged
 
-                End Select
-
+                    End Select
+                End If
             Next
         Catch ex As Exception
 
@@ -1899,11 +1904,14 @@ Public Class MobileServiceSync
             If m_MobileCache.IsOpen = False Then Return -1
 
             Dim pEditCnt As Integer = 0
+            Dim pFL As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource
             For Each pL As FeatureSource In m_MobileCache.FeatureSources
                 If TypeOf pL Is Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource Then
-                    Dim pFL As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource = CType(pL, Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource)
+                    If pL.Name <> GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSLogLayer Then
+                        pFL = CType(pL, Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource)
 
-                    pEditCnt = pEditCnt + pFL.EditsCount
+                        pEditCnt = pEditCnt + pFL.EditsCount
+                    End If
                 End If
             Next
             Return pEditCnt

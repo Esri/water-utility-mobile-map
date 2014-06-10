@@ -81,6 +81,9 @@
           <!--Speed Display-->
           <DisplayUnits>Imperial</DisplayUnits>
         </WaypointControl>
+        <GPSLogLayer_UserNameField>UserID</GPSLogLayer_UserNameField>
+        <GPSLogLayer_DateField>TimeStamp</GPSLogLayer_DateField>
+        <GPSLogLayer_TruncateAfterPost>True</GPSLogLayer_TruncateAfterPost>
       </GPS>
       <ZoomPan>
         <!--Option to use Fix zoom(True) in or drag a box and zoom(False)-->

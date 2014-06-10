@@ -23,6 +23,7 @@ Imports Esri.ArcGISTemplates
 
 Public Class MobileMapConsole
     Private m_pLnk As New frmLink
+    Private boolRefresh As Boolean = True
 
     Private m_TxtTimer As System.Windows.Forms.Timer
     Private m_tickCount As Integer = 0
@@ -225,7 +226,7 @@ Public Class MobileMapConsole
     Private Sub InitTools()
         Try
             Map1.UseThreadedDrawing = True
-
+            Map1.RefreshOnDataChange = True
 
             Dim intCol, intRow As Integer
             intCol = 0
@@ -1375,8 +1376,9 @@ Public Class MobileMapConsole
         Try
             If m_SyncIndicator Is Nothing Then Return
             'Reposition the indictor when the map resizes
-            m_SyncIndicator.Left = CInt((Map1.Width / 2) - (m_SyncIndicator.Width / 2))
-            m_SyncIndicator.Top = CInt(Map1.Height / 2 - m_SyncIndicator.Height / 2)
+            m_SyncIndicator.Left = 40
+            m_SyncIndicator.Top = Map1.Height - 65
+            'CInt(Map1.Height / 2 - m_SyncIndicator.Height / 2)
         Catch ex As Exception
             Dim st As New StackTrace
             MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
@@ -1388,7 +1390,7 @@ Public Class MobileMapConsole
             'Creates the sync indicator
             m_SyncIndicator = New PictureBox
             m_SyncIndicator.BackColor = System.Drawing.Color.Transparent
-            m_SyncIndicator.Image = My.Resources.animated
+            m_SyncIndicator.Image = My.Resources.loader
 
 
             m_SyncIndicator.Margin = New System.Windows.Forms.Padding(0)
@@ -2578,7 +2580,21 @@ Public Class MobileMapConsole
             m_SyncIndicator.Visible = state
             If state Then
                 m_MCService.updateStatus()
+            Else
+
+                'If boolRefresh Then
+                '    Map1.Refresh()
+                '    boolRefresh = False
+                'Else
+                '    boolRefresh = True
+                'End If
+                'Map1.Invalidate()
+                'Map1.Update()
+
+
+
             End If
+
         Catch
         End Try
 
@@ -3182,5 +3198,15 @@ Public Class MobileMapConsole
             MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
             st = Nothing
         End Try
+    End Sub
+
+    Private Sub m_MCService_SyncFinished(syncAgentCollection As IList(Of Synchronization.FeatureSyncAgent)) Handles m_MCService.SyncFinished
+        For Each syncAg As Synchronization.FeatureSyncAgent In syncAgentCollection
+            If syncAg.FeatureSource.Name = GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSLogLayer Then
+                If syncAg.State = 0 Then
+                    m_MCNav.truncateLog()
+                End If
+            End If
+        Next
     End Sub
 End Class

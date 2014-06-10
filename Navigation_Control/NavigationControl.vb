@@ -106,6 +106,9 @@ Public Class mobileNavigation
     Dim m_t As Thread
     Private m_LogGPS As Boolean = False
     Private m_GPSFL As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource = Nothing
+    Private m_GPSFL_UserField As String = Nothing
+    Private m_GPSFL_DateField As String = Nothing
+
     Private m_LogInterval As Integer = 60
     Private m_GPSTimer As System.Threading.Timer
     'Private m_GPSTimer As System.Windows.Forms.Timer
@@ -418,7 +421,16 @@ Public Class mobileNavigation
     'End Sub
     Private Delegate Sub DelegateLogGPS()
     Private WithEvents gpsDataWorker As New System.ComponentModel.BackgroundWorker
+    Public Sub truncateLog()
+        If m_GPSFL IsNot Nothing Then
+            If GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSLogLayer_TruncateAfterPost.ToString().ToUpper() = "TRUE" Then
+                m_GPSFL.RemoveFeatures(m_Map.FullExtent)
 
+            End If
+            
+        End If
+
+    End Sub
     Public Sub getGPSAsync()
         gpsDataWorker.WorkerReportsProgress = True
 
@@ -602,17 +614,43 @@ Public Class mobileNavigation
             If m_GPSFL IsNot Nothing Then
 
 
-                Dim pDT As FeatureDataTable = m_GPSFL.GetDataTable()
-                Dim pFDR As FeatureDataRow = pDT.NewRow
+                If GlobalsFunctions.m_GPS.GpsConnection.Longitude.ToString() <> "NaN" And GlobalsFunctions.m_GPS.GpsConnection.Latitude.ToString() <> "NaN" Then
+                  
+                    Dim pDT As FeatureDataTable = m_GPSFL.GetDataTable()
+                    Dim pFDR As FeatureDataRow = pDT.NewRow
+                    pFDR.Geometry = New Esri.ArcGIS.Mobile.Geometries.Point(m_Map.SpatialReference.FromWgs84(GlobalsFunctions.m_GPS.GpsConnection.Longitude, GlobalsFunctions.m_GPS.GpsConnection.Latitude))
+                    If pDT.Columns(m_GPSFL_UserField) IsNot Nothing Then
+                        'Environment.UserDomainName & "\\" & Environment.UserName
+                        pFDR.Item(m_GPSFL_UserField) = Environment.UserName
+                    End If
+                    If pDT.Columns(m_GPSFL_DateField) IsNot Nothing Then
+                        pFDR.Item(m_GPSFL_DateField) = Now.ToString()
+                    End If
 
-                pFDR.Geometry = New ESRI.ArcGIS.Mobile.Geometries.Point(m_Map.SpatialReference.FromWgs84(GlobalsFunctions.m_GPS.GpsConnection.Longitude, GlobalsFunctions.m_GPS.GpsConnection.Latitude))
-                pDT.Rows.Add(pFDR)
-                m_GPSFL.SaveEdits(pDT)
-                pDT = Nothing
-                pFDR = Nothing
-                'Console.WriteLine("{0} Checking status {1,2}.", _
-                '    DateTime.Now.ToString("h:mm:ss.fff"), _
-                '  "GPS Logged")
+
+                    pDT.Rows.Add(pFDR)
+
+             
+                    m_GPSFL.SaveEdits(pDT)
+                    pDT = Nothing
+                    pFDR = Nothing
+
+                End If
+
+                '   Case "TIME".ToUpper
+                'UpdateField(autoAttFld.Name, CStr(Now.ToShortTimeString), True, setRead)
+                '                Case "Date".ToUpper
+                'UpdateField(autoAttFld.Name, DateTime.Today.ToString("MM-dd-yyyy"), True, setRead)
+                '                Case "CPUNAME".ToUpper
+                'UpdateField(autoAttFld.Name, Environment.MachineName.ToString(), True, setRead)
+                '                Case "DateTime".ToUpper
+
+                'UpdateField(autoAttFld.Name, Now.ToString(), True, setRead)
+
+                '                Case "User".ToUpper
+                'UpdateField(autoAttFld.Name, Environment.UserName, True, setRead)
+                '                Case "FullUser".ToUpper
+                'UpdateField(autoAttFld.Name, Environment.UserDomainName & "\\" & Environment.UserName, True, setRead)
             End If
 
         Catch ex As Exception
@@ -1785,11 +1823,15 @@ Public Class mobileNavigation
         If UCase(key) <> "FALSE" Then
             key = GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSLogLayer
             If key <> "" Then
+                GlobalsFunctions.GetMapLayer(key, m_Map)
+              
                 m_GPSFL = GlobalsFunctions.GetFeatureSource(key, m_Map).FeatureSource
                 If m_GPSFL Is Nothing Then
                     m_LogGPS = False
                 Else
                     m_LogGPS = True
+                    m_GPSFL_UserField = GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSLogLayer_UserNameField
+                    m_GPSFL_DateField = GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSLogLayer_DateField
                     key = GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSLogInterval
                     If IsNumeric(key) Then
                         m_LogInterval = CInt(key)

@@ -2299,6 +2299,9 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
         Private gPSTrackLogField As String
 
         Private gPSLogLayerField As String
+        Private gPSLogLayer_UserNameFieldField As String
+        Private gPSLogLayer_DateFieldField As String
+        Private gPSLogLayer_TruncateAfterPostField As String
 
         Private gPSLogIntervalField As String
 
@@ -2429,6 +2432,34 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
                 Me.waypointControlField = value
             End Set
         End Property
+        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=12)> _
+        Public Property GPSLogLayer_UserNameField() As String
+            Get
+                Return Me.gPSLogLayer_UserNameFieldField
+            End Get
+            Set(ByVal value As String)
+                Me.gPSLogLayer_UserNameFieldField = value
+            End Set
+        End Property
+        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=13)> _
+        Public Property GPSLogLayer_DateField() As String
+            Get
+                Return Me.gPSLogLayer_DateFieldField
+            End Get
+            Set(ByVal value As String)
+                Me.gPSLogLayer_DateFieldField = value
+            End Set
+        End Property
+        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=14)> _
+        Public Property GPSLogLayer_TruncateAfterPost() As String
+            Get
+                Return Me.gPSLogLayer_TruncateAfterPostField
+            End Get
+            Set(ByVal value As String)
+                Me.gPSLogLayer_TruncateAfterPostField = value
+            End Set
+        End Property
+
         Private Shared ReadOnly Property Serializer() As System.Xml.Serialization.XmlSerializer
             Get
                 If (sSerializer Is Nothing) Then
