@@ -346,7 +346,7 @@ Public Class EditFeaturesMapAction
 
         Catch ex As Exception
             Dim st As New StackTrace
-            MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+            MsgBox(editOptions.Name & vbCrLf & st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
             st = Nothing
 
         End Try
