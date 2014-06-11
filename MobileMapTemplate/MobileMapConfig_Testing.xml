@@ -30,7 +30,7 @@
       <!--Option to show a side bar - Not functional yet-->
       <SideBarControl>False</SideBarControl>
       <CopyrightText>Esri, Inc.</CopyrightText>
-      <VersionInfo>Version: 10.2.0.4, 6-19-2014</VersionInfo>
+      <VersionInfo>Version: 10.2.0.4, 6-27-2014</VersionInfo>
       <!--The scale to zoom to for point feature results-->
       <ZoomExtent>600</ZoomExtent>
       <MultiLineThreshold Threshold ="125" SizeFactor="3"/>
