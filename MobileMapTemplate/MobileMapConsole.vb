@@ -1395,7 +1395,7 @@ Public Class MobileMapConsole
 
             m_SyncIndicator.Margin = New System.Windows.Forms.Padding(0)
             m_SyncIndicator.Name = "pcSync"
-            m_SyncIndicator.Size = New System.Drawing.Size(My.Resources.animated.Width, My.Resources.animated.Height)
+            m_SyncIndicator.Size = New System.Drawing.Size(My.Resources.loader.Width, My.Resources.loader.Height)
 
             m_SyncIndicator.Visible = False
             resizeIndicator()
@@ -2578,22 +2578,9 @@ Public Class MobileMapConsole
 
 
             m_SyncIndicator.Visible = state
-            If state Then
-                m_MCService.updateStatus()
-            Else
 
-                'If boolRefresh Then
-                '    Map1.Refresh()
-                '    boolRefresh = False
-                'Else
-                '    boolRefresh = True
-                'End If
-                'Map1.Invalidate()
-                'Map1.Update()
-
-
-
-            End If
+            m_MCService.updateStatus(Not state)
+          
 
         Catch
         End Try

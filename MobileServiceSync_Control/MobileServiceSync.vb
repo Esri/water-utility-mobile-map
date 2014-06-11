@@ -1681,6 +1681,7 @@ Public Class MobileServiceSync
 
                     Select Case Add
                         Case True
+
                             AddHandler pFS.DataChanged, AddressOf layer_DataChanged
 
                         Case Else
@@ -1826,9 +1827,9 @@ Public Class MobileServiceSync
 
         End If
     End Sub
-    Public Sub updateStatus()
+    Public Sub updateStatus(adjustState As Boolean)
         If m_MonitorEdits Then
-            adjustDataChangeHandlers(False)
+            adjustDataChangeHandlers(adjustState)
         End If
 
     End Sub
