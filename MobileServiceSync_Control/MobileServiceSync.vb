@@ -168,8 +168,7 @@ Public Class MobileServiceSync
     End Sub
 
     Public Function refreshBaseMapLayer(ByVal layer As Esri.ArcGIS.Mobile.MapLayer) As Boolean
-        Dim lay As Esri.ArcGIS.Mobile.WebServices.ArcGISServices.MapServices.TileServiceMapLayer = layer
-
+    
     End Function
 
     'Public Function refreshDataExtent(ByVal HonorScale As Boolean, ByVal Refresh As Boolean, ByVal FullExtent As Boolean, Optional ByVal strLayName As String = "") As Boolean
