@@ -16,11 +16,29 @@
 
 Imports Esri.ArcGIS.Mobile.FeatureCaching
 
+Imports System.Diagnostics
 
 Public Class panExt
     Inherits Esri.ArcGIS.Mobile.WinForms.PanMapAction
     Dim m_DownCur As System.Windows.Forms.Cursor
     Dim m_NormCur As System.Windows.Forms.Cursor
+    Dim m_Zoomin As System.Windows.Forms.Cursor
+
+
+    Dim image As System.Drawing.Image
+    Dim reExtent As ESRI.ArcGIS.Mobile.Geometries.Envelope
+
+    Private mapDownLoc As Esri.ArcGIS.Mobile.MapMouseEventArgs
+   
+    Protected Overrides Sub OnMapPaint(ByVal e As Esri.ArcGIS.Mobile.WinForms.MapPaintEventArgs)
+        mapPaint(Nothing, e)
+        MyBase.OnMapPaint(e)
+
+    End Sub
+    Private Sub mapPaint(sender As Object, ByVal e As Esri.ArcGIS.Mobile.WinForms.MapPaintEventArgs)
+   
+    End Sub
+   
     Public Sub New()
         MyBase.New()
         '  MyBase.
@@ -28,34 +46,19 @@ Public Class panExt
         m_DownCur = New System.Windows.Forms.Cursor(s)
         s = New System.IO.MemoryStream(My.Resources.Finger)
         m_NormCur = New System.Windows.Forms.Cursor(s)
+        s = New System.IO.MemoryStream(My.Resources.ZoomInOutCur)
+        m_Zoomin = New System.Windows.Forms.Cursor(s)
+
     End Sub
-    'Public Sub New(ByVal Cont As System.ComponentModel.IContainer)
-    '    MyBase.New(Cont)
-    '    Dim s As System.IO.Stream = New System.IO.MemoryStream(My.Resources.PanCur)
-    '    m_DownCur = New System.Windows.Forms.Cursor(s)
-    '    s = New System.IO.MemoryStream(My.Resources.Finger)
-    '    m_NormCur = New System.Windows.Forms.Cursor(s)
-    'End Sub
+   
     Protected Overrides Sub OnMapMouseDoubleClick(ByVal e As ESRI.ArcGIS.Mobile.MapMouseEventArgs)
         FixZoom(False, e.MapCoordinate.X, e.MapCoordinate.Y)
-
-        'MyBase.OnMapMouseDoubleClick(e)
-
+     
     End Sub
     Public Overrides Function ToString() As String
         Return MyBase.ToString()
     End Function
-    'Public Overrides Property Site() As System.ComponentModel.ISite
-    '    Get
-    '        Return MyBase.Site
-    '    End Get
-    '    Set(ByVal value As System.ComponentModel.ISite)
-    '        MyBase.Site = value
-    '    End Set
-    'End Property
-    Protected Overrides Sub OnMapPaint(ByVal e As Esri.ArcGIS.Mobile.WinForms.MapPaintEventArgs)
-        MyBase.OnMapPaint(e)
-    End Sub
+   
     Protected Overrides Sub OnMapMouseWheel(ByVal e As ESRI.ArcGIS.Mobile.MapMouseEventArgs)
         MyBase.OnMapMouseWheel(e)
     End Sub
@@ -63,14 +66,52 @@ Public Class panExt
 
         MyBase.OnMapMouseUp(e)
         MyBase.Map.Cursor = m_NormCur
+        If e.Button = Windows.Forms.MouseButtons.Right Then
+          
+            MyBase.Map.Extent = reExtent
+            MyBase.Map.ResumeLayout()
+            MyBase.Map.EnableDrawing()
+
+            mapDownLoc = Nothing
+        Else
+            MyBase.Map.Cursor = m_DownCur
+        End If
+
     End Sub
     Protected Overrides Sub OnMapMouseMove(ByVal e As ESRI.ArcGIS.Mobile.MapMouseEventArgs)
         MyBase.OnMapMouseMove(e)
+        If e.Button = Windows.Forms.MouseButtons.Right And mapDownLoc IsNot Nothing Then
+            If e.Y < mapDownLoc.Y Then
+                reExtent = reExtent.Resize(0.98)
+
+            Else
+                reExtent = reExtent.Resize(1.02)
+
+            End If
+
+        Else
+            MyBase.Map.Cursor = m_DownCur
+        End If
+
     End Sub
     Protected Overrides Sub OnMapMouseDown(ByVal e As ESRI.ArcGIS.Mobile.MapMouseEventArgs)
 
         MyBase.OnMapMouseDown(e)
-        MyBase.Map.Cursor = m_DownCur
+        If e.Button = Windows.Forms.MouseButtons.Right Then
+            MyBase.Map.Cursor = m_Zoomin
+            mapDownLoc = e
+
+            reExtent = MyBase.Map.Extent
+
+            MyBase.Map.SuspendLayout()
+
+            MyBase.Map.DisableDrawing()
+
+        Else
+            MyBase.Map.Cursor = m_DownCur
+        End If
+
+
     End Sub
     Protected Overrides Sub OnMapKeyUp(ByVal e As System.Windows.Forms.KeyEventArgs)
         MyBase.OnMapKeyUp(e)
@@ -127,9 +168,13 @@ Public Class panExt
     Protected Overrides Sub OnActiveChanged(ByVal active As Boolean)
         MyBase.OnActiveChanged(active)
     End Sub
-
+    Private Delegate Sub mapPaintDelegate(sender As Object, ByVal e As Esri.ArcGIS.Mobile.WinForms.MapPaintEventArgs)
     Protected Overrides Sub OnSetMap(ByVal map As Esri.ArcGIS.Mobile.WinForms.Map)
         MyBase.OnSetMap(map)
+        If map IsNot Nothing Then
+            AddHandler map.MapPaint, AddressOf mapPaint
+        End If
+
     End Sub
     Private Sub FixZoom(ByVal bOut As Boolean, ByVal xCent As Double, ByVal yCent As Double)
         'Make sure the map is valid

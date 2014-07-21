@@ -20,6 +20,7 @@ Imports Esri.ArcGIS.Mobile.FeatureCaching
 Imports Esri.ArcGIS.Mobile.Geometries
 Imports Esri.ArcGISTemplates.GlobalsFunctions
 Imports Esri.ArcGISTemplates
+Imports System.Diagnostics
 
 Public Class MobileMapConsole
     Private m_pLnk As New frmLink
