@@ -2997,13 +2997,17 @@ Public Class MobileSearch
                         '    Next
                         '    lstPreFilterInt(i).Items.Insert(0, "<All>")
                         'End If
-                        If m_Distinct = "ADO" Then
+                        If m_Distinct = "ADO" And pDT.Columns(0).DataType Is System.Type.GetType("System.String") And _
+                            (CType(lstPreFilterInt(i).Tag, MobileConfigClass.MobileConfigMobileMapConfigSearchPanelAddressSearchPrefilterFieldsPrefilterField).ShowAll.ToUpper <> "FALSE" And _
+                             pDT.Columns(0).MaxLength >= Len(GlobalsFunctions.appConfig.SearchPanel.UIComponents.AllText)) Then
+
                             pDT = pDT.DefaultView.ToTable(True, pFDT.Columns(0).ColumnName) 'New String(0) {m_AddressFieldStreetName})
                             'pDT.Rows.Add(GlobalsFunctions.appConfig.SearchPanel.UIComponents.AllText)
                             If lstPreFilterInt(i).Tag IsNot Nothing Then
                                 If CType(lstPreFilterInt(i).Tag, MobileConfigClass.MobileConfigMobileMapConfigSearchPanelAddressSearchPrefilterFieldsPrefilterField).ShowAll.ToUpper = "FALSE" Then
                                 Else
                                     'lstPreFilterInt(i).Items.Insert(0, GlobalsFunctions.appConfig.SearchPanel.UIComponents.AllText)
+
                                     pDT.Rows.Add(GlobalsFunctions.appConfig.SearchPanel.UIComponents.AllText)
 
                                 End If
@@ -3227,7 +3231,7 @@ Public Class MobileSearch
             ' pSDistinct = Nothing
 
         Catch ex As Exception
-
+            MsgBox(ex.Message)
 
         End Try
     End Function

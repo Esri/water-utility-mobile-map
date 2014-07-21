@@ -868,7 +868,7 @@
           <DefaultState>Il</DefaultState>
         </SDC>
         <!--<OnlineServices>
-          <Geocode TextToAdd="Naperville, Il" GCUrl="http://tasks.arcgisonline.com/ArcGIS/rest/services/Locators/TA_Streets_US_10/GeocodeServer/findAddressCandidates?" singleLineFieldName="SingleLine"/>
+          <Geocode TextToAdd="Naperville, Il" GCUrl="https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?" singleLineFieldName="SingleLine"/>
         </OnlineServices>-->
       </AddressSearch>
       <UIComponents>

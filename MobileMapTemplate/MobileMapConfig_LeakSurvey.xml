@@ -438,9 +438,9 @@
           <DefaultCity>Wheaton</DefaultCity>
           <DefaultState>Il</DefaultState>
         </SDC>
-        <OnlineServices>
-          <Geocode GCUrl="" />
-        </OnlineServices>
+        <!--<OnlineServices>
+          <Geocode TextToAdd="Naperville, Il" GCUrl="https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?" singleLineFieldName="SingleLine"/>
+        </OnlineServices>-->
       </AddressSearch>
       <UIComponents>
         <AllText>&lt;All&gt;</AllText>

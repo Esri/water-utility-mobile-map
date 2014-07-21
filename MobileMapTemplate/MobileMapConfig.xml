@@ -141,12 +141,12 @@
       <!--The url of the mobile service, currently only one is supported-->
       <MobileServices LimitQuery ="">
         <!--Option to specify cache location, empty string = application defaults-->
-        <MobileService  UserName="" Password="" Domain="" StorageLocation="">http://YOURSERVER/arcgis/services/WaterUtilityMobileMap/MapServer/MobileServer</MobileService>
+        <MobileService  UserName="" Password="" Domain="" StorageLocation="">http://localhost:6080/arcgis/services/WaterUtilityMobileMap/MapServer/MobileServer</MobileService>
       </MobileServices>
       <!--The path to the local cache maps, these are tiles cache maps, if a full path is not listed, it will check the LocalCacheMap Folder-->
       <CachedMaps>
-        <CachedMap DisplayName="DayMap">Mobile Day Map</CachedMap>
-        <CachedMap DisplayName="NightMap">Mobile Night Map</CachedMap>
+        <CachedMap DisplayName="DayMap">C:\Work\GitHub\Development Support\LocalCacheMaps\Mobile Day Map</CachedMap>
+        <CachedMap DisplayName="NightMap">C:\Work\GitHub\Development Support\LocalCacheMaps\Mobile Night Map</CachedMap>
 
 
       </CachedMaps>
@@ -460,7 +460,7 @@
             </FilterFields>
           </Field>
           <Field Name="WORKSTATUS" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-            <FilterFields Mode="WO_ID" Visibility="True">
+            <FilterFields Mode="WO_ID" Visibility="False">
 
             </FilterFields>
             <FilterFields Mode="WO_Close" Visibility="True">
@@ -551,13 +551,13 @@
         TIME,CPUNAME,Date,User,FullUser,Value,WOCrew,GUID,WOCurrent,ADDRESS,None or "",Intersect-->
 
 
-        <Layer Name="Markup Polygons" EditExisting ="false" EditOwnerField ="" EditGeo ="false" DeleteFeature="false" DisplayText="Redline" SketchMode="Freehand" SketchColor="#FFFF0000" SnapTo="" SyncOnSave="0">
+        <Layer Name="Markup Polygons" AllowNew = "True" EditExisting ="false" EditOwnerField ="" EditGeo ="false" DeleteFeature="false" DisplayText="Redline" SketchMode="Freehand" SketchColor="#FFFF0000" SnapTo="" SyncOnSave="0">
           <Field Name="TIMESTAMP" OnNew="Date" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
           <Field Name="CREWNAME" OnNew="User" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
           <Field Name="COMPLETED" OnNew="value" OnModify=""  OnNewReadOnly="false" OnModifyReadOnly ="false" IntersectLayer="" IntersectField="" ValueText="No"/>
 
         </Layer>
-        <Layer Name="Sewer Overflows" EditExisting ="true" EditOwnerField ="" EditGeo ="True"  DisplayText="Sewer Overflows" SketchMode="Tap" SketchColor="#FFFFFF00" SnapTo="Sewer Manholes">
+        <Layer Name="Sewer Overflows" AllowNew = "True" EditExisting ="true" EditOwnerField ="" EditGeo ="True"  DisplayText="Sewer Overflows" SketchMode="Tap" SketchColor="#FFFFFF00" SnapTo="Sewer Manholes">
           <Field Name="MTCENAME" OnNew="User" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
           <Field Name="OVRFLWSTART" OnNew="Date" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
           <Field Name="FACILITYKEY" OnNew="Intersect" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="Sewer Manholes" IntersectField="FACILITYID" />
@@ -567,7 +567,7 @@
           <Field Name="LASTEDITOR" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
 
         </Layer>
-        <Layer Name="Water Hydrant Inspections" EditExisting ="true" EditOwnerField ="" EditGeo ="True"  DisplayText="Hydrant Inspections" SketchMode="Tap" SketchColor="#FFFFFF00" SnapTo="Water Hydrants">
+        <Layer Name="Water Hydrant Inspections" AllowNew = "True" EditExisting ="true" EditOwnerField ="" EditGeo ="True"  DisplayText="Hydrant Inspections" SketchMode="Tap" SketchColor="#FFFFFF00" SnapTo="Water Hydrants">
           <Field Name="INSSTART" OnNew="Date" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
 
 
@@ -868,7 +868,7 @@
           <DefaultState>Il</DefaultState>
         </SDC>
         <!--<OnlineServices>
-          <Geocode TextToAdd="Naperville, Il" GCUrl="http://tasks.arcgisonline.com/ArcGIS/rest/services/Locators/TA_Streets_US_10/GeocodeServer/findAddressCandidates?" singleLineFieldName="SingleLine"/>
+          <Geocode TextToAdd="Naperville, Il" GCUrl="https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?" singleLineFieldName="SingleLine"/>
         </OnlineServices>-->
       </AddressSearch>
       <UIComponents>
@@ -926,7 +926,7 @@
     <!--Options Table of Contents panel-->
     <TOCPanel>
       <!--Option to show or hide the Panel-->
-      <Visible>false</Visible>
+      <Visible>true</Visible>
       <!--The text to display in the button-->
       <DisplayText>Legend</DisplayText>
       <!--Message to show in the lower left status bar-->
