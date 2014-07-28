@@ -10707,7 +10707,7 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
     Partial Public Class MobileConfigMobileMapConfigSearchPanelSearchLayersSearchLayer
 
         Private nameField As String
-
+        Private displayNameField As String
         Private fieldsField As MobileConfigMobileMapConfigSearchPanelSearchLayersSearchLayerFields
 
         Private defQueryField As String = ""
@@ -10781,7 +10781,15 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
                 Me.nameField = value
             End Set
         End Property
-
+        <System.Xml.Serialization.XmlAttributeAttribute()> _
+        Public Property DisplayName() As String
+            Get
+                Return Me.displayNameField
+            End Get
+            Set(ByVal value As String)
+                Me.displayNameField = value
+            End Set
+        End Property
 
         <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=0)> _
         Public Property Fields() As MobileConfigMobileMapConfigSearchPanelSearchLayersSearchLayerFields

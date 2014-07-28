@@ -814,13 +814,13 @@
       <SearchDataLoadType>ADO</SearchDataLoadType>
       <!-- List of layers to allow the user to search on -->
       <SearchLayers>
-        <SearchLayer Name="Water Leaks" DefQuery="" xmin="" xmax="" ymin ="" ymax=""/>
-        <SearchLayer Name="Workorders" DefQuery="" xmin="" xmax="" ymin ="" ymax="" />
-        <SearchLayer Name="Markup Polygons" DefQuery="" xmin="" xmax="" ymin ="" ymax="" />
-        <SearchLayer Name="Water Hydrants" DefQuery="" xmin="" xmax="" ymin ="" ymax="" />
-        <SearchLayer Name="Water Mains" DefQuery="" xmin="" xmax="" ymin ="" ymax=""/>
-        <SearchLayer Name="Water Service Connections" DefQuery="" xmin="" xmax="" ymin ="" ymax=""/>
-        <SearchLayer Name="Sewer Service Connections" DefQuery="" xmin="" xmax="" ymin ="" ymax=""/>
+        <SearchLayer DisplayName="Water Leaks" Name="Water Leaks" DefQuery="" xmin="" xmax="" ymin ="" ymax=""/>
+        <SearchLayer DisplayName="Workorders" Name="Workorders" DefQuery="" xmin="" xmax="" ymin ="" ymax="" />
+        <SearchLayer DisplayName="Markup Polygons" Name="Markup Polygons" DefQuery="" xmin="" xmax="" ymin ="" ymax="" />
+        <SearchLayer DisplayName="Water Hydrants" Name="Water Hydrants" DefQuery="" xmin="" xmax="" ymin ="" ymax="" />
+        <SearchLayer DisplayName="Water Mains" Name="Water Mains" DefQuery="" xmin="" xmax="" ymin ="" ymax=""/>
+        <SearchLayer DisplayName="Water Service Connections" Name="Water Service Connections" DefQuery="" xmin="" xmax="" ymin ="" ymax=""/>
+        <SearchLayer DisplayName="Sewer Service Connections" Name="Sewer Service Connections" DefQuery="" xmin="" xmax="" ymin ="" ymax=""/>
       </SearchLayers>
       <!--The drill down search control-->
       <DrillDownSearches>

@@ -378,10 +378,13 @@ Public Class mobileNavigation
 
             'initialize the GPS display
             GlobalsFunctions.m_GPS = New Gps.GpsDisplay
+
             AddHandler GlobalsFunctions.m_GPS.Disposed, AddressOf m_GPS_Disposed
 
             'Asign the map
             GlobalsFunctions.m_GPS.Map = mobileMap
+            'GlobalsFunctions.m_GPS.AutoPan = True
+
             'Initilize both GPS types
             m_FileGPS = New Gps.FileGpsConnection
             m_SerialGPS = New Gps.SerialPortGpsConnection

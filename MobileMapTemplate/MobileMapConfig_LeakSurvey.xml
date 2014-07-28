@@ -381,19 +381,19 @@
       <SearchXYOneLine>False</SearchXYOneLine>
       <SearchDataLoadType>ADO</SearchDataLoadType>
       <SearchLayers>
-        <SearchLayer DefQuery="" Name="Meter Setting" xmin="" xmax="" ymin="" ymax="">
+        <SearchLayer DefQuery="" DisplayName="Meter Setting" Name="Meter Setting" xmin="" xmax="" ymin="" ymax="">
           <Fields />
         </SearchLayer>
-        <SearchLayer DefQuery="" Name="Gas Valve" xmin="" xmax="" ymin="" ymax="">
+        <SearchLayer DefQuery="" DisplayName="Gas Valve" Name="Gas Valve" xmin="" xmax="" ymin="" ymax="">
           <Fields />
         </SearchLayer>
-        <SearchLayer DefQuery="" Name="Regulator Station" xmin="" xmax="" ymin="" ymax="">
+        <SearchLayer DefQuery="" DisplayName="Regulator Station"  Name="Regulator Station" xmin="" xmax="" ymin="" ymax="">
           <Fields />
         </SearchLayer>
-        <SearchLayer DefQuery="" Name="Town Border Station" xmin="" xmax="" ymin="" ymax="">
+        <SearchLayer DefQuery="" DisplayName="Town Border Station" Name="Town Border Station" xmin="" xmax="" ymin="" ymax="">
           <Fields />
         </SearchLayer>
-        <SearchLayer DefQuery="" Name="Gas Leaks" xmin="" xmax="" ymin="" ymax="">
+        <SearchLayer DefQuery="" DisplayName="Gas Leaks" Name="Gas Leaks" xmin="" xmax="" ymin="" ymax="">
           <Fields />
         </SearchLayer>
       </SearchLayers>

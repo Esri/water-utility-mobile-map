@@ -1871,14 +1871,14 @@ Public Class MobileSearch
             Dim pSearchFeature As SearchFeature = New SearchFeature
             pSearchFeature.Map = m_Map
             pSearchFeature.Fields = pFieldList
-            pSearchFeature.layerName = cboSearchLayer.Text
+
+           
             If txtSearchValue.Visible = True Then
                 pSearchFeature.SearchValue = txtSearchValue.Text
             Else
                 pSearchFeature.SearchValue = cboSearchValue.SelectedValue
             End If
-            cboSearchLayer.SelectedItem = cboSearchLayer.SelectedItem
-
+            pSearchFeature.layerName = cboSearchLayer.Text
             Try
 
                 If GlobalsFunctions.IsNumeric(CType(cboSearchLayer.SelectedItem, Esri.ArcGISTemplates.MobileConfigClass.MobileConfigMobileMapConfigSearchPanelSearchLayersSearchLayer).xmax) And _
@@ -1890,7 +1890,11 @@ Public Class MobileSearch
 
                 If CType(cboSearchLayer.SelectedItem, Esri.ArcGISTemplates.MobileConfigClass.MobileConfigMobileMapConfigSearchPanelSearchLayersSearchLayer).DefQuery <> "" Then
                     pSearchFeature.SearchDefQ = CType(cboSearchLayer.SelectedItem, Esri.ArcGISTemplates.MobileConfigClass.MobileConfigMobileMapConfigSearchPanelSearchLayersSearchLayer).DefQuery
+
                 End If
+                pSearchFeature.layerName = CType(cboSearchLayer.SelectedItem, Esri.ArcGISTemplates.MobileConfigClass.MobileConfigMobileMapConfigSearchPanelSearchLayersSearchLayer).Name
+
+
             Catch ex As Exception
 
             End Try
@@ -1926,10 +1930,13 @@ Public Class MobileSearch
         Dim thistable As DataTable = New DataTable()
 
 
+        Dim layName As String = cboSearchLayer.Text
+        If TypeOf cboSearchLayer.SelectedItem Is Esri.ArcGISTemplates.MobileConfigClass.MobileConfigMobileMapConfigSearchPanelSearchLayersSearchLayer Then
+            layName = CType(cboSearchLayer.SelectedItem, Esri.ArcGISTemplates.MobileConfigClass.MobileConfigMobileMapConfigSearchPanelSearchLayersSearchLayer).Name
 
-        'check the field to see if it is domain field
-        'Dim pLay As MobileCacheMapLayer = CType(m_Map.MapLayers(cboSearchLayer.Text), MobileCacheMapLayer)
-        Dim pfl As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource = GlobalsFunctions.GetFeatureSource(cboSearchLayer.Text, m_Map).FeatureSource
+        End If
+      
+        Dim pfl As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource = GlobalsFunctions.GetFeatureSource(layName, m_Map).FeatureSource
 
         Dim col As DataColumn
         Dim pHashcol As Hashtable = New Hashtable()
@@ -2000,7 +2007,7 @@ Public Class MobileSearch
         Next
 
 
-       
+
         Dim row As DataRow
         Dim newrow As DataRow
 
@@ -2020,8 +2027,8 @@ Public Class MobileSearch
                     Else
                         Try
 
-                      
-                        obj = pfl.Columns(col.ColumnName).GetDomain(intSubCode)
+
+                            obj = pfl.Columns(col.ColumnName).GetDomain(intSubCode)
                         Catch ex As Exception
                             obj = Nothing
                         End Try
@@ -2111,7 +2118,13 @@ Public Class MobileSearch
 
                         'Next
 
-                        Dim pFL As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource = GlobalsFunctions.GetFeatureSource(cboSearchLayer.Text, m_Map).FeatureSource
+                        Dim layName As String = cboSearchLayer.Text
+                        If TypeOf cboSearchLayer.SelectedItem Is Esri.ArcGISTemplates.MobileConfigClass.MobileConfigMobileMapConfigSearchPanelSearchLayersSearchLayer Then
+                            layName = CType(cboSearchLayer.SelectedItem, Esri.ArcGISTemplates.MobileConfigClass.MobileConfigMobileMapConfigSearchPanelSearchLayersSearchLayer).Name
+
+                        End If
+
+                        Dim pfl As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource = GlobalsFunctions.GetFeatureSource(layName, m_Map).FeatureSource
                         'For i As Integer = 0 To dgResults.Columns.Count - 1
                         '    dgResults.Columns(i).HeaderText = CType(dgResults.Columns(i), DataColumn).caption
 
@@ -2705,6 +2718,7 @@ Public Class MobileSearch
                         'Add to list
                         lyTmp = New MobileConfigClass.MobileConfigMobileMapConfigSearchPanelSearchLayersSearchLayer()
                         lyTmp.Name = pL.Name
+                        lyTmp.DisplayName = pL.Name
                         Layers.Add(lyTmp)
 
                         'pList.Add(pL.Name)
@@ -2721,6 +2735,7 @@ Public Class MobileSearch
                         'Add to list
                         lyTmp = New MobileConfigClass.MobileConfigMobileMapConfigSearchPanelSearchLayersSearchLayer()
                         lyTmp.Name = pL.Name
+                        lyTmp.DisplayName = pL.Name
                         Layers.Add(lyTmp)
                         'pList.Add(pL.Name)
 
@@ -2730,18 +2745,23 @@ Public Class MobileSearch
             Next
         Else
 
-            'For Each lay In Layers
-            '    If GlobalsFunctions.GetFeatureSource(lay.Name, m_Map) IsNot Nothing Then
-            '        'pList.Add(lay.Name)
-            '    Else
+            For Each lay In Layers
+                If lay.DisplayName Is Nothing Then
+                    lay.DisplayName = lay.Name
+                ElseIf lay.DisplayName = "" Then
+                    lay.DisplayName = lay.Name
+                End If
+                If GlobalsFunctions.GetFeatureSource(lay.Name, m_Map) IsNot Nothing Then
+                    'pList.Add(lay.Name)
+                Else
 
-            '    End If
-            'Next
+                End If
+            Next
         End If
 
         'Set layer list to the search drop down
         'cboSearchLayer.DataSource = pList
-        cboSearchLayer.DisplayMember = "Name"
+        cboSearchLayer.DisplayMember = "DisplayName"
         cboSearchLayer.DataSource = Layers
 
     End Function
@@ -4876,7 +4896,7 @@ Public Class MobileSearch
         Public SearchValue As String
         Public SearchEnv As Envelope
         Public SearchDefQ As String
-
+        'Public SelectedItem As MobileConfigClass.MobileConfigMobileMapConfigSearchPanelSearchLayersSearchLayer
         Public FindAllSimilar As Boolean = False
         'Event raised to pase the results back up
         Public Event SearchComplete(ByVal results As DataTable)
@@ -5029,13 +5049,14 @@ Public Class MobileSearch
                     End If
                 Next
             End If
+            pQueryFilter.WhereClause = pStrWhere
             If SearchDefQ <> "" Then
                 pQueryFilter.WhereClause = IIf(pQueryFilter.WhereClause = "", SearchDefQ, "(" & pQueryFilter.WhereClause & ") AND " & SearchDefQ)
 
             End If
 
             'Apply where clause to filter
-            pQueryFilter.WhereClause = pStrWhere
+
             If m_SearchPoly IsNot Nothing Then
                 pQueryFilter.Geometry = m_SearchPoly
                 pQueryFilter.GeometricRelationship = Geometries.GeometricRelationshipType.Intersect
@@ -5367,7 +5388,13 @@ Public Class MobileSearch
             ' Dim pLay As MobileCacheMapLayer = CType(m_Map.MapLayers(cboSearchLayer.Text), MobileCacheMapLayer)
 
             '  If pLay Is Nothing Then Return
-            Dim pfl As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource = GlobalsFunctions.GetFeatureSource(cboSearchLayer.Text, m_Map).FeatureSource
+            Dim layName As String = cboSearchLayer.Text
+            If TypeOf cboSearchLayer.SelectedItem Is Esri.ArcGISTemplates.MobileConfigClass.MobileConfigMobileMapConfigSearchPanelSearchLayersSearchLayer Then
+                layName = CType(cboSearchLayer.SelectedItem, Esri.ArcGISTemplates.MobileConfigClass.MobileConfigMobileMapConfigSearchPanelSearchLayersSearchLayer).Name
+
+            End If
+
+            Dim pfl As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource = GlobalsFunctions.GetFeatureSource(layName, m_Map).FeatureSource
 
             'MsgBox("Fix Domain")
             Dim obj As Object
