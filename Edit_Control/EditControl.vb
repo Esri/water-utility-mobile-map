@@ -319,6 +319,7 @@ Public Class EditControl
             LoadAutoAttributes(pDR)
             disableSaveBtn()
             disableDeleteBtn()
+
             'Cause the map to redraw
             If m_DrawGeo Then
                 m_Map.Invalidate()
@@ -374,7 +375,11 @@ Public Class EditControl
             m_FDR = Nothing
 
             AddControls()
+
+
         End If
+        disableSaveBtn()
+        disableDeleteBtn()
     End Sub
     Public Sub setCurrentLayer(ByVal FeatLayer As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource, ByVal editOptions As MobileConfigClass.MobileConfigMobileMapConfigEditControlOptionsLayersLayer)
         Try
@@ -454,13 +459,13 @@ Public Class EditControl
             Next
 
         ElseIf m_Mode <> "ID" Then
-            btnMove.Enabled = True
+            btnMove.Enabled = False
             If m_FDR.Geometry Is Nothing Then
                 btnMove.Enabled = False
-            Else
+            ElseIf m_FDR.Geometry.GeometryType = GeometryType.Point Then
                 btnMove.Enabled = True
             End If
-
+            Call btnMove_CheckedChanged(Nothing, Nothing)
             For Each tbPage As TabPage In tbCntrlEdit.TabPages
                 tbPage.BackColor = m_ExistingColor
             Next
@@ -690,14 +695,12 @@ Public Class EditControl
                 pDT.AcceptChanges()
 
                 pDT.FeatureSource.SaveEdits(pDT)
-                pDT = Nothing
-
-
+              
                 'Dim pRetGeo As Geometries.Geometry = Nothing
                 'Dim pRetFID As Integer = Nothing
                 Dim pRetName As String = m_FL.Name
 
-                m_FDR = m_FDR.Table.NewRow
+                m_FDR = pDT.NewRow
                 loadRecordEditor(True)
                 LoadAutoAttributes(m_FDR)
 
@@ -706,6 +709,8 @@ Public Class EditControl
                 'Raise the event to notify the record was saved
                 RaiseEvent RecordDelete(pRetName)
                 RaiseEvent RaiseMessage(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.DeleteMessage)
+                pDT = Nothing
+                btnMove.Checked = False
 
             End If
         End If
@@ -2475,8 +2480,10 @@ Public Class EditControl
                         If m_FDR.StoredEditSate <> EditState.NotDefined Then
                             If m_FDR.Geometry Is Nothing Then
                                 btnMove.Enabled = False
-                            Else
+                            ElseIf m_FDR.Geometry.GeometryType = GeometryType.Point Then
                                 btnMove.Enabled = True
+                            Else
+                                btnMove.Enabled = False
                             End If
 
                         Else
@@ -2487,6 +2494,7 @@ Public Class EditControl
                         btnMove.Enabled = False
 
                     End If
+                    Call btnMove_EnabledChanged(Nothing, Nothing)
                 Catch ex As Exception
 
                 End Try
@@ -5190,8 +5198,14 @@ Public Class EditControl
             Dim bExistingFeat As Boolean = True
             If m_FDR.StoredEditSate <> EditState.NotDefined Then
                 bExistingFeat = True
-                btnMove.Enabled = True
-
+                If m_FDR Is Nothing Then
+                    btnMove.Enabled = False
+                ElseIf m_FDR.Geometry.GeometryType = GeometryType.Point Then
+                    btnMove.Enabled = True
+                Else
+                    btnMove.Enabled = False
+                End If
+              
 
             Else
                 btnMove.Enabled = False
@@ -5199,12 +5213,7 @@ Public Class EditControl
 
                 bExistingFeat = False
             End If
-            If m_FDR.FeatureSource.GeometryType = Geometries.GeometryType.Point Then
-
-            Else
-
-                btnMove.Visible = False
-            End If
+           
             RemoveButton(tbCntrlEdit)
 
             'If the layer has subtypes, load the subtype value first
@@ -6439,6 +6448,7 @@ Public Class EditControl
     Private Sub btnClear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClear.Click
         btnMove.CheckState = CheckState.Unchecked
         ' btnMove.Checked = False
+        If m_FDR Is Nothing Then Return
 
         setCurRec(m_FDR.Table.NewRow)
         ' loadRecordEditor(True)
@@ -6555,21 +6565,7 @@ Public Class EditControl
 
         End If
     End Sub
-    Private Sub btnMove_EnabledChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMove.EnabledChanged
-        If btnMove.Enabled Then
-            If btnMove.Checked Then
-                btnMove.BackgroundImage = My.Resources.MoveRed
-            Else
-                btnMove.BackgroundImage = My.Resources.moveGreen
-                btnMove.Checked = False
-
-            End If
-        Else
-            btnMove.BackgroundImage = My.Resources.GrayMove
-            btnMove.Checked = False
-
-        End If
-    End Sub
+   
 
     Private Sub btnMove_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMove.CheckedChanged
         btnMoveStatusChanged()
@@ -6579,8 +6575,10 @@ Public Class EditControl
         m_Map.Invalidate()
     End Sub
     Public Sub btnMoveStatusChanged()
+         
         If btnMove.Enabled Then
             If btnMove.Checked Then
+                btnGPSLoc.Enabled = True
                 RaiseEvent MoveGeo(True)
                 RaiseEvent RaisePermMessage(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.EditingGeoMessage, True)
                 btnMove.BackgroundImage = My.Resources.MoveRed
@@ -6589,13 +6587,13 @@ Public Class EditControl
 
                 'End If
             Else
-
+                btnGPSLoc.Enabled = False
                 RaiseEvent MoveGeo(False)
                 RaiseEvent RaisePermMessage("", False)
                 btnMove.BackgroundImage = My.Resources.moveGreen
             End If
         Else
-
+            btnGPSLoc.Enabled = False
             RaiseEvent MoveGeo(False)
             RaiseEvent RaisePermMessage("", False)
             btnMove.BackgroundImage = My.Resources.GrayMove
@@ -6787,10 +6785,7 @@ Public Class EditControl
 
             End If
         Catch ex As Exception
-            Dim st As New StackTrace
-            MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
-            st = Nothing
-
+         
         End Try
 
     End Sub
@@ -6805,6 +6800,7 @@ Public Class EditControl
         btnGPSLoc.Enabled = False
 
         m_GPSVal = Nothing
+
         RaiseEvent CheckGPS()
 
     End Sub
@@ -6813,14 +6809,26 @@ Public Class EditControl
 
     End Sub
 
-    Private Sub btnMoveGPS_EnabledChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnGPSLoc.EnabledChanged
+    Private Sub btnMove_EnabledChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnMove.EnabledChanged
+        If btnMove.Enabled Then
+            If btnMove.Checked = True Then
+                btnGPSLoc.Enabled = True
+            Else
+                btnGPSLoc.Enabled = False
+            End If
+
+        Else
+            btnGPSLoc.Enabled = False
+        End If
+    End Sub
+    Private Sub btnGPSLoc_EnabledChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnGPSLoc.EnabledChanged
         If btnGPSLoc.Enabled Then
             btnGPSLoc.BackgroundImage = My.Resources.SatGreen
 
         Else
             btnGPSLoc.BackgroundImage = My.Resources.SatImageGraypng
-
         End If
+
     End Sub
 
     Private Sub btnSave_Paint(sender As Object, e As System.Windows.Forms.PaintEventArgs) Handles btnSave.Paint

@@ -20,7 +20,7 @@ Public Class mobileIdentifyMapAction
     Public raiseHyperEvent As Boolean = False
     Private m_SetGeoOnly As Boolean = False
 
-
+    Private m_GPSEditing As Boolean = False
     Public Event HyperClick(ByVal PathToFile As String)
 
     Public Event RouteTo(ByVal location As Esri.ArcGIS.Mobile.Geometries.Geometry, ByVal LocationName As String)
@@ -75,14 +75,14 @@ Public Class mobileIdentifyMapAction
 
 
     End Sub
-   
+
 #Region "Defualt Overrides"
 
 
     Public Overrides Function ToString() As String
         Return MyBase.ToString()
     End Function
-    
+
     Protected Overrides Sub OnMapPaint(ByVal e As Esri.ArcGIS.Mobile.WinForms.MapPaintEventArgs)
         MyBase.OnMapPaint(e)
     End Sub
@@ -154,11 +154,11 @@ Public Class mobileIdentifyMapAction
             m_layCBO.Dispose()
         End If
         m_layCBO = Nothing
-        If m_map IsNot Nothing Then
-            m_map.Dispose()
+        If m_Map IsNot Nothing Then
+            m_Map.Dispose()
         End If
 
-        m_map = Nothing
+        m_Map = Nothing
 
     End Sub
     Public Overrides Function Equals(ByVal obj As Object) As Boolean
@@ -168,7 +168,7 @@ Public Class mobileIdentifyMapAction
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         MyBase.Dispose(disposing)
     End Sub
-  
+
     Public Overrides Sub Cancel()
         MyBase.Cancel()
     End Sub
@@ -176,7 +176,7 @@ Public Class mobileIdentifyMapAction
         MyBase.OnActiveChanged(active)
     End Sub
 
-    
+
 #End Region
     Private Sub FixZoom(ByVal bOut As Boolean, ByVal xCent As Double, ByVal yCent As Double)
         'Make sure the map is valid
@@ -319,7 +319,7 @@ Public Class mobileIdentifyMapAction
 
     End Sub
     Public Sub InitIDForm(ByVal container As Control, Optional ByVal LayerName As String = "", Optional ByVal RouteToOption As Boolean = False)
-  
+
 
         loadIDLayers()
 
@@ -381,7 +381,7 @@ Public Class mobileIdentifyMapAction
 #Region "Events"
 
     Private Sub m_Att_CheckGPS() Handles m_AttFrm.CheckGPS
-
+        m_GPSEditing = False
         RaiseEvent CheckGPS()
 
         'm_Att.GPSLocation = m_GPSVal
@@ -548,6 +548,7 @@ Public Class mobileIdentifyMapAction
     End Sub
 
     Private Sub m_EditFrm_CheckGPS() Handles m_EditFrm.CheckGPS
+        m_GPSEditing = True
         RaiseEvent CheckGPS()
 
     End Sub
@@ -586,15 +587,15 @@ Public Class mobileIdentifyMapAction
 
     End Sub
 
-    Private Sub m_map_ControlAdded(ByVal sender As Object, ByVal e As System.Windows.Forms.ControlEventArgs) Handles m_map.ControlAdded
+    Private Sub m_map_ControlAdded(ByVal sender As Object, ByVal e As System.Windows.Forms.ControlEventArgs) Handles m_Map.ControlAdded
 
     End Sub
-    Private Sub m_map_ExtentChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_map.ExtentChanged
-        If m_LastScale = m_map.Scale Then Return
+    Private Sub m_map_ExtentChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_Map.ExtentChanged
+        If m_LastScale = m_Map.Scale Then Return
 
         LoadLayers()
 
-        m_LastScale = m_map.Scale
+        m_LastScale = m_Map.Scale
 
     End Sub
     'Private Sub mobileIdentifyMapAction_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
@@ -882,7 +883,7 @@ Public Class mobileIdentifyMapAction
                 For i As Integer = 0 To playersCount - 1
 
                     'Gets the map layer for that index
-                    pMapLayer = m_map.MapLayers(i)
+                    pMapLayer = m_Map.MapLayers(i)
                     If pMapLayer IsNot Nothing Then
 
 
@@ -1006,11 +1007,11 @@ Public Class mobileIdentifyMapAction
 
     Private Sub LoadLayers()
         Try
-            If m_map Is Nothing Then Return
+            If m_Map Is Nothing Then Return
 
 
             ' Total number of MapLayers in the current map
-            Dim playersCount As Integer = m_map.MapLayers.Count
+            Dim playersCount As Integer = m_Map.MapLayers.Count
 
 
             'Current map layer
@@ -1027,7 +1028,7 @@ Public Class mobileIdentifyMapAction
             For i As Integer = 0 To playersCount - 1
 
                 'Gets the map layer for that index
-                pMapLayer = m_map.MapLayers(i)
+                pMapLayer = m_Map.MapLayers(i)
                 If pMapLayer IsNot Nothing Then
 
 
@@ -1238,13 +1239,42 @@ Public Class mobileIdentifyMapAction
             'End If
             If m_GPSVal IsNot Nothing Then
 
+                If m_GPSEditing = False Then
+                    IDAtLocation(m_Map.SpatialReference.FromGps(m_GPSVal.Coordinate))
+                Else
 
-                IDAtLocation(m_Map.SpatialReference.FromGps(m_GPSVal.Coordinate))
+                    If m_EditFrm.Geometry IsNot Nothing Then
+                        If m_EditFrm.Geometry.GeometryType = Geometries.GeometryType.Point Then
+                            m_EditFrm.EnableGPS()
+                            Dim newCoord As Geometries.Coordinate
+                            If m_GPSVal.SpatialReference Is Nothing Then
+                                newCoord = Map.SpatialReference.FromGps(m_GPSVal.Coordinate)
 
-                m_EditFrm.GPSLocation = m_GPSVal
+                            ElseIf m_GPSVal.SpatialReference.FactoryCode <> Map.SpatialReference.FactoryCode Then
+
+                                newCoord = Map.SpatialReference.FromGps(m_GPSVal.Coordinate)
+
+                                'Me.Geometry = New Esri.ArcGIS.Mobile.Geometries.Point(m_Map.SpatialReference.FromDegreeMinuteSecond(m_GPSVal.LongitudeToDegreeMinutesSeconds), m_Map.SpatialReference.FromDegreeMinuteSecond(m_GPSVal.LatitudeToDegreeMinutesSeconds))
+
+                                'Me.Geometry = m_GPSVal()
+                            Else
+                                newCoord = m_GPSVal.Coordinate
+
+
+
+
+                            End If
+                            m_EditFrm.Geometry = New Geometries.Point(newCoord)
+                        End If
+                    End If
+
+
+                    Map.Invalidate()
+                End If
             End If
         End Set
     End Property
+
     'returns the active layer
     Public Property IdentifyLayer() As String
         Get

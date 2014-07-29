@@ -442,6 +442,8 @@ Public Class mobileNavigation
 
     Private Sub gpsDataWorker_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles gpsDataWorker.DoWork
         m_gpsD = getGPS()
+
+
     End Sub
 
     Private Sub gpsDataWorker_ProgressChanged(sender As Object, e As System.ComponentModel.ProgressChangedEventArgs) Handles gpsDataWorker.ProgressChanged

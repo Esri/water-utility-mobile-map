@@ -1,26 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
- | Version 10.2
- | Copyright 2013 Esri
- |
- | Licensed under the Apache License, Version 2.0 (the "License");
- | you may not use this file except in compliance with the License.
- | You may obtain a copy of the License at
- |
- |    http://www.apache.org/licenses/LICENSE-2.0
- |
- | Unless required by applicable law or agreed to in writing, software
- | distributed under the License is distributed on an "AS IS" BASIS,
- | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- | See the License for the specific language governing permissions and
- | limitations under the License.
--->
-
 <MobileConfig>
   <MobileMapConfig>
     <ApplicationSettings>
       <!-- Label on splash screen-->
-      <SplashLabel>Water Utilites Mobile Map</SplashLabel>
+      <SplashLabel>Southwest NJAW Distribution Map</SplashLabel>
       <!--Image used on the splash screen-->
       <SplashImage>splash.png</SplashImage>
       <!--icon in the top left of the app-->
@@ -29,17 +12,11 @@
       <FontSize>10</FontSize>
       <!--Option to show a side bar - Not functional yet-->
       <SideBarControl>False</SideBarControl>
-      <CopyrightText>Esri, Inc.</CopyrightText>
-      <VersionInfo>Version: 10.2.0.4, 6-27-2014</VersionInfo>
+      <CopyrightText>Copyright American Water</CopyrightText>
+      <VersionInfo>Version 10.2 July (GPS)</VersionInfo>
       <!--The scale to zoom to for point feature results-->
       <ZoomExtent>600</ZoomExtent>
-      <MultiLineThreshold Threshold ="125" SizeFactor="3"/>
-      <MapExport visible ="true" mailClient="Outlook" textToInclude=""/>
-      <!--If you select other, it copies the path of image to the clipboard.  You could include text like this so the user can attach the image: Please attach the image, click the paperclip, and click control + v-->
-      <Extent>
-        <InitialExtent  xmax="" xmin="" ymax="" ymin=""/>
-        <FullExtent  xmax="" xmin="" ymax="" ymin=""/>
-      </Extent>
+      <MultiLineThreshold Threshold ="90" SizeFactor="3"/>
       <UIComponents>
         <LayerNotFound>The layer with the name of {0} was not found</LayerNotFound>
         <FieldNotFound>The field with name {0} was not found in layer {1}</FieldNotFound>
@@ -52,48 +29,45 @@
       <!--Option to show a GPS button or not-->
       <GPS>
         <!--Option to show a GPS button or not-->
-        <Visible>True</Visible>
+        <Visible>true</Visible>
         <!--Com port to GPS or GPS Sim File Name, for the sim file, this is relative to the exe-->
         <!--COM1,COM2, etc-->
         <!--GPSSim.txt-->
         <COMFile>file.txt</COMFile>
         <!--Baud setting for GPS Device-->
-        <GPSBaud>4800</GPSBaud>
+        <GPSBaud>38400</GPSBaud>
         <!-- Option to log a GPS Track-->
-        <GPSTrackLog>False</GPSTrackLog>
+        <GPSTrackLog>True</GPSTrackLog>
         <!-- The name of the point layer to store the GPS log into-->
         <GPSLogLayer>GPSLog</GPSLogLayer>
         <!--Interval in time to log the gps locations-->
         <GPSLogInterval>15</GPSLogInterval>
         <!--0 - No Fix, 1 - Gps Fix, 2 - DGps Fix, 3 = PPS fix, 4 = Real Time Kinematic, 5 = Float RTK, 6 = estimated (dead reckoning), 7 = Manual input mode, 8 = Simulation mode-->
-        <GPSFixType>1</GPSFixType>
+        <GPSFixType>4</GPSFixType>
         <GPSPDOP>15</GPSPDOP>
-        <GPSPointAvg>100</GPSPointAvg>
+        <GPSPointAvg>5000</GPSPointAvg>
         <GPSPointAvgWaitInterval>10</GPSPointAvgWaitInterval>
-        <GPSPointMaxTries>2000</GPSPointMaxTries>
+        <GPSPointMaxTries>100</GPSPointMaxTries>
         <WaypointControl>
           <!--Option to show or hide the Panel-->
-          <Visible>true</Visible>
+          <Visible>True</Visible>
           <!--The text to display in the button-->
-          <DisplayText>GPS</DisplayText>
+          <DisplayText>Compass</DisplayText>
           <!--Message to show in the lower left status bar-->
           <StatusBarMessage>Navigate to an Asset</StatusBarMessage>
-          <!--Speed Display-->
-          <DisplayUnits>Imperial</DisplayUnits>
+          <SpeedUnit>MPH</SpeedUnit>
         </WaypointControl>
-        <GPSLogLayer_UserNameField>UserID</GPSLogLayer_UserNameField>
-        <GPSLogLayer_DateField>TimeStamp</GPSLogLayer_DateField>
-        <GPSLogLayer_TruncateAfterPost>True</GPSLogLayer_TruncateAfterPost>
       </GPS>
       <ZoomPan>
         <!--Option to use Fix zoom(True) in or drag a box and zoom(False)-->
-        <FixZoom>True</FixZoom>
+        <FixZoom>False</FixZoom>
         <!--Message to show in the lower right status bar-->
         <PanToolMessage>Active Tool: Pan</PanToolMessage>
         <ZoomInToolMessage>Active Tool: Zoom In</ZoomInToolMessage>
         <ZoomOutToolMessage>Active Tool: Zoom Out</ZoomOutToolMessage>
         <ZoomInOutToolMessage>Active Tool: Zoom In/Out</ZoomInOutToolMessage>
         <RotateVisible>True</RotateVisible>
+
       </ZoomPan>
       <Bookmarks>
         <!--Option to show the Bookmark button-->
@@ -108,11 +82,13 @@
         <DestinationNotFound>Location was invalid</DestinationNotFound>
         <PointsAvgText>Point(s) Captured</PointsAvgText>
       </UIComponents>
+
+
     </NavigationOptions>
     <!--Measure options-->
     <MeasureOptions>
       <!--Option to show a tool to measure on the screen-->
-      <Visible>true</Visible>
+      <Visible>True</Visible>
       <!--Message to show in the lower right status bar-->
       <ToolMessage>Active Tool: Measure</ToolMessage>
       <!--How the user measures options are: Freehand, Multipoint,TwoPoint-->
@@ -139,79 +115,80 @@
     <!--Layer options-->
     <LayerOptions>
       <!--The url of the mobile service, currently only one is supported-->
-      <MobileServices LimitQuery ="">
+      <MobileServices>
         <!--Option to specify cache location, empty string = application defaults-->
-        <MobileService  UserName="" Password="" Domain="" StorageLocation="">http://localhost:6080/arcgis/services/WaterUtilityMobileMap/MapServer/MobileServer</MobileService>
+        <MobileService StorageLocation="">http://gismap001/ArcGIS/services/NewJersey/NAD83_2011_DE/MapServer/MobileServer</MobileService>
       </MobileServices>
       <!--The path to the local cache maps, these are tiles cache maps, if a full path is not listed, it will check the LocalCacheMap Folder-->
       <CachedMaps>
-        <CachedMap DisplayName="DayMap">C:\Work\GitHub\Development Support\LocalCacheMaps\Mobile Day Map</CachedMap>
-        <CachedMap DisplayName="NightMap">C:\Work\GitHub\Development Support\LocalCacheMaps\Mobile Night Map</CachedMap>
-
-
+        <CachedMap DisplayName="Night">Night Map</CachedMap>
+        <CachedMap DisplayName="2012 Image">Imagery 2012</CachedMap>
+        <!--  <CachedMap DisplayName="Test">Test</CachedMap>
+		 <CachedMap DisplayName="Test2">Test2</CachedMap>-->
       </CachedMaps>
       <WebMaps>
-        <WebMap DisplayName="Streets">http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer</WebMap>
-        <WebMap DisplayName="Imagery">http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer</WebMap>
-
+        <!--<WebMap DisplayName="Street">http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer</WebMap>
+        <WebMap DisplayName="Topo">http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer</WebMap>
+        <WebMap DisplayName="Imagery">http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer</WebMap>-->
       </WebMaps>
 
       <!--Option to display a layer group control, this will allow you to toggle a set of layers as a group-->
       <LayerGroupings>
-        <LayersGroup DisplayName="Water" Visible="True">
-          <LayerGroup Name="Water Pumps" />
-          <LayerGroup Name="Water Network Structures" />
-          <LayerGroup Name="Water Test Stations" />
-          <LayerGroup Name="Water Sampling Stations" />
-          <LayerGroup Name="Water Service Connections" />
-          <LayerGroup Name="Water Hydrants" />
-          <LayerGroup Name="Water System Valves" />
-          <LayerGroup Name="Water Curb Stop Valves" />
-          <LayerGroup Name="Water Fittings" />
-          <LayerGroup Name="Water Mains" />
-          <LayerGroup Name="Water Mains - City View" />
-          <LayerGroup Name="Water Lateral Lines" />
-          <LayerGroup Name="Water Casings" />
-        </LayersGroup>
-        <LayersGroup DisplayName="Sewer" Visible="false">
-          <LayerGroup Name="Sewer Test Stations"/>
-          <LayerGroup Name="Sewer Network Structures" />
-          <LayerGroup Name="Sewer Manholes" />
-          <LayerGroup Name="Sewer Taps" />
-          <LayerGroup Name="Sewer Service Connections" />
-          <LayerGroup Name="Sewer Inlets" />
-          <LayerGroup Name="Sewer Discharge Points" />
-          <LayerGroup Name="Sewer System Valves" />
-          <LayerGroup Name="Sewer Control Valves" />
-          <LayerGroup Name="Sewer Clean Outs" />
-          <LayerGroup Name="Sewer Fittings" />
-          <LayerGroup Name="Sewer Pressurized Mains - City View" />
-          <LayerGroup Name="Sewer Gravity Mains - City View" />
-          <LayerGroup Name="Sewer Pressurized Mains" />
-          <LayerGroup Name="Sewer Gravity Mains" />
-          <LayerGroup Name="Sewer Lateral Lines" />
-          <LayerGroup Name="Sewer Virtual Drainlines" />
-          <LayerGroup Name="Sewer Open Drains" />
-          <LayerGroup Name="Sewer Detention Areas" />
-        </LayersGroup>
-        <LayersGroup DisplayName="Storm" Visible="false">
-          <LayerGroup Name="Storm Network Structures" />
-          <LayerGroup Name="Storm Manholes" />
-          <LayerGroup Name="Storm Inlets" />
-          <LayerGroup Name="Storm Discharge Points" />
-          <LayerGroup Name="Storm Clean Outs" />
-          <LayerGroup Name="Storm System Valves" />
-          <LayerGroup Name="Storm Control Valves" />
-          <LayerGroup Name="Storm Fittings" />
-          <LayerGroup Name="Storm Culverts" />
-          <LayerGroup Name="Storm Gravity Mains - City View" />
-          <LayerGroup Name="Storm Gravity Mains" />
-          <LayerGroup Name="Storm Casings" />
-          <LayerGroup Name="Storm Virtual Drainlines" />
-          <LayerGroup Name="Storm Open Drains" />
-          <LayerGroup Name="Storm Detention Areas" />
+
+        <LayersGroup DisplayName="GPS" Visible="True">
+          <LayerGroup Name="GPS Hydrant" />
+          <LayerGroup Name="GPS Meter Pit" />
+          <LayerGroup Name="GPS Premise" />
+          <LayerGroup Name="GPS Valve" />
+          <LayerGroup Name="GPS Fitting" />
+          <LayerGroup Name="GPS Manhole" />
+          <LayerGroup Name="GPS Cleanout" />
+          <LayerGroup Name="GPS Lateral" />
+          <LayerGroup Name="GPS Water Main" />
         </LayersGroup>
 
+        <LayersGroup DisplayName="Water" Visible="True">
+          <LayerGroup Name="Encasement" />
+          <LayerGroup Name="Meter Pit" />
+          <LayerGroup Name="Reservoir" />
+          <LayerGroup Name="Water Treatment Plant" />
+          <LayerGroup Name="Tank" />
+          <LayerGroup Name="Booster Station" />
+          <LayerGroup Name="Well" />
+          <LayerGroup Name="Interconnect" />
+          <LayerGroup Name="Bulk Sale Meter" />
+          <LayerGroup Name="Hydrant" />
+          <LayerGroup Name="Service Valve" />
+          <LayerGroup Name="Valve" />
+          <LayerGroup Name="Fitting" />
+          <LayerGroup Name="Lateral" />
+          <LayerGroup Name="Main" />
+        </LayersGroup>
+
+        <LayersGroup DisplayName="Sewer" Visible="False">
+          <LayerGroup Name="Sewer Septic Tank" />
+          <LayerGroup Name="Sewer Disposal Bed" />
+          <LayerGroup Name="Sewer Diversion Chamber" />
+          <LayerGroup Name="Sewer Treatment Plant" />
+          <LayerGroup Name="Sewer Outfall" />
+          <LayerGroup Name="Sewer Equalization Basin" />
+          <LayerGroup Name="Sewer Lift Station" />
+          <LayerGroup Name="Sewer Lateral Point" />
+          <LayerGroup Name="Sewer Manhole" />
+          <LayerGroup Name="Sewer Meter" />
+          <LayerGroup Name="Sewer Cleanout" />
+          <LayerGroup Name="Sewer Fitting" />
+          <LayerGroup Name="Sewer Valve" />
+          <LayerGroup Name="Sewer Lateral" />
+          <LayerGroup Name="Sewer Force Main" />
+          <LayerGroup Name="Sewer Gravity Main" />
+        </LayersGroup>
+
+        <LayersGroup DisplayName="Abandoned" Visible="False">
+          <LayerGroup Name="Abandoned Valve" />
+          <LayerGroup Name="Abandoned Lateral" />
+          <LayerGroup Name="Abandoned Main" />
+        </LayersGroup>
 
       </LayerGroupings>
       <!--True to show toggle button, false to hide-->
@@ -219,316 +196,381 @@
       <!--Option to show only one basemap at a time, True will turn off all basemaps when one is clicked-->
       <SingleBaseMap>True</SingleBaseMap>
       <!-- option to draw arrows that represent digitize direction-->
-      <FlowArrowsLayers ButtonText="Flow">
-        <FlowArrowsLayer Name="Sewer Gravity Mains"/>
-        <FlowArrowsLayer Name="Storm Gravity Mains"/>
-
+      <FlowArrowsLayers ButtonText="Display Sewer Flow">
+        <FlowArrowsLayer Name="Sewer Gravity Main"/>
+        <FlowArrowsLayer Name="Sewer Force Main"/>
       </FlowArrowsLayers>
 
       <LayersFieldOptions>
-
-        <Layer Name="Markup Polygons"  Caption="Redlines" SpecialCase="">
-
-          <Field Name="CREWNAME" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="" >
-
-
-          </Field>
-          <Field Name="TIMESTAMP" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="" >
-
-
-          </Field>
-          <Field Name="NOTES" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="" >
-          </Field>
-          <Field Name="COMPLETED" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="" >
-
-
-          </Field>
-
-
-
-
-
-        </Layer>
-        <Layer Name="Water Hydrant Inspections"  Caption="Water Hydrant Inspections" SpecialCase="">
-
-          <Field Name="INSSTART" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="True">
-              <!--<FilterInfo FieldName="ASSIGNEDTO">
-                <FieldValue>Crew 1</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>-->
-            </FilterFields>
-          </Field>
-
-          <Field Name="HYDRCOND" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="True">
-              <!--<FilterInfo FieldName="ASSIGNEDTO">
-                <FieldValue>Crew 1</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>-->
-            </FilterFields>
-          </Field>
-
-          <Field Name="OPERHARD" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="False">
-              <FilterInfo FieldName="HYDRCOND">
-                <FieldValue>[ISNULL]</FieldValue>
-                <FieldValue>Good</FieldValue>
-                <FieldValue>New</FieldValue>
-                <FieldValue>Fair</FieldValue>
-              </FilterInfo>
-            </FilterFields>
-          </Field>
-          <Field Name="OPERABLE" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-
-            <FilterFields Mode="" Visibility="False">
-              <FilterInfo FieldName="HYDRCOND">
-                <FieldValue>[ISNULL]</FieldValue>
-
-                <FieldValue>Good</FieldValue>
-                <FieldValue>New</FieldValue>
-                <FieldValue>Fair</FieldValue>
-              </FilterInfo>
-            </FilterFields>
-          </Field>
-          <Field Name="CORRODED" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-
-            <FilterFields Mode="" Visibility="False">
-              <FilterInfo FieldName="HYDRCOND">
-                <FieldValue>[ISNULL]</FieldValue>
-
-                <FieldValue>Good</FieldValue>
-                <FieldValue>New</FieldValue>
-                <FieldValue>Fair</FieldValue>
-              </FilterInfo>
-            </FilterFields>
-          </Field>
-
-          <Field Name="FLOW" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="True">
-              <!--<FilterInfo FieldName="ASSIGNEDTO">
-                <FieldValue>Crew 1</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>-->
-            </FilterFields>
-          </Field>
-          <Field Name="PRESSURE" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="True">
-              <!--<FilterInfo FieldName="ASSIGNEDTO">
-                <FieldValue>Crew 1</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>-->
-            </FilterFields>
-          </Field>
-          <Field Name="MTCERQRD" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="True">
-              <!--<FilterInfo FieldName="ASSIGNEDTO">
-                <FieldValue>Crew 1</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>-->
-            </FilterFields>
-          </Field>
-          <Field Name="NOTES" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="True">
-              <!--<FilterInfo FieldName="ASSIGNEDTO">
-                <FieldValue>Crew 1</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>-->
-            </FilterFields>
-          </Field>
-          <Field Name="INSEND" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="True">
-              <!--<FilterInfo FieldName="ASSIGNEDTO">
-                <FieldValue>Crew 1</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>-->
-            </FilterFields>
-          </Field>
-          <Field Name="INSPECTID" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="True">
-              <!--<FilterInfo FieldName="ASSIGNEDTO">
-                <FieldValue>Crew 1</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>-->
-            </FilterFields>
-          </Field>
-          <Field Name="FACILITYKEY" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="True">
-              <!--<FilterInfo FieldName="ASSIGNEDTO">
-                <FieldValue>Crew 1</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>-->
-            </FilterFields>
-          </Field>
-          <Field Name="INSPECTOR" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="True">
-              <!--<FilterInfo FieldName="ASSIGNEDTO">
-                <FieldValue>Crew 1</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>-->
-            </FilterFields>
-          </Field>
-          <Field Name="LASTUPDATE" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="True">
-              <!--<FilterInfo FieldName="ASSIGNEDTO">
-                <FieldValue>Crew 1</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>-->
-            </FilterFields>
-          </Field>
-          <Field Name="LASTEDITOR" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="True">
-              <!--<FilterInfo FieldName="ASSIGNEDTO">
-                <FieldValue>Crew 1</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>-->
-            </FilterFields>
-          </Field>
-          <Field Name="WORKKEY" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="True">
-
-            </FilterFields>
-          </Field>
-
-
-        </Layer>
-        <Layer Name="Workorders"  Caption="Wordorders" SpecialCase="">
-
-          <Field Name="FCLASS" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="Asset">
-            <FilterFields Mode="WO_ID" Visibility="True">
-
-            </FilterFields>
-            <FilterFields Mode="WO_Close" Visibility="False">
-              <!--<FilterInfo FieldName="ASSIGNEDTO">
-                <FieldValue>Crew 1</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>-->
-            </FilterFields>
-          </Field>
-          <Field Name="FACILITYKEY" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="Asset ID">
-            <FilterFields Mode="WO_ID" Visibility="True">
-
-            </FilterFields>
-            <FilterFields Mode="WO_Close" Visibility="False">
-              <!--<FilterInfo FieldName="ASSIGNEDTO">
-                <FieldValue>Crew 1</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>-->
-            </FilterFields>
-          </Field>
-          <Field Name="WORKTYPE" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-            <FilterFields Mode="WO_ID" Visibility="True">
-
-            </FilterFields>
-            <FilterFields Mode="WO_Close" Visibility="False">
-              <!--<FilterInfo FieldName="ASSIGNEDTO">
-                <FieldValue>Crew 1</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>-->
-            </FilterFields>
-          </Field>
-          <Field Name="ASSIGNEDTO" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-            <FilterFields Mode="WO_ID" Visibility="False">
-
-            </FilterFields>
-            <FilterFields Mode="WO_Close" Visibility="False">
-
-            </FilterFields>
-          </Field>
-          <Field Name="WORKID" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-            <FilterFields Mode="WO_ID" Visibility="False">
-
-            </FilterFields>
-            <FilterFields Mode="WO_Close" Visibility="False">
-
-            </FilterFields>
-          </Field>
-          <Field Name="WORKSTATUS" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-            <FilterFields Mode="WO_ID" Visibility="False">
-
-            </FilterFields>
-            <FilterFields Mode="WO_Close" Visibility="True">
-
-            </FilterFields>
-          </Field>
-          <Field Name="PLANSTART" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-            <FilterFields Mode="WO_ID" Visibility="False">
-
-            </FilterFields>
-            <FilterFields Mode="WO_Close" Visibility="True">
-
-            </FilterFields>
-          </Field>
-          <Field Name="PLANEND" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-            <FilterFields Mode="WO_ID" Visibility="True">
-
-            </FilterFields>
-            <FilterFields Mode="WO_Close" Visibility="True">
-
-            </FilterFields>
-          </Field>
-          <Field Name="ACTSTART" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-            <FilterFields Mode="WO_ID" Visibility="True">
-
-            </FilterFields>
-            <FilterFields Mode="WO_Close" Visibility="True">
-
-            </FilterFields>
-          </Field>
-          <Field Name="ACTEND" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-            <FilterFields Mode="WO_ID" Visibility="True">
-
-            </FilterFields>
-            <FilterFields Mode="WO_Close" Visibility="True">
-
-            </FilterFields>
-          </Field>
-          <Field Name="EMERGENCY" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-            <FilterFields Mode="WO_ID" Visibility="True">
-
-            </FilterFields>
-            <FilterFields Mode="WO_Close" Visibility="False">
-
-            </FilterFields>
-
-          </Field>
-          <Field Name="PRIORITY" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-            <FilterFields Mode="WO_ID" Visibility="True">
-
-            </FilterFields>
-            <FilterFields Mode="WO_Close" Visibility="False">
-
-            </FilterFields>
-
-          </Field>
-          <Field Name="LOCATION" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-            <FilterFields Mode="WO_ID" Visibility="True">
-
-            </FilterFields>
-            <FilterFields Mode="WO_Close" Visibility="True">
-
-            </FilterFields>
-
-          </Field>
-
+        <Layer Name="Premise"  Caption="">
+          <Field Name="Premise_ID" Caption="Click Premise # for Mapcall" HyperFormat="https://www.mapcall.net/modules/data/services/servicelink.aspx?premise={value}" Target="_blank" ForeColor="" BackColor="" BoxColor=""  Options=""/>
+          <Field Name="SAPID" Caption="SAP ID"/>
         </Layer>
 
+        <Layer Name="As Built"  Caption="">
+          <Field Name="AsBuiltID" Caption="Click As Built # for Mapcall" HyperFormat="https://www.mapcall.net/modules/data/asbuilts/asbuiltlink.aspx?asBuiltImageID={value}" Target="_blank" ForeColor="" BackColor="" BoxColor=""  Options=""/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Meter Pit"  Caption="">
+          <Field Name="NumberOfMeters" Caption="Number of Meters"/>
+          <Field Name="DataSourceType" Caption="Accuracy "/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Reservoir"  Caption="">
+          <Field Name="FacilityName" Caption="Name"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Water Treatment Plant"  Caption="">
+          <Field Name="FacilityName" Caption="Name"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Tank"  Caption="">
+          <Field Name="FacilityName" Caption="Name"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Booster Station"  Caption="">
+          <Field Name="FacilityName" Caption="Name"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Well"  Caption="">
+          <Field Name="FacilityName" Caption="Name"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Interconnect"  Caption="">
+          <Field Name="FacilityName" Caption="Name"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Bulk Sale Meter"  Caption="Bulk Sale Meter">
+          <Field Name="DataSourceType" Caption="Accuracy "/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Hydrant"  Caption="">
+          <Field Name="HydrantID" Caption="Click Hydrant ID for Mapcall" HyperFormat="https://www.mapcall.net/modules/data/hydrants/hydrantlink.aspx?hydnum={value}" Target="_blank" ForeColor="" BackColor="" BoxColor=""  Options=""/>
+          <Field Name="DataSourceType" Caption="Accuracy "/>
+          <Field Name="BillingType" Caption="Billing Type"/>
+          <Field Name="InstallDate" Caption="Installed Date"/>
+          <Field Name="Elevation" Caption="Elevation Above Sea Level"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Service Valve"  Caption="Service Valve">
+          <Field Name="ValveID" Caption="Click Valve ID for Mapcall" HyperFormat="https://www.mapcall.net/modules/data/valves/valvelink.aspx?valNum={value}" Target="_blank" ForeColor="" BackColor="" BoxColor=""  Options=""/>
+          <Field Name="DataSourceType" Caption="Accuracy "/>
+          <Field Name="Diameter" Caption="Diameter"/>
+          <Field Name="SubtypeCode" Caption="Valve Type"/>
+          <Field Name="NormalPosition" Caption="Normal Position"/>
+          <Field Name="InstallDate" Caption="Installed Date"/>
+          <Field Name="Elevation" Caption="Elevation Above Sea Level"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Valve"  Caption="Valve">
+          <Field Name="ValveID" Caption="Click Valve ID for Mapcall" HyperFormat="https://www.mapcall.net/modules/data/valves/valvelink.aspx?valNum={value}" Target="_blank" ForeColor="" BackColor="" BoxColor=""  Options=""/>
+          <Field Name="DataSourceType" Caption="Accuracy "/>
+          <Field Name="Diameter" Caption="Diameter"/>
+          <Field Name="SubtypeCode" Caption="Valve Type"/>
+          <Field Name="StreetApplication" Caption="Valve Category"/>
+          <Field Name="NormalPosition" Caption="Normal Position"/>
+          <Field Name="InstallDate" Caption="Installed Date"/>
+          <Field Name="Elevation" Caption="Elevation Above Sea Level"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Fitting"  Caption="Fitting">
+          <Field Name="DataSourceType" Caption="Accuracy "/>
+          <Field Name="InstallDate" Caption="Date of Install"/>
+          <Field Name="WorkOrderID" Caption="Work Order"/>
+          <Field Name="SubtypeCode" Caption="Type"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Lateral"  Caption="Lateral Line">
+          <Field Name="ServiceID" Caption="Service ID"/>
+          <Field Name="DataSourceType" Caption="Accuracy"/>
+          <Field Name="Material" Caption="Material"/>
+          <Field Name="Diameter" Caption="Diameter"/>
+          <Field Name="InstallDate" Caption="Date of Install"/>
+          <Field Name="WorkOrderID" Caption="Work Order"/>
+          <Field Name="SubtypeCode" Caption="Type"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Main"  Caption="Main">
+          <Field Name="DataSourceType" Caption="Accuracy "/>
+          <Field Name="Material" Caption="Material"/>
+          <Field Name="PipeMaterialSpec" Caption="Pipe Spec"/>
+          <Field Name="Diameter" Caption="Diameter"/>
+          <Field Name="InstallDate" Caption="Date of Install"/>
+          <Field Name="WorkOrderID" Caption="Work Order"/>
+          <Field Name="SubtypeCode" Caption="Type"/>
+          <Field Name="CleanLineDate" Caption="Clean Line Date"/>
+          <Field Name="LiningType" Caption="Lining Type"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Encasement"  Caption="Encasement">
+          <Field Name="InstallDate" Caption="Date of Install"/>
+          <Field Name="EncasementMaterial" Caption="Material"/>
+          <Field Name="EncasementThickness" Caption="Thickness"/>
+          <Field Name="EncasementDiameter" Caption="Diameter"/>
+          <Field Name="EncasementLength" Caption="Length"/>
+          <Field Name="EncasementFill" Caption="Fill"/>
+          <Field Name="EncasementInsulated" Caption="Insulated"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Abandoned Valve"  Caption="Abandoned Valve">
+          <Field Name="ValveID" Caption="Click Valve ID for Mapcall" HyperFormat="https://www.mapcall.net/modules/data/valves/valvelink.aspx?valNum={value}" Target="_blank" ForeColor="" BackColor="" BoxColor=""  Options=""/>
+          <Field Name="DataSourceType" Caption="Accuracy "/>
+          <Field Name="Diameter" Caption="Diameter"/>
+          <Field Name="AbandonedDate" Caption="Abandoned Date"/>
+          <Field Name="AbandonedStatus" Caption="Abandoned Status"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Abandoned Lateral"  Caption="Abandoned Lateral">
+          <Field Name="DataSourceType" Caption="Accuracy "/>
+          <Field Name="Diameter" Caption="Diameter"/>
+          <Field Name="Material" Caption="Material"/>
+          <Field Name="AbandonedDate" Caption="Abandoned Date"/>
+          <Field Name="AbandonedStatus" Caption="Abandoned Status"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Abandoned Main"  Caption="Abandoned Main">
+          <Field Name="DataSourceType" Caption="Accuracy "/>
+          <Field Name="Diameter" Caption="Diameter"/>
+          <Field Name="Material" Caption="Material"/>
+          <Field Name="AbandonedDate" Caption="Abandoned Date"/>
+          <Field Name="AbandonedStatus" Caption="Abandoned Status"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Sewer Septic Tank"  Caption="Sewer Septic Tank">
+          <Field Name="DataSourceType" Caption="Accuracy "/>
+          <Field Name="InstallDate" Caption="Date of Install"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Sewer Disposal Bed"  Caption="Sewer Disposal Bed">
+          <Field Name="DataSourceType" Caption="Accuracy "/>
+          <Field Name="InstallDate" Caption="Date of Install"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Sewer Diversion Chamber"  Caption="Sewer Diversion Chamber">
+          <Field Name="DataSourceType" Caption="Accuracy "/>
+          <Field Name="InstallDate" Caption="Date of Install"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Sewer Treatment Plant"  Caption="Sewer Treatment Plant">
+          <Field Name="FacilityName" Caption="Name"/>
+          <Field Name="InstallDate" Caption="Date of Install"/>
+          <Field Name="Basin" Caption="Basin"/>
+          <Field Name="MaxPumpageMGD" Caption="Max MGD"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Sewer Outfall"  Caption="Sewer Outfall">
+          <Field Name="DataSourceType" Caption="Accuracy "/>
+          <Field Name="InstallDate" Caption="Date of Install"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Sewer Equalization Basin"  Caption="Sewer Equalization Basin">
+          <Field Name="DataSourceType" Caption="Accuracy "/>
+          <Field Name="InstallDate" Caption="Date of Install"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Sewer Lift Station"  Caption="Sewer Lift Station">
+          <Field Name="FacilityName" Caption="Name"/>
+          <Field Name="DataSourceType" Caption="Accuracy "/>
+          <Field Name="InstallDate" Caption="Date of Install"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Sewer Manhole"  Caption="Sewer Manhole">
+          <Field Name="StructureID" Caption="Manhole ID"/>
+          <Field Name="SubtypeCode" Caption="Type"/>
+          <Field Name="RimElevation" Caption="Rim Elevation"/>
+          <Field Name="InvertElevation" Caption="Invert Elevation"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Sewer Cleanout"  Caption="Sewer Cleanout">
+          <Field Name="DataSourceType" Caption="Accuracy"/>
+          <Field Name="SubtypeCode" Caption="Type"/>
+          <Field Name="StructureID" Caption="Cleanout ID"/>
+          <Field Name="StructureDiameter" Caption="Diameter"/>
+          <Field Name="InstallDate" Caption="Date of Install"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Sewer Fitting"  Caption="Sewer Fitting">
+          <Field Name="SubtypeCode" Caption="Type"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Sewer Valve"  Caption="Sewer Valve">
+          <Field Name="DataSourceType" Caption="Accuracy "/>
+          <Field Name="StructureID" Caption="Valve ID"/>
+          <Field Name="NormalPosition" Caption="Normal Position"/>
+          <Field Name="Diameter" Caption="Diameter"/>
+          <Field Name="InstallDate" Caption="Date of Install"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Sewer Lateral"  Caption="Sewer Lateral">
+          <Field Name="DataSourceType" Caption="Accuracy "/>
+          <Field Name="Material" Caption="Material"/>
+          <Field Name="Diameter" Caption="Diameter"/>
+          <Field Name="InstallDate" Caption="Date of Install"/>
+          <Field Name="SubtypeCode" Caption="Type"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Sewer Force Main"  Caption="Sewer Force Main">
+          <Field Name="DataSourceType" Caption="Accuracy "/>
+          <Field Name="Material" Caption="Material"/>
+          <Field Name="Diameter" Caption="Diameter"/>
+          <Field Name="InstallDate" Caption="Date of Install"/>
+          <Field Name="WorkOrderID" Caption="Work Order"/>
+          <Field Name="UpStreamInvert" Caption="Up Stream Invert"/>
+          <Field Name="DownStreamInvert" Caption="Down Stream Invert"/>
+          <Field Name="SAPID" Caption="SAP ID"/>
+        </Layer>
+
+        <Layer Name="Sewer Gravity Main"  Caption="Sewer Gravity Main">
+          <Field Name="DataSourceType" Caption="Accuracy "/>
+          <Field Name="Material" Caption="Material"/>
+          <Field Name="Diameter" Caption="Diameter"/>
+          <Field Name="InstallDate" Caption="Date of Install"/>
+          <Field Name="WorkOrderID" Caption="Work Order"/>
+          <Field Name="UpStreamInvert" Caption="Up Stream Invert"/>
+          <Field Name="DownStreamInvert" Caption="Down Stream Invert"/>
+        </Layer>
+
+        <Layer Name="Property Lines"  Caption="">
+          <Field Name="PROP_LOC" Caption="Address"/>
+          <Field Name="Municipality" Caption="Town"/>
+          <Field Name="BLOCK" Caption="Block"/>
+          <Field Name="LOT" Caption="Lot"/>
+          <Field Name="Owner" Caption="Last known owner"/>
+        </Layer>
+
+        <Layer Name="Pressure Zone"  Caption="Pressure Zone">
+          <Field Name="Pressure ZoneFullName" Caption="Name"/>
+          <Field Name="HGL_Value" Caption="Top Water Elevation (feet)"/>
+          <Field Name="ZoneName" Caption="Common Abbreviation"/>
+        </Layer>
+
+        <Layer Name="Municipality"  Caption="County">
+          <Field Name="NAME" Caption="Name"/>
+          <Field Name="COUNTY" Caption="County"/>
+        </Layer>
+
+        <Layer Name="County"  Caption="County">
+          <Field Name="COUNTY_LABEL" Caption="Name"/>
+        </Layer>
+
+        <Layer Name="Bookmap Grid"  Caption="Bookmap Grid (2010)">
+          <Field Name="GRID_ID" Caption="GRID ID"/>
+        </Layer>
+
+        <Layer Name="Parks"  Caption="County">
+          <Field Name="NAME" Caption="Name"/>
+        </Layer>
+
+        <Layer Name="Break Location"  Caption="Break Location">
+          <Field Name="WorkOrder" Caption="Work Order"/>
+          <Field Name="NAME" Caption="Name"/>
+        </Layer>
+
+        <Layer Name="GPS Hydrant"  Caption="">
+          <Field Name="HydrantID" Caption="Hydrant ID"/>
+          <Field Name="AvgEstAcc" Caption="Accuracy"/>
+          <Field Name="GPS_Operator" Caption="GPS Operator"/>
+          <Field Name="GPS_Date" Caption="GPS Date"/>
+          <Field Name="GPS_FieldNotes" Caption="Field Notes"/>
+          <Field Name="ReviewReq" Caption="Review Required?"/>
+        </Layer>
+
+        <Layer Name="GPS Valve"  Caption="">
+          <Field Name="ValveID" Caption="Valve ID"/>
+          <Field Name="DataSourceType" Caption="Accuracy"/>
+          <Field Name="SubtypeCode" Caption=""/>
+          <Field Name="GPS_Operator" Caption="GPS Operator"/>
+          <Field Name="GPS_Date" Caption="GPS Date"/>
+          <Field Name="GPS_FieldNotes" Caption="Field Notes"/>
+          <Field Name="ReviewReq" Caption="Review Required?"/>
+        </Layer>
+
+        <Layer Name="GPS Meter Pit"  Caption="">
+          <Field Name="NumberOfMeters" Caption="# Meters in Pit"/>
+          <Field Name="AvgEstAcc" Caption="Accuracy"/>
+          <Field Name="GPS_Operator" Caption="GPS Operator"/>
+          <Field Name="GPS_Date" Caption="GPS Date"/>
+          <Field Name="GPS_FieldNotes" Caption="Notes/Premise #(s)"/>
+          <Field Name="ReviewReq" Caption="Review Required?"/>
+        </Layer>
+
+        <Layer Name="GPS Premise"  Caption="">
+          <Field Name="Premise_ID" Caption="Premise #"/>
+
+        </Layer>
+
+        <Layer Name="GPS Fitting"  Caption="">
+          <Field Name="AvgEstAcc" Caption="Accuracy"/>
+          <Field Name="SubtypeCode" Caption="Type"/>
+          <Field Name="GPS_Operator" Caption="GPS Operator"/>
+          <Field Name="GPS_Date" Caption="GPS Date"/>
+          <Field Name="GPS_FieldNotes" Caption="Field Note"/>
+          <Field Name="ReviewReq" Caption="Review Required?"/>
+        </Layer>
+
+        <Layer Name="GPS Lateral"  Caption="Lateral Line">
+          <Field Name="Material" Caption="Material"/>
+          <Field Name="Diameter" Caption="Diameter"/>
+          <Field Name="SubtypeCode" Caption="Type"/>
+        </Layer>
+
+        <Layer Name="GPS Water Main"  Caption="Water Main">
+          <Field Name="Material" Caption="Material"/>
+          <Field Name="Diameter" Caption="Diameter"/>
+        </Layer>
+
+        <Layer Name="GPS Manhole"  Caption="">
+          <Field Name="SubTypeCode" Caption="Type"/>
+          <Field Name="StructureID" Caption="Manhole ID"/>
+          <Field Name="RimElevation" Caption="Rim Elevation"/>
+          <Field Name="InvertElevation" Caption="Invert Elevation"/>
+          <Field Name="AvgEstAcc" Caption="Accuracy"/>
+          <Field Name="GPS_Operator" Caption="GPS Operator"/>
+          <Field Name="GPS_Date" Caption="GPS Date"/>
+          <Field Name="GPS_FieldNotes" Caption="Field Notes"/>
+          <Field Name="ReviewReq" Caption="Review Required?"/>
+        </Layer>
+
+        <Layer Name="GPS Cleanout"  Caption="">
+          <Field Name="SubTypeCode" Caption="Type"/>
+          <Field Name="StructureID" Caption="Cleanout ID"/>
+          <Field Name="AvgEstAcc" Caption="Accuracy"/>
+          <Field Name="GPS_Operator" Caption="GPS Operator"/>
+          <Field Name="GPS_Date" Caption="GPS Date"/>
+          <Field Name="GPS_FieldNotes" Caption="Field Notes"/>
+          <Field Name="ReviewReq" Caption="Review Required?"/>
+        </Layer>
 
       </LayersFieldOptions>
       <UIComponents>
@@ -547,131 +589,84 @@
       <EditFormNewColor></EditFormNewColor>
       <!--Auto Populate fields with intersects-->
       <Layers>
-        <!--On New and onModify Options
-        TIME,CPUNAME,Date,User,FullUser,Value,WOCrew,GUID,WOCurrent,ADDRESS,None or "",Intersect-->
-
-
-        <Layer Name="Markup Polygons" AllowNew = "True" EditExisting ="false" EditOwnerField ="" EditGeo ="false" DeleteFeature="false" DisplayText="Redline" SketchMode="Freehand" SketchColor="#FFFF0000" SnapTo="" SyncOnSave="0">
-          <Field Name="TIMESTAMP" OnNew="Date" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="CREWNAME" OnNew="User" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="COMPLETED" OnNew="value" OnModify=""  OnNewReadOnly="false" OnModifyReadOnly ="false" IntersectLayer="" IntersectField="" ValueText="No"/>
-
-        </Layer>
-        <Layer Name="Sewer Overflows" AllowNew = "True" EditExisting ="true" EditOwnerField ="" EditGeo ="True"  DisplayText="Sewer Overflows" SketchMode="Tap" SketchColor="#FFFFFF00" SnapTo="Sewer Manholes">
-          <Field Name="MTCENAME" OnNew="User" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="OVRFLWSTART" OnNew="Date" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="FACILITYKEY" OnNew="Intersect" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="Sewer Manholes" IntersectField="FACILITYID" />
-
-
-          <Field Name="LASTUPDATE" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="LASTEDITOR" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-
-        </Layer>
-        <Layer Name="Water Hydrant Inspections" AllowNew = "True" EditExisting ="true" EditOwnerField ="" EditGeo ="True"  DisplayText="Hydrant Inspections" SketchMode="Tap" SketchColor="#FFFFFF00" SnapTo="Water Hydrants">
-          <Field Name="INSSTART" OnNew="Date" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-
-
-
-          <Field Name="FACILITYKEY" OnNew="Intersect" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="Water Hydrants" IntersectField="FACILITYID" />
-
-
-
-          <Field Name="LASTUPDATE" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="LASTEDITOR" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="WORKKEY" OnNew="WOCurrent" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="INSPECTOR" OnNew="WOCrew" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-
+        <Layer Name="Comment Layer" EditExisting ="Own" EditOwnerField ="Name" EditGeo ="True" DeleteFeature="True" DisplayText="Comment" SketchMode="Freehand" SketchColor="#FFFF0077" SnapTo="">
+          <Field Name="Status" OnNew="" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+          <Field Name="Date" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+          <Field Name="Name" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+          <Field Name="GISReply" OnNew="" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
         </Layer>
 
-        <Layer Name="Water Valve Inspections" AllowNew = "True" EditExisting ="" EditOwnerField ="" EditGeo ="False"  DisplayText="Valve Inspections" SketchMode="Tap" SketchColor="#FFFF0000" SnapTo="Water System Valves">
-          <Field Name="INSSTART" OnNew="Date" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="FACILITYKEY" OnNew="Intersect" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="Water System Valves" IntersectField="FACILITYID" />
-          <Field Name="LASTUPDATE" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="LASTEDITOR" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-
-          <Field Name="WORKKEY" OnNew="WOCurrent" OnModify="WOCurrent"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="INSPECTOR" OnNew="WOCrew" OnModify="WOCrew"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+        <Layer Name="Break Location" EditExisting ="Own" EditOwnerField ="Name" EditGeo ="True"  DeleteFeature="True" DisplayText="Breaks" SketchMode="Freehand" SketchColor="#FFFF0077" SnapTo="Main">
+          <Field Name="Diameter" OnNew="Intersect" OnModify="Intersect"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="Main" IntersectField="Diameter" />
+          <Field Name="Material" OnNew="Intersect" OnModify="Intersect"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="Main" IntersectField="Material" />
+          <Field Name="Name" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
         </Layer>
 
-        <Layer Name="Sewer Manhole Inspections" AllowNew = "True" EditExisting ="" EditOwnerField ="" EditGeo ="False"  DisplayText="Manhole Inspections" SketchMode="Tap" SketchColor="#FFFF0000" SnapTo="Sewer Manholes">
-          <Field Name="INSSTART" OnNew="Date" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="FACILITYKEY" OnNew="Intersect" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="Sewer Manholes" IntersectField="FACILITYID" />
-          <Field Name="LASTUPDATE" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="LASTEDITOR" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="WORKKEY" OnNew="WOCurrent" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="INSPECTOR" OnNew="WOCrew" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+        <Layer Name="GPS Valve" EditExisting ="Own" EditOwnerField ="Name" EditGeo ="True"  DeleteFeature="True" DisplayText="GPS/V" SketchMode="Freehand" SketchColor="#FFFF0077" SnapTo="">
+          <Field Name="ValveID" OnNew="" OnModify=""  OnNewReadOnly="" OnModifyReadOnly ="" IntersectLayer="" IntersectField="" />
 
+          <Field Name="GPS_Operator" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+          <Field Name="GPS_Date" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+          <Field Name="GPS_FieldNotes" OnNew="" OnModify=""  OnNewReadOnly="" OnModifyReadOnly ="" IntersectLayer="" IntersectField="" />
+          <Field Name="ReviewReq" OnNew="" OnModify=""  OnNewReadOnly="" OnModifyReadOnly ="" IntersectLayer="" IntersectField="" />
         </Layer>
-        <Layer Name="Service Requests" AllowNew = "True" EditExisting ="" EditOwnerField ="" EditGeo ="False"  DisplayText="Log a Service Request" SketchMode="Tap" SketchColor="#FFFF0000" SnapTo="">
-          <Field Name="REQUESTDATE" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="NAME" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="INSPECTOR" OnNew="WOCrew" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+        <Layer Name="GPS Hydrant" EditExisting ="Own" EditOwnerField ="Name" EditGeo ="True"  DeleteFeature="True" DisplayText="GPS/H" SketchMode="Freehand" SketchColor="#FFFF0077" SnapTo="">
 
-        </Layer>
-        <Layer Name="Inlet Cleanouts" AllowNew = "True" EditExisting ="" EditOwnerField ="" EditGeo ="False"  DisplayText="Cleanout Inspection" SketchMode="Tap" SketchColor="#FFFF0000" SnapTo="Storm Inlets">
-          <Field Name="INSSTART" OnNew="Date" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="FACILITYKEY" OnNew="Intersect" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="Storm Inlets" IntersectField="FACILITYID" />
-          <Field Name="LASTUPDATE" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="LASTEDITOR" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="WORKKEY" OnNew="WOCurrent" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-
-          <Field Name="INSPECTOR" OnNew="WOCrew" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-
-        </Layer>
-        <Layer Name="Water Leaks" AllowNew = "True" EditExisting ="" EditOwnerField ="" EditGeo ="False"  DisplayText="Main Break" SketchMode="Tap" SketchColor="#FFFF0000" SnapTo="Water Mains">
-          <Field Name="INSSTART" OnNew="Date" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="FACILITYKEY" OnNew="Intersect" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="Water Mains" IntersectField="FACILITYID" />
-          <Field Name="LASTUPDATE" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="LASTEDITOR" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-
-          <Field Name="WORKKEY" OnNew="WOCurrent" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-
-          <Field Name="INSPECTOR" OnNew="WOCrew" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+          <Field Name="GPS_Operator" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+          <Field Name="GPS_Date" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+          <Field Name="GPS_FieldNotes" OnNew="" OnModify=""  OnNewReadOnly="" OnModifyReadOnly ="" IntersectLayer="" IntersectField="" />
+          <Field Name="ReviewReq" OnNew="" OnModify=""  OnNewReadOnly="" OnModifyReadOnly ="" IntersectLayer="" IntersectField="" />
         </Layer>
 
+        <Layer Name="GPS Lateral" EditExisting ="Own" EditOwnerField ="Name" EditGeo ="True"  DeleteFeature="True" DisplayText="GPS/Lat" SketchMode="Multipoint" SketchColor="#FFFF0077" SnapTo="">
+        </Layer>
 
-        <Layer Name="Workorders" AllowNew = "True" EditExisting ="" EditOwnerField ="" EditGeo ="False"  DisplayText="Create a WO on Mains" SketchMode="Tap" SketchColor="#FFFF0000" SnapTo="Water Mains">
-          <Field Name="FCLASS" OnNew="Value" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" ValueText="Water Mains"/>
+        <Layer Name="GPS Water Main" EditExisting ="Own" EditOwnerField ="Name" EditGeo ="True"  DeleteFeature="True" DisplayText="GPS/Main" SketchMode="Multipoint" SketchColor="#FFFF0077" SnapTo="">
+        </Layer>
 
-          <Field Name="FACILITYKEY" OnNew="Intersect" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="Water Mains" IntersectField="FACILITYID" />
-          <Field Name="ASSIGNEDTO" OnNew="WOCrew" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+        <Layer Name="GPS Meter Pit" EditExisting ="Own" EditOwnerField ="Name" EditGeo ="True"  DeleteFeature="True" DisplayText="GPS/MP" SketchMode="Freehand" SketchColor="#FFFF0077" SnapTo="">
+          <Field Name="NumberOfMeters" OnNew="" OnModify=""  OnNewReadOnly="" OnModifyReadOnly ="" IntersectLayer="" IntersectField="" />
 
-          <Field Name="WORKSTATUS" OnNew="Value" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="false" IntersectLayer="" IntersectField="" ValueText="Assigned"/>
-          <Field Name="ACTSTART" OnNew="Date" OnModify=""  OnNewReadOnly="false" OnModifyReadOnly ="false" IntersectLayer="" IntersectField="" />
-          <Field Name="PLANSTART" OnNew="Date" OnModify=""  OnNewReadOnly="false" OnModifyReadOnly ="false" IntersectLayer="" IntersectField="" />
+          <Field Name="GPS_Operator" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+          <Field Name="GPS_Date" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+          <Field Name="GPS_FieldNotes" OnNew="" OnModify=""  OnNewReadOnly="" OnModifyReadOnly ="" IntersectLayer="" IntersectField="" />
+          <Field Name="ReviewReq" OnNew="" OnModify=""  OnNewReadOnly="" OnModifyReadOnly ="" IntersectLayer="" IntersectField="" />
+        </Layer>
 
-          <Field Name="LASTUPDATE" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="LASTEDITOR" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-
-          <Field Name="LOCATION" OnNew="Address" OnModify="Address"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="WORKID" OnNew="GUID" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <!--  <Field Name="DIAMETER" OnNew="Intersect" OnModify="Intersect"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="Water Mains" IntersectField="Diameter" />
-          <Field Name="MATERIAL" OnNew="Intersect" OnModify="Intersect"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="Water Mains" IntersectField="Material" />-->
-
-
+        <Layer Name="GPS Premise" EditExisting ="Own" EditOwnerField ="Name" EditGeo ="True"  DeleteFeature="True" DisplayText="GPS/Pr" SketchMode="Freehand" SketchColor="#FFFF0077" SnapTo="">
+          <Field Name="Premise_ID" OnNew="" OnModify=""  OnNewReadOnly="" OnModifyReadOnly ="" IntersectLayer="" IntersectField="" />
 
         </Layer>
-        <Layer Name="Workorders" AllowNew = "True" EditExisting ="" EditOwnerField ="" EditGeo ="False"  DisplayText="Create a WO on Valves" SketchMode="Tap" SketchColor="#FFFF0000" SnapTo="Water System Valves">
-          <Field Name="FCLASS" OnNew="Intersect" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="Water System Valves" IntersectField="[Name]" Value=""/>
-          <Field Name="FACILITYKEY" OnNew="Intersect" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="Water System Valves" IntersectField="FACILITYID" />
-          <Field Name="ASSIGNEDTO" OnNew="WOCrew" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="WORKSTATUS" OnNew="Value" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="false" IntersectLayer="" IntersectField="" ValueText="Assigned"/>
-          <Field Name="ACTSTART" OnNew="Date" OnModify=""  OnNewReadOnly="false" OnModifyReadOnly ="false" IntersectLayer="" IntersectField="" />
-          <Field Name="PLANSTART" OnNew="Date" OnModify=""  OnNewReadOnly="false" OnModifyReadOnly ="false" IntersectLayer="" IntersectField="" />
-          <Field Name="LASTUPDATE" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="LASTEDITOR" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="LOCATION" OnNew="Address" OnModify="Address"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="WORKID" OnNew="ID" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
 
-          <!--  
-         
-        <Field Name="DIAMETER" OnNew="Intersect" OnModify="Intersect"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="Water Mains" IntersectField="Diameter" />
-          <Field Name="MATERIAL" OnNew="Intersect" OnModify="Intersect"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="Water Mains" IntersectField="Material" />-->
+        <Layer Name="GPS Fitting" EditExisting ="Own" EditOwnerField ="Name" EditGeo ="True"  DeleteFeature="True" DisplayText="GPS/F" SketchMode="Freehand" SketchColor="#FFFF0077" SnapTo="">
 
+          <Field Name="GPS_Operator" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+          <Field Name="GPS_Date" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+          <Field Name="GPS_FieldNotes" OnNew="" OnModify=""  OnNewReadOnly="" OnModifyReadOnly ="" IntersectLayer="" IntersectField="" />
+          <Field Name="ReviewReq" OnNew="" OnModify=""  OnNewReadOnly="" OnModifyReadOnly ="" IntersectLayer="" IntersectField="" />
+        </Layer>
 
+        <Layer Name="GPS Manhole" EditExisting ="Own" EditOwnerField ="Name" EditGeo ="True"  DeleteFeature="True" DisplayText="GPS/MH" SketchMode="Freehand" SketchColor="#FFFF0077" SnapTo="">
+          <Field Name="StructureID" OnNew="" OnModify=""  OnNewReadOnly="" OnModifyReadOnly ="" IntersectLayer="" IntersectField="" />
+          <Field Name="RimElevation" OnNew="" OnModify=""  OnNewReadOnly="" OnModifyReadOnly ="" IntersectLayer="" IntersectField="" />
+          <Field Name="InvertElevation" OnNew="" OnModify=""  OnNewReadOnly="" OnModifyReadOnly ="" IntersectLayer="" IntersectField="" />
 
+          <Field Name="GPS_Operator" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+          <Field Name="GPS_Date" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+          <Field Name="GPS_FieldNotes" OnNew="" OnModify=""  OnNewReadOnly="" OnModifyReadOnly ="" IntersectLayer="" IntersectField="" />
+          <Field Name="ReviewReq" OnNew="" OnModify=""  OnNewReadOnly="" OnModifyReadOnly ="" IntersectLayer="" IntersectField="" />
+        </Layer>
+
+        <Layer Name="GPS Cleanout" EditExisting ="Own" EditOwnerField ="Name" EditGeo ="True"  DeleteFeature="True" DisplayText="GPS/CO" SketchMode="Freehand" SketchColor="#FFFF0077" SnapTo="">
+          <Field Name="StructureID" OnNew="" OnModify=""  OnNewReadOnly="" OnModifyReadOnly ="" IntersectLayer="" IntersectField="" />
+
+          <Field Name="GPS_Operator" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+          <Field Name="GPS_Date" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+          <Field Name="GPS_FieldNotes" OnNew="" OnModify=""  OnNewReadOnly="" OnModifyReadOnly ="" IntersectLayer="" IntersectField="" />
+          <Field Name="ReviewReq" OnNew="" OnModify=""  OnNewReadOnly="" OnModifyReadOnly ="" IntersectLayer="" IntersectField="" />
         </Layer>
       </Layers>
+
       <DateTimeDisplayFormat>MM/dd/yyyy</DateTimeDisplayFormat>
       <!--Option to Log inspection information to an xml file for backup and recovery reasons-->
       <LogEdits>False</LogEdits>
@@ -692,9 +687,8 @@
         <PromptPictureBrowse>Browse for a photo</PromptPictureBrowse>
         <NullValueDropDown>&lt;Null&gt;</NullValueDropDown>
         <DeleteMessage>Record has been deleted</DeleteMessage>
-        <NoGeometryMessage>Use the map to define the location of the record</NoGeometryMessage>
+        <NoGeometryMessage>DO NOT FORGET to post edits after saving!</NoGeometryMessage>
         <PromptForDelete>Are you sure you want to delete this asset</PromptForDelete>
-        <PromptForSketch>There are unsaved sketchs, save to attachments?</PromptForSketch>
       </UIComponents>
     </EditControlOptions>
     <!--Options service tab, allows you to sync, post, refresh-->
@@ -702,81 +696,67 @@
       <!--Option to show or hide the Panel-->
       <Visible>True</Visible>
       <!--The text to display in the button-->
-      <DisplayText>Service</DisplayText>
+      <DisplayText>Exchange</DisplayText>
       <!--Message to show in the lower left status bar-->
       <StatusBarMessage>Data Services: Post or get new data changes from your office's server</StatusBarMessage>
       <!--layers to refresh-->
-      <RefreshList ShowAllLayers="true">
-        <RefreshGroup Name="Workorders">
-          <RefreshLayer Name="Workorders" Extent="Full" WhereClause=""/>
-
-        </RefreshGroup >
-        <RefreshGroup Name="Operations">
-
-          <RefreshLayer Name="Site Address Points" />
-          <RefreshLayer Name="Water Leaks" />
-          <RefreshLayer Name="Workorders"  SyncOnStartUp ="False" />
-          <RefreshLayer Name="Markup Polygons" SyncOnStartUp ="" />
-
-        </RefreshGroup >
-        <RefreshGroup Name="Water">
-          <RefreshLayer Name="Water Pumps" />
-          <RefreshLayer Name="Water Network Structures" />
-          <RefreshLayer Name="Water Test Stations" />
-          <RefreshLayer Name="Water Sampling Stations" />
-          <RefreshLayer Name="Water Service Connections" />
-          <RefreshLayer Name="Water Hydrants" />
-          <RefreshLayer Name="Water System Valves" />
-          <RefreshLayer Name="Water Curb Stop Valves" />
-          <RefreshLayer Name="Water Fittings" />
-          <RefreshLayer Name="Water Mains" />
-          <RefreshLayer Name="Water Mains - City View" />
-          <RefreshLayer Name="Water Lateral Lines" />
-          <RefreshLayer Name="Water Casings" />
-        </RefreshGroup >
-        <RefreshGroup Name="Sewer">
-          <RefreshLayer Name="Sewer Test Stations" />
-          <RefreshLayer Name="Sewer Network Structures" />
-          <RefreshLayer Name="Sewer Manholes" />
-          <RefreshLayer Name="Sewer Taps" />
-          <RefreshLayer Name="Sewer Service Connections" />
-          <RefreshLayer Name="Sewer Inlets" />
-          <RefreshLayer Name="Sewer Discharge Points" />
-          <RefreshLayer Name="Sewer System Valves" />
-          <RefreshLayer Name="Sewer Control Valves" />
-          <RefreshLayer Name="Sewer Clean Outs" />
-          <RefreshLayer Name="Sewer Fittings" />
-          <RefreshLayer Name="Sewer Pressurized Mains - City View" />
-          <RefreshLayer Name="Sewer Gravity Mains - City View" />
-          <RefreshLayer Name="Sewer Pressurized Mains" />
-          <RefreshLayer Name="Sewer Gravity Mains" />
-
-          <RefreshLayer Name="Sewer Lateral Lines" />
-          <RefreshLayer Name="Sewer Virtual Drainlines" />
-          <RefreshLayer Name="Sewer Open Drains" />
-          <RefreshLayer Name="Sewer Detention Areas" />
+      <RefreshList ShowAllLayers="false">
+        <RefreshGroup Name="Assets">
+          <RefreshLayer Name="GPS Meter Pit" />
+          <RefreshLayer Name="GPS Valve" />
+          <RefreshLayer Name="GPS Hydrant" />
+          <RefreshLayer Name="GPS Premise" />
+          <RefreshLayer Name="GPS Fitting" />
+          <RefreshLayer Name="GPS Lateral" />
+          <RefreshLayer Name="GPS Water Main" />
+          <RefreshLayer Name="GPS Manhole" />
+          <RefreshLayer Name="GPS Cleanout" />
+          <RefreshLayer Name="Premise Labels" />
+          <RefreshLayer Name="Premise" />
+          <RefreshLayer Name="As Built" />
+          <RefreshLayer Name="Break Location" />
+          <RefreshLayer Name="Comment Layer" />
+          <RefreshLayer Name="Reservoir" />
+          <RefreshLayer Name="Water Treatment Plant" />
+          <RefreshLayer Name="Tank" />
+          <RefreshLayer Name="Booster Station" />
+          <RefreshLayer Name="Well" />
+          <RefreshLayer Name="Interconnect" />
+          <RefreshLayer Name="Meter Pit" />
+          <RefreshLayer Name="Bulk Sale Meter" />
+          <RefreshLayer Name="Hydrant" />
+          <RefreshLayer Name="Service Valve" />
+          <RefreshLayer Name="Valve" />
+          <RefreshLayer Name="Fitting" />
+          <RefreshLayer Name="Lateral" />
+          <RefreshLayer Name="Encasement" />
+          <RefreshLayer Name="Main" />
+          <RefreshLayer Name="Abandoned Valve" />
+          <RefreshLayer Name="Abandoned Lateral" />
+          <RefreshLayer Name="Abandoned Main"/>
+          <RefreshLayer Name="Sewer Septic Tank" />
+          <RefreshLayer Name="Sewer Disposal Bed" />
+          <RefreshLayer Name="Sewer Diversion Chamber" />
+          <RefreshLayer Name="Sewer Treatment Plant" />
+          <RefreshLayer Name="Sewer Outfall" />
+          <RefreshLayer Name="Sewer Equalization Basin" />
+          <RefreshLayer Name="Sewer Lift Station" />
+          <RefreshLayer Name="Sewer Lateral Point" />
+          <RefreshLayer Name="Sewer Manhole" />
+          <RefreshLayer Name="Sewer Meter" />
+          <RefreshLayer Name="Sewer Cleanout" />
+          <RefreshLayer Name="Sewer Fitting" />
+          <RefreshLayer Name="Sewer Valve" />
+          <RefreshLayer Name="Sewer Lateral" />
+          <RefreshLayer Name="Sewer Force Main" />
+          <RefreshLayer Name="Sewer Gravity Main" />
+          <RefreshLayer Name="Pressure Zone" />
         </RefreshGroup>
-        <RefreshGroup Name="Storm" >
-          <RefreshLayer Name="Storm Network Structures" />
-          <RefreshLayer Name="Storm Manholes" />
-          <RefreshLayer Name="Storm Inlets" />
-          <RefreshLayer Name="Storm Discharge Points" />
-          <RefreshLayer Name="Storm Clean Outs" />
-          <RefreshLayer Name="Storm System Valves" />
-          <RefreshLayer Name="Storm Control Valves" />
-          <RefreshLayer Name="Storm Fittings" />
-          <RefreshLayer Name="Storm Culverts" />
-          <RefreshLayer Name="Storm Gravity Mains - City View" />
-          <RefreshLayer Name="Storm Gravity Mains" />
-          <RefreshLayer Name="Storm Casings" />
-          <RefreshLayer Name="Storm Virtual Drainlines" />
-          <RefreshLayer Name="Storm Open Drains" />
-          <RefreshLayer Name="Storm Detention Areas" />
-        </RefreshGroup>
-        <RefreshGroup Name="Streets" >
-          <RefreshLayer Name="Streets" />
-        </RefreshGroup >
 
+        <!--<RefreshGroup Name="Background">
+			 <RefreshLayer Name="Streets" />
+			 <RefreshLayer Name="Property Lines" />
+			</RefreshGroup>-->
       </RefreshList>
       <UIComponents>
         <!--use {0} to insert the number of edits into text-->
@@ -814,48 +794,136 @@
       <SearchDataLoadType>ADO</SearchDataLoadType>
       <!-- List of layers to allow the user to search on -->
       <SearchLayers>
-        <SearchLayer DisplayName="Water Leaks" Name="Water Leaks" DefQuery="" xmin="" xmax="" ymin ="" ymax=""/>
-        <SearchLayer DisplayName="Workorders" Name="Workorders" DefQuery="" xmin="" xmax="" ymin ="" ymax="" />
-        <SearchLayer DisplayName="Markup Polygons" Name="Markup Polygons" DefQuery="" xmin="" xmax="" ymin ="" ymax="" />
-        <SearchLayer DisplayName="Water Hydrants" Name="Water Hydrants" DefQuery="" xmin="" xmax="" ymin ="" ymax="" />
-        <SearchLayer DisplayName="Water Mains" Name="Water Mains" DefQuery="" xmin="" xmax="" ymin ="" ymax=""/>
-        <SearchLayer DisplayName="Water Service Connections" Name="Water Service Connections" DefQuery="" xmin="" xmax="" ymin ="" ymax=""/>
-        <SearchLayer DisplayName="Sewer Service Connections" Name="Sewer Service Connections" DefQuery="" xmin="" xmax="" ymin ="" ymax=""/>
+        <SearchLayer Name="Hydrant" />
+        <SearchLayer Name="Valve" />
+        <SearchLayer Name="Service Valve" />
+        <SearchLayer Name="Premise" />
+        <SearchLayer Name="As Built" />
+        <SearchLayer Name="Sewer Manhole" />
+        <SearchLayer Name="Sewer Cleanout" />
+        <SearchLayer Name="Abandoned Valve" />
+        <SearchLayer Name="Break Location" />
+        <SearchLayer Name="Comment Layer" />
+        <SearchLayer Name="Bookmap Grid" />
+        <SearchLayer Name="Property Lines" />
       </SearchLayers>
       <!--The drill down search control-->
       <DrillDownSearches>
-        <DrillDownSearch LayerName="Site Address Points" DefQuery="" xmin="" xmax="" ymin ="" ymax="">
+        <!-- <DrillDownSearch LayerName="As Built">
           <PointFields>
-            <PointField Name="MUNICIPALITY" DisplayText="Muni" AutoComplete="True"> </PointField>
-            <PointField Name="FULLNAME" DisplayText="Name" AutoComplete="True"> </PointField>
-            <PointField Name="ADDRNUM" DisplayText="Address" AutoComplete="False"> </PointField>
+            <PointField Name="AsBuiltID" DisplayText="ID" AutoComplete="True"> </PointField>
+          </PointFields>
+        </DrillDownSearch>-->
 
+        <DrillDownSearch LayerName="Booster Station">
+          <PointFields>
+            <PointField Name="FacilityName" DisplayText="Name" AutoComplete="True"> </PointField>
           </PointFields>
         </DrillDownSearch>
-        <DrillDownSearch LayerName="Water Hydrants">
-          <PointFields>
-            <PointField Name="FACILITYID" DisplayText="ID" AutoComplete="True"> </PointField>
 
+        <DrillDownSearch LayerName="Interconnect">
+          <PointFields>
+            <PointField Name="FacilityName" DisplayText="Name" AutoComplete="True"> </PointField>
+          </PointFields>
+        </DrillDownSearch>
+
+        <DrillDownSearch LayerName="Medical Facility">
+          <PointFields>
+            <PointField Name="Name" DisplayText="Name" AutoComplete="True"> </PointField>
+          </PointFields>
+        </DrillDownSearch>
+
+        <DrillDownSearch LayerName="Municipality">
+          <PointFields>
+            <PointField Name="NAME" DisplayText="Name" AutoComplete="True"> </PointField>
+          </PointFields>
+        </DrillDownSearch>
+
+        <DrillDownSearch LayerName="Parks">
+          <PointFields>
+            <PointField Name="Name" DisplayText="Name" AutoComplete="True"> </PointField>
+          </PointFields>
+        </DrillDownSearch>
+
+        <DrillDownSearch LayerName="Pressure Zone">
+          <PointFields>
+            <PointField Name="Pressure ZoneFullName" DisplayText="Zone Name" AutoComplete="True"> </PointField>
+          </PointFields>
+        </DrillDownSearch>
+
+        <!--<DrillDownSearch LayerName="Property Lines">
+          <PointFields>
+            <PointField Name="Municipality" DisplayText="Town" AutoComplete="True"> </PointField>
+			<PointField Name="PROP_LOC" DisplayText="Street Address" AutoComplete="True"> </PointField>
+          </PointFields>
+        </DrillDownSearch>-->
+
+        <DrillDownSearch LayerName="Reservoir">
+          <PointFields>
+            <PointField Name="FacilityName" DisplayText="Name" AutoComplete="True"> </PointField>
+          </PointFields>
+        </DrillDownSearch>
+
+        <DrillDownSearch LayerName="School">
+          <PointFields>
+            <PointField Name="Name" DisplayText="Name" AutoComplete="True"> </PointField>
+          </PointFields>
+        </DrillDownSearch>
+
+        <DrillDownSearch LayerName="Sewer Lift Station">
+          <PointFields>
+            <PointField Name="FacilityName" DisplayText="Name" AutoComplete="True"> </PointField>
+          </PointFields>
+        </DrillDownSearch>
+
+        <DrillDownSearch LayerName="Sewer Treatment Plant">
+          <PointFields>
+            <PointField Name="FacilityName" DisplayText="Name" AutoComplete="True"> </PointField>
+          </PointFields>
+        </DrillDownSearch>
+
+        <DrillDownSearch LayerName="Tank">
+          <PointFields>
+            <PointField Name="FacilityName" DisplayText="Name" AutoComplete="True"> </PointField>
+          </PointFields>
+        </DrillDownSearch>
+
+
+        <!--<DrillDownSearch LayerName="Valve">
+          <PointFields>
+            <PointField Name="ValveID" DisplayText="ID" AutoComplete="True"> </PointField>
+          </PointFields>
+        </DrillDownSearch>-->
+
+        <DrillDownSearch LayerName="Water Treatment Plant">
+          <PointFields>
+            <PointField Name="FacilityName" DisplayText="Name" AutoComplete="True"> </PointField>
+          </PointFields>
+        </DrillDownSearch>
+
+        <DrillDownSearch LayerName="Well">
+          <PointFields>
+            <PointField Name="FacilityName" DisplayText="Name" AutoComplete="True"> </PointField>
           </PointFields>
         </DrillDownSearch>
       </DrillDownSearches>
       <!--The Address Search Options -->
-      <AddressSearch DefQuery="" xmin="" xmax="" ymin ="" ymax="">
+      <AddressSearch>
         <!--Road Centerline Layer Name-->
         <LayerName>Streets</LayerName>
         <!--Street Layer Raod Name Field-->
-        <NameField>FULLNAME</NameField>
+        <NameField>FullName</NameField>
         <!--Street Layer From Left Field-->
-        <LowerLeft>FROMLEFT</LowerLeft>
+        <LowerLeft>L_F_ADD_I</LowerLeft>
         <!--Street Layer To Left Field-->
-        <UpperLeft>TOLEFT</UpperLeft>
+        <UpperLeft>L_T_ADD_I</UpperLeft>
         <!--Street Layer To From Right Field-->
-        <LowerRight>FROMRIGHT</LowerRight>
+        <LowerRight>R_F_ADD_I</LowerRight>
         <!--Street Layer To Right Field-->
-        <UpperRight>TORIGHT</UpperRight>
+        <UpperRight>R_T_ADD_I</UpperRight>
         <!--List of fields to use as a prefilter for the search-->
         <PrefilterFields>
-          <PrefilterField Name="ROADCLASS" AutoComplete="True" DisplayText="Class"/>
+          <PrefilterField Name="MUN_LABEL" AutoComplete="True" DisplayText="Town"/>
 
         </PrefilterFields>
         <!--Option to use SDC data for Geocoding, specify the path to the .navmap file-->
@@ -867,9 +935,9 @@
           <DefaultCity>Naperville</DefaultCity>
           <DefaultState>Il</DefaultState>
         </SDC>
-        <!--<OnlineServices>
-          <Geocode TextToAdd="Naperville, Il" GCUrl="https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?" singleLineFieldName="SingleLine"/>
-        </OnlineServices>-->
+        <OnlineServices>
+          <Geocode TextToAdd="NJ" GCUrl="http://tasks.arcgisonline.com/ArcGIS/rest/services/Locators/TA_Streets_US_10/GeocodeServer/findAddressCandidates?" />
+        </OnlineServices>
       </AddressSearch>
       <UIComponents>
         <!---->
@@ -909,7 +977,7 @@
         <DrillDownResultsText>{0} matching records</DrillDownResultsText>
         <!--Geocode Lookup-->
         <GeocodePreFilterLabelText>Prefilter</GeocodePreFilterLabelText>
-        <GeocodeAddressLabelText>Address(Ex: 174 Jackson Ave):</GeocodeAddressLabelText>
+        <GeocodeAddressLabelText>Ex: 10 Boxwood, Asbury Park</GeocodeAddressLabelText>
         <GeocodeLookupButtonText>Look up</GeocodeLookupButtonText>
         <!--use {0} to insert the number of results into text-->
         <GeocodeResultsText>{0} matching records</GeocodeResultsText>
@@ -917,16 +985,17 @@
       <AreaSearchValues PointSize="6" PointColor="#FFFF0000" AreaColor="#FFFF0000">
         <AreaSearchValue AreaSize="{Empty}" Display="Clear" />
         <!--required, this allows for searches without geometry-->
-        <AreaSearchValue AreaSize="100" Display="100 Meters" />
-        <AreaSearchValue AreaSize="200" Display="200 Meters" />
-        <AreaSearchValue AreaSize="300" Display="300 Meters" />
+        <AreaSearchValue AreaSize="200" Display="200 Feet" />
+        <AreaSearchValue AreaSize="500" Display="500 Feet" />
+        <AreaSearchValue AreaSize="1000" Display="1000 Feet" />
+        <AreaSearchValue AreaSize="2000" Display="2000 Feet" />
         <AreaSearchValue AreaSize="{Extent}" Display="Extent" />
       </AreaSearchValues>
     </SearchPanel>
     <!--Options Table of Contents panel-->
     <TOCPanel>
       <!--Option to show or hide the Panel-->
-      <Visible>true</Visible>
+      <Visible>True</Visible>
       <!--The text to display in the button-->
       <DisplayText>Legend</DisplayText>
       <!--Message to show in the lower left status bar-->
@@ -935,7 +1004,7 @@
     <!--Options Sketch Pad Panel-->
     <SketchPanel>
       <!--Option to show or hide the Panel-->
-      <Visible>True</Visible>
+      <Visible>False</Visible>
       <!--The text to display in the button-->
       <DisplayText>Sketch</DisplayText>
       <!--Message to show in the lower left status bar-->
@@ -981,7 +1050,7 @@
     <!--Options ID Control-->
     <IDPanel>
       <!--Option to show or hide the Panel-->
-      <Visible>true</Visible>
+      <Visible>True</Visible>
       <!--The text to display in the button-->
       <DisplayText>Get Info</DisplayText>
       <!--Message to show in the lower left status bar-->
@@ -989,7 +1058,7 @@
       <!--Message to show in the lower right status bar-->
       <ToolMessage>Active Tool: Information Tool</ToolMessage>
       <!-- The Factor around the user click to search for a feature-->
-      <SearchTolerence>40</SearchTolerence>
+      <SearchTolerence>20</SearchTolerence>
       <!--Option to show the Shape_Length fields on the ID of line layers-->
       <ShowLengthFieldInID>True</ShowLengthFieldInID>
       <!--Format of length field, uses the String.Format .net object-->
@@ -998,84 +1067,65 @@
       <!--"FOOT","FEET","METER","KILOMETER","MILE","INCH","YARD","NAUTICALMILE","MAP"-->
       <LengthUnit>Foot</LengthUnit>
       <IDGroups AllLayersText="All Layers">
-        <IDGroup DisplayName="Streets">
-
-          <IDLayer Name="Streets" />
-
+        <IDGroup DisplayName="Choose Layer">
+          <IDLayer Name="GPS Valve" />
+          <IDLayer Name="GPS Hydrant" />
+          <IDLayer Name="GPS Meter Pit" />
+          <IDLayer Name="GPS Premise" />
+          <IDLayer Name="GPS Fitting" />
+          <IDLayer Name="GPS Lateral" />
+          <IDLayer Name="GPS Water Main" />
+          <IDLayer Name="GPS Manhole" />
+          <IDLayer Name="GPS Cleanout" />
+          <IDLayer Name="Premise" />
+          <IDLayer Name="As Built" />
+          <IDLayer Name="Reservoir" />
+          <IDLayer Name="Water Treatment Plant" />
+          <IDLayer Name="Tank" />
+          <IDLayer Name="Booster Station" />
+          <IDLayer Name="Well" />
+          <IDLayer Name="Interconnect" />
+          <IDLayer Name="Meter Pit" />
+          <IDLayer Name="Bulk Sale Meter" />
+          <IDLayer Name="Hydrant" />
+          <IDLayer Name="Process Valve" />
+          <IDLayer Name="Service Valve" />
+          <IDLayer Name="Valve" />
+          <IDLayer Name="Fitting" />
+          <IDLayer Name="Break Location" />
+          <IDLayer Name="Lateral" />
+          <IDLayer Name="Main" />
+          <IDLayer Name="Encasement" />
+          <IDLayer Name="Sewer Septic Tank" />
+          <IDLayer Name="Sewer Disposal Bed" />
+          <IDLayer Name="Sewer Diversion Chamber" />
+          <IDLayer Name="Sewer Treatment Plant" />
+          <IDLayer Name="Sewer Outfall" />
+          <IDLayer Name="Sewer Equalization Basin" />
+          <IDLayer Name="Sewer Lift Station" />
+          <IDLayer Name="Sewer Lateral Point" />
+          <IDLayer Name="Sewer Manhole" />
+          <IDLayer Name="Sewer Meter" />
+          <IDLayer Name="Sewer Cleanout" />
+          <IDLayer Name="Sewer Fitting" />
+          <IDLayer Name="Sewer Valve" />
+          <IDLayer Name="Sewer Lateral" />
+          <IDLayer Name="Sewer Force Main" />
+          <IDLayer Name="Sewer Gravity Main" />
+          <IDLayer Name="Abandoned Valve" />
+          <IDLayer Name="Abandoned Lateral" />
+          <IDLayer Name="Abandoned Main" />
+          <IDLayer Name="Comment Layer" />
+          <IDLayer Name="Property Lines" />
+          <IDLayer Name="Medical Facility" />
+          <IDLayer Name="School" />
+          <IDLayer Name="Property Lines" />
+          <IDLayer Name="Pressure Zone" />
+          <IDLayer Name="Parks" />
+          <IDLayer Name="Municipality" />
+          <IDLayer Name="County" />
+          <IDLayer Name="Bookmap Grid" />
         </IDGroup>
-
-        <IDGroup DisplayName="Operations">
-          <IDLayer Name="Sewer Overflows" />
-          <IDLayer Name="Valve Closure" />
-          <IDLayer Name="Water Leaks" />
-          <IDLayer Name="Markup Polygons" />
-          <IDLayer Name="Workorders"/>
-          <IDLayer Name="Water Hydrant Inspections"/>
-          <IDLayer Name="Water Valve Inspections"/>
-          <IDLayer Name="Inlet Cleanouts"/>
-          <IDLayer Name="Water Leaks"/>
-          <IDLayer Name="Main Flushing"/>
-          <IDLayer Name="HydrantInspections_v2"/>
-
-
-        </IDGroup>
-        <IDGroup DisplayName="Water">
-          <IDLayer Name="Water Pumps" />
-          <IDLayer Name="Water Network Structures" />
-          <IDLayer Name="Water Test Stations" />
-          <IDLayer Name="Water Sampling Stations" />
-          <IDLayer Name="Water Service Connections" />
-          <IDLayer Name="Water Hydrants" />
-          <IDLayer Name="Water System Valves" />
-          <IDLayer Name="Water Curb Stop Valves" />
-          <IDLayer Name="Water Fittings" />
-          <IDLayer Name="Water Mains" />
-          <IDLayer Name="Water Mains - City View" />
-          <IDLayer Name="Water Lateral Lines" />
-          <IDLayer Name="Water Casings" />
-        </IDGroup>
-        <IDGroup DisplayName="Sewer">
-          <IDLayer Name="Sewer Test Stations" />
-          <IDLayer Name="Sewer Network Structures" />
-          <IDLayer Name="Sewer Manholes" />
-          <IDLayer Name="Sewer Taps" />
-          <IDLayer Name="Sewer Service Connections" />
-          <IDLayer Name="Sewer Inlets" />
-          <IDLayer Name="Sewer Discharge Points" />
-          <IDLayer Name="Sewer System Valves" />
-          <IDLayer Name="Sewer Control Valves" />
-          <IDLayer Name="Sewer Clean Outs" />
-          <IDLayer Name="Sewer Fittings" />
-          <IDLayer Name="Sewer Pressurized Mains - City View" />
-          <IDLayer Name="Sewer Gravity Mains - City View" />
-          <IDLayer Name="Sewer Pressurized Mains" />
-          <IDLayer Name="Sewer Gravity Mains" />
-          <IDLayer Name="Sewer Lateral Lines" />
-          <IDLayer Name="Sewer Virtual Drainlines" />
-          <IDLayer Name="Sewer Open Drains" />
-          <IDLayer Name="Sewer Detention Areas" />
-
-        </IDGroup>
-        <IDGroup DisplayName="Storm">
-          <IDLayer Name="Storm Network Structures" />
-          <IDLayer Name="Storm Manholes" />
-          <IDLayer Name="Storm Inlets" />
-          <IDLayer Name="Storm Discharge Points" />
-          <IDLayer Name="Storm Clean Outs" />
-          <IDLayer Name="Storm System Valves" />
-          <IDLayer Name="Storm Control Valves" />
-          <IDLayer Name="Storm Fittings" />
-          <IDLayer Name="Storm Culverts" />
-          <IDLayer Name="Storm Gravity Mains - City View" />
-          <IDLayer Name="Storm Gravity Mains" />
-          <IDLayer Name="Storm Casings" />
-          <IDLayer Name="Storm Virtual Drainlines" />
-          <IDLayer Name="Storm Open Drains" />
-          <IDLayer Name="Storm Detention Areas" />
-
-        </IDGroup>
-
-
       </IDGroups>
       <UIComponents>
         <PageName>Page</PageName>
@@ -1085,60 +1135,73 @@
     <!--Options Create Control - Former Redline control-->
     <CreateFeaturePanel>
       <!--Option to show or hide the Panel-->
-      <Visible>true</Visible>
+      <Visible>True</Visible>
       <!--The text to display in the button-->
-      <DisplayText>Create</DisplayText>
+      <DisplayText>Edit</DisplayText>
       <!--Message to show in the lower left status bar-->
-      <StatusBarMessage>Create New Data: Create a series on new assets and inspections</StatusBarMessage>
+      <StatusBarMessage>Create New Data: Create Comments or Break Reports</StatusBarMessage>
       <!--Message to show in the lower right status bar-->
-      <ToolMessage>Active Tool: Create</ToolMessage>
+      <ToolMessage>Active Tool: Edit</ToolMessage>
       <!--  The determines how to add a coordinate with the redline, setting this to true, overrides
                         the RedlineDoubleTapToComplate tag and sets it to true-->
       <!--<add key="RedlinePointAtTapOnly" value="false" />-->
-      <AttachmentOptions>
-
-        <AttachmentSketchGroups ButtonSize="40" ButtonFontSize="14" ListFontSize="12">
-          <AttachmentSketchGroup Label="Anno" Layer ="Sketch Anno" />
-
-          <AttachmentSketchGroup Label="Point" Layer ="Sketch Points" />
-          <AttachmentSketchGroup Label="Line" Layer ="Sketch Lines" />
-          <AttachmentSketchGroup Label="Polygons" Layer ="Sketch Polygons" />
-
-        </AttachmentSketchGroups >
-      </AttachmentOptions>
     </CreateFeaturePanel>
-
     <!--Options Web Panel-->
     <WebPanel>
-      <!--Option to show or hide the Panel-->
+      <!--Option to show or hide the Panel.  This is where you link to local help files as HTM-->
       <Visible>True</Visible>
       <!--The text to display in the button-->
-      <DisplayText>Web</DisplayText>
+      <DisplayText>Help Links</DisplayText>
       <!--Message to show in the lower left status bar-->
-      <StatusBarMessage>Web Browser</StatusBarMessage>
+      <StatusBarMessage>Help Browser</StatusBarMessage>
       <!--Option to intercept hyperlinks and display in the web display, does not work for all file formats-->
-      <WebInterceptHyperlinks>true</WebInterceptHyperlinks>
+      <WebInterceptHyperlinks>False</WebInterceptHyperlinks>
       <WebSites>
         <WebSite>
-          <DisplayText>ArcGIS Solution Site</DisplayText>
-          <URL>http://solutions.arcgis.com</URL>
+          <DisplayText>Basics</DisplayText>
+          <URL>C:\Program Files\Mobile Distribution Maps\Bin\Help\Help.htm</URL>
         </WebSite>
-
+        <WebSite>
+          <DisplayText>Explanation of Map Accuracy</DisplayText>
+          <URL>C:\Program Files\Mobile Distribution Maps\Bin\Help\Accuracy.htm</URL>
+        </WebSite>
+        <WebSite>
+          <DisplayText>Tools Overview</DisplayText>
+          <URL>C:\Program Files\Mobile Distribution Maps\Bin\Help\Overview.htm</URL>
+        </WebSite>
+        <WebSite>
+          <DisplayText>Exchange Tool</DisplayText>
+          <URL>C:\Program Files\Mobile Distribution Maps\Bin\Help\Exchange.htm</URL>
+        </WebSite>
+        <WebSite>
+          <DisplayText>Edit Tool</DisplayText>
+          <URL>C:\Program Files\Mobile Distribution Maps\Bin\Help\Edit.htm</URL>
+        </WebSite>
+        <WebSite>
+          <DisplayText>Search Tools</DisplayText>
+          <URL>C:\Program Files\Mobile Distribution Maps\Bin\Help\Search.htm</URL>
+        </WebSite>
+        <WebSite>
+          <DisplayText>Get Info</DisplayText>
+          <URL>C:\Program Files\Mobile Distribution Maps\Bin\Help\Info.htm</URL>
+        </WebSite>
+        <WebSite>
+          <DisplayText>Bookmarks</DisplayText>
+          <URL>C:\Program Files\Mobile Distribution Maps\Bin\Help\Bookmarks.htm</URL>
+        </WebSite>
       </WebSites>
     </WebPanel>
     <!--Options Activities Panel-->
-
     <WorkorderPanel>
       <!--Option to show or hide the Panel-->
-      <Visible>True</Visible>
+      <Visible>False</Visible>
       <!--The text to display in the button-->
       <DisplayText>Workorder</DisplayText>
       <!--Message to show in the lower left status bar-->
       <StatusBarMessage>Activitiy List: Shows a list of assigned activities, opening a activity sets up an inspection</StatusBarMessage>
       <!-- Activities Configuration: Activites are loaded from a feature class-->
       <!-- Activities Layer Name-->
-      <LayerInfo AssignedTo="Crew 1" AssignedToField="ASSIGNEDTO" LayerName="Workorders" IDField ="WORKID"/>
-
+      <LayerInfo AssignedTo="Crew 4" AssignedToField="ASSIGNEDTO" LayerName="Workorders" IDField ="WORKID"/>
       <WorkOrderFilters ButtonSize="40" ButtonFontSize="14" ListFontSize="12">
         <WorkOrderFilter QueryValue="PRIORITY &gt; 4 and (WORKSTATUS  &lt;&gt; 'Work Completed' and WORKSTATUS  &lt;&gt; 'Completed')" Label="High" SortField="PLANSTART" Action="Zoom,Flash">
           <Fields JoinString=" - ">
@@ -1166,12 +1229,6 @@
         </WorkOrderFilter>
       </WorkOrderFilters>
       <UIComponents>
-        <InvalidSqlMessage>Invalid SQL</InvalidSqlMessage>
-        <FieldCreateWOText>FieldWO:</FieldCreateWOText>
-        <NoDisplayText>Display fields are empty</NoDisplayText>
-        <ChangeCrewText>Select a Crew</ChangeCrewText>
-        <SaveCrewText>Save Crew Change</SaveCrewText>
-        <AllWOText>All Workorders</AllWOText>
       </UIComponents>
     </WorkorderPanel>
     <AutoSyncerSettings></AutoSyncerSettings>
