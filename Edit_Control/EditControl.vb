@@ -5680,6 +5680,8 @@ Public Class EditControl
                 End If
             End If
             ShuffleControls()
+            disableSaveBtn()
+
             'disableSaveBtn()
         Catch ex As Exception
             Dim st As New StackTrace
@@ -6752,40 +6754,44 @@ Public Class EditControl
         Try
 
             If m_FDR Is Nothing Then Return
+            If m_FDR.RowState = DataRowState.Deleted Then Return
             If e.MapSurface Is Nothing Then Return
 
             'If drawing the geo of the editable record
             If m_DrawGeo Then
-                If m_FDR.Geometry IsNot Nothing Then
-                    If m_FDR.Geometry.IsValid Then
+                If m_FDR.RowState <> DataRowState.Deleted Then
 
 
-                        e.MapSurface.DrawGeometry(m_Pen, m_Brush, m_PointSize, m_FDR.Geometry)
-                        If (m_FDR.Geometry.GeometryType = GeometryType.Polyline) Then
-                            If m_FDR.Geometry.CurrentCoordinate IsNot Nothing Then
-                                e.MapSurface.DrawGeometry(m_Pen, m_Brush, m_PointSize, New Esri.ArcGIS.Mobile.Geometries.Point(m_FDR.Geometry.CurrentCoordinate))
+                    If m_FDR.Geometry IsNot Nothing Then
+                        If m_FDR.Geometry.IsValid Then
+
+
+                            e.MapSurface.DrawGeometry(m_Pen, m_Brush, m_PointSize, m_FDR.Geometry)
+                            If (m_FDR.Geometry.GeometryType = GeometryType.Polyline) Then
+                                If m_FDR.Geometry.CurrentCoordinate IsNot Nothing Then
+                                    e.MapSurface.DrawGeometry(m_Pen, m_Brush, m_PointSize, New ESRI.ArcGIS.Mobile.Geometries.Point(m_FDR.Geometry.CurrentCoordinate))
+                                End If
+
+
+                            End If
+                        Else
+                            If (m_FDR.Geometry.GeometryType = GeometryType.Polygon) Then
+
+                            ElseIf (m_FDR.Geometry.GeometryType = GeometryType.Polyline) Then
+
+                                If CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Polyline).Parts(0).Count = 1 Then
+                                    e.MapSurface.DrawGeometry(m_Pen, m_Brush, m_PointSize, New ESRI.ArcGIS.Mobile.Geometries.Point(CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Polyline).Parts(0)(0)))
+
+                                End If
                             End If
 
 
                         End If
-                    Else
-                        If (m_FDR.Geometry.GeometryType = GeometryType.Polygon) Then
-
-                        ElseIf (m_FDR.Geometry.GeometryType = GeometryType.Polyline) Then
-
-                            If CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Polyline).Parts(0).Count = 1 Then
-                                e.MapSurface.DrawGeometry(m_Pen, m_Brush, m_PointSize, New Esri.ArcGIS.Mobile.Geometries.Point(CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Polyline).Parts(0)(0)))
-
-                            End If
-                        End If
-
-
                     End If
                 End If
-
             End If
         Catch ex As Exception
-         
+
         End Try
 
     End Sub

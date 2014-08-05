@@ -622,7 +622,7 @@ Public Class EditFeaturesMapAction
             'If there is not shape, prompt the user and exit
             If pGeo Is Nothing Then
 
-                Map.Invalidate()
+                m_Map.Invalidate()
                 'delete the strokes
                 ' m_CoordsList.Clear()
                 m_CoordsCurrent.Clear()
@@ -646,7 +646,7 @@ Public Class EditFeaturesMapAction
                 st = Nothing
                 'Clean up and return
                 pGeo = Nothing
-                Map.Invalidate()
+                m_Map.Invalidate()
                 Return
 
             End Try
@@ -655,7 +655,7 @@ Public Class EditFeaturesMapAction
             'm_CoordsList.Clear()
             'm_CoordsCurrent.Clear()
             'refresh the map
-            Map.Invalidate()
+            m_Map.Invalidate()
         Catch ex As Exception
             Dim st As New StackTrace
             MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
@@ -1004,11 +1004,11 @@ Public Class EditFeaturesMapAction
                     '    MsgBox("")
                     Dim newCoord As Coordinate
                     If m_GPSVal.SpatialReference Is Nothing Then
-                        newCoord = Map.SpatialReference.FromGps(m_GPSVal.Coordinate)
+                        newCoord = m_Map.SpatialReference.FromGps(m_GPSVal.Coordinate)
 
-                    ElseIf m_GPSVal.SpatialReference.FactoryCode <> Map.SpatialReference.FactoryCode Then
+                    ElseIf m_GPSVal.SpatialReference.FactoryCode <> m_Map.SpatialReference.FactoryCode Then
 
-                        newCoord = Map.SpatialReference.FromGps(m_GPSVal.Coordinate)
+                        newCoord = m_Map.SpatialReference.FromGps(m_GPSVal.Coordinate)
 
                         'Me.Geometry = New Esri.ArcGIS.Mobile.Geometries.Point(m_Map.SpatialReference.FromDegreeMinuteSecond(m_GPSVal.LongitudeToDegreeMinutesSeconds), m_Map.SpatialReference.FromDegreeMinuteSecond(m_GPSVal.LatitudeToDegreeMinutesSeconds))
 

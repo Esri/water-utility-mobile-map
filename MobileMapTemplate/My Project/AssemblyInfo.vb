@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("ArcGIS Mobile Map Template")> 
 <Assembly: AssemblyCompany("Esri")> 
 <Assembly: AssemblyProduct("Infrastructure Mobile Map")> 
-<Assembly: AssemblyCopyright("Copyright © Esri 2013")> 
+<Assembly: AssemblyCopyright("Copyright © Esri 2014")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
