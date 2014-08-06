@@ -80,7 +80,7 @@
     </MeasureOptions>
     <LayerOptions>
       <MobileServices ymax="" LimitQuery="" ymin="" xmin="" xmax="">
-        <MobileService StorageLocation="" UserName="" Password="" Domain="">http://localhost:6080/arcgis/services/LeakSurvey/MapServer/MobileServer</MobileService>
+        <MobileService StorageLocation="" UserName="" Password="" Domain="" TokenURL ="">http://localhost:6080/arcgis/services/LeakSurvey/MapServer/MobileServer</MobileService>
       </MobileServices>
       <CachedMaps>
         <CachedMap DisplayName="DayMap">Mobile Day Map</CachedMap>

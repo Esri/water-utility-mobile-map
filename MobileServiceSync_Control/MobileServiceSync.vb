@@ -981,7 +981,22 @@ Public Class MobileServiceSync
 
             End If
             'If there is a connection
-            If connectionStatus = ConnectionState.INTERNET_CONNECTION_LAN Then
+            If connectionStatus = ConnectionState.INTERNET_CONNECTION_NEEDNEWTOKEN Then
+
+                m_MobileConnect.Url = GlobalsFunctions.GetServerToken()
+                MonitorServerConnection(False)
+                MonitorServerConnection(True)
+
+
+
+
+                'm_MobileCache.Close()
+                'm_MobileCache.Open()
+
+                TogglePostRefresh(False)
+
+
+            ElseIf connectionStatus = ConnectionState.INTERNET_CONNECTION_LAN Then
                 TogglePostRefresh(True)
 
 
@@ -1266,84 +1281,99 @@ Public Class MobileServiceSync
                     If GlobalsFunctions.URLIsMobileServer(strURL.Value) Then
 
                         m_MobileConnect = New Esri.ArcGIS.Mobile.FeatureCaching.Synchronization.MobileServiceConnection
-                        m_MobileConnect.Url = strURL.Value
-                        If strURL.UserName <> "" Then
-                            Try
-                                GlobalsFunctions.OverrideCertificateValidation()
+
+                        If strURL.TokenURL <> "" Then
+                            GlobalsFunctions.url = strURL.Value
+                            GlobalsFunctions.tokenurl = strURL.TokenURL
+                            GlobalsFunctions.username = strURL.UserName
+                            GlobalsFunctions.password = strURL.Password
+                            m_MobileConnect.Url = GlobalsFunctions.GetServerToken()
 
 
-                                'Dim webRequest_401 As HttpWebRequest = Nothing
+                        Else
+                            m_MobileConnect.Url = strURL.Value
 
-                                'webRequest_401 = HttpWebRequest.Create(New Uri(strURL.Value & "?wsdl"))
-
-                                'webRequest_401.ContentType = "text/xml;charset=""utf-8"""
-
-                                'webRequest_401.Method = "GET"
-                                'webRequest_401.Accept = "text/xml"
-                                ''  webRequest_401.Credentials = New NetworkCredential(strURL.UserName, strURL.Password, strURL.Domain)
-
-                                'Dim webResponse_401 As HttpWebResponse
-                                'Try
-
-                                '    webResponse_401 = webRequest_401.GetResponse()
-                                'Catch webex As System.Net.WebException
-                                '    Dim webexResponse As HttpWebResponse = webex.Response
-                                '    If webexResponse.StatusCode = HttpStatusCode.Unauthorized Then
-
-                                '        If (webRequest_401.Credentials Is Nothing) Then
-
-                                '            webRequest_401 = HttpWebRequest.Create(New Uri(strURL.Value & "?wsdl"))
-
-                                '            webRequest_401.ContentType = "text/xml;charset=""utf-8"""
-
-                                '            webRequest_401.Method = "GET"
-                                '            webRequest_401.Accept = "text/xml"
-                                '            webRequest_401.Credentials = New NetworkCredential(strURL.UserName, strURL.Password, strURL.Domain)
-                                '            Try
-
-                                '                webResponse_401 = webRequest_401.GetResponse()
-                                '            Catch webex2 As System.Net.WebException
-                                '                MsgBox(webex2.Message)
-                                '            End Try
-
-                                '            If (webResponse_401 IsNot Nothing) Then
-                                '                webResponse_401.Close()
-                                '            End If
-                                '            '   m_MobileConnect.WebClientProtocol. = webRequest_401
-
-                                '            m_MobileConnect.WebClientProtocol.Credentials = webRequest_401.Credentials
-
-
-                                '        Else
-                                '        End If
-
-
-                                '    End If
-
-
-                                'End Try
-
-
-                                Dim myCache As CredentialCache = New CredentialCache()
-
-                                myCache.Add(New Uri(strURL.Value), "Basic", New NetworkCredential(strURL.UserName, strURL.Password))
-                                myCache.Add(New Uri(strURL.Value), "Digest", New NetworkCredential(strURL.UserName, strURL.Password, strURL.Domain))
-                                myCache.Add(New Uri(strURL.Value), "Negotiate", New NetworkCredential(strURL.UserName, strURL.Password, strURL.Domain))
-
-
-                                m_MobileConnect.WebClientProtocol.Credentials = myCache
-                               
-
-
-
-                            Catch exTm As Exception
-                                MsgBox(GlobalsFunctions.appConfig.ServicePanel.UIComponents.CacheNotValid & vbNewLine & exTm.Message)
-
-                                Return False
-                            End Try
-
-                            m_MobileConnect.WebClientProtocolType = WebClientProtocolType.BinaryWebService
                         End If
+
+
+                        
+                        'If strURL.UserName <> "" Then
+                        '    Try
+                        '        GlobalsFunctions.OverrideCertificateValidation()
+
+
+                        '        'Dim webRequest_401 As HttpWebRequest = Nothing
+
+                        '        'webRequest_401 = HttpWebRequest.Create(New Uri(strURL.Value & "?wsdl"))
+
+                        '        'webRequest_401.ContentType = "text/xml;charset=""utf-8"""
+
+                        '        'webRequest_401.Method = "GET"
+                        '        'webRequest_401.Accept = "text/xml"
+                        '        ''  webRequest_401.Credentials = New NetworkCredential(strURL.UserName, strURL.Password, strURL.Domain)
+
+                        '        'Dim webResponse_401 As HttpWebResponse
+                        '        'Try
+
+                        '        '    webResponse_401 = webRequest_401.GetResponse()
+                        '        'Catch webex As System.Net.WebException
+                        '        '    Dim webexResponse As HttpWebResponse = webex.Response
+                        '        '    If webexResponse.StatusCode = HttpStatusCode.Unauthorized Then
+
+                        '        '        If (webRequest_401.Credentials Is Nothing) Then
+
+                        '        '            webRequest_401 = HttpWebRequest.Create(New Uri(strURL.Value & "?wsdl"))
+
+                        '        '            webRequest_401.ContentType = "text/xml;charset=""utf-8"""
+
+                        '        '            webRequest_401.Method = "GET"
+                        '        '            webRequest_401.Accept = "text/xml"
+                        '        '            webRequest_401.Credentials = New NetworkCredential(strURL.UserName, strURL.Password, strURL.Domain)
+                        '        '            Try
+
+                        '        '                webResponse_401 = webRequest_401.GetResponse()
+                        '        '            Catch webex2 As System.Net.WebException
+                        '        '                MsgBox(webex2.Message)
+                        '        '            End Try
+
+                        '        '            If (webResponse_401 IsNot Nothing) Then
+                        '        '                webResponse_401.Close()
+                        '        '            End If
+                        '        '            '   m_MobileConnect.WebClientProtocol. = webRequest_401
+
+                        '        '            m_MobileConnect.WebClientProtocol.Credentials = webRequest_401.Credentials
+
+
+                        '        '        Else
+                        '        '        End If
+
+
+                        '        '    End If
+
+
+                        '        'End Try
+
+
+                        '        Dim myCache As CredentialCache = New CredentialCache()
+
+                        '        myCache.Add(New Uri(strURL.Value), "Basic", New NetworkCredential(strURL.UserName, strURL.Password))
+                        '        myCache.Add(New Uri(strURL.Value), "Digest", New NetworkCredential(strURL.UserName, strURL.Password, strURL.Domain))
+                        '        myCache.Add(New Uri(strURL.Value), "Negotiate", New NetworkCredential(strURL.UserName, strURL.Password, strURL.Domain))
+
+
+                        '        m_MobileConnect.WebClientProtocol.Credentials = myCache
+
+
+
+
+                        '    Catch exTm As Exception
+                        '        MsgBox(GlobalsFunctions.appConfig.ServicePanel.UIComponents.CacheNotValid & vbNewLine & exTm.Message)
+
+                        '        Return False
+                        '    End Try
+
+                        '   m_MobileConnect.WebClientProtocolType = WebClientProtocolType.BinaryWebService
+                        'End If
                     Else
                         Dim pFSRep As FeatureServiceReplicaManager = New FeatureServiceReplicaManager()
                         pFSRep.MobileCache = m_MobileCache
@@ -1375,7 +1405,7 @@ Public Class MobileServiceSync
                         'm_MobileCache.Open()
 
                         pFSRep.CreateReplica()
-                        
+
 
                         ' m_MobileCache.Open()
 
@@ -1571,51 +1601,7 @@ Public Class MobileServiceSync
 
         End Try
     End Function
-    Private Sub GetServerToken()
-
-        'Try
-
-        '   Dim cs As CatalogService = New CatalogService()
-
-        '    cs.Url = m_MobileConnect.Url
-
-
-        '    m_bRequiretokens = cs.RequiresTokens()
-
-        '    '' if token is required
-        '    'If (m_bRequiretokens) Then
-
-        '    '    ' step 2. get the url for token server
-        '    '    Dim tokenserviceurl As String = cs.GetTokenServiceURL()
-
-        '    '    'step 3. create a tokencredential
-        '    '    Dim tokencredential As TokenCredential = New TokenCredential(getServiceUserName, getServicePassword)
-
-
-        '    '    ' step 4. use a tokengenerator to get the token from token server
-        '    '    Dim tokengenerator As TokenGenerator = New TokenGenerator()
-
-
-        '    '    m_Token = tokengenerator.GenerateToken(tokenserviceurl, tokencredential)
-
-        '    '    m_MobileService.ServiceConnection.TokenCredential = tokencredential
-
-        '    'Else
-
-        '    m_bRequiretokens = False
-        '    m_Token = "NoTokenNeeded"
-        '    'End If
-
-
-
-        'Catch ex As Exception
-
-
-        '    m_Token = "-99"
-
-        'End Try
-
-    End Sub
+  
     'Private Sub deleteAllFilesInFolder(ByVal folderPath As String)
 
     '    Try
@@ -2420,7 +2406,7 @@ Public Class MobileServiceSync
             End If
         Finally
 
-            MonitorServerConnection(True)
+            'MonitorServerConnection(True)
 
         End Try
         checkProgressStatus()
@@ -2509,7 +2495,15 @@ Public Class MobileServiceSync
             Select Case Start
                 Case True
                     If m_MobileConnect.Url IsNot Nothing Then
-                        m_ConnectionStatus.startChecking(m_MobileConnect.Url & "?wsdl", m_MobileConnect.WebClientProtocol.Credentials)
+                        Dim url As String
+                        If m_MobileConnect.Url.Contains("?") Then
+                            url = m_MobileConnect.Url & "&wsdl"
+
+                        Else
+                            url = m_MobileConnect.Url & "?wsdl"
+                        End If
+
+                        m_ConnectionStatus.startChecking(url, m_MobileConnect.WebClientProtocol.Credentials)
                     End If
 
                 Case Else

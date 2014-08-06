@@ -4547,7 +4547,7 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
         Private userNameField As String = ""
         Private passwordField As String = ""
         Private domainField As String = ""
-
+        Private tokenURLField As String = ""
         Private valueField As String
 
         Private Shared sSerializer As System.Xml.Serialization.XmlSerializer
@@ -4588,6 +4588,15 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
             End Get
             Set(ByVal value As String)
                 Me.domainField = value
+            End Set
+        End Property
+        <System.Xml.Serialization.XmlAttributeAttribute()> _
+        Public Property TokenURL() As String
+            Get
+                Return Me.tokenURLField
+            End Get
+            Set(ByVal value As String)
+                Me.tokenURLField = value
             End Set
         End Property
 

@@ -610,52 +610,33 @@ IL_1EE:
     End Function
 
 
+    Public Shared url As String
+    Public Shared tokenurl As String
+    Public Shared username As String
+    Public Shared password As String
 
-    Public Shared Sub GetServerToken(ByVal mobileConnect As Esri.ArcGIS.Mobile.FeatureCaching.Synchronization.MobileServiceConnection)
+
+    Public Shared Function GetServerToken() As String
 
         Try
 
-            'Dim cs As CatalogService = New CatalogService()
-            'cs.
-            'cs.Url = mobileConnect.Url
 
+            Dim tc As Esri.ArcGIS.Mobile.CatalogServices.TokenCredential = New Esri.ArcGIS.Mobile.CatalogServices.TokenCredential(username, password)
 
-            'Dim bRequiretokens As Boolean = cs.RequiresTokens()
+            Dim token As String = Esri.ArcGIS.Mobile.CatalogServices.TokenGenerator.GenerateToken(tokenurl, tc)
+            Return Esri.ArcGIS.Mobile.CatalogServices.TokenGenerator.ApplyToken(url, token)
 
-            ' '' if token is required
-            ''If (m_bRequiretokens) Then
-
-            ''    ' step 2. get the url for token server
-            ''    Dim tokenserviceurl As String = cs.GetTokenServiceURL()
-
-            ''    'step 3. create a tokencredential
-            ''    Dim tokencredential As TokenCredential = New TokenCredential(getServiceUserName, getServicePassword)
-
-
-            ''    ' step 4. use a tokengenerator to get the token from token server
-            ''    Dim tokengenerator As TokenGenerator = New TokenGenerator()
-
-
-            ''    m_Token = tokengenerator.GenerateToken(tokenserviceurl, tokencredential)
-
-            ''    m_MobileService.ServiceConnection.TokenCredential = tokencredential
-
-            ''Else
-
-            'm_bRequiretokens = False
-            'm_Token = "NoTokenNeeded"
-            ''End If
 
 
 
         Catch ex As Exception
 
 
-            ' m_Token = "-99"
+            Return url
 
         End Try
 
-    End Sub
+    End Function
     Public Shared Sub OverrideCertificateValidation()
         ServicePointManager.ServerCertificateValidationCallback = New RemoteCertificateValidationCallback(AddressOf RemoteCertValidate)
     End Sub

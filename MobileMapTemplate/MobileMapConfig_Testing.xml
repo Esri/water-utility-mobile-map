@@ -141,7 +141,7 @@
       <!--The url of the mobile service, currently only one is supported-->
       <MobileServices LimitQuery ="">
         <!--Option to specify cache location, empty string = application defaults-->
-        <MobileService  UserName="" Password="" Domain="" StorageLocation="">http://localhost:6080/arcgis/services/WaterUtilityMobileMap/MapServer/MobileServer</MobileService>
+        <MobileService  UserName="" Password=""  Domain="" TokenURL ="" StorageLocation="">http://localhost:6080/arcgis/services/WaterUtilityMobileMap/MapServer/MobileServer</MobileService>
       </MobileServices>
       <!--The path to the local cache maps, these are tiles cache maps, if a full path is not listed, it will check the LocalCacheMap Folder-->
       <CachedMaps>

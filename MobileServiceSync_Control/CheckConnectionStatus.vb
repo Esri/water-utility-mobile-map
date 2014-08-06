@@ -28,6 +28,7 @@ Public Enum ConnectionState
     INTERNET_CONNECTION_OFFLINE = 16
     INTERNET_CONNECTION_LAN = 18
     INTERNET_CONNECTION_PROXY = 86
+    INTERNET_CONNECTION_NEEDNEWTOKEN = 498
 End Enum
 Public Class CheckStatusClass
     Private WithEvents m_ChkServStat As checkServiceStatus
@@ -63,6 +64,12 @@ Public Class CheckStatusClass
     End Sub
 
 
+    Public Sub updateURL()
+
+        m_ChkServStat.stopChecking()
+        m_ChkServStat.startChecking()
+
+    End Sub
 
 
 
@@ -96,8 +103,15 @@ Public Class CheckStatusClass
             Dim pStrUserName As String = SecureServiceUserName
             Dim pStrPass As String = SecureServicePassword
             Dim pStrDom As String = SecureServiceDomain
+            Dim req As System.Net.WebRequest
 
-            Dim req As System.Net.WebRequest = System.Net.WebRequest.Create(url + "?wsdl")
+            If url.Contains("?") Then
+                req = System.Net.WebRequest.Create(url + "&wsdl")
+            Else
+                req = System.Net.WebRequest.Create(url + "?wsdl")
+            End If
+
+
             If pStrUserName <> "" And pStrPass <> "" Then
                 Dim myCred As System.Net.NetworkCredential = New System.Net.NetworkCredential(pStrUserName, pStrPass, pStrDom)
                 req.Credentials = myCred
@@ -132,10 +146,6 @@ Public Class CheckStatusClass
 
             Dim pMess As String = ""
 
-
-
-
-
             Try
                 Dim httpRequest As HttpWebRequest = DirectCast(WebRequest.Create(url), HttpWebRequest)
                 If netCred IsNot Nothing Then
@@ -145,54 +155,57 @@ Public Class CheckStatusClass
                 End If
                 httpRequest.Method = "GET"
 
-                ' if the URI doesn't exist, an exception will be thrown here...
-                Using httpResponse As HttpWebResponse = DirectCast(httpRequest.GetResponse(), HttpWebResponse)
-                    Using responseStream As Stream = httpResponse.GetResponseStream()
-                        Using readStream As StreamReader = New StreamReader(responseStream, System.Text.Encoding.UTF8)
+                Using webResponse As WebResponse = DirectCast(httpRequest.GetResponse(), WebResponse)
 
-                            'Console.WriteLine("Response stream received.")
-                            'Console.WriteLine(readStream.ReadToEnd())
-                            Dim strRes As String = readStream.ReadToEnd()
-                            If strRes.Contains("Application Error") Then
-                                pMess = "\0"
-                                Connection = ConnectionState.INTERNET_CONNECTION_OFFLINE
-                            Else
+                    ' if the URI doesn't exist, an exception will be thrown here...
+                    Using httpResponse As HttpWebResponse = DirectCast(webResponse, HttpWebResponse)
+                        If httpResponse.StatusCode = 498 Then
+                            pMess = "Token Expire\0"
+                            Connection = ConnectionState.INTERNET_CONNECTION_NEEDNEWTOKEN
+                        Else
+                            Using responseStream As Stream = httpResponse.GetResponseStream()
+                                Using readStream As StreamReader = New StreamReader(responseStream, System.Text.Encoding.UTF8)
 
-                                pMess = "LAN Connection\0"
-                                Connection = ConnectionState.INTERNET_CONNECTION_LAN
-                            End If
-                            readStream.Close()
-                        End Using
+                                    'Console.WriteLine("Response stream received.")
+                                    'Console.WriteLine(readStream.ReadToEnd())
+                                    Dim strRes As String = readStream.ReadToEnd()
+                                    If strRes.Contains("Application Error") Then
+                                        pMess = "\0"
+                                        Connection = ConnectionState.INTERNET_CONNECTION_OFFLINE
+                                    Else
+
+                                        pMess = "LAN Connection\0"
+                                        Connection = ConnectionState.INTERNET_CONNECTION_LAN
+                                    End If
+                                    readStream.Close()
+                                End Using
+                            End Using
+                        End If
                     End Using
+
                 End Using
 
 
-                'Dim req As System.Net.WebRequest = System.Net.WebRequest.Create(url)
-                'If netCred IsNot Nothing Then
-
-                '    req.Credentials = netCred
-
+            Catch ex As WebException
+                If ex.Message.Contains("498") Then
+                    pMess = "Token Expire\0"
+                    Connection = ConnectionState.INTERNET_CONNECTION_NEEDNEWTOKEN
+                Else
+                    pMess = "\0"
+                    Connection = ConnectionState.INTERNET_CONNECTION_OFFLINE
+                End If
+                'Console.WriteLine(ex.Status)
+                'If ex.Response IsNot Nothing Then
+                '    '' can use ex.Response.Status, .StatusDescription
+                '    If ex.Response.ContentLength <> 0 Then
+                '        Using stream = ex.Response.GetResponseStream()
+                '            Using reader = New StreamReader(stream)
+                '                Console.WriteLine(reader.ReadToEnd())
+                '            End Using
+                '        End Using
+                '    End If
                 'End If
-
-                'Dim wr As System.Net.WebResponse = req.GetResponse()
-
-                '            wr.Close()
-
-                '            pMess = "LAN Connection\0"
-                '            Connection = ConnectionState.INTERNET_CONNECTION_LAN
-                'INTERNET_CONNECTION_MODEM = 1
-                'INTERNET_CONNECTION_MODEM_BUSY = 8
-                'INTERNET_CONNECTION_CONFIGURED = 64
-                'INTERNET_CONNECTION_OFFLINE = 16
-                'INTERNET_CONNECTION_LAN = 18
-                'INTERNET_CONNECTION_PROXY = 86
-            Catch
-
-
-                pMess = "\0"
-                Connection = ConnectionState.INTERNET_CONNECTION_OFFLINE
             End Try
-
             Message = pMess
         End Sub
     End Class
@@ -295,6 +308,8 @@ Public Class CheckStatusClass
 
                     Case ConnectionState.INTERNET_CONNECTION_CONFIGURED
                         RaiseEvent connectionStateChanged(ConnectionState.INTERNET_CONNECTION_CONFIGURED)
+                    Case ConnectionState.INTERNET_CONNECTION_NEEDNEWTOKEN
+                        RaiseEvent connectionStateChanged(ConnectionState.INTERNET_CONNECTION_NEEDNEWTOKEN)
                     Case Else
 
 
