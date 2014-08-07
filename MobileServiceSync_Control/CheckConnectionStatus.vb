@@ -43,11 +43,14 @@ Public Class CheckStatusClass
     End Sub
     Public Sub New()
 
+        m_ChkServStat = New checkServiceStatus()
 
     End Sub
     Public Sub startChecking(ByVal strURL As String, ByVal netCred As ICredentials, Optional ByVal checkInterval As Integer = 10000, Optional ByVal SecureUserName As String = "", Optional ByVal SecurePassword As String = "", Optional ByVal SecureDomain As String = "")
-        m_ChkServStat = New checkServiceStatus(strURL, netCred, checkInterval, SecureUserName, SecurePassword, SecureDomain)
-        m_ChkServStat.startChecking()
+      
+        If m_ChkServStat.isChecking Then Return
+
+        m_ChkServStat.startChecking(strURL, netCred, checkInterval, SecureUserName, SecurePassword, SecureDomain)
 
     End Sub
     Public Sub stopChecking()
@@ -62,17 +65,6 @@ Public Class CheckStatusClass
         RaiseEvent connectionStateChanged(connectionStatus)
 
     End Sub
-
-
-    Public Sub updateURL()
-
-        m_ChkServStat.stopChecking()
-        m_ChkServStat.startChecking()
-
-    End Sub
-
-
-
 
     Private Class InetConnection
 
@@ -234,15 +226,11 @@ Public Class CheckStatusClass
         Private m_netCred As ICredentials = Nothing
 
 
-        Public Sub New(ByVal URL As String, ByVal netCred As ICredentials, Optional ByVal checkInterval As Integer = 10000, Optional ByVal SecureUserName As String = "", Optional ByVal SecurePassword As String = "", Optional ByVal SecureDomain As String = "")
-            m_url = URL
-            m_netCred = netCred
-            m_CheckInteval = checkInterval
+        Public Sub New()
+        
             m_LastConnectState = 16
             m_bConnected = False
-            m_SecureUserName = SecureUserName
-            m_SecurePassword = SecurePassword
-            m_SecureDomain = SecureDomain
+            
         End Sub
         Public Sub dispose()
 
@@ -256,10 +244,25 @@ Public Class CheckStatusClass
             End If
 
         End Sub
-        Public Sub startChecking()
+        Public Sub startChecking(ByVal URL As String, ByVal netCred As ICredentials, Optional ByVal checkInterval As Integer = 10000, Optional ByVal SecureUserName As String = "", Optional ByVal SecurePassword As String = "", Optional ByVal SecureDomain As String = "")
+            m_url = URL
+            m_netCred = netCred
+            m_CheckInteval = checkInterval
+            m_SecureUserName = SecureUserName
+            m_SecurePassword = SecurePassword
+            m_SecureDomain = SecureDomain
             m_Timer = New System.Threading.Timer(New TimerCallback(AddressOf OnTimer), Me, 0, m_CheckInteval)
 
         End Sub
+        Public Function isChecking() As Boolean
+            If m_Timer Is Nothing Then
+                Return False
+
+            Else
+                Return True
+            End If
+
+        End Function
         Public Sub stopChecking()
             If (m_Timer Is Nothing) Then
             ElseIf (m_Timer Is DBNull.Value) Then

@@ -291,7 +291,10 @@ Public Class MobileServiceSync
             '    pDblScale = 0
 
             'End If
-            postAllEditsByFeat(Synchronization.SyncDirection.Bidirectional, pLay, pExt)
+            If m_connectState = ConnectionState.INTERNET_CONNECTION_LAN Then
+                disableSync()
+                postAllEditsByFeat(Synchronization.SyncDirection.Bidirectional, pLay, pExt)
+            End If
 
             'getDataForLayersInExtent(pExt, pDblScale, Refresh, pLay)
 
@@ -963,14 +966,15 @@ Public Class MobileServiceSync
 
         End Try
     End Sub
+    Private Shared m_connectState As ConnectionState = ConnectionState.INTERNET_CONNECTION_OFFLINE
 
     Private Sub m_ConnectionStatus_connectionStateChanged(ByVal connectionStatus As ConnectionState) Handles m_ConnectionStatus.connectionStateChanged
         Try
+            m_connectState = connectionStatus
 
             'Monitors the connection statues
             If InvokeRequired Then
                 Try
-
                     Invoke(New CheckStatusClass.m_ExtractorDll_ConnectionStatusChangedDelegate(AddressOf m_ConnectionStatus_connectionStateChanged), connectionStatus)
 
                 Catch
@@ -980,6 +984,7 @@ Public Class MobileServiceSync
 
 
             End If
+
             'If there is a connection
             If connectionStatus = ConnectionState.INTERNET_CONNECTION_NEEDNEWTOKEN Then
 
@@ -1794,7 +1799,8 @@ Public Class MobileServiceSync
     Private Sub hideSyncInc()
         'Hide the indicator
         RaiseEvent showIndicator(False)
-
+        MonitorServerConnection(True)
+TogglePostRefresh(true)
         'm_SyncIndicator.Visible = False
         'Adjust the edit label
         adjustEditLbl()
@@ -2494,6 +2500,7 @@ Public Class MobileServiceSync
             'Stop/Start the service monitoring
             Select Case Start
                 Case True
+
                     If m_MobileConnect.Url IsNot Nothing Then
                         Dim url As String
                         If m_MobileConnect.Url.Contains("?") Then
@@ -2825,20 +2832,34 @@ Public Class MobileServiceSync
 
         lstErrors.Items.Insert(0, GlobalsFunctions.appConfig.ServicePanel.UIComponents.URLError)
     End Sub
+    Private Delegate Sub TogglePostRefreshDel(ByVal enabled As Boolean)
+
     Private Sub TogglePostRefresh(ByVal enabled As Boolean)
-        If enabled Then
-            btnPost.BackgroundImage = My.Resources.UploadGreen
-            btnRefresh.BackgroundImage = My.Resources.DownloadGreen
-            btnPost.Enabled = True
-            btnRefresh.Enabled = True
+        If Me.InvokeRequired Then
+            Try
+                Me.Invoke(New TogglePostRefreshDel(AddressOf TogglePostRefresh), enabled)
+
+            Catch ex As Exception
+
+            End Try
+
 
         Else
 
+            If enabled Then
+                btnPost.BackgroundImage = My.Resources.UploadGreen
+                btnRefresh.BackgroundImage = My.Resources.DownloadGreen
+                btnPost.Enabled = True
+                btnRefresh.Enabled = True
 
-            btnPost.BackgroundImage = My.Resources.UploadRed
-            btnRefresh.BackgroundImage = My.Resources.DownloadRed
-            btnPost.Enabled = False
-            btnRefresh.Enabled = False
+            Else
+
+
+                btnPost.BackgroundImage = My.Resources.UploadRed
+                btnRefresh.BackgroundImage = My.Resources.DownloadRed
+                btnPost.Enabled = False
+                btnRefresh.Enabled = False
+            End If
         End If
 
     End Sub

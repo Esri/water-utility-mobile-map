@@ -357,7 +357,7 @@ Public Class EditControl
             m_Map = value
         End Set
     End Property
-    Private Sub curRec(ByVal FeatLayer As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource)
+    Private Sub curRec(ByVal FeatLayer As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource, ByVal featureDT As FeatureDataTable)
         If FeatLayer Is Nothing Then
             DisplayBlank()
             m_FDR = Nothing
@@ -366,12 +366,15 @@ Public Class EditControl
         End If
         If m_FL Is Nothing Then
             m_FL = FeatLayer
+            m_DT = featureDT
+
             m_FDR = Nothing
 
             AddControls()
         ElseIf FeatLayer.Name <> m_FL.Name Then
             'Add the controls for each field
             m_FL = FeatLayer
+            m_DT = featureDT
             m_FDR = Nothing
 
             AddControls()
@@ -386,7 +389,7 @@ Public Class EditControl
 
 
             m_EditOptions = editOptions
-            curRec(FeatLayer)
+            curRec(FeatLayer, FeatLayer.GetDataTable)
         Catch ex As Exception
             Dim st As New StackTrace
             MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
@@ -437,7 +440,7 @@ Public Class EditControl
             Return
         End If
 
-        curRec(value.FeatureSource)
+        curRec(value.FeatureSource, value.Table)
         m_FDR = value
         'Load the table
         If m_FDR.StoredEditSate = EditState.NotDefined Then
@@ -4528,8 +4531,8 @@ Public Class EditControl
             If m_FDR.Geometry Is Nothing Then Return False
             If m_FDR.Geometry.IsEmpty Then Return False
             'Get the Data Table associated with the record
-            Dim pDT As FeatureDataTable = m_FDR.Table
-            'Loop through each tab page
+
+             'Loop through each tab page
             m_pTabPagAtt = Nothing
 
 
@@ -4575,7 +4578,7 @@ Public Class EditControl
                                             strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
                                         End If
 
-                                        pDC = pDT.Columns(strFld)
+                                        pDC = m_DT.Columns(strFld)
 
                                         'Check input on the screen
                                         If CType(cCntrlPnl, TextBox).Text Is DBNull.Value Then
@@ -4665,7 +4668,7 @@ Public Class EditControl
                                         If strFld.IndexOf("|") > 0 Then
                                             strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
                                         End If
-                                        pDC = pDT.Columns(strFld)
+                                        pDC = m_DT.Columns(strFld)
                                         If CType(cCntrlPnl, ComboBox).SelectedItem Is DBNull.Value And CType(cCntrlPnl, ComboBox).SelectedValue Is DBNull.Value Then
                                             If m_FDR.Item(strFld) Is DBNull.Value Then
                                                 If pDC.AllowDBNull = False Then
@@ -4680,7 +4683,7 @@ Public Class EditControl
                                                     lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, pDC.Caption, "Null Not Allowed"))
                                                     Return False
                                                 End If
-                                                If pDT.Columns(CType(cCntrlPnl, ComboBox).Tag.ToString).DataType Is System.Type.GetType("System.String") Then
+                                                If m_DT.Columns(CType(cCntrlPnl, ComboBox).Tag.ToString).DataType Is System.Type.GetType("System.String") Then
                                                     m_FDR.Item(strFld) = DBNull.Value 'String.Empty
                                                 Else
 
@@ -4699,11 +4702,11 @@ Public Class EditControl
                                                     Return False
 
                                                 End If
-                                                If pDT.Columns(CType(cCntrlPnl, ComboBox).Tag.ToString).DataType Is System.Type.GetType("System.String") Then
-                                                    m_FDR.Item(strFld) = CType(pDT.Columns.Item(CType(cCntrlPnl, ComboBox).Tag.ToString), DataColumn).DefaultValue
+                                                If m_DT.Columns(CType(cCntrlPnl, ComboBox).Tag.ToString).DataType Is System.Type.GetType("System.String") Then
+                                                    m_FDR.Item(strFld) = CType(m_DT.Columns.Item(CType(cCntrlPnl, ComboBox).Tag.ToString), DataColumn).DefaultValue
                                                 Else
 
-                                                    m_FDR.Item(strFld) = CType(pDT.Columns.Item(CType(cCntrlPnl, ComboBox).Tag.ToString), DataColumn).DefaultValue
+                                                    m_FDR.Item(strFld) = CType(m_DT.Columns.Item(CType(cCntrlPnl, ComboBox).Tag.ToString), DataColumn).DefaultValue
                                                 End If
 
                                             End If
@@ -4726,7 +4729,7 @@ Public Class EditControl
                                             strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
                                         End If
 
-                                        pDC = pDT.Columns(strFld)
+                                        pDC = m_DT.Columns(strFld)
                                         If CType(cCntrlPnl, DateTimePicker).Checked = False Then
                                             If m_FDR.Item(strFld) Is DBNull.Value Then
                                             ElseIf m_FDR.Item(strFld).ToString = "" Then
@@ -4754,7 +4757,7 @@ Public Class EditControl
                                         If strFld.IndexOf("|") > 0 Then
                                             strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
                                         End If
-                                        pDC = pDT.Columns(strFld)
+                                        pDC = m_DT.Columns(strFld)
 
                                         If CType(cCntrlPnl, NumericUpDown).ReadOnly = True Then
                                             If m_FDR.Item(strFld) Is DBNull.Value Then
@@ -4802,7 +4805,34 @@ Public Class EditControl
 
 
                 If m_FDR.RowState = DataRowState.Detached Then
-                    pDT.Rows.Add(m_FDR) '
+                    Try
+                        m_DT.Rows.Add(m_FDR)
+
+                    Catch ex As Exception
+                        m_DT = m_FL.GetDataTable()
+
+                        Dim pTr As FeatureDataRow = m_DT.NewRow()
+                        pTr.Geometry = m_FDR.Geometry
+                        For v As Integer = 0 To m_DT.Columns.Count - 1
+
+                            If m_DT.GeometryColumnIndex = v Then
+                            ElseIf m_DT.FidColumnIndex = v Then
+                            ElseIf UCase(m_DT.Columns(v).ColumnName) = UCase("shape.len") Or UCase(m_DT.Columns(v).ColumnName) = UCase("shape.area") Then
+
+                            Else
+                                pTr(v) = m_FDR(v)
+                            End If
+
+
+
+
+                        Next
+                        m_DT.Rows.Add(pTr) '
+                        m_FDR = pTr
+
+                    End Try
+
+
                 ElseIf m_FDR.RowState = DataRowState.Modified Then
                     'm_FDR.StoredEditSate
                 End If
@@ -4844,6 +4874,8 @@ Public Class EditControl
         End Try
         Return True
     End Function
+    Private m_DT As FeatureDataTable
+
     Private Function SaveRecordToLayer() As Boolean
         Try
             Dim pAtt As Attachment = Nothing
@@ -4854,8 +4886,8 @@ Public Class EditControl
             If m_FDR.Geometry Is Nothing Then Return False
             If m_FDR.Geometry.IsEmpty Then Return False
             'Get the Data Table associated with the record
-            Dim pDT As FeatureDataTable = m_FDR.Table
 
+            
             If m_GPSVal IsNot Nothing Then
                 If m_FDR.Table.Columns("Long") IsNot Nothing Then
                     m_FDR("Long") = m_GPSVal.Longitude
@@ -4903,10 +4935,10 @@ Public Class EditControl
                     m_FDR("FixStatus") = m_GPSVal.FixStatus
                 End If
             End If
-            pDT.SaveInFeatureSource()
-            pDT.AcceptChanges()
+            m_DT.SaveInFeatureSource()
+            m_DT.AcceptChanges()
 
-            pDT.FeatureSource.SaveEdits(pDT)
+            m_FL.SaveEdits(m_DT)
             Dim lstAtt As List(Of Attachment) = New List(Of Attachment)
 
             If m_pTabPagAtt IsNot Nothing Then
@@ -4937,8 +4969,8 @@ Public Class EditControl
 
 
 
-            If pDT.HasErrors Then
-                Dim rowsInError() As DataRow = pDT.GetErrors
+            If m_DT.HasErrors Then
+                Dim rowsInError() As DataRow = m_DT.GetErrors
                 For i As Integer = 0 To rowsInError.GetLength(0) - 1
                     MsgBox(rowsInError(i).RowError)
                 Next
@@ -4952,7 +4984,7 @@ Public Class EditControl
             Dim pRetFID As Integer = m_FDR.Fid
             Dim pRetName As String = m_FDR.Table.FeatureSource.Name
             If m_bNewRecordAfterSave Then
-                m_FDR = m_FDR.Table.NewRow
+                m_FDR = m_DT.NewRow
                 loadRecordEditor(True)
                 LoadAutoAttributes(m_FDR)
 
@@ -5200,7 +5232,7 @@ Public Class EditControl
                 bExistingFeat = True
                 If m_FDR Is Nothing Then
                     btnMove.Enabled = False
-                ElseIf m_FDR.Geometry.GeometryType = GeometryType.Point Then
+                ElseIf m_FL.GeometryType = GeometryType.Point Then
                     btnMove.Enabled = True
                 Else
                     btnMove.Enabled = False
