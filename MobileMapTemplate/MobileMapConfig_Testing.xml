@@ -20,7 +20,7 @@
   <MobileMapConfig>
     <ApplicationSettings>
       <!-- Label on splash screen-->
-      <SplashLabel>Water Utilites Mobile Map</SplashLabel>
+      <SplashLabel>Water Utilities Mobile Map</SplashLabel>
       <!--Image used on the splash screen-->
       <SplashImage>splash.png</SplashImage>
       <!--icon in the top left of the app-->
