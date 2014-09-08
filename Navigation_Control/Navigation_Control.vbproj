@@ -129,6 +129,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
+    <None Include="Images\gpsTrackOff.png" />
+    <None Include="Images\gpsTrack.png" />
     <EmbeddedResource Include="Images\ZoomInOutCur.cur" />
     <None Include="Images\ClearGreen.png" />
     <Content Include="Images\Compass.png">

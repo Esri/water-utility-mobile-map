@@ -84,6 +84,7 @@
         <GPSLogLayer_UserNameField>UserID</GPSLogLayer_UserNameField>
         <GPSLogLayer_DateField>TimeStamp</GPSLogLayer_DateField>
         <GPSLogLayer_TruncateAfterPost>True</GPSLogLayer_TruncateAfterPost>
+        <GPSAutoCenter>False</GPSAutoCenter>
       </GPS>
       <ZoomPan>
         <!--Option to use Fix zoom(True) in or drag a box and zoom(False)-->

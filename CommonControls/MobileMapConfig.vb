@@ -2313,7 +2313,7 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
         Private gPSPointMaxTriesField As String = 200
         Private waypointControlField As MobileConfigMobileMapConfigNavigationOptionsGPSWaypointControl
 
-
+        Private gPSAutoCenterField As String = True
         Private Shared sSerializer As System.Xml.Serialization.XmlSerializer
         Public Sub New()
             waypointControlField = New MobileConfigMobileMapConfigNavigationOptionsGPSWaypointControl()
@@ -2457,6 +2457,15 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
             End Get
             Set(ByVal value As String)
                 Me.gPSLogLayer_TruncateAfterPostField = value
+            End Set
+        End Property
+        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=15)> _
+        Public Property GPSAutoCenter() As String
+            Get
+                Return Me.gPSAutoCenterField
+            End Get
+            Set(ByVal value As String)
+                Me.gPSAutoCenterField = value
             End Set
         End Property
 

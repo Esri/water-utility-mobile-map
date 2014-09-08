@@ -143,6 +143,26 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property gpsTrack() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("gpsTrack", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property gpsTrackOff() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("gpsTrackOff", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property GreenCircle() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("GreenCircle", resourceCulture)

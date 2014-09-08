@@ -80,6 +80,7 @@ Public Class mobileNavigation
     Private WithEvents m_ZoomOutMA As Esri.ArcGIS.Mobile.WinForms.ZoomOutMapAction
     Private m_PanBtn As Button
     Private m_GPSBtn As Button
+    Private m_GPSTrackBtn As Button
     Private m_MeasureBtn As Button
     Private m_BookmarkBtn As Button
 
@@ -381,6 +382,10 @@ Public Class mobileNavigation
 
             AddHandler GlobalsFunctions.m_GPS.Disposed, AddressOf m_GPS_Disposed
 
+            If GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSAutoCenter.ToUpper() = "FALSE" Then
+                GlobalsFunctions.m_GPS.AutoPan = False
+                m_GPSTrackBtn.BackgroundImage = Global.MobileControls.My.Resources.Resources.gpsTrackOff
+            End If
             'Asign the map
             GlobalsFunctions.m_GPS.Map = mobileMap
             'GlobalsFunctions.m_GPS.AutoPan = True
@@ -394,7 +399,6 @@ Public Class mobileNavigation
 
             'Set the GPS to serial by default
             GlobalsFunctions.m_GPS.GpsConnection = m_SerialGPS
-
 
 
 
@@ -903,6 +907,12 @@ Public Class mobileNavigation
         End If
         m_GPSBtn = Nothing
 
+        If m_GPSTrackBtn IsNot Nothing Then
+            m_GPSTrackBtn.Dispose()
+        End If
+        m_GPSTrackBtn = Nothing
+
+
         If m_MeasureBtn IsNot Nothing Then
             m_MeasureBtn.Dispose()
         End If
@@ -1034,7 +1044,8 @@ Public Class mobileNavigation
 
                 If m_GPSBtn IsNot Nothing Then
                     m_GPSBtn.Location = New System.Drawing.Point(m_MeasureBtn.Left + m_MeasureBtn.Width + intSpace, m_MeasureBtn.Top)
-                    m_GPSLoadingPic.Location = New System.Drawing.Point(m_GPSBtn.Left + m_GPSBtn.Width + intSpace, CInt(m_GPSBtn.Top + (m_GPSBtn.Height / 2) - (m_GPSLoadingPic.Height / 2)))
+                    m_GPSTrackBtn.Location = New System.Drawing.Point(m_GPSBtn.Left + m_GPSBtn.Width + intSpace, m_MeasureBtn.Top)
+                    m_GPSLoadingPic.Location = New System.Drawing.Point(m_GPSTrackBtn.Left + m_GPSTrackBtn.Width + intSpace, CInt(m_GPSBtn.Top + (m_GPSBtn.Height / 2) - (m_GPSLoadingPic.Height / 2)))
                     If m_RotLeftBtn IsNot Nothing Then
 
                         m_RotLeftBtn.Location = New System.Drawing.Point(m_PanBtn.Left, m_MeasureBtn.Top + m_MeasureBtn.Height + intSpace)
@@ -1055,7 +1066,9 @@ Public Class mobileNavigation
 
 
                     m_GPSBtn.Location = New System.Drawing.Point(m_PanBtn.Left, m_PanBtn.Top + m_PanBtn.Height + intSpace)
-                    m_GPSLoadingPic.Location = New System.Drawing.Point(m_GPSBtn.Left + m_GPSBtn.Width + intSpace, CInt(m_GPSBtn.Top + (m_GPSBtn.Height / 2) - (m_GPSLoadingPic.Height / 2)))
+                    m_GPSTrackBtn.Location = New System.Drawing.Point(m_GPSBtn.Left + m_GPSBtn.Width + intSpace, m_GPSBtn.Top)
+
+                    m_GPSLoadingPic.Location = New System.Drawing.Point(m_GPSTrackBtn.Left + m_GPSTrackBtn.Width + intSpace, CInt(m_GPSBtn.Top + (m_GPSBtn.Height / 2) - (m_GPSLoadingPic.Height / 2)))
                     If m_RotLeftBtn IsNot Nothing Then
                         m_RotLeftBtn.Location = New System.Drawing.Point(m_PanBtn.Left, m_GPSBtn.Top + m_GPSBtn.Height + intSpace)
                         m_RotRightBtn.Location = New System.Drawing.Point(m_RotLeftBtn.Left + m_RotRightBtn.Width + intSpace, m_RotLeftBtn.Top)
@@ -1969,6 +1982,24 @@ Public Class mobileNavigation
         AddHandler m_GPSBtn.MouseDown, AddressOf btnGPS_MouseDown
         'add it to the map
         m_Map.Controls.Add(m_GPSBtn)
+
+        'create the GPS activate button
+        m_GPSTrackBtn = New Button
+        'Set up the buttons look and feel
+        m_GPSTrackBtn.BackColor = System.Drawing.SystemColors.Info
+        m_GPSTrackBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
+        m_GPSTrackBtn.FlatAppearance.BorderSize = 0
+        m_GPSTrackBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        m_GPSTrackBtn.BackgroundImage = Global.MobileControls.My.Resources.Resources.gpsTrack
+        m_GPSTrackBtn.Cursor = Cursors.Arrow
+        m_GPSTrackBtn.Name = "btnGPS"
+        m_GPSTrackBtn.Size = New System.Drawing.Size(50, 50)
+
+        m_GPSTrackBtn.UseVisualStyleBackColor = False
+        'Add the handler for the GPS button click
+        AddHandler m_GPSTrackBtn.MouseDown, AddressOf btnTrackGPS_MouseDown
+        'add it to the map
+        m_Map.Controls.Add(m_GPSTrackBtn)
         'Create a pic to display the GPS init status
         m_GPSLoadingPic = New PictureBox
         'Set up the box  look and feel
@@ -2279,7 +2310,17 @@ Public Class mobileNavigation
     Private Sub btnLeftRight_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs)
         RotateMap(-90)
     End Sub
+    Private Sub btnTrackGPS_MouseDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs)
+        GlobalsFunctions.m_GPS.AutoPan = Not GlobalsFunctions.m_GPS.AutoPan
+        If GlobalsFunctions.m_GPS.AutoPan Then
+            m_GPSTrackBtn.BackgroundImage = Global.MobileControls.My.Resources.Resources.gpsTrack
+        Else
+            m_GPSTrackBtn.BackgroundImage = Global.MobileControls.My.Resources.Resources.gpsTrackOff
+        End If
 
+
+
+    End Sub
     Private Sub btnGPS_MouseDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs)
         If GlobalsFunctions.m_GPS Is Nothing Then Return
         If GlobalsFunctions.m_GPS.GpsConnection Is Nothing Then Return
