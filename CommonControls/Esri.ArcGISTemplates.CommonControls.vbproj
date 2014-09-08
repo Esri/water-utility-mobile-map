@@ -110,6 +110,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Toughbook_DotNET">
+      <HintPath>..\..\..\..\Program Files (x86)\Panasonic\Toughbook SDK\DotNET\Toughbook_DotNET.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
@@ -122,6 +125,9 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CameraFormWinAPI.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="CameraForm.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -174,6 +180,9 @@
     <Compile Include="sync.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="CameraFormWinAPI.resx">
+      <DependentUpon>CameraFormWinAPI.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CameraForm.resx">
       <DependentUpon>CameraForm.vb</DependentUpon>
     </EmbeddedResource>
