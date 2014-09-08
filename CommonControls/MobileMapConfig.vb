@@ -19762,6 +19762,7 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
         Private queryValueField As String
         Private labelField As String
         Private sortFieldField As String
+        Private sortDirectionField As String
         Private actionField As String
 
         Private fieldsField As MobileConfigMobileMapConfigWorkorderPanelWorkOrderFiltersWorkOrderFilterFields
@@ -19773,6 +19774,7 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
             Me.queryValueField = ""
             Me.labelField = ""
             Me.SortField = ""
+            Me.SortDirection = ""
             Me.actionField = ""
         End Sub
 
@@ -19804,6 +19806,16 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
             End Get
             Set(ByVal value As String)
                 Me.sortFieldField = value
+            End Set
+        End Property
+
+        <System.Xml.Serialization.XmlAttributeAttribute()> _
+        Public Property SortDirection() As String
+            Get
+                Return Me.sortDirectionField
+            End Get
+            Set(ByVal value As String)
+                Me.sortDirectionField = value
             End Set
         End Property
         <System.Xml.Serialization.XmlAttributeAttribute()> _

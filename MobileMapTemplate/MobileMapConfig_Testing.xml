@@ -1140,25 +1140,25 @@
       <LayerInfo AssignedTo="Crew 1" AssignedToField="ASSIGNEDTO" LayerName="Workorders" IDField ="WORKID"/>
 
       <WorkOrderFilters ButtonSize="40" ButtonFontSize="14" ListFontSize="12">
-        <WorkOrderFilter QueryValue="PRIORITY &gt; 4 and (WORKSTATUS  &lt;&gt; 'Work Completed' and WORKSTATUS  &lt;&gt; 'Completed')" Label="High" SortField="PLANSTART" Action="Zoom,Flash">
+        <WorkOrderFilter QueryValue="PRIORITY &gt; 4 and (WORKSTATUS  &lt;&gt; 'Work Completed' and WORKSTATUS  &lt;&gt; 'Completed')" Label="High" SortField="PLANSTART" SortDirection="DESC" Action="Zoom,Flash">
           <Fields JoinString=" - ">
             <Field Name="WORKID" />
             <Field Name="WORKTYPE" />
           </Fields>
         </WorkOrderFilter>
-        <WorkOrderFilter QueryValue="PRIORITY &gt; 3 AND PRIORITY &lt;= 4 and (WORKSTATUS  &lt;&gt; 'Work Completed' and WORKSTATUS  &lt;&gt; 'Completed')" Label="Medium" SortField="PLANSTART" Action="Zoom,Flash">
+        <WorkOrderFilter QueryValue="PRIORITY &gt; 3 AND PRIORITY &lt;= 4 and (WORKSTATUS  &lt;&gt; 'Work Completed' and WORKSTATUS  &lt;&gt; 'Completed')" Label="Medium" SortField="PLANSTART" SortDirection="DESC" Action="Zoom,Flash">
           <Fields JoinString=" - ">
             <Field Name="WORKID" />
             <Field Name="WORKTYPE" />
           </Fields>
         </WorkOrderFilter>
-        <WorkOrderFilter QueryValue="((PRIORITY &gt;=0 AND PRIORITY &lt;=3 ) or PRIORITY is NULL )and (WORKSTATUS  &lt;&gt; 'Work Completed' and WORKSTATUS  &lt;&gt; 'Completed')" Label="Low" SortField="PLANSTART" Action="Zoom,Flash">
+        <WorkOrderFilter QueryValue="((PRIORITY &gt;=0 AND PRIORITY &lt;=3 ) or PRIORITY is NULL )and (WORKSTATUS  &lt;&gt; 'Work Completed' and WORKSTATUS  &lt;&gt; 'Completed')" Label="Low" SortField="PLANSTART" SortDirection="DESC" Action="Zoom,Flash">
           <Fields JoinString=" - ">
             <Field Name="WORKID" />
             <Field Name="WORKTYPE" />
           </Fields>
         </WorkOrderFilter>
-        <WorkOrderFilter QueryValue="WORKSTATUS = 'Work Completed' or WORKSTATUS = 'Completed'" Label="Closed" SortField="PLANSTART" Action="Zoom,Flash">
+        <WorkOrderFilter QueryValue="WORKSTATUS = 'Work Completed' or WORKSTATUS = 'Completed'" Label="Closed" SortField="PLANSTART" SortDirection="DESC" Action="Zoom,Flash">
           <Fields JoinString=" - ">
             <Field Name="WORKID" />
             <Field Name="WORKTYPE" />

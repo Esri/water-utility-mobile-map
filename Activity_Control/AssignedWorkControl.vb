@@ -533,19 +533,38 @@ Public Class AssignedWorkControl
                     Else
                         Continue For
                     End If
-                    pDt = m_WOFSwD.FeatureSource.GetDataTable(pQF) ', strFldArr.ToArray())
 
-                    If TypeOf (nvBtn.RelatedControl) Is DataGridView Then
-                        LoadWOListControlDataGrid(nvBtn.RelatedControl, pDt)
-                    ElseIf TypeOf (nvBtn.RelatedControl) Is ListView Then
-                        LoadWOListControlListView(nvBtn.RelatedControl, pDt, strFldArr, woFilt.Fields.JoinString)
+
+                    pDt = m_WOFSwD.FeatureSource.GetDataTable(pQF)
+
+                    Dim pDRs() As DataRow
+
+                    If woFilt.SortField <> "" Then
+
+                        If m_WOFSwD.FeatureSource.Columns(woFilt.SortField) IsNot Nothing Then
+                            If woFilt.SortDirection <> "DESC" And woFilt.SortDirection <> "ASC" Then
+                                woFilt.SortDirection = "ASC"
+                            End If
+
+                            pDRs = pDt.Select("1=1", woFilt.SortField & " " & woFilt.SortDirection)
+
+                        Else
+                            pDRs = pDt.Select(strSql)
+
+                        End If
+                    Else
+                        pDRs = pDt.Select(strSql)
 
                     End If
+
+                    LoadWOListControlListView(nvBtn.RelatedControl, pDRs, strFldArr, woFilt.Fields.JoinString)
+
+
                     nvBtn.Caption = woFilt.Label & ": " & m_WOFSwD.FeatureSource.GetFeatureCount(pQF)
                     ' nvBtn.PerformClick()
                 Else
                     nvBtn.Caption = woFilt.Label
-                   
+
                     clearDG(nvBtn.RelatedControl)
 
                 End If
@@ -669,6 +688,73 @@ Public Class AssignedWorkControl
                         pLstViewItm.ID = GlobalsFunctions.appConfig.WorkorderPanel.UIComponents.FieldCreateWOText & pDr.Fid.ToString()
                     Else
                         pLstViewItm.ID = pDr(GlobalsFunctions.appConfig.WorkorderPanel.LayerInfo.IDField)
+                    End If
+
+                Else
+                    pLstViewItm.ID = pDr.Fid
+                End If
+
+
+                pLstViewItm.FeatureDataRow = pDr
+
+                ' pLstViewItm.Tag = New IDandGeo(pDr.Geometry, pDr.Fid)
+
+                LstView.Items.Add(pLstViewItm)
+            Next
+
+
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+    Private Sub LoadWOListControlListView(ByVal LstView As ListView, ByVal datarows() As DataRow, ByVal FieldsList As List(Of String), ByVal JoinString As String)
+        Try
+
+            Dim pLstViewItm As MyListViewItem
+
+            Dim strDis As String = ""
+            LstView.Items.Clear()
+            Dim pDr As FeatureDataRow
+            For Each dr As DataRow In datarows
+                pDr = dr
+
+                pLstViewItm = New MyListViewItem
+
+                strDis = ""
+
+                For i As Integer = 0 To FieldsList.Count - 1
+                    If FieldsList(i) <> pDr.FeatureSource.GeometryColumnName Then
+
+                        If strDis = "" Then
+                            strDis = pDr.Item(FieldsList(i)).ToString()
+
+                            'pLstViewItm.Text = (pDr(i).ToString)
+                        Else
+                            'pLstViewItm.SubItems.Add(pDr(i).ToString)
+                            strDis = strDis & JoinString & pDr.Item(FieldsList(i)).ToString()
+
+                        End If
+                    End If
+
+
+                Next
+                If strDis = "" Then
+                    strDis = GlobalsFunctions.appConfig.WorkorderPanel.UIComponents.NoDisplayText
+
+                End If
+                pLstViewItm.Text = strDis
+                pLstViewItm.Geometry = pDr.Geometry
+                pLstViewItm.FID = pDr.Fid
+                If pDr.FeatureSource.Columns(GlobalsFunctions.appConfig.WorkorderPanel.LayerInfo.IDField) IsNot Nothing Then
+                    If pDr(GlobalsFunctions.appConfig.WorkorderPanel.LayerInfo.IDField) Is Nothing Then
+                        pLstViewItm.ID = GlobalsFunctions.appConfig.WorkorderPanel.UIComponents.FieldCreateWOText & pDr.Fid.ToString()
+                    ElseIf pDr(GlobalsFunctions.appConfig.WorkorderPanel.LayerInfo.IDField) Is DBNull.Value Then
+
+
+                        pLstViewItm.ID = GlobalsFunctions.appConfig.WorkorderPanel.UIComponents.FieldCreateWOText & pDr.Fid.ToString()
+                    Else
+                        pLstViewItm.ID = pDr.Item(GlobalsFunctions.appConfig.WorkorderPanel.LayerInfo.IDField)
                     End If
 
                 Else
