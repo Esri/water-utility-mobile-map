@@ -221,6 +221,7 @@ Public Class EditControl
         End Get
         Set(ByVal value As GPSLocationDetails)
             m_GPSVal = value
+            
         End Set
     End Property
     'Property used to notify the panel if it should create a new row after a save
@@ -4875,64 +4876,174 @@ Public Class EditControl
         Return True
     End Function
     Private m_DT As FeatureDataTable
-
+  
     Private Function SaveRecordToLayer() As Boolean
         Try
-            Dim pAtt As Attachment = Nothing
-
+           
             'Make sure the row is valid
             If m_FDR Is Nothing Then Return False
             'Make sure there is valid Geometry
             If m_FDR.Geometry Is Nothing Then Return False
             If m_FDR.Geometry.IsEmpty Then Return False
             'Get the Data Table associated with the record
+            If m_GPSStatus = "On" And m_GPSVal Is Nothing Then
+                m_GPSVal = New GPSLocationDetails()
+                m_GPSVal.Altitude = GlobalsFunctions.m_GPS.GpsConnection.Altitude
+                m_GPSVal.Course = GlobalsFunctions.m_GPS.GpsConnection.Course
+                m_GPSVal.CourseMagnetic = GlobalsFunctions.m_GPS.GpsConnection.CourseMagnetic
+                m_GPSVal.DateTime = GlobalsFunctions.m_GPS.GpsConnection.DateTime
+                m_GPSVal.FixSatelliteCount = GlobalsFunctions.m_GPS.GpsConnection.FixSatelliteCount
+                m_GPSVal.FixStatus = GlobalsFunctions.m_GPS.GpsConnection.FixStatus
 
-            
+                m_GPSVal.GeoidHeight = GlobalsFunctions.m_GPS.GpsConnection.GeoidHeight
+                m_GPSVal.HorizontalDilutionOfPrecision = GlobalsFunctions.m_GPS.GpsConnection.HorizontalDilutionOfPrecision
+                m_GPSVal.Latitude = GlobalsFunctions.m_GPS.GpsConnection.Latitude
+                ' gpsD.LatitudeToDegreeMinutesSeconds = GlobalsFunctions.m_GPS.GpsConnection.LatitudeToDegreeMinutesSeconds
+                m_GPSVal.Longitude = GlobalsFunctions.m_GPS.GpsConnection.Longitude
+                ' gpsD.LongitudeToDegreeMinutesSeconds = GlobalsFunctions.m_GPS.GpsConnection.LongitudeToDegreeMinutesSeconds
+                m_GPSVal.PositionDilutionOfPrecision = GlobalsFunctions.m_GPS.GpsConnection.PositionDilutionOfPrecision
+                m_GPSVal.SpatialReference = GlobalsFunctions.m_GPS.GpsConnection.SpatialReference
+                m_GPSVal.Speed = GlobalsFunctions.m_GPS.GpsConnection.Speed
+                m_GPSVal.VerticalDilutionOfPrecision = GlobalsFunctions.m_GPS.GpsConnection.VerticalDilutionOfPrecision
+
+            End If
+            SaveRecordFinal()
+
+         
+        Catch ex As Exception
+            Dim st As New StackTrace
+            MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+            st = Nothing
+
+            Return False
+        End Try
+    End Function
+    Private Function SaveRecordFinal() As Boolean
+        Try
+
+            Dim pAtt As Attachment = Nothing
+
             If m_GPSVal IsNot Nothing Then
                 If m_FDR.Table.Columns("Long") IsNot Nothing Then
-                    m_FDR("Long") = m_GPSVal.Longitude
+                    If m_FDR.Table.Columns("Long").DataType Is System.Type.GetType("System.String") Then
+                        m_FDR("Long") = m_GPSVal.Longitude.ToString()
+                    Else
+                        m_FDR("Long") = m_GPSVal.Longitude
+                    End If
                 End If
+
+
                 If m_FDR.Table.Columns("Longitude") IsNot Nothing Then
-                    m_FDR("Longitude") = m_GPSVal.Longitude
+                    If m_FDR.Table.Columns("Longitude").DataType Is System.Type.GetType("System.String") Then
+                        m_FDR("Longitude") = m_GPSVal.Longitude.ToString()
+                    Else
+                        m_FDR("Longitude") = m_GPSVal.Longitude
+                    End If
+
+
                 End If
                 If m_FDR.Table.Columns("X") IsNot Nothing Then
-                    m_FDR("X") = m_GPSVal.Longitude
+                    If m_FDR.Table.Columns("X").DataType Is System.Type.GetType("System.String") Then
+                        m_FDR("X") = m_GPSVal.Longitude.ToString()
+                    Else
+                        m_FDR("X") = m_GPSVal.Longitude
+                    End If
+
                 End If
                 If m_FDR.Table.Columns("XCoord") IsNot Nothing Then
-                    m_FDR("XCoord") = m_GPSVal.Longitude
+                    If m_FDR.Table.Columns("XCoord").DataType Is System.Type.GetType("System.String") Then
+                        m_FDR("XCoord") = m_GPSVal.Longitude.ToString()
+                    Else
+                        m_FDR("XCoord") = m_GPSVal.Longitude
+                    End If
+
                 End If
                 If m_FDR.Table.Columns("Lat") IsNot Nothing Then
-                    m_FDR("Lat") = m_GPSVal.Latitude
+
+                    If m_FDR.Table.Columns("Lat").DataType Is System.Type.GetType("System.String") Then
+                        m_FDR("Lat") = m_GPSVal.Latitude.ToString()
+                    Else
+                        m_FDR("Lat") = m_GPSVal.Latitude
+                    End If
+
                 End If
                 If m_FDR.Table.Columns("Latitude") IsNot Nothing Then
-                    m_FDR("Latitude") = m_GPSVal.Latitude
+                    If m_FDR.Table.Columns("Latitude").DataType Is System.Type.GetType("System.String") Then
+                        m_FDR("Latitude") = m_GPSVal.Latitude.ToString()
+                    Else
+                        m_FDR("Latitude") = m_GPSVal.Latitude
+
+                    End If
+
                 End If
 
                 If m_FDR.Table.Columns("Y") IsNot Nothing Then
-                    m_FDR("Y") = m_GPSVal.Latitude
+
+                    If m_FDR.Table.Columns("Y").DataType Is System.Type.GetType("System.String") Then
+                        m_FDR("Y") = m_GPSVal.Latitude.ToString()
+                    Else
+                        m_FDR("Y") = m_GPSVal.Latitude
+                    End If
+
                 End If
 
                 If m_FDR.Table.Columns("YCoord") IsNot Nothing Then
-                    m_FDR("YCoord") = m_GPSVal.Latitude
+
+                    If m_FDR.Table.Columns("YCoord").DataType Is System.Type.GetType("System.String") Then
+                        m_FDR("YCoord") = m_GPSVal.Latitude.ToString()
+                    Else
+                        m_FDR("YCoord") = m_GPSVal.Latitude
+                    End If
+
                 End If
                 If m_FDR.Table.Columns("PDOP") IsNot Nothing Then
-                    m_FDR("PDOP") = m_GPSVal.PositionDilutionOfPrecision
+
+                    If m_FDR.Table.Columns("PDOP").DataType Is System.Type.GetType("System.String") Then
+                        m_FDR("PDOP") = m_GPSVal.PositionDilutionOfPrecision.ToString()
+                    Else
+                        m_FDR("PDOP") = m_GPSVal.PositionDilutionOfPrecision
+                    End If
+
                 End If
 
                 If m_FDR.Table.Columns("HDOP") IsNot Nothing Then
-                    m_FDR("HDOP") = m_GPSVal.HorizontalDilutionOfPrecision
+                    If m_FDR.Table.Columns("HDOP").DataType Is System.Type.GetType("System.String") Then
+                        m_FDR("HDOP") = m_GPSVal.HorizontalDilutionOfPrecision.ToString()
+                    Else
+                        m_FDR("HDOP") = m_GPSVal.HorizontalDilutionOfPrecision
+
+                    End If
+
                 End If
 
                 If m_FDR.Table.Columns("VDOP") IsNot Nothing Then
-                    m_FDR("VDOP") = m_GPSVal.VerticalDilutionOfPrecision
+
+                    If m_FDR.Table.Columns("VDOP").DataType Is System.Type.GetType("System.String") Then
+                        m_FDR("VDOP") = m_GPSVal.VerticalDilutionOfPrecision.ToString()
+                    Else
+                        m_FDR("VDOP") = m_GPSVal.VerticalDilutionOfPrecision
+                    End If
+
                 End If
 
                 If m_FDR.Table.Columns("SatCount") IsNot Nothing Then
-                    m_FDR("SatCount") = m_GPSVal.FixSatelliteCount
+                    If m_FDR.Table.Columns("SatCount").DataType Is System.Type.GetType("System.String") Then
+                        m_FDR("SatCount") = m_GPSVal.FixSatelliteCount.ToString()
+                    Else
+                        m_FDR("SatCount") = m_GPSVal.FixSatelliteCount
+                    End If
+
+
                 End If
 
                 If m_FDR.Table.Columns("FixStatus") IsNot Nothing Then
-                    m_FDR("FixStatus") = m_GPSVal.FixStatus
+                    If m_FDR.Table.Columns("FixStatus").DataType Is System.Type.GetType("System.String") Then
+                        m_FDR("FixStatus") = m_GPSVal.FixStatus.ToString()
+                    Else
+                        m_FDR("FixStatus") = m_GPSVal.FixStatus
+                    End If
+
+
                 End If
             End If
             m_DT.SaveInFeatureSource()
@@ -4997,9 +5108,12 @@ Public Class EditControl
                 End If
 
             End If
+            m_GPSVal = Nothing
+
             'Raise the event to notify the record was saved
             RaiseEvent RecordSaved(pRetName, pRetGeo, pRetFID)
             Return True
+
         Catch ex As Exception
             Dim st As New StackTrace
             MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
@@ -5007,6 +5121,7 @@ Public Class EditControl
 
             Return False
         End Try
+
     End Function
     Private Sub saveCurrentRecordToXML()
         Try

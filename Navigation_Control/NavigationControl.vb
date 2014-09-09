@@ -2314,6 +2314,9 @@ Public Class mobileNavigation
         GlobalsFunctions.m_GPS.AutoPan = Not GlobalsFunctions.m_GPS.AutoPan
         If GlobalsFunctions.m_GPS.AutoPan Then
             m_GPSTrackBtn.BackgroundImage = Global.MobileControls.My.Resources.Resources.gpsTrack
+            If GlobalsFunctions.m_GPS.GpsConnection.IsOpen Then
+                m_Map.CenterAt(m_Map.SpatialReference.FromWgs84(GlobalsFunctions.m_GPS.GpsConnection.Longitude, GlobalsFunctions.m_GPS.GpsConnection.Latitude))
+            End If
         Else
             m_GPSTrackBtn.BackgroundImage = Global.MobileControls.My.Resources.Resources.gpsTrackOff
         End If

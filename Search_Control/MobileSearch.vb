@@ -60,7 +60,7 @@ Public Class MobileSearch
     Private Shared lstPreFilterSt As List(Of ComboBox)
     Private lstPreFilterPnt As List(Of ComboBox)
 
-    'Variables to determine if the search and address/geocode are initilized
+    'Variables to determine if the search and address/geocode are initialized
     Private m_bSearchInit As Boolean = False
     Private m_bAddress_GeocordInit As Boolean = False
     Private m_bAddress_PointInit As Boolean = False
