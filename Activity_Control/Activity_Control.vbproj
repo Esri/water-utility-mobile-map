@@ -214,6 +214,10 @@
   <ItemGroup>
     <None Include="Images\ClearGreen.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\FilterOff.png" />
+    <EmbeddedResource Include="Images\FilterOn.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

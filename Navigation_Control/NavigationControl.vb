@@ -718,6 +718,7 @@ Public Class mobileNavigation
     Public Sub ToggleGPSDisplay()
         If m_GPSBtn IsNot Nothing Then
             m_GPSBtn.Visible = m_GPSBtn.Visible
+            m_GPSTrackBtn.Visible = m_GPSBtn.Visible
         End If
 
     End Sub

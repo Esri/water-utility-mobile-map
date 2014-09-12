@@ -36,7 +36,7 @@ Partial Class AssignedWorkControl
         Me.btnCloseWork = New System.Windows.Forms.CheckBox()
         Me.btnViewWorkDetails = New System.Windows.Forms.CheckBox()
         Me.btnViewAllWork = New System.Windows.Forms.CheckBox()
-        Me.btnCreateWork = New System.Windows.Forms.CheckBox()
+        Me.btnFiltGeo = New System.Windows.Forms.CheckBox()
         Me.gpBoxButtons.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -48,7 +48,7 @@ Partial Class AssignedWorkControl
         Me.gpBoxButtons.Controls.Add(Me.btnCloseWork)
         Me.gpBoxButtons.Controls.Add(Me.btnViewWorkDetails)
         Me.gpBoxButtons.Controls.Add(Me.btnViewAllWork)
-        Me.gpBoxButtons.Controls.Add(Me.btnCreateWork)
+        Me.gpBoxButtons.Controls.Add(Me.btnFiltGeo)
         Me.gpBoxButtons.Dock = System.Windows.Forms.DockStyle.Top
         Me.gpBoxButtons.Location = New System.Drawing.Point(0, 0)
         Me.gpBoxButtons.Name = "gpBoxButtons"
@@ -212,24 +212,23 @@ Partial Class AssignedWorkControl
         Me.btnViewAllWork.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.btnViewAllWork.UseVisualStyleBackColor = False
         '
-        'btnCreateWork
+        'btnFiltGeo
         '
-        Me.btnCreateWork.Appearance = System.Windows.Forms.Appearance.Button
-        Me.btnCreateWork.AutoCheck = False
-        Me.btnCreateWork.BackgroundImage = Global.MobileControls.My.Resources.Resources.EmergBlue
-        Me.btnCreateWork.FlatAppearance.BorderSize = 0
-        Me.btnCreateWork.FlatAppearance.CheckedBackColor = System.Drawing.Color.Transparent
-        Me.btnCreateWork.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent
-        Me.btnCreateWork.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent
-        Me.btnCreateWork.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnCreateWork.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnCreateWork.Location = New System.Drawing.Point(188, 43)
-        Me.btnCreateWork.Name = "btnCreateWork"
-        Me.btnCreateWork.Size = New System.Drawing.Size(40, 40)
-        Me.btnCreateWork.TabIndex = 19
-        Me.btnCreateWork.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.btnCreateWork.UseVisualStyleBackColor = True
-        Me.btnCreateWork.Visible = False
+        Me.btnFiltGeo.Appearance = System.Windows.Forms.Appearance.Button
+        Me.btnFiltGeo.AutoCheck = False
+        Me.btnFiltGeo.BackgroundImage = Global.MobileControls.My.Resources.Resources.FilterOff
+        Me.btnFiltGeo.FlatAppearance.BorderSize = 0
+        Me.btnFiltGeo.FlatAppearance.CheckedBackColor = System.Drawing.Color.Transparent
+        Me.btnFiltGeo.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent
+        Me.btnFiltGeo.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent
+        Me.btnFiltGeo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnFiltGeo.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnFiltGeo.Location = New System.Drawing.Point(188, 43)
+        Me.btnFiltGeo.Name = "btnFiltGeo"
+        Me.btnFiltGeo.Size = New System.Drawing.Size(40, 40)
+        Me.btnFiltGeo.TabIndex = 19
+        Me.btnFiltGeo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.btnFiltGeo.UseVisualStyleBackColor = True
         '
         'AssignedWorkControl
         '
@@ -251,7 +250,7 @@ Partial Class AssignedWorkControl
     Friend WithEvents btnCloseWork As System.Windows.Forms.CheckBox
     Friend WithEvents btnViewWorkDetails As System.Windows.Forms.CheckBox
     Friend WithEvents btnViewAllWork As System.Windows.Forms.CheckBox
-    Friend WithEvents btnCreateWork As System.Windows.Forms.CheckBox
+    Friend WithEvents btnFiltGeo As System.Windows.Forms.CheckBox
     Friend WithEvents gpBoxWOList As System.Windows.Forms.GroupBox
     Friend WithEvents gpBoxOptions As System.Windows.Forms.GroupBox
     Friend WithEvents gpBoxWODetails As System.Windows.Forms.GroupBox

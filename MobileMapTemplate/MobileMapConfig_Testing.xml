@@ -84,6 +84,7 @@
         <GPSLogLayer_UserNameField>UserID</GPSLogLayer_UserNameField>
         <GPSLogLayer_DateField>TimeStamp</GPSLogLayer_DateField>
         <GPSLogLayer_TruncateAfterPost>True</GPSLogLayer_TruncateAfterPost>
+        <GPSAutoCenter>False</GPSAutoCenter>
       </GPS>
       <ZoomPan>
         <!--Option to use Fix zoom(True) in or drag a box and zoom(False)-->
@@ -151,8 +152,6 @@
 
       </CachedMaps>
       <WebMaps>
-        <WebMap DisplayName="Streets">http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer</WebMap>
-        <WebMap DisplayName="Imagery">http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer</WebMap>
 
       </WebMaps>
 
@@ -867,9 +866,9 @@
           <DefaultCity>Naperville</DefaultCity>
           <DefaultState>Il</DefaultState>
         </SDC>
-        <!--<OnlineServices>
+        <OnlineServices>
           <Geocode TextToAdd="Naperville, Il" GCUrl="https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?" singleLineFieldName="SingleLine"/>
-        </OnlineServices>-->
+        </OnlineServices>
       </AddressSearch>
       <UIComponents>
         <!---->
@@ -1135,11 +1134,11 @@
       <DisplayText>Workorder</DisplayText>
       <!--Message to show in the lower left status bar-->
       <StatusBarMessage>Activitiy List: Shows a list of assigned activities, opening a activity sets up an inspection</StatusBarMessage>
-      <!-- Activities Configuration: Activites are loaded from a feature class-->
+      <!-- Activities Configuration: Activities are loaded from a feature class-->
       <!-- Activities Layer Name-->
       <LayerInfo AssignedTo="Crew 1" AssignedToField="ASSIGNEDTO" LayerName="Workorders" IDField ="WORKID"/>
 
-      <WorkOrderFilters ButtonSize="40" ButtonFontSize="14" ListFontSize="12">
+      <WorkOrderFilters ButtonSize="40" ButtonFontSize="14" ListFontSize="12" ShowFilterGeo="False" FilterOn="True">
         <WorkOrderFilter QueryValue="PRIORITY &gt; 4 and (WORKSTATUS  &lt;&gt; 'Work Completed' and WORKSTATUS  &lt;&gt; 'Completed')" Label="High" SortField="PLANSTART" SortDirection="DESC" Action="Zoom,Flash">
           <Fields JoinString=" - ">
             <Field Name="WORKID" />

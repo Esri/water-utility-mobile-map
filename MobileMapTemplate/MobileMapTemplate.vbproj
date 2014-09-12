@@ -308,8 +308,6 @@
     <Content Include="NavigationSettings.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="cacheInstall\cache.zip">
-    </None>
     <None Include="ico\hardhat.ico">
     </None>
     <None Include="Images\ArrowRight.png" />

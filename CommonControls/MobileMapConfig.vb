@@ -19566,6 +19566,8 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
         Private buttonSizeField As String
         Private buttonFontSizeField As String
         Private listFontSizeField As String
+        Private showFilterGeoField As String
+        Private filterOnField As String
 
         Private Shared sSerializer As System.Xml.Serialization.XmlSerializer
 
@@ -19604,6 +19606,26 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
                 Me.listFontSizeField = value
             End Set
         End Property
+
+        <System.Xml.Serialization.XmlAttributeAttribute()> _
+        Public Property ShowFilterGeo() As String
+            Get
+                Return Me.showFilterGeoField
+            End Get
+            Set(ByVal value As String)
+                Me.showFilterGeoField = value
+            End Set
+        End Property
+        <System.Xml.Serialization.XmlAttributeAttribute()> _
+        Public Property FilterOn() As String
+            Get
+                Return Me.filterOnField
+            End Get
+            Set(ByVal value As String)
+                Me.filterOnField = value
+            End Set
+        End Property
+
         <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=0)> _
         Public Property WorkOrderFilter() As List(Of MobileConfigMobileMapConfigWorkorderPanelWorkOrderFiltersWorkOrderFilter)
             Get

@@ -154,6 +154,20 @@ Public Class AssignedWorkControl
 
             If m_WOFSwD.FeatureSource.Columns(GlobalsFunctions.appConfig.WorkorderPanel.LayerInfo.AssignedToField) Is Nothing Then Return
 
+            If GlobalsFunctions.appConfig.WorkorderPanel.WorkOrderFilters.ShowFilterGeo.ToUpper() = "TRUE" Then
+                btnFiltGeo.Visible = True
+                If GlobalsFunctions.appConfig.WorkorderPanel.WorkOrderFilters.FilterOn.ToUpper() = "TRUE" Then
+                    btnFiltGeo.Checked = True
+                Else
+                    btnFiltGeo.Checked = False
+
+                End If
+            Else
+                btnFiltGeo.Visible = False
+            End If
+        
+
+
             InitNavigateBar()
             InitNavigateButtons()
 
@@ -184,18 +198,6 @@ Public Class AssignedWorkControl
                 st = Nothing
             End Try
             m_EdtClose.Visible = False
-
-            'btnViewWorkDetails_Click(Nothing, Nothing)
-
-
-            'btnCloseWork_Click(Nothing, Nothing)
-
-
-            'btnCreateWork_Click(Nothing, Nothing)
-
-
-            'btnViewAllWork_Click(Nothing, Nothing)
-
 
 
         Catch ex As Exception
@@ -348,6 +350,7 @@ Public Class AssignedWorkControl
         End Try
 
     End Sub
+  
     Private Sub InitNavigateButtons()
         Dim nvbBtn As NavigateBarButton
         Dim pLst As ListView
@@ -368,8 +371,10 @@ Public Class AssignedWorkControl
                                 nvbBtn = New NavigateBarButton()
                                 pLst = New ListView
                                 pLst.HideSelection = False
+                                pLst.FullRowSelect = True
 
                                 AddHandler pLst.SelectedIndexChanged, AddressOf ListView_SelectedIndexChanged
+
                                 AddHandler pLst.Resize, AddressOf resizeLst
                                 AddHandler pLst.MouseDoubleClick, AddressOf ListView_MouseDoubleClick
                                 pLst.View = View.Details
@@ -487,7 +492,8 @@ Public Class AssignedWorkControl
         End Try
 
     End Function
-    Public Sub LoadWorkOrders()
+    Public Sub LoadWorkOrders(Optional reset As Boolean = True)
+        Dim filtByExtent As Boolean = btnFiltGeo.Checked
 
         Dim woFilt As Esri.ArcGISTemplates.MobileConfigClass.MobileConfigMobileMapConfigWorkorderPanelWorkOrderFiltersWorkOrderFilter = Nothing
         Dim pCrewDC As DataColumn = Nothing
@@ -505,7 +511,14 @@ Public Class AssignedWorkControl
 
 
                 pQF = New QueryFilter(strSql)
-                If m_WOFSwD.FeatureSource.GetFeatureCount(pQF) > 0 Then
+                If filtByExtent Then
+                    pQF.Geometry = m_Map.Extent
+                    pQF.GeometricRelationship = GeometricRelationshipType.Intersect
+
+                End If
+                Dim featCnt As Integer = m_WOFSwD.FeatureSource.GetFeatureCount(pQF)
+
+                If featCnt > 0 Then
                     If strLayFilt = "" Then
                         strLayFilt = strSql
 
@@ -560,7 +573,7 @@ Public Class AssignedWorkControl
                     LoadWOListControlListView(nvBtn.RelatedControl, pDRs, strFldArr, woFilt.Fields.JoinString)
 
 
-                    nvBtn.Caption = woFilt.Label & ": " & m_WOFSwD.FeatureSource.GetFeatureCount(pQF)
+                    nvBtn.Caption = woFilt.Label & ": " & featCnt
                     ' nvBtn.PerformClick()
                 Else
                     nvBtn.Caption = woFilt.Label
@@ -571,12 +584,17 @@ Public Class AssignedWorkControl
 
             Next
 
+            If reset = False Then
+                Return
+
+            End If
             Dim pFSInfo As MobileCacheMapLayerDefinition = CType(m_Map.MapLayers(m_WOFSwD.MapLayerIndex), MobileCacheMapLayer).LayerDefinitions(m_WOFSwD.LayerIndex)
 
             pFSInfo.DisplayExpression = strLayFilt
             pFSInfo.Visibility = True
             pFSInfo = Nothing
 
+            btnCrew.Text = m_AssignedTo
 
             If m_EdtClose IsNot Nothing Then
                 m_EdtClose.setCurrentRecord(Nothing, Nothing)
@@ -592,7 +610,7 @@ Public Class AssignedWorkControl
             m_CurrentWOID = ""
 
             'lblCrewName.Text = GlobalsFunctions.appConfig.WorkorderPanel.LayerInfo.AssignedTo
-            btnCrew.Text = m_AssignedTo
+
 
         Catch ex As Exception
             Dim st As New StackTrace
@@ -632,17 +650,25 @@ Public Class AssignedWorkControl
     Private Sub resizeLst(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
         Dim lstView As ListView = sender
+        RemoveHandler lstView.Resize, AddressOf resizeLst
+
+        'For Each ch As ColumnHeader In lstView.Columns
+        '    ch.Width = -2
+        'Next
         If lstView.Columns.Count > 0 Then
+                        lstView.Columns(0).Width = lstView.Width - ImageList1.ImageSize.Width - 18
             'If lstView.Parent IsNot Nothing Then
-            'If lstView.Parent.Parent IsNot Nothing Then
-            ' If lstView.Parent.Parent.Parent IsNot Nothing Then
-            'lstView.Columns(0).Width = lstView.Parent.Parent.Parent.Width - ImageList1.ImageSize.Width
-            lstView.Columns(0).Width = lstView.Width - ImageList1.ImageSize.Width
-            'End If
-            'End If
+            '    If lstView.Parent.Parent IsNot Nothing Then
+            '        If lstView.Parent.Parent.Parent IsNot Nothing Then
+            '            '                        lstView.Columns(0).Width = lstView.Parent.Parent.Parent.Width - ImageList1.ImageSize.Width
+
+            '        End If
+            '    End If
             'End If
 
         End If
+        AddHandler lstView.Resize, AddressOf resizeLst
+
     End Sub
     Private Sub LoadWOListControlListView(ByVal LstView As ListView, ByVal DataTable As FeatureDataTable, ByVal FieldsList As List(Of String), ByVal JoinString As String)
         Try
@@ -872,6 +898,7 @@ Public Class AssignedWorkControl
 
     End Function
     Private Sub ListView_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
         If CType(sender, ListView).SelectedItems IsNot Nothing Then
 
             If CType(sender, ListView).SelectedItems.Count > 0 Then
@@ -880,45 +907,70 @@ Public Class AssignedWorkControl
 
                 lblCurrentWO.Text = CType(sender, ListView).SelectedItems(0).Text
                 m_CurrentWOID = CType(CType(sender, ListView).SelectedItems(0), MyListViewItem).ID
+                Dim prevWO As String = CType(CType(sender, ListView).SelectedItems(0), MyListViewItem).ID
                 RaiseEvent RaisePermMessage(CType(sender, ListView).SelectedItems(0).Text, False)
+                Dim pGeo As Geometry = CType(CType(sender, ListView).SelectedItems(0), MyListViewItem).Geometry
+                Dim pFDR As FeatureDataRow = CType(CType(sender, ListView).SelectedItems(0), MyListViewItem).FeatureDataRow
 
                 If (woFilt.Action = "") Then
-                    GlobalsFunctions.zoomTo(CType(CType(sender, ListView).SelectedItems(0), MyListViewItem).Geometry, m_Map)
-                    GlobalsFunctions.flashGeo(CType(CType(sender, ListView).SelectedItems(0), MyListViewItem).Geometry, m_Map, m_penLine, CType(m_brush, SolidBrush))
+                    GlobalsFunctions.zoomTo(pGeo, m_Map)
+                    GlobalsFunctions.flashGeo(pGeo, m_Map, m_penLine, CType(m_brush, SolidBrush))
 
                 Else
 
 
                     Dim strToDos As String() = woFilt.Action.Split(",")
+
                     For Each strToDo As String In strToDos
                         Select Case strToDo.ToUpper
                             Case "ZOOM"
-                                GlobalsFunctions.zoomTo(CType(CType(sender, ListView).SelectedItems(0), MyListViewItem).Geometry, m_Map)
+                                GlobalsFunctions.zoomTo(pGeo, m_Map)
                             Case "FLASH"
 
-                                If CType(CType(sender, ListView).SelectedItems(0), MyListViewItem).Geometry.GeometryType = GeometryType.Point Then
-                                    GlobalsFunctions.flashGeo(CType(CType(sender, ListView).SelectedItems(0), MyListViewItem).Geometry, m_Map, m_penLine, CType(m_brush, SolidBrush))
+                                If pGeo.GeometryType = GeometryType.Point Then
+                                    GlobalsFunctions.flashGeo(pGeo, m_Map, m_penLine, CType(m_brush, SolidBrush))
                                 Else
-                                    GlobalsFunctions.flashGeo(CType(CType(sender, ListView).SelectedItems(0), MyListViewItem).Geometry, m_Map, m_pen, m_brush)
+                                    GlobalsFunctions.flashGeo(pGeo, m_Map, m_pen, m_brush)
 
                                 End If
                             Case "PAN"
-                                GlobalsFunctions.panTo(CType(CType(sender, ListView).SelectedItems(0), MyListViewItem).Geometry, m_Map)
+                                GlobalsFunctions.panTo(pGeo, m_Map)
                         End Select
                     Next
                     'MsgBox(CType(CType(sender, ListView).SelectedItems(0), MyListViewItem).FID.ToString())
                 End If
+                
                 m_EdtClose.Visible = True
 
-                m_EdtClose.setCurrentRecord(CType(CType(sender, ListView).SelectedItems(0), MyListViewItem).FeatureDataRow, m_EditOp)
-                m_AttInfoDisplay.IdentifyLocation(CType(CType(sender, ListView).SelectedItems(0), MyListViewItem).Geometry)
+                m_EdtClose.setCurrentRecord(pFDR, m_EditOp)
+                m_AttInfoDisplay.IdentifyLocation(pGeo)
+                'CType(sender, ListView).Focus()
+                'CType(sender, ListView).Refresh()
 
                 'm_EdtCreate.setCurrentRecord(CType(CType(sender, ListView).SelectedItems(0), MyListViewItem).FeatureDataRow, Nothing)
+                CType(sender, ListView).Focus()
+                For Each itm As MyListViewItem In CType(sender, ListView).Items
+                    If itm.ID = prevWO And itm.Geometry.EquivalentTo(pGeo) Then
 
+                        RemoveHandler CType(sender, ListView).SelectedIndexChanged, AddressOf ListView_SelectedIndexChanged
+
+
+                        CType(m_OutlookNavigatePane.SelectedButton.RelatedControl, ListView).EnsureVisible(itm.Index)
+                        itm.Selected = True
+                        itm.Focused = True
+                        AddHandler CType(sender, ListView).SelectedIndexChanged, AddressOf ListView_SelectedIndexChanged
+
+                        Exit For
+
+
+                    End If
+                Next
 
             End If
         End If
 
+
+        CType(m_OutlookNavigatePane.SelectedButton.RelatedControl, ListView).Focus()
 
 
     End Sub
@@ -1031,11 +1083,12 @@ Public Class AssignedWorkControl
         Dim btnHt As Double
         Dim curLoc As Double
         'btnHt = lblCrewName.Top + lblCrewName.Height + 5
-        'btnHt = CInt(btnViewAllWork.Parent.Height / 2 - (btnCreateWork.Height)) + 3
+        'btnHt = CInt(btnViewAllWork.Parent.Height / 2 - (btnFiltGeo.Height)) + 3
         btnHt = btnCrew.Top + btnCrew.Height + 5
-        If btnCreateWork.Visible Then
+        If btnFiltGeo.Visible Then
 
-            btnLoc = btnViewAllWork.Parent.Width / 5
+
+            btnLoc = btnViewAllWork.Parent.Width / 6
             curLoc = btnLoc
 
             btnViewAllWork.Left = CInt(curLoc - (btnViewAllWork.Width / 2))
@@ -1050,8 +1103,12 @@ Public Class AssignedWorkControl
             btnCloseWork.Top = btnHt
             curLoc = curLoc + btnLoc
 
-            btnCreateWork.Left = CInt(curLoc - (btnCreateWork.Width / 2))
-            btnCreateWork.Top = btnHt
+            btnClear.Left = CInt(curLoc - (btnClear.Width / 2))
+            btnClear.Top = btnHt
+            curLoc = curLoc + btnLoc
+
+            btnFiltGeo.Left = CInt(curLoc - (btnClear.Width / 2))
+            btnFiltGeo.Top = btnHt
 
         ElseIf btnClear.Visible Then
 
@@ -1124,7 +1181,7 @@ Public Class AssignedWorkControl
 
         btnViewAllWork.Checked = True
         btnCloseWork.Checked = False
-        btnCreateWork.Checked = False
+
         btnViewWorkDetails.Checked = False
 
         Dim pLstView As ListView = m_OutlookNavigatePane.SelectedButton.RelatedControl
@@ -1161,7 +1218,7 @@ Public Class AssignedWorkControl
 
         btnViewAllWork.Checked = False
         btnCloseWork.Checked = False
-        btnCreateWork.Checked = False
+
         btnViewWorkDetails.Checked = True
 
     End Sub
@@ -1186,33 +1243,26 @@ Public Class AssignedWorkControl
 
         btnViewAllWork.Checked = False
         btnCloseWork.Checked = True
-        btnCreateWork.Checked = False
+
         btnViewWorkDetails.Checked = False
 
     End Sub
 
-    Private Sub btnCreateWork_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCreateWork.CheckedChanged
-        If btnCreateWork.Checked = True Then
-            btnCreateWork.BackgroundImage = Global.MobileControls.My.Resources.EmergRed
+    Private Sub btnFiltGeo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFiltGeo.CheckedChanged
+        If btnFiltGeo.Checked = True Then
+            btnFiltGeo.BackgroundImage = Global.MobileControls.My.Resources.FilterOn
 
         Else
-            btnCreateWork.BackgroundImage = Global.MobileControls.My.Resources.EmergBlue
+            btnFiltGeo.BackgroundImage = Global.MobileControls.My.Resources.FilterOff
 
 
         End If
     End Sub
 
-    Private Sub btnCreateWork_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCreateWork.Click
-        'update display
-        gpBoxWOList.Visible = False
-        gpBoxWOClose.Visible = False
-        gpBoxWOCreate.Visible = True
-        gpBoxWODetails.Visible = False
-
-        btnViewAllWork.Checked = False
-        btnCloseWork.Checked = False
-        btnCreateWork.Checked = True
-        btnViewWorkDetails.Checked = False
+    Private Sub btnFiltGeo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFiltGeo.Click
+        btnFiltGeo.Checked = Not btnFiltGeo.Checked
+        LoadWorkOrders(False)
+        m_OutlookNavigatePane.SelectedButton.PerformClick()
 
     End Sub
 #End Region
@@ -1268,5 +1318,13 @@ Public Class AssignedWorkControl
         End If
 
 
+    End Sub
+
+    
+    Private Sub m_Map_ExtentChanged(sender As Object, e As EventArgs) Handles m_Map.ExtentChanged
+        If btnFiltGeo.Checked Then
+            LoadWorkOrders(False)
+            m_OutlookNavigatePane.SelectedButton.PerformClick()
+        End If
     End Sub
 End Class

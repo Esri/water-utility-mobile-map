@@ -161,17 +161,21 @@ namespace MobileControls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string Caption
         {
-            get { return caption; }
+            get {
+                return caption; 
+            }
             set
             {
                 string oldCaption = caption;
                 caption = value;
                 captionString = value;
-
+                
                 Invalidate();
+                this.Refresh();
+
                 if (OnNavigateBarButtonCaptionChanged != null)
                     OnNavigateBarButtonCaptionChanged(oldCaption, caption);
-
+                
             }
         }
         #endregion

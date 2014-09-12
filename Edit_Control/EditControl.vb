@@ -15,11 +15,11 @@
 
 
 Imports System.Windows.Forms
-Imports Esri.ArcGIS.Mobile
-Imports Esri.ArcGIS.Mobile.Geometries
-Imports Esri.ArcGIS.Mobile.FeatureCaching
+Imports ESRI.ArcGIS.Mobile
+Imports ESRI.ArcGIS.Mobile.Geometries
+Imports ESRI.ArcGIS.Mobile.FeatureCaching
 Imports System.Drawing
-Imports Esri.ArcGISTemplates
+Imports ESRI.ArcGISTemplates
 
 
 Public Class EditControl
@@ -68,10 +68,10 @@ Public Class EditControl
     Private m_LogEdit As Boolean = False
 
     'ESRI Map control
-    Private WithEvents m_Map As Esri.ArcGIS.Mobile.WinForms.Map
+    Private WithEvents m_Map As ESRI.ArcGIS.Mobile.WinForms.Map
     'The active editable datarow
     Private m_FDR As FeatureDataRow
-    Private m_FL As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource
+    Private m_FL As ESRI.ArcGIS.Mobile.FeatureCaching.FeatureSource
     'Create a universal font to use on all controls
     Private m_Fnt As Font '= New System.Drawing.Font("Microsoft Sans Serif", 12.0F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0)
     Private m_FntLbl As Font ' = New System.Drawing.Font("Microsoft Sans Serif", 11.0F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0)
@@ -221,7 +221,7 @@ Public Class EditControl
         End Get
         Set(ByVal value As GPSLocationDetails)
             m_GPSVal = value
-            
+
         End Set
     End Property
     'Property used to notify the panel if it should create a new row after a save
@@ -350,15 +350,15 @@ Public Class EditControl
         End Set
     End Property
     'The ArcGIS Mobile Map Control
-    Public Property mapControl() As Esri.ArcGIS.Mobile.WinForms.Map
+    Public Property mapControl() As ESRI.ArcGIS.Mobile.WinForms.Map
         Get
             Return m_Map
         End Get
-        Set(ByVal value As Esri.ArcGIS.Mobile.WinForms.Map)
+        Set(ByVal value As ESRI.ArcGIS.Mobile.WinForms.Map)
             m_Map = value
         End Set
     End Property
-    Private Sub curRec(ByVal FeatLayer As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource, ByVal featureDT As FeatureDataTable)
+    Private Sub curRec(ByVal FeatLayer As ESRI.ArcGIS.Mobile.FeatureCaching.FeatureSource, ByVal featureDT As FeatureDataTable)
         If FeatLayer Is Nothing Then
             DisplayBlank()
             m_FDR = Nothing
@@ -385,7 +385,7 @@ Public Class EditControl
         disableSaveBtn()
         disableDeleteBtn()
     End Sub
-    Public Sub setCurrentLayer(ByVal FeatLayer As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource, ByVal editOptions As MobileConfigClass.MobileConfigMobileMapConfigEditControlOptionsLayersLayer)
+    Public Sub setCurrentLayer(ByVal FeatLayer As ESRI.ArcGIS.Mobile.FeatureCaching.FeatureSource, ByVal editOptions As MobileConfigClass.MobileConfigMobileMapConfigEditControlOptionsLayersLayer)
         Try
 
 
@@ -407,7 +407,7 @@ Public Class EditControl
 
         End Try
     End Sub
-    Private ReadOnly Property CurrentLayer() As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource
+    Private ReadOnly Property CurrentLayer() As ESRI.ArcGIS.Mobile.FeatureCaching.FeatureSource
         Get
             Return m_FL
         End Get
@@ -535,7 +535,7 @@ Public Class EditControl
 #End Region
 #Region "Public Methods"
 
-    Public Sub New(ByVal map As Esri.ArcGIS.Mobile.WinForms.Map, ByVal NewRecord As FeatureDataRow)
+    Public Sub New(ByVal map As ESRI.ArcGIS.Mobile.WinForms.Map, ByVal NewRecord As FeatureDataRow)
 
 
 
@@ -699,7 +699,7 @@ Public Class EditControl
                 pDT.AcceptChanges()
 
                 pDT.FeatureSource.SaveEdits(pDT)
-              
+
                 'Dim pRetGeo As Geometries.Geometry = Nothing
                 'Dim pRetFID As Integer = Nothing
                 Dim pRetName As String = m_FL.Name
@@ -773,7 +773,7 @@ Public Class EditControl
 
             Dim strFld As String
             'Gets the feature layer 
-            Dim pFL As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource = m_FDR.FeatureSource
+            Dim pFL As ESRI.ArcGIS.Mobile.FeatureCaching.FeatureSource = m_FDR.FeatureSource
             'If the layer has subtypes, load the subtype value first
             'Loop through all the controls and set their value
             For Each pCntrl As Control In tbCntrlEdit.Controls
@@ -935,7 +935,7 @@ Public Class EditControl
 
             Dim strFld As String
             'Gets the feature layer 
-            Dim pFL As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource = m_FDR.FeatureSource
+            Dim pFL As ESRI.ArcGIS.Mobile.FeatureCaching.FeatureSource = m_FDR.FeatureSource
             'If the layer has subtypes, load the subtype value first
             'Loop through all the controls and set their value
             Dim bValSet As Boolean = False
@@ -1306,28 +1306,28 @@ Public Class EditControl
                 If m_FDR.Geometry IsNot Nothing Then
                     If m_FDR.Geometry.GeometryType = GeometryType.Point Then
 
-                        If CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Point).Parts.Count = 1 Then
-                            If CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Point).Parts(0).Count = 1 Then
-                                If CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Point).Parts(0)(0).IsEmpty = False Then
-                                    pCoord = CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Point).Parts(0)(0)
+                        If CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Point).Parts.Count = 1 Then
+                            If CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Point).Parts(0).Count = 1 Then
+                                If CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Point).Parts(0)(0).IsEmpty = False Then
+                                    pCoord = CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Point).Parts(0)(0)
                                 End If
 
                             End If
                         End If
                     ElseIf m_FDR.Geometry.GeometryType = GeometryType.Polygon Then
-                        If CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Polygon).PartCount = 1 Then
-                            If CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Polygon).Parts(0).Count = 1 Then
-                                If CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Polygon).Parts(0)(0).IsEmpty = False Then
-                                    pCoord = CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Polygon).Parts(0)(0)
+                        If CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Polygon).PartCount = 1 Then
+                            If CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Polygon).Parts(0).Count = 1 Then
+                                If CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Polygon).Parts(0)(0).IsEmpty = False Then
+                                    pCoord = CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Polygon).Parts(0)(0)
                                 End If
 
                             End If
                         End If
                     ElseIf m_FDR.Geometry.GeometryType = GeometryType.Polyline Then
-                        If CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Polyline).PartCount = 1 Then
-                            If CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Polyline).Parts(0).Count = 1 Then
-                                If CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Polyline).Parts(0)(0).IsEmpty = False Then
-                                    pCoord = CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Polyline).Parts(0)(0)
+                        If CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Polyline).PartCount = 1 Then
+                            If CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Polyline).Parts(0).Count = 1 Then
+                                If CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Polyline).Parts(0)(0).IsEmpty = False Then
+                                    pCoord = CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Polyline).Parts(0)(0)
                                 End If
 
                             End If
@@ -1363,14 +1363,14 @@ Public Class EditControl
                                                 Dim pPartIdx As Integer
                                                 Dim pVertIdx As Integer
                                                 Dim pSqDist As Double
-                                                pLine.GetNearestCoordinate(New Esri.ArcGIS.Mobile.Geometries.Point(pCoord), pRetPoint, pPartIdx, pVertIdx, pSqDist)
+                                                pLine.GetNearestCoordinate(New ESRI.ArcGIS.Mobile.Geometries.Point(pCoord), pRetPoint, pPartIdx, pVertIdx, pSqDist)
 
                                                 If pRetPoint.IsEmpty Then
-                                                    m_FDR.Geometry = New Esri.ArcGIS.Mobile.Geometries.Point(pCoord)
+                                                    m_FDR.Geometry = New ESRI.ArcGIS.Mobile.Geometries.Point(pCoord)
                                                 Else
                                                     'Use the location on the line
                                                     '   pFDRInspection.Geometry = New ESRI.ArcGIS.Mobile.Geometries.Point(pRetPoint)
-                                                    m_FDR.Geometry = New Esri.ArcGIS.Mobile.Geometries.Point(pRetPoint)
+                                                    m_FDR.Geometry = New ESRI.ArcGIS.Mobile.Geometries.Point(pRetPoint)
                                                 End If
                                                 pLine = Nothing
                                                 pRetPoint = Nothing
@@ -1378,10 +1378,10 @@ Public Class EditControl
                                             Else
                                                 'Use the mouse click for other geometry types
                                                 'pFDRInspection.Geometry = New ESRI.ArcGIS.Mobile.Geometries.Point(coord)
-                                                m_FDR.Geometry = New Esri.ArcGIS.Mobile.Geometries.Point(pCoord)
+                                                m_FDR.Geometry = New ESRI.ArcGIS.Mobile.Geometries.Point(pCoord)
                                             End If
                                         Else
-                                            m_FDR.Geometry = New Esri.ArcGIS.Mobile.Geometries.Point(pCoord)
+                                            m_FDR.Geometry = New ESRI.ArcGIS.Mobile.Geometries.Point(pCoord)
                                         End If
                                         RaiseEvent RecordSnapped(m_FDR.Geometry)
                                         Return CType(pDt.Rows(0), FeatureDataRow)
@@ -1409,7 +1409,7 @@ Public Class EditControl
     Private Sub LoadAutoAttributes(ByVal featDataRow As FeatureDataRow)
         Dim pDRead As FeatureDataReader = Nothing
         Dim pQFilt As QueryFilter = Nothing
-        Dim pFl As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource = Nothing
+        Dim pFl As ESRI.ArcGIS.Mobile.FeatureCaching.FeatureSource = Nothing
         Try
 
 
@@ -1508,7 +1508,7 @@ Public Class EditControl
 
 
 
-                                                Dim pCenterPoint As Esri.ArcGIS.Mobile.Geometries.Point = GlobalsFunctions.GetGeometryCenterPoint(m_FDR.Geometry)
+                                                Dim pCenterPoint As ESRI.ArcGIS.Mobile.Geometries.Point = GlobalsFunctions.GetGeometryCenterPoint(m_FDR.Geometry)
 
                                                 Dim pFDT As FeatureDataTable = GlobalsFunctions.spatialQFeature(GlobalsFunctions.appConfig.SearchPanel.AddressSearch.LayerName, pCenterPoint, m_Map, GlobalsFunctions.appConfig.IDPanel.SearchTolerence)
                                                 If pFDT IsNot Nothing Then
@@ -1533,7 +1533,7 @@ Public Class EditControl
                                                                     If pStreetLine.GetNearestVertex(pRetCoord, pRetVert, pPartIdxVert, pVertIdxVert, pSqDistVert) Then
 
 
-                                                                        Dim pRetPnt As New Esri.ArcGIS.Mobile.Geometries.Point(pRetCoord)
+                                                                        Dim pRetPnt As New ESRI.ArcGIS.Mobile.Geometries.Point(pRetCoord)
 
 
                                                                         Dim pNewPrevCoordCol As New CoordinateCollection
@@ -1756,7 +1756,7 @@ Public Class EditControl
                                                 If m_FDR.Geometry.GeometryType = GeometryType.Point Then
                                                     Dim intBufferValueforPoint As Double
                                                     intBufferValueforPoint = GlobalsFunctions.bufferToMap(m_Map, GlobalsFunctions.appConfig.EditControlOptions.SnapTolerence) 'maptobuffer()
-                                                    Dim pEnv As New Geometries.Envelope(CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Point).Coordinate, intBufferValueforPoint, intBufferValueforPoint)
+                                                    Dim pEnv As New Geometries.Envelope(CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Point).Coordinate, intBufferValueforPoint, intBufferValueforPoint)
                                                     pQFilt.Geometry = pEnv
 
                                                 Else
@@ -2173,9 +2173,11 @@ Public Class EditControl
             Dim pQFilt As QueryFilter = Nothing
 
             For Each tb As TabPage In tbCntrlEdit.TabPages
+                If tb.Tag IsNot Nothing Then
+                    If tb.Tag.ToString() = "Attachment" Then
+                        pAttTabPage = tb
+                    End If
 
-                If tb.Name.Contains("Attachment") Then
-                    pAttTabPage = tb
                 Else
 
                     If tb.Controls IsNot Nothing Then
@@ -2527,7 +2529,7 @@ Public Class EditControl
             btnMove.CheckState = CheckState.Unchecked
 
             ''Feature layer being Identified
-            Dim pfl As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource = m_FL
+            Dim pfl As ESRI.ArcGIS.Mobile.FeatureCaching.FeatureSource = m_FL
             ''Map Layer from Cache
             'Dim msMapLayer As MobileCacheMapLayer
             ''Set the active layer
@@ -4454,7 +4456,7 @@ Public Class EditControl
                 pTabAtt.Controls.Add(m_AttControlBox)
                 pTabAtt.Visible = True
                 'm_TabControl.TabPages.Add(pTabAtt)
-
+                pTabAtt.Tag = "Attachment"
                 pTabAtt.Update()
             End If
             If pTbPg.Controls.Count = 0 Then
@@ -4533,15 +4535,16 @@ Public Class EditControl
             If m_FDR.Geometry.IsEmpty Then Return False
             'Get the Data Table associated with the record
 
-             'Loop through each tab page
+            'Loop through each tab page
             m_pTabPagAtt = Nothing
 
 
             For Each tbpg As Control In tbCntrlEdit.TabPages
-                If tbpg.Name.Contains("Attachments") Then
-                    m_pTabPagAtt = tbpg
 
-
+                If tbpg.Tag IsNot Nothing Then
+                    If tbpg.Tag.ToString() = "Attachment" Then
+                        m_pTabPagAtt = tbpg
+                    End If
                 Else
 
                     'Loop through all controls on a tab page
@@ -4876,10 +4879,10 @@ Public Class EditControl
         Return True
     End Function
     Private m_DT As FeatureDataTable
-  
+
     Private Function SaveRecordToLayer() As Boolean
         Try
-           
+
             'Make sure the row is valid
             If m_FDR Is Nothing Then Return False
             'Make sure there is valid Geometry
@@ -4909,7 +4912,7 @@ Public Class EditControl
             End If
             SaveRecordFinal()
 
-         
+
         Catch ex As Exception
             Dim st As New StackTrace
             MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
@@ -5335,7 +5338,7 @@ Public Class EditControl
             'Determine if the layer has subtypes
             Dim bSubType As Boolean = m_FDR.FeatureSource.HasSubtypes
             'Gets the feature layer 
-            Dim pFL As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource = m_FDR.FeatureSource
+            Dim pFL As ESRI.ArcGIS.Mobile.FeatureCaching.FeatureSource = m_FDR.FeatureSource
             Dim pBtn As Button
             Dim pBtnPadding As Integer
 
@@ -5352,7 +5355,7 @@ Public Class EditControl
                 Else
                     btnMove.Enabled = False
                 End If
-              
+
 
             Else
                 btnMove.Enabled = False
@@ -5360,7 +5363,7 @@ Public Class EditControl
 
                 bExistingFeat = False
             End If
-           
+
             RemoveButton(tbCntrlEdit)
 
             'If the layer has subtypes, load the subtype value first
@@ -5819,7 +5822,7 @@ Public Class EditControl
             If m_FDR.Geometry IsNot Nothing Then
                 ' Me.Geometry = m_FDR.Geometry
                 If m_Mode = "ID" Then
-                    If Me.Geometry.GeometryType = Esri.ArcGIS.Mobile.Geometries.GeometryType.Point Then
+                    If Me.Geometry.GeometryType = ESRI.ArcGIS.Mobile.Geometries.GeometryType.Point Then
                         GlobalsFunctions.flashGeo(m_FDR.Geometry, m_Map, m_penFlash, m_brushFlash)
                     Else
                         GlobalsFunctions.flashGeo(m_FDR.Geometry, m_Map, m_penLineFlash, m_brushFlash)
@@ -6130,8 +6133,12 @@ Public Class EditControl
 
                                     If pCV Is Nothing Then
                                         pCBox.DataSource = Nothing
-
+                                        pCBox.Items.Clear()
+                                        pCBox.DropDownStyle = ComboBoxStyle.DropDown
+                                        pCBox.Text = ""
+                                        pCBox.Tag = strFld & "|" & ""
                                     Else
+                                        pCBox.DropDownStyle = ComboBoxStyle.DropDownList
                                         If existDomName <> pCV.TableName Then
 
                                             pCBox.Tag = strFld & "|" & pCV.TableName
@@ -6340,11 +6347,12 @@ Public Class EditControl
                                 pCV = CType(m_FL.Columns(strFld).GetDomain(intSubVal), CodedValueDomain)
 
                                 'pCV = CType(m_FL.Domain(intSubVal, strFld), CodedValueDomain)
-
                                 If pCV Is Nothing Then
-                                    cntrlPnl.Controls.Clear()
-
-
+                                    pCBox.DataSource = Nothing
+                                    pCBox.Items.Clear()
+                                    pCBox.DropDownStyle = ComboBoxStyle.DropDown
+                                    pCBox.Text = ""
+                                    pCBox.Tag = strFld & "|" & ""
                                 Else
                                     If existDomName <> pCV.TableName Then
                                         pCBox.Tag = strFld & "|" & pCV.TableName
@@ -6714,7 +6722,7 @@ Public Class EditControl
 
         End If
     End Sub
-   
+
 
     Private Sub btnMove_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMove.CheckedChanged
         btnMoveStatusChanged()
@@ -6724,7 +6732,7 @@ Public Class EditControl
         m_Map.Invalidate()
     End Sub
     Public Sub btnMoveStatusChanged()
-         
+
         If btnMove.Enabled Then
             If btnMove.Checked Then
                 btnGPSLoc.Enabled = True
@@ -6897,7 +6905,7 @@ Public Class EditControl
 
     End Sub
 
-    Private Sub m_Map_Paint(ByVal sender As Object, ByVal e As Esri.ArcGIS.Mobile.WinForms.MapPaintEventArgs) Handles m_Map.MapPaint
+    Private Sub m_Map_Paint(ByVal sender As Object, ByVal e As ESRI.ArcGIS.Mobile.WinForms.MapPaintEventArgs) Handles m_Map.MapPaint
         Try
 
             If m_FDR Is Nothing Then Return
