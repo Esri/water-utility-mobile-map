@@ -110,6 +110,7 @@
     <Compile Include="AssignedWorkControl.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="activitySelectorMapAction.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -217,6 +218,24 @@
   <ItemGroup>
     <EmbeddedResource Include="Images\FilterOff.png" />
     <EmbeddedResource Include="Images\FilterOn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\PanCur.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\OpenHand.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\i_workorder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Finger.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\ActivitySelector.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\ActivitySelectorDown.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

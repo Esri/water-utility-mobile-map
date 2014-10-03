@@ -415,6 +415,7 @@ Public Class MobileAttributes
             Return Nothing
         End Try
     End Function
+
     Public Sub reload()
 
         m_Combo.SelectedItem = m_CurLayer

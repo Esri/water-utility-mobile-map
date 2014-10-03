@@ -117,12 +117,23 @@ Public Class EditFeaturesMapAction
             If m_EditPanel IsNot Nothing Then
                 m_EditPanel.GPSStatus = value
 
+
             End If
         End Set
     End Property
+    'Private Delegate Function addMapButtonDelegate() As Boolean
 
-    Public Function addMapButton(Optional ByVal TopX As Integer = -1, Optional ByVal TopY As Integer = -1) As Boolean
+    Public Function addMapButton() As Boolean
         Try
+            'If m_Map.InvokeRequired Then
+            '    m_Map.Invoke(New addMapButtonDelegate(AddressOf addMapButton))
+            '    Return True
+
+            'End If
+
+            Dim TopX As Integer
+            Dim TopY As Integer
+
             'Create and add the button to toggle the redline map action
             If m_btn Is Nothing Then
                 'Create a new button
@@ -220,7 +231,7 @@ Public Class EditFeaturesMapAction
             If m_EditPanel Is Nothing Then
                 'Create a new edit control
                 m_EditPanel = New MobileControls.EditControl(m_Map, Nothing)
-                'Fill the containter
+                'Fill the container
                 m_EditPanel.Dock = DockStyle.Fill
                 'Tell the panel to draw the geometry
                 m_EditPanel.DrawGeo = False
@@ -229,7 +240,7 @@ Public Class EditFeaturesMapAction
 
 
 
-                'Clear the controls on the cotainer
+                'Clear the controls on the container
                 container.Controls.Clear()
                 'Add the edit panel
                 container.Dock = DockStyle.Fill

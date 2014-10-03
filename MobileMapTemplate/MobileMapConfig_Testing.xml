@@ -50,7 +50,7 @@
     <!--Navigation options-->
     <NavigationOptions>
       <!--Option to show a GPS button or not-->
-      <GPS>
+      <GPS TurnOnStartup ="True" AllowGPSToggle="True">
         <!--Option to show a GPS button or not-->
         <Visible>True</Visible>
         <!--Com port to GPS or GPS Sim File Name, for the sim file, this is relative to the exe-->
@@ -535,7 +535,7 @@
       </UIComponents>
     </LayerOptions>
     <!--General Editor Options, affects any control that uses an edit form-->
-    <EditControlOptions>
+    <EditControlOptions RequireGPSForSaving="False">
       <!--Show a two radio buttons for a domain with only two values-->
       <RadioOnTwo>True</RadioOnTwo>
       <!--Colors for edit forms-->
@@ -554,6 +554,7 @@
           <Field Name="TIMESTAMP" OnNew="Date" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
           <Field Name="CREWNAME" OnNew="User" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
           <Field Name="COMPLETED" OnNew="value" OnModify=""  OnNewReadOnly="false" OnModifyReadOnly ="false" IntersectLayer="" IntersectField="" ValueText="No"/>
+          <Field Name="NOTES" OnNew="SatCount" OnModify=""  OnNewReadOnly="false" OnModifyReadOnly ="false" IntersectLayer="" IntersectField="" ValueText=""/>
 
         </Layer>
         <Layer Name="Sewer Overflows" AllowNew = "True" EditExisting ="true" EditOwnerField ="" EditGeo ="True"  DisplayText="Sewer Overflows" SketchMode="Tap" SketchColor="#FFFFFF00" SnapTo="Sewer Manholes">
@@ -671,7 +672,7 @@
 
         </Layer>
       </Layers>
-      <DateTimeDisplayFormat>MM/dd/yyyy</DateTimeDisplayFormat>
+      <DateTimeDisplayFormat>MM/dd/yyyy hh:mm tt</DateTimeDisplayFormat>
       <!--Option to Log inspection information to an xml file for backup and recovery reasons-->
       <LogEdits>False</LogEdits>
       <!-- The Factor around the user click to search for a feature-->
@@ -1004,6 +1005,8 @@
         </IDGroup>
 
         <IDGroup DisplayName="Operations">
+          <IDLayer Name="Service Requests"/>
+          <IDLayer Name="Sewer Manhole Inspections"/>
           <IDLayer Name="Sewer Overflows" />
           <IDLayer Name="Valve Closure" />
           <IDLayer Name="Water Leaks" />
@@ -1014,7 +1017,6 @@
           <IDLayer Name="Inlet Cleanouts"/>
           <IDLayer Name="Water Leaks"/>
           <IDLayer Name="Main Flushing"/>
-          <IDLayer Name="HydrantInspections_v2"/>
 
 
         </IDGroup>

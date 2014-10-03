@@ -1330,6 +1330,7 @@ Public Class mobileIdentifyMapAction
         If e.Clicks > 1 Then Return
         Try
 
+            'If m_EditFrm.Visible = True And m_SetGeoOnly = False Then Return
 
             If m_LastMouseLoc.Equals(e.Location) Then
                 IDAtLocation(e.MapCoordinate)

@@ -58,7 +58,8 @@ Public Class MobileMapConsole
     Private WithEvents m_MCSearch As MobileControls.MobileSearch
     Private WithEvents m_MCCreateFeatureMA As MobileControls.EditFeaturesMapAction
 
-    Private WithEvents m_MCActivityControl As MobileControls.AssignedWorkControl
+    Private WithEvents m_MCActivityMA As MobileControls.activitySelectorMapAction
+
     Private WithEvents m_MCSketch As MobileControls.MobileSkecthPad
     Private WithEvents m_MCToggleGroup As MobileControls.mobileGroupToggle
 
@@ -680,13 +681,13 @@ Public Class MobileMapConsole
                     m_MCCreateFeatureMA.ManualSetMap = Map1
 
                     'Add it to the map's map action collection
-                    'Initilize the redline attribute form
+                    'Initialize the redline attribute form
                     If m_MCCreateFeatureMA.InitControl(pnlCreateFeature) = False Then
 
                     Else
 
                         'Add the button to toggle the redline map action
-                        m_MCCreateFeatureMA.addMapButton()
+                        '   m_MCCreateFeatureMA.addMapButton()
                         tblLayoutWidgets.Controls.Add(pBtn, intCol, intRow)
                         intCol = intCol + 1
                         AddHandler pBtn.Click, AddressOf PanelButtonClick
@@ -933,16 +934,14 @@ Public Class MobileMapConsole
 
                         AddHandler pBtn.Click, AddressOf PanelButtonClick
 
-                        'Create the new activity control
-                        m_MCActivityControl = New AssignedWorkControl(Map1)
-                        'Set to dock it full
-                        m_MCActivityControl.Dock = DockStyle.Fill
-                        'Add the control to the panel to house it
-                        pnlWO.Controls.Add(m_MCActivityControl)
-                        'Initilize it with the map
-                        'm_MCActivityControl.InitActivity(Map1, Not (m_MCALNInt Is Nothing))
-                        'Load the activitoes
-                        '  m_MCActivityControl.PopulateActivitys()
+                        m_MCActivityMA = New activitySelectorMapAction
+                        m_MCActivityMA.ManualSetMap = Map1
+
+                        'Add the map action to the map
+                        'Init the activity form
+                        m_MCActivityMA.InitActivityForm(pnlWO)
+                        m_MCActivityMA.addActivityButton()
+                    
                     End If
 
                 Catch ex As Exception
@@ -1243,6 +1242,7 @@ Public Class MobileMapConsole
                 m_MCCompass.addWayPointImage()
 
             End If
+          
         Catch ex As Exception
             Dim st As New StackTrace
             MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
@@ -2708,9 +2708,9 @@ Public Class MobileMapConsole
     End Sub
 
     Private Sub m_MCCreateFeatureMA_GetWorkorder() Handles m_MCCreateFeatureMA.GetWorkorder
-        If m_MCActivityControl IsNot Nothing Then
-            m_MCCreateFeatureMA.currentWO = m_MCActivityControl.getWO
-            m_MCCreateFeatureMA.currentCrew = m_MCActivityControl.getCrew
+        If m_MCActivityMA IsNot Nothing Then
+            m_MCCreateFeatureMA.currentWO = m_MCActivityMA.getWO
+            m_MCCreateFeatureMA.currentCrew = m_MCActivityMA.getCrew
         End If
     End Sub
     Private Sub m_MCCreateFeatureMA_RaiseMessage(ByVal Message As String) Handles m_MCCreateFeatureMA.RaiseMessage
@@ -2736,6 +2736,25 @@ Public Class MobileMapConsole
             If e.StatusId = Esri.ArcGIS.Mobile.WinForms.MapAction.Activated Then
                 'showRedlineForm()
                 showPanel(TemplatePanels.Redline)
+
+            ElseIf e.StatusId = Esri.ArcGIS.Mobile.WinForms.MapAction.Deactivated Then
+                '     HideControlPanel()
+
+            End If
+
+        Catch ex As Exception
+            Dim st As New StackTrace
+            MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+            st = Nothing
+        End Try
+    End Sub
+    Private Sub m_MCActivityMA_StatusChanged(ByVal sender As Object, ByVal e As Esri.ArcGIS.Mobile.WinForms.MapActionStatusChangedEventArgs) Handles m_MCActivityMA.StatusChanged
+        Try
+
+
+            If e.StatusId = Esri.ArcGIS.Mobile.WinForms.MapAction.Activated Then
+                'showRedlineForm()
+                showPanel(TemplatePanels.Workorder)
 
             ElseIf e.StatusId = Esri.ArcGIS.Mobile.WinForms.MapAction.Deactivated Then
                 '     HideControlPanel()
@@ -2935,11 +2954,11 @@ Public Class MobileMapConsole
 
             End If
             m_MCSketch = Nothing
-            If m_MCActivityControl IsNot Nothing Then
-                m_MCActivityControl.Dispose()
+            If m_MCActivityMA IsNot Nothing Then
+                m_MCActivityMA.Dispose()
 
             End If
-            m_MCActivityControl = Nothing
+            m_MCActivityMA = Nothing
             If m_MCCreateFeatureMA IsNot Nothing Then
                 m_MCCreateFeatureMA.Dispose()
 
@@ -2975,10 +2994,7 @@ Public Class MobileMapConsole
     End Sub
 
     Private Sub pnlWO_VisibleChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles pnlWO.VisibleChanged
-        If m_MCActivityControl IsNot Nothing Then
-
-            'm_MCActivityControl.ToggleGeo(CType(sender, Panel).Visible)
-        End If
+      
 
     End Sub
 
@@ -3083,11 +3099,11 @@ Public Class MobileMapConsole
         showPermMessage(Message, Hide)
     End Sub
 
-    Private Sub m_MCActivityControl_RaiseMessage(Message As String) Handles m_MCActivityControl.RaiseMessage
+    Private Sub m_MCActivityMA_RaiseMessage(Message As String) Handles m_MCActivityMA.RaiseMessage
         showMessage(Message)
     End Sub
 
-    Private Sub m_MCActivityControl_RaisePermMessage(Message As String, Hide As Boolean) Handles m_MCActivityControl.RaisePermMessage
+    Private Sub m_MCActivityMA_RaisePermMessage(Message As String, Hide As Boolean) Handles m_MCActivityMA.RaisePermMessage
         showPermMessage(Message, Hide)
     End Sub
 
@@ -3118,6 +3134,13 @@ Public Class MobileMapConsole
             MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
             st = Nothing
         End Try
+    End Sub
+
+    Private Sub MobileMapConsole_Load(sender As Object, e As EventArgs) Handles Me.Load
+        If GlobalsFunctions.appConfig.NavigationOptions.GPS.TurnOnStartup.ToUpper() = "TRUE" Then
+            m_MCNav.callGPSButtonclick()
+
+        End If
     End Sub
 
     Private Sub MobileMapConsole_Paint(sender As Object, e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint

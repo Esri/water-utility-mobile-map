@@ -386,11 +386,11 @@ Public Class mobileNavigation
                 GlobalsFunctions.m_GPS.AutoPan = False
                 m_GPSTrackBtn.BackgroundImage = Global.MobileControls.My.Resources.Resources.gpsTrackOff
             End If
-            'Asign the map
+            'Assign the map
             GlobalsFunctions.m_GPS.Map = mobileMap
             'GlobalsFunctions.m_GPS.AutoPan = True
 
-            'Initilize both GPS types
+            'Initialize both GPS types
             m_FileGPS = New Gps.FileGpsConnection
             m_SerialGPS = New Gps.SerialPortGpsConnection
             'Set the defaults for the serial
@@ -403,7 +403,7 @@ Public Class mobileNavigation
 
 
 
-            'Determine the Max Exetent
+            'Determine the Max Extent
             MaxExtent()
             m_picBox = New PictureBox
             m_picBox.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
@@ -791,19 +791,11 @@ Public Class mobileNavigation
 
 
         End If
+       
         Return True
 
     End Function
-    Public Sub ActivateGPS()
-        'Turn on the GPS
-        GlobalsFunctions.m_GPS.GpsConnection.Open()
-
-    End Sub
-    Public Sub DeactivateGPS()
-        'Close the GPS
-        GlobalsFunctions.m_GPS.GpsConnection.Close()
-
-    End Sub
+   
     Public Sub Dispose()
 
         If m_FileGPS IsNot Nothing Then
@@ -1979,6 +1971,10 @@ Public Class mobileNavigation
         m_GPSBtn.Size = New System.Drawing.Size(50, 50)
 
         m_GPSBtn.UseVisualStyleBackColor = False
+        If GlobalsFunctions.appConfig.NavigationOptions.GPS.AllowGPSToggle.ToUpper = "FALSE" Then
+            m_GPSBtn.Enabled = False
+
+        End If
         'Add the handler for the GPS button click
         AddHandler m_GPSBtn.MouseDown, AddressOf btnGPS_MouseDown
         'add it to the map
@@ -2325,6 +2321,12 @@ Public Class mobileNavigation
 
 
     End Sub
+    Public Sub callGPSButtonclick()
+        Dim e As System.Windows.Forms.MouseEventArgs = New System.Windows.Forms.MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0)
+
+        Call btnGPS_MouseDown(m_GPSBtn, e)
+
+    End Sub
     Private Sub btnGPS_MouseDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs)
         If GlobalsFunctions.m_GPS Is Nothing Then Return
         If GlobalsFunctions.m_GPS.GpsConnection Is Nothing Then Return
@@ -2374,7 +2376,7 @@ Public Class mobileNavigation
         m_GPSLoadingPic.Visible = False
 
     End Sub
-    Private Sub OpenGPS()
+    Public Sub OpenGPS()
         Try
             'Try to open the GPS
             GlobalsFunctions.m_GPS.GpsConnection.Open()
@@ -2391,7 +2393,7 @@ Public Class mobileNavigation
 
                 End If
 
-                'Rasie the event that the GPS time outed
+                'Raise the event that the GPS time out
                 RaiseEvent GPSTimeout()
 
 

@@ -2314,11 +2314,33 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
         Private waypointControlField As MobileConfigMobileMapConfigNavigationOptionsGPSWaypointControl
 
         Private gPSAutoCenterField As String = True
+
+        Private turnOnStartupField As String = True
+        Private allowGPSToggleField As String = True
+
         Private Shared sSerializer As System.Xml.Serialization.XmlSerializer
         Public Sub New()
             waypointControlField = New MobileConfigMobileMapConfigNavigationOptionsGPSWaypointControl()
 
         End Sub
+        <System.Xml.Serialization.XmlAttributeAttribute()> _
+        Public Property TurnOnStartup() As String
+            Get
+                Return Me.turnOnStartupField
+            End Get
+            Set(ByVal value As String)
+                Me.turnOnStartupField = value
+            End Set
+        End Property
+        <System.Xml.Serialization.XmlAttributeAttribute()> _
+        Public Property AllowGPSToggle() As String
+            Get
+                Return Me.allowGPSToggleField
+            End Get
+            Set(ByVal value As String)
+                Me.allowGPSToggleField = value
+            End Set
+        End Property
         <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=0)> _
         Public Property Visible() As String
             Get
@@ -6826,7 +6848,7 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
         Private visibleDefaultField As String
 
         Private optionsField As String
-
+        Private requiredField As String = "False"
 
         Private visibleField As String
 
@@ -6849,7 +6871,15 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
         Private filterFieldsField As List(Of MobileConfigMobileMapConfigLayerOptionsLayersFieldOptionsLayerNameFieldOptionFilterFields)
 
 
-
+        <System.Xml.Serialization.XmlAttributeAttribute()> _
+        Public Property Required() As String
+            Get
+                Return Me.requiredField
+            End Get
+            Set(ByVal value As String)
+                Me.requiredField = value
+            End Set
+        End Property
 
         <System.Xml.Serialization.XmlAttributeAttribute()> _
         Public Property Name() As String
@@ -7614,7 +7644,7 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
         Private sketchLineWidthField As String
         Private sketchPointWidthField As String
         Private uIComponentsField As MobileConfigMobileMapConfigEditControlOptionsUIComponents
-
+        Private requireGPSForSavingField As String = "False"
         Private Shared sSerializer As System.Xml.Serialization.XmlSerializer
 
         Public Sub New()
@@ -7622,6 +7652,17 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
             Me.layersField = New MobileConfigMobileMapConfigEditControlOptionsLayers()
             'Me.autoFieldPopulationField = New MobileConfigMobileMapConfigEditControlOptionsAutoFieldPopulation()
         End Sub
+
+
+        <System.Xml.Serialization.XmlAttributeAttribute()> _
+        Public Property RequireGPSForSaving() As String
+            Get
+                Return Me.requireGPSForSavingField
+            End Get
+            Set(ByVal value As String)
+                Me.requireGPSForSavingField = value
+            End Set
+        End Property
 
         <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=0)> _
         Public Property RadioOnTwo() As String
@@ -8867,6 +8908,8 @@ Public Property RequiredBackColor() As String
         Private noGeometryMessageField As String
         Private promptforDeleteField As String
         Private promptforSketchField As String
+        Private requireFieldMessageField As String
+
         Private Shared sSerializer As System.Xml.Serialization.XmlSerializer
 
         Public Sub New()
@@ -8879,6 +8922,7 @@ Public Property RequiredBackColor() As String
             Me.noGeometryMessageField = "Please set the NoGeometryMessage Tag"
             Me.promptforDeleteField = "Please set the PromptForDelete Tag"
             Me.promptforSketchField = "There are unsaved sketches, save?"
+            Me.requireFieldMessageField = "Field is empty"
             Me.nullValueDropDownField = "<Null>"
         End Sub
 
@@ -9003,6 +9047,15 @@ Public Property RequiredBackColor() As String
             End Set
         End Property
         <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=12)> _
+        Public Property RequireFieldMessage() As String
+            Get
+                Return Me.requireFieldMessageField
+            End Get
+            Set(ByVal value As String)
+                Me.requireFieldMessageField = value
+            End Set
+        End Property
+        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=13)> _
         Public Property PromptForSaveSketch() As String
             Get
                 Return Me.promptforSketchField
@@ -19339,6 +19392,8 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
 
         Private assignedTo_Field As String = "<NO_MOD>"
         Private iDField_Field As String
+        Private zoomOnLoadField As String
+
         Private Shared sSerializer As System.Xml.Serialization.XmlSerializer
 
         Public Sub New()
@@ -19385,6 +19440,15 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
             End Get
             Set(ByVal value As String)
                 Me.iDField_Field = value
+            End Set
+        End Property
+        <System.Xml.Serialization.XmlAttributeAttribute()> _
+        Public Property ZoomOnLoad() As String
+            Get
+                Return Me.zoomOnLoadField
+            End Get
+            Set(ByVal value As String)
+                Me.zoomOnLoadField = value
             End Set
         End Property
         Private Shared ReadOnly Property Serializer() As System.Xml.Serialization.XmlSerializer

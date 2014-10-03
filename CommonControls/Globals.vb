@@ -2047,7 +2047,7 @@ IL_1EE:
 
         Try
 
-            Dim sPath As String = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ArcGIS4LocalGovernment\MobileTemplates\WebMapsCache")
+            Dim sPath As String = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ArcGISSolutions\MobileTemplates\WebMapsCache")
 
             If Directory.Exists(sPath) = False Then
                 Directory.CreateDirectory(sPath)
@@ -2099,7 +2099,7 @@ IL_1EE:
 
         Try
 
-            Dim sPath As String = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ArcGIS4LocalGovernment\MobileTemplates\PhotoCache")
+            Dim sPath As String = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ArcGISSolutions\MobileTemplates\PhotoCache")
 
             If Directory.Exists(sPath) = False Then
                 Directory.CreateDirectory(sPath)
@@ -2131,7 +2131,7 @@ IL_1EE:
         Try
             'ArcGIS4LocalGovernment\ConfigFiles
 
-            Return System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ArcGIS4LocalGovernment\ConfigFiles")
+            Return System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ArcGISSolutions\ConfigFiles")
         Catch ex As Exception
             MessageBox.Show("generateUserCachePath:  " + ex.Message)
             Return ""

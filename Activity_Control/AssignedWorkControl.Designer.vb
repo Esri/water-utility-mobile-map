@@ -25,18 +25,18 @@ Partial Class AssignedWorkControl
         Me.components = New System.ComponentModel.Container()
         Me.gpBoxButtons = New System.Windows.Forms.GroupBox()
         Me.btnCrew = New System.Windows.Forms.Button()
+        Me.btnClear = New System.Windows.Forms.CheckBox()
         Me.lblCurrentWO = New System.Windows.Forms.Label()
+        Me.btnCloseWork = New System.Windows.Forms.CheckBox()
+        Me.btnViewWorkDetails = New System.Windows.Forms.CheckBox()
+        Me.btnViewAllWork = New System.Windows.Forms.CheckBox()
+        Me.btnFiltGeo = New System.Windows.Forms.CheckBox()
         Me.gpBoxWOList = New System.Windows.Forms.GroupBox()
         Me.gpBoxOptions = New System.Windows.Forms.GroupBox()
         Me.gpBoxWODetails = New System.Windows.Forms.GroupBox()
         Me.gpBoxWOClose = New System.Windows.Forms.GroupBox()
         Me.gpBoxWOCreate = New System.Windows.Forms.GroupBox()
         Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
-        Me.btnClear = New System.Windows.Forms.CheckBox()
-        Me.btnCloseWork = New System.Windows.Forms.CheckBox()
-        Me.btnViewWorkDetails = New System.Windows.Forms.CheckBox()
-        Me.btnViewAllWork = New System.Windows.Forms.CheckBox()
-        Me.btnFiltGeo = New System.Windows.Forms.CheckBox()
         Me.gpBoxButtons.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -69,74 +69,6 @@ Partial Class AssignedWorkControl
         Me.btnCrew.Text = "Button1"
         Me.btnCrew.UseVisualStyleBackColor = True
         '
-        'lblCurrentWO
-        '
-        Me.lblCurrentWO.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.lblCurrentWO.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblCurrentWO.Location = New System.Drawing.Point(3, 94)
-        Me.lblCurrentWO.Name = "lblCurrentWO"
-        Me.lblCurrentWO.Size = New System.Drawing.Size(511, 16)
-        Me.lblCurrentWO.TabIndex = 23
-        Me.lblCurrentWO.Text = "Current WO"
-        Me.lblCurrentWO.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'gpBoxWOList
-        '
-        Me.gpBoxWOList.Dock = System.Windows.Forms.DockStyle.Top
-        Me.gpBoxWOList.Location = New System.Drawing.Point(0, 342)
-        Me.gpBoxWOList.Name = "gpBoxWOList"
-        Me.gpBoxWOList.Size = New System.Drawing.Size(517, 67)
-        Me.gpBoxWOList.TabIndex = 1
-        Me.gpBoxWOList.TabStop = False
-        Me.gpBoxWOList.Text = "Workorder List"
-        '
-        'gpBoxOptions
-        '
-        Me.gpBoxOptions.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.gpBoxOptions.Location = New System.Drawing.Point(0, 715)
-        Me.gpBoxOptions.Name = "gpBoxOptions"
-        Me.gpBoxOptions.Size = New System.Drawing.Size(517, 100)
-        Me.gpBoxOptions.TabIndex = 2
-        Me.gpBoxOptions.TabStop = False
-        Me.gpBoxOptions.Text = "Options"
-        Me.gpBoxOptions.Visible = False
-        '
-        'gpBoxWODetails
-        '
-        Me.gpBoxWODetails.Dock = System.Windows.Forms.DockStyle.Top
-        Me.gpBoxWODetails.Location = New System.Drawing.Point(0, 255)
-        Me.gpBoxWODetails.Name = "gpBoxWODetails"
-        Me.gpBoxWODetails.Size = New System.Drawing.Size(517, 87)
-        Me.gpBoxWODetails.TabIndex = 3
-        Me.gpBoxWODetails.TabStop = False
-        Me.gpBoxWODetails.Text = "Workorder Details"
-        '
-        'gpBoxWOClose
-        '
-        Me.gpBoxWOClose.Dock = System.Windows.Forms.DockStyle.Top
-        Me.gpBoxWOClose.Location = New System.Drawing.Point(0, 191)
-        Me.gpBoxWOClose.Name = "gpBoxWOClose"
-        Me.gpBoxWOClose.Size = New System.Drawing.Size(517, 64)
-        Me.gpBoxWOClose.TabIndex = 4
-        Me.gpBoxWOClose.TabStop = False
-        Me.gpBoxWOClose.Text = "Close Workorders"
-        '
-        'gpBoxWOCreate
-        '
-        Me.gpBoxWOCreate.Dock = System.Windows.Forms.DockStyle.Top
-        Me.gpBoxWOCreate.Location = New System.Drawing.Point(0, 113)
-        Me.gpBoxWOCreate.Name = "gpBoxWOCreate"
-        Me.gpBoxWOCreate.Size = New System.Drawing.Size(517, 78)
-        Me.gpBoxWOCreate.TabIndex = 5
-        Me.gpBoxWOCreate.TabStop = False
-        Me.gpBoxWOCreate.Text = "Create Workorder"
-        '
-        'ImageList1
-        '
-        Me.ImageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
-        Me.ImageList1.ImageSize = New System.Drawing.Size(4, 40)
-        Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
-        '
         'btnClear
         '
         Me.btnClear.Appearance = System.Windows.Forms.Appearance.Button
@@ -154,6 +86,17 @@ Partial Class AssignedWorkControl
         Me.btnClear.TabIndex = 25
         Me.btnClear.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.btnClear.UseVisualStyleBackColor = True
+        '
+        'lblCurrentWO
+        '
+        Me.lblCurrentWO.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.lblCurrentWO.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCurrentWO.Location = New System.Drawing.Point(3, 94)
+        Me.lblCurrentWO.Name = "lblCurrentWO"
+        Me.lblCurrentWO.Size = New System.Drawing.Size(511, 16)
+        Me.lblCurrentWO.TabIndex = 23
+        Me.lblCurrentWO.Text = "Current WO"
+        Me.lblCurrentWO.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'btnCloseWork
         '
@@ -229,6 +172,63 @@ Partial Class AssignedWorkControl
         Me.btnFiltGeo.TabIndex = 19
         Me.btnFiltGeo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.btnFiltGeo.UseVisualStyleBackColor = True
+        '
+        'gpBoxWOList
+        '
+        Me.gpBoxWOList.Dock = System.Windows.Forms.DockStyle.Top
+        Me.gpBoxWOList.Location = New System.Drawing.Point(0, 342)
+        Me.gpBoxWOList.Name = "gpBoxWOList"
+        Me.gpBoxWOList.Size = New System.Drawing.Size(517, 67)
+        Me.gpBoxWOList.TabIndex = 1
+        Me.gpBoxWOList.TabStop = False
+        Me.gpBoxWOList.Text = "Workorder List"
+        '
+        'gpBoxOptions
+        '
+        Me.gpBoxOptions.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.gpBoxOptions.Location = New System.Drawing.Point(0, 715)
+        Me.gpBoxOptions.Name = "gpBoxOptions"
+        Me.gpBoxOptions.Size = New System.Drawing.Size(517, 100)
+        Me.gpBoxOptions.TabIndex = 2
+        Me.gpBoxOptions.TabStop = False
+        Me.gpBoxOptions.Text = "Options"
+        Me.gpBoxOptions.Visible = False
+        '
+        'gpBoxWODetails
+        '
+        Me.gpBoxWODetails.Dock = System.Windows.Forms.DockStyle.Top
+        Me.gpBoxWODetails.Location = New System.Drawing.Point(0, 255)
+        Me.gpBoxWODetails.Name = "gpBoxWODetails"
+        Me.gpBoxWODetails.Size = New System.Drawing.Size(517, 87)
+        Me.gpBoxWODetails.TabIndex = 3
+        Me.gpBoxWODetails.TabStop = False
+        Me.gpBoxWODetails.Text = "Workorder Details"
+        '
+        'gpBoxWOClose
+        '
+        Me.gpBoxWOClose.Dock = System.Windows.Forms.DockStyle.Top
+        Me.gpBoxWOClose.Location = New System.Drawing.Point(0, 191)
+        Me.gpBoxWOClose.Name = "gpBoxWOClose"
+        Me.gpBoxWOClose.Size = New System.Drawing.Size(517, 64)
+        Me.gpBoxWOClose.TabIndex = 4
+        Me.gpBoxWOClose.TabStop = False
+        Me.gpBoxWOClose.Text = "Close Workorders"
+        '
+        'gpBoxWOCreate
+        '
+        Me.gpBoxWOCreate.Dock = System.Windows.Forms.DockStyle.Top
+        Me.gpBoxWOCreate.Location = New System.Drawing.Point(0, 113)
+        Me.gpBoxWOCreate.Name = "gpBoxWOCreate"
+        Me.gpBoxWOCreate.Size = New System.Drawing.Size(517, 78)
+        Me.gpBoxWOCreate.TabIndex = 5
+        Me.gpBoxWOCreate.TabStop = False
+        Me.gpBoxWOCreate.Text = "Create Workorder"
+        '
+        'ImageList1
+        '
+        Me.ImageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
+        Me.ImageList1.ImageSize = New System.Drawing.Size(4, 40)
+        Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
         '
         'AssignedWorkControl
         '

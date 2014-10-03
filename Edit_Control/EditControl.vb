@@ -15,11 +15,11 @@
 
 
 Imports System.Windows.Forms
-Imports ESRI.ArcGIS.Mobile
-Imports ESRI.ArcGIS.Mobile.Geometries
-Imports ESRI.ArcGIS.Mobile.FeatureCaching
+Imports Esri.ArcGIS.Mobile
+Imports Esri.ArcGIS.Mobile.Geometries
+Imports Esri.ArcGIS.Mobile.FeatureCaching
 Imports System.Drawing
-Imports ESRI.ArcGISTemplates
+Imports Esri.ArcGISTemplates
 
 
 Public Class EditControl
@@ -68,10 +68,10 @@ Public Class EditControl
     Private m_LogEdit As Boolean = False
 
     'ESRI Map control
-    Private WithEvents m_Map As ESRI.ArcGIS.Mobile.WinForms.Map
+    Private WithEvents m_Map As Esri.ArcGIS.Mobile.WinForms.Map
     'The active editable datarow
     Private m_FDR As FeatureDataRow
-    Private m_FL As ESRI.ArcGIS.Mobile.FeatureCaching.FeatureSource
+    Private m_FL As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource
     'Create a universal font to use on all controls
     Private m_Fnt As Font '= New System.Drawing.Font("Microsoft Sans Serif", 12.0F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0)
     Private m_FntLbl As Font ' = New System.Drawing.Font("Microsoft Sans Serif", 11.0F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0)
@@ -123,6 +123,8 @@ Public Class EditControl
             Else
                 btnGPSLoc.Enabled = False
             End If
+            disableSaveBtn()
+
         End Set
     End Property
     Public Property MoveGeoButtonVisible As Boolean
@@ -350,15 +352,15 @@ Public Class EditControl
         End Set
     End Property
     'The ArcGIS Mobile Map Control
-    Public Property mapControl() As ESRI.ArcGIS.Mobile.WinForms.Map
+    Public Property mapControl() As Esri.ArcGIS.Mobile.WinForms.Map
         Get
             Return m_Map
         End Get
-        Set(ByVal value As ESRI.ArcGIS.Mobile.WinForms.Map)
+        Set(ByVal value As Esri.ArcGIS.Mobile.WinForms.Map)
             m_Map = value
         End Set
     End Property
-    Private Sub curRec(ByVal FeatLayer As ESRI.ArcGIS.Mobile.FeatureCaching.FeatureSource, ByVal featureDT As FeatureDataTable)
+    Private Sub curRec(ByVal FeatLayer As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource, ByVal featureDT As FeatureDataTable)
         If FeatLayer Is Nothing Then
             DisplayBlank()
             m_FDR = Nothing
@@ -385,7 +387,7 @@ Public Class EditControl
         disableSaveBtn()
         disableDeleteBtn()
     End Sub
-    Public Sub setCurrentLayer(ByVal FeatLayer As ESRI.ArcGIS.Mobile.FeatureCaching.FeatureSource, ByVal editOptions As MobileConfigClass.MobileConfigMobileMapConfigEditControlOptionsLayersLayer)
+    Public Sub setCurrentLayer(ByVal FeatLayer As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource, ByVal editOptions As MobileConfigClass.MobileConfigMobileMapConfigEditControlOptionsLayersLayer)
         Try
 
 
@@ -407,7 +409,7 @@ Public Class EditControl
 
         End Try
     End Sub
-    Private ReadOnly Property CurrentLayer() As ESRI.ArcGIS.Mobile.FeatureCaching.FeatureSource
+    Private ReadOnly Property CurrentLayer() As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource
         Get
             Return m_FL
         End Get
@@ -535,7 +537,7 @@ Public Class EditControl
 #End Region
 #Region "Public Methods"
 
-    Public Sub New(ByVal map As ESRI.ArcGIS.Mobile.WinForms.Map, ByVal NewRecord As FeatureDataRow)
+    Public Sub New(ByVal map As Esri.ArcGIS.Mobile.WinForms.Map, ByVal NewRecord As FeatureDataRow)
 
 
 
@@ -773,7 +775,7 @@ Public Class EditControl
 
             Dim strFld As String
             'Gets the feature layer 
-            Dim pFL As ESRI.ArcGIS.Mobile.FeatureCaching.FeatureSource = m_FDR.FeatureSource
+            Dim pFL As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource = m_FDR.FeatureSource
             'If the layer has subtypes, load the subtype value first
             'Loop through all the controls and set their value
             For Each pCntrl As Control In tbCntrlEdit.Controls
@@ -928,6 +930,104 @@ Public Class EditControl
 
 
     End Sub
+    Public Function GetFieldControlVisibleState(ByVal Field As String) As Boolean
+        Try
+
+            Dim strFld As String
+            For Each tbPage As TabPage In tbCntrlEdit.TabPages
+
+                For Each cCntrl As Control In tbPage.Controls
+
+                    'If the control is a 2 value domain(Checkboxs)
+                    If TypeOf cCntrl Is Panel Then
+                        For Each cCntrlPnl As Control In cCntrl.Controls
+                            If TypeOf cCntrlPnl Is CustomPanel Then
+                                'Get the Field
+                                strFld = CType(cCntrlPnl, CustomPanel).Tag.ToString
+                                If strFld.IndexOf("|") > 0 Then
+                                    strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
+                                End If
+                                If Field = strFld Then
+                                    'Get the target value
+
+                                    If Field = strFld Then
+                                        Return CType(cCntrlPnl, CustomPanel).Visible
+
+                                    End If
+
+                                End If
+                                'If the control is a text box
+                            ElseIf TypeOf cCntrlPnl Is TextBox Then
+                                'Get the field
+                                strFld = CType(cCntrlPnl, TextBox).Tag.ToString
+                                If strFld.IndexOf("|") > 0 Then
+                                    strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
+                                End If
+                                If Field = strFld Then
+                                    Return CType(cCntrlPnl, TextBox).Visible
+
+                                End If
+
+
+                                'if the control is a combo box(domain)
+                            ElseIf TypeOf cCntrlPnl Is ComboBox Then
+                                'Get the field
+                                strFld = CType(cCntrlPnl, ComboBox).Tag.ToString
+                                If strFld.IndexOf("|") > 0 Then
+                                    strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
+                                End If
+                                If Field = strFld Then
+                                    Return CType(cCntrlPnl, ComboBox).Visible
+
+                                End If
+
+
+
+                                'if the control is a data time field
+                            ElseIf TypeOf cCntrlPnl Is DateTimePicker Then
+                                'Get the field
+                                strFld = CType(cCntrlPnl, DateTimePicker).Tag.ToString
+                                If strFld.IndexOf("|") > 0 Then
+                                    strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
+                                End If '
+
+                                If Field = strFld Then
+                                    Return CType(cCntrlPnl, DateTimePicker).Visible
+
+                                End If
+
+                                'If the field is a range domain
+                            ElseIf TypeOf cCntrlPnl Is NumericUpDown Then
+                                'Get the field
+                                strFld = CType(cCntrlPnl, NumericUpDown).Tag.ToString
+                                If strFld.IndexOf("|") > 0 Then
+                                    strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
+                                End If
+                                If Field = strFld Then
+                                    Return CType(cCntrlPnl, NumericUpDown).Visible
+
+                                End If
+
+                            End If
+                        Next
+
+                    End If
+
+                Next
+                ' End If
+            Next
+
+        Catch ex As Exception
+            Dim st As New StackTrace
+            MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+            st = Nothing
+
+
+        End Try
+
+
+
+    End Function
 
     Public Sub UpdateForm(ByVal Field As String, ByVal Value As Object, ByVal setReadOnly As String, Optional bSub As Boolean = False)
         Try
@@ -935,7 +1035,7 @@ Public Class EditControl
 
             Dim strFld As String
             'Gets the feature layer 
-            Dim pFL As ESRI.ArcGIS.Mobile.FeatureCaching.FeatureSource = m_FDR.FeatureSource
+            Dim pFL As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource = m_FDR.FeatureSource
             'If the layer has subtypes, load the subtype value first
             'Loop through all the controls and set their value
             Dim bValSet As Boolean = False
@@ -967,6 +1067,16 @@ Public Class EditControl
                                     For Each rdCn As Control In pCsPn.Controls
                                         If TypeOf rdCn Is RadioButton Then
                                             If Value Is DBNull.Value Then
+
+                                                If setReadOnly.ToUpper() = "TRUE" Then
+                                                    cCntrlPnl.Enabled = False
+                                                Else
+                                                    cCntrlPnl.Enabled = True
+
+
+                                                End If
+                                                CType(rdCn, RadioButton).Checked = False
+                                            ElseIf Value Is Nothing Then
 
                                                 If setReadOnly.ToUpper() = "TRUE" Then
                                                     cCntrlPnl.Enabled = False
@@ -1023,7 +1133,9 @@ Public Class EditControl
                                     End If
                                     If Value Is DBNull.Value Then
                                         CType(cCntrlPnl, TextBox).Text = ""
-                                    ElseIf Value = "<NO_MOD>" Then
+                                    ElseIf Value Is Nothing Then
+                                        CType(cCntrlPnl, TextBox).Text = ""
+                                    ElseIf Value.ToString() = "<NO_MOD>" Then
 
                                     Else
 
@@ -1054,7 +1166,9 @@ Public Class EditControl
                                         End If
                                         If Value Is DBNull.Value Then
                                             CType(cCntrlPnl, ComboBox).SelectedValue = Value
-                                        ElseIf Value = "<NO_MOD>" Then
+                                        ElseIf Value Is Nothing Then
+                                            CType(cCntrlPnl, ComboBox).SelectedValue = DBNull.Value
+                                        ElseIf Value.ToString() = "<NO_MOD>" Then
 
                                         Else
                                             'CType(cCntrlPnl, ComboBox).Text = Value.ToString()
@@ -1088,7 +1202,7 @@ Public Class EditControl
                                 End If
 
 
-                                'if the contorl is a data time field
+                                'if the control is a data time field
                             ElseIf TypeOf cCntrlPnl Is DateTimePicker Then
                                 'Get the field
                                 strFld = CType(cCntrlPnl, DateTimePicker).Tag.ToString
@@ -1097,7 +1211,11 @@ Public Class EditControl
                                 End If '
 
                                 If Field.ToUpper = strFld.ToUpper Then
-                                    If Value = "<NO_MOD>" Then
+                                    If Value Is Nothing Then
+                                        CType(cCntrlPnl, DateTimePicker).Checked = False
+                                    ElseIf Value Is DBNull.Value Then
+                                        CType(cCntrlPnl, DateTimePicker).Checked = False
+                                    ElseIf Value.ToString() = "<NO_MOD>" Then
 
                                     Else
                                         If IsDate(Value) Then
@@ -1138,7 +1256,9 @@ Public Class EditControl
 
 
                                     End If
-                                    If Value = "<NO_MOD>" Then
+                                    If Value Is Nothing Then
+                                    ElseIf Value Is DBNull.Value Then
+                                    ElseIf Value.ToString() = "<NO_MOD>" Then
 
                                     Else
                                         Try
@@ -1206,7 +1326,7 @@ Public Class EditControl
                 Else
 
                     If m_FDR.Table.Columns(Field).DataType Is System.Type.GetType("System.String") Then
-                        m_FDR.Item(Field) = Value
+                        m_FDR.Item(Field) = Value.ToString()
                     ElseIf m_FDR.Table.Columns(Field).DataType Is System.Type.GetType("System.Byte[]") Then
 
 
@@ -1275,8 +1395,9 @@ Public Class EditControl
 
             If m_FDR.FeatureSource.HasSubtypes Then
                 If m_FDR.FeatureSource.SubtypeColumnName = Field Then
-
-                    If Value.ToString <> "<NO_MOD>" Then
+                    If Value Is Nothing Then
+                    ElseIf Value Is DBNull.Value Then
+                    ElseIf Value.ToString <> "<NO_MOD>" Then
 
                         bSub = True
 
@@ -1306,28 +1427,28 @@ Public Class EditControl
                 If m_FDR.Geometry IsNot Nothing Then
                     If m_FDR.Geometry.GeometryType = GeometryType.Point Then
 
-                        If CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Point).Parts.Count = 1 Then
-                            If CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Point).Parts(0).Count = 1 Then
-                                If CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Point).Parts(0)(0).IsEmpty = False Then
-                                    pCoord = CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Point).Parts(0)(0)
+                        If CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Point).Parts.Count = 1 Then
+                            If CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Point).Parts(0).Count = 1 Then
+                                If CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Point).Parts(0)(0).IsEmpty = False Then
+                                    pCoord = CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Point).Parts(0)(0)
                                 End If
 
                             End If
                         End If
                     ElseIf m_FDR.Geometry.GeometryType = GeometryType.Polygon Then
-                        If CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Polygon).PartCount = 1 Then
-                            If CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Polygon).Parts(0).Count = 1 Then
-                                If CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Polygon).Parts(0)(0).IsEmpty = False Then
-                                    pCoord = CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Polygon).Parts(0)(0)
+                        If CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Polygon).PartCount = 1 Then
+                            If CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Polygon).Parts(0).Count = 1 Then
+                                If CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Polygon).Parts(0)(0).IsEmpty = False Then
+                                    pCoord = CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Polygon).Parts(0)(0)
                                 End If
 
                             End If
                         End If
                     ElseIf m_FDR.Geometry.GeometryType = GeometryType.Polyline Then
-                        If CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Polyline).PartCount = 1 Then
-                            If CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Polyline).Parts(0).Count = 1 Then
-                                If CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Polyline).Parts(0)(0).IsEmpty = False Then
-                                    pCoord = CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Polyline).Parts(0)(0)
+                        If CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Polyline).PartCount = 1 Then
+                            If CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Polyline).Parts(0).Count = 1 Then
+                                If CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Polyline).Parts(0)(0).IsEmpty = False Then
+                                    pCoord = CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Polyline).Parts(0)(0)
                                 End If
 
                             End If
@@ -1363,14 +1484,14 @@ Public Class EditControl
                                                 Dim pPartIdx As Integer
                                                 Dim pVertIdx As Integer
                                                 Dim pSqDist As Double
-                                                pLine.GetNearestCoordinate(New ESRI.ArcGIS.Mobile.Geometries.Point(pCoord), pRetPoint, pPartIdx, pVertIdx, pSqDist)
+                                                pLine.GetNearestCoordinate(New Esri.ArcGIS.Mobile.Geometries.Point(pCoord), pRetPoint, pPartIdx, pVertIdx, pSqDist)
 
                                                 If pRetPoint.IsEmpty Then
-                                                    m_FDR.Geometry = New ESRI.ArcGIS.Mobile.Geometries.Point(pCoord)
+                                                    m_FDR.Geometry = New Esri.ArcGIS.Mobile.Geometries.Point(pCoord)
                                                 Else
                                                     'Use the location on the line
                                                     '   pFDRInspection.Geometry = New ESRI.ArcGIS.Mobile.Geometries.Point(pRetPoint)
-                                                    m_FDR.Geometry = New ESRI.ArcGIS.Mobile.Geometries.Point(pRetPoint)
+                                                    m_FDR.Geometry = New Esri.ArcGIS.Mobile.Geometries.Point(pRetPoint)
                                                 End If
                                                 pLine = Nothing
                                                 pRetPoint = Nothing
@@ -1378,10 +1499,10 @@ Public Class EditControl
                                             Else
                                                 'Use the mouse click for other geometry types
                                                 'pFDRInspection.Geometry = New ESRI.ArcGIS.Mobile.Geometries.Point(coord)
-                                                m_FDR.Geometry = New ESRI.ArcGIS.Mobile.Geometries.Point(pCoord)
+                                                m_FDR.Geometry = New Esri.ArcGIS.Mobile.Geometries.Point(pCoord)
                                             End If
                                         Else
-                                            m_FDR.Geometry = New ESRI.ArcGIS.Mobile.Geometries.Point(pCoord)
+                                            m_FDR.Geometry = New Esri.ArcGIS.Mobile.Geometries.Point(pCoord)
                                         End If
                                         RaiseEvent RecordSnapped(m_FDR.Geometry)
                                         Return CType(pDt.Rows(0), FeatureDataRow)
@@ -1409,7 +1530,7 @@ Public Class EditControl
     Private Sub LoadAutoAttributes(ByVal featDataRow As FeatureDataRow)
         Dim pDRead As FeatureDataReader = Nothing
         Dim pQFilt As QueryFilter = Nothing
-        Dim pFl As ESRI.ArcGIS.Mobile.FeatureCaching.FeatureSource = Nothing
+        Dim pFl As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource = Nothing
         Try
 
 
@@ -1437,8 +1558,49 @@ Public Class EditControl
                             End If
 
 
-
+                            getGPSCoords()
                             Select Case act.ToUpper
+                                Case "Longitude".ToUpper
+                                    If m_GPSVal IsNot Nothing Then
+                                        UpdateField(autoAttFld.Name, m_GPSVal.Longitude, True, setRead)
+
+                                    End If
+                                Case "Latitude".ToUpper
+                                    If m_GPSVal IsNot Nothing Then
+                                        UpdateField(autoAttFld.Name, m_GPSVal.Latitude, True, setRead)
+
+                                    End If
+                                Case "PDOP".ToUpper
+                                    If m_GPSVal IsNot Nothing Then
+                                        UpdateField(autoAttFld.Name, m_GPSVal.PositionDilutionOfPrecision, True, setRead)
+
+                                    End If
+
+                                Case "HDOP".ToUpper
+                                    If m_GPSVal IsNot Nothing Then
+                                        UpdateField(autoAttFld.Name, m_GPSVal.HorizontalDilutionOfPrecision, True, setRead)
+
+                                    End If
+
+                                Case "VDOP".ToUpper
+                                    If m_GPSVal IsNot Nothing Then
+                                        UpdateField(autoAttFld.Name, m_GPSVal.VerticalDilutionOfPrecision, True, setRead)
+
+                                    End If
+
+                                Case "SatCount".ToUpper
+                                    If m_GPSVal IsNot Nothing Then
+                                        UpdateField(autoAttFld.Name, m_GPSVal.FixSatelliteCount, True, setRead)
+
+                                    End If
+
+                                Case "FixStatus".ToUpper
+                                    If m_GPSVal IsNot Nothing Then
+                                        UpdateField(autoAttFld.Name, m_GPSVal.FixStatus, True, setRead)
+
+                                    End If
+
+
                                 Case "TIME".ToUpper
                                     UpdateField(autoAttFld.Name, CStr(Now.ToShortTimeString), True, setRead)
                                 Case "Date".ToUpper
@@ -1508,7 +1670,7 @@ Public Class EditControl
 
 
 
-                                                Dim pCenterPoint As ESRI.ArcGIS.Mobile.Geometries.Point = GlobalsFunctions.GetGeometryCenterPoint(m_FDR.Geometry)
+                                                Dim pCenterPoint As Esri.ArcGIS.Mobile.Geometries.Point = GlobalsFunctions.GetGeometryCenterPoint(m_FDR.Geometry)
 
                                                 Dim pFDT As FeatureDataTable = GlobalsFunctions.spatialQFeature(GlobalsFunctions.appConfig.SearchPanel.AddressSearch.LayerName, pCenterPoint, m_Map, GlobalsFunctions.appConfig.IDPanel.SearchTolerence)
                                                 If pFDT IsNot Nothing Then
@@ -1533,7 +1695,7 @@ Public Class EditControl
                                                                     If pStreetLine.GetNearestVertex(pRetCoord, pRetVert, pPartIdxVert, pVertIdxVert, pSqDistVert) Then
 
 
-                                                                        Dim pRetPnt As New ESRI.ArcGIS.Mobile.Geometries.Point(pRetCoord)
+                                                                        Dim pRetPnt As New Esri.ArcGIS.Mobile.Geometries.Point(pRetCoord)
 
 
                                                                         Dim pNewPrevCoordCol As New CoordinateCollection
@@ -1756,7 +1918,7 @@ Public Class EditControl
                                                 If m_FDR.Geometry.GeometryType = GeometryType.Point Then
                                                     Dim intBufferValueforPoint As Double
                                                     intBufferValueforPoint = GlobalsFunctions.bufferToMap(m_Map, GlobalsFunctions.appConfig.EditControlOptions.SnapTolerence) 'maptobuffer()
-                                                    Dim pEnv As New Geometries.Envelope(CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Point).Coordinate, intBufferValueforPoint, intBufferValueforPoint)
+                                                    Dim pEnv As New Geometries.Envelope(CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Point).Coordinate, intBufferValueforPoint, intBufferValueforPoint)
                                                     pQFilt.Geometry = pEnv
 
                                                 Else
@@ -1963,7 +2125,7 @@ Public Class EditControl
 
     End Sub
 
-    Private Sub disableSaveBtn()
+    Public Sub disableSaveBtn()
         Try
 
 
@@ -1972,6 +2134,9 @@ Public Class EditControl
             'Loop through all tab pages looking for the save button
             Dim bDisable As Boolean = False
             'Determine whether to disable or enable the save button
+            If GlobalsFunctions.m_GPS.GpsConnection.IsOpen = False And GlobalsFunctions.appConfig.EditControlOptions.RequireGPSForSaving.ToUpper() = "TRUE" Then
+                bDisable = True
+            End If
             If m_FDR Is Nothing Then
                 bDisable = True
             Else
@@ -1982,6 +2147,24 @@ Public Class EditControl
                     bDisable = True
 
                 End If
+                lstBoxError.Items.Clear()
+
+                If m_LayerOp IsNot Nothing Then
+                    For Each itm In m_LayerOp.Field
+                        If itm.Required.ToUpper = "TRUE" Then
+                            If (m_FDR(itm.Name) Is Nothing Or m_FDR(itm.Name) Is DBNull.Value Or m_FDR(itm.Name).ToString = "") And GetFieldControlVisibleState(itm.Name) Then
+                                Dim cap As String
+                                If itm.Caption = "" Then
+                                    cap = m_FDR.Table.Columns(itm.Name).Caption
+                                Else
+                                    cap = itm.Caption
+                                End If
+                                lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, cap, GlobalsFunctions.appConfig.EditControlOptions.UIComponents.RequireFieldMessage))
+                                bDisable = True
+                            End If
+                        End If
+                    Next
+                End If
                 If m_FDR.HasErrors Then
                     'If spCntMain.Panel1Collapsed = True Then
                     '    spCntMain.Panel1Collapsed = False
@@ -1989,49 +2172,47 @@ Public Class EditControl
                     'End If
 
                     bDisable = True
-                    lstBoxError.Items.Clear()
 
-                    If m_FDR.HasErrors() Then
-
-                        Dim colInError() As DataColumn = m_FDR.GetColumnsInError
-                        For i As Integer = 0 To colInError.GetLength(0) - 1
-                            'If colInError(i).Caption = "SHAPE" And m_FDR.Geometry Is Nothing Then
-                            'ElseIf colInError(i).Caption = "SHAPE" And m_FDR.Geometry.IsValid Then
-                            'Else
-                            If m_EditOptions IsNot Nothing Then
+                    Dim colInError() As DataColumn = m_FDR.GetColumnsInError
+                    For i As Integer = 0 To colInError.GetLength(0) - 1
+                        'If colInError(i).Caption = "SHAPE" And m_FDR.Geometry Is Nothing Then
+                        'ElseIf colInError(i).Caption = "SHAPE" And m_FDR.Geometry.IsValid Then
+                        'Else
+                        If m_EditOptions IsNot Nothing Then
 
 
-                                If m_EditOptions.RequiredBackColor = "" And _
-                                    m_EditOptions.RequiredBoxColor = "" And _
-                                    m_EditOptions.RequiredForeColor = "" Then
-                                Else
-                                End If
-
-                                setRequiredColorsField(colInError(i).ColumnName, True)
-                            End If
-                            If colInError(i).ColumnName = m_FDR.FeatureSource.GeometryColumnName Then
-                                lstBoxError.Items.Add(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NoGeometryMessage)
-
+                            If m_EditOptions.RequiredBackColor = "" And _
+                                m_EditOptions.RequiredBoxColor = "" And _
+                                m_EditOptions.RequiredForeColor = "" Then
                             Else
-                                lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, colInError(i).Caption, m_FDR.GetColumnError(colInError(i).ColumnName)))
                             End If
 
+                            setRequiredColorsField(colInError(i).ColumnName, True)
+                        End If
+                        If colInError(i).ColumnName = m_FDR.FeatureSource.GeometryColumnName Then
+                            lstBoxError.Items.Add(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.NoGeometryMessage)
+
+                        Else
+                            lstBoxError.Items.Add(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, colInError(i).Caption, m_FDR.GetColumnError(colInError(i).ColumnName)))
+                        End If
 
 
-                            '  End If
-                            'MsgBox(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, colInError(i).Caption, m_FDR.GetColumnError(colInError(i).ColumnName)))
+
+                        '  End If
+                        'MsgBox(String.Format(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.OnSaveRecordErrorMessage, colInError(i).Caption, m_FDR.GetColumnError(colInError(i).ColumnName)))
 
 
 
-                        Next
+                    Next
 
-                    End If
-                Else
-                    'If spCntMain.Panel1Collapsed = False Then
-                    '    spCntMain.Panel1Collapsed = True
-                    '    ShuffleControls()
-                    'End If
 
+                End If
+
+                'If spCntMain.Panel1Collapsed = False Then
+                '    spCntMain.Panel1Collapsed = True
+                '    ShuffleControls()
+                'End If
+                If bDisable = False Then
                     lstBoxError.Items.Clear()
 
                 End If
@@ -2529,7 +2710,7 @@ Public Class EditControl
             btnMove.CheckState = CheckState.Unchecked
 
             ''Feature layer being Identified
-            Dim pfl As ESRI.ArcGIS.Mobile.FeatureCaching.FeatureSource = m_FL
+            Dim pfl As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource = m_FL
             ''Map Layer from Cache
             'Dim msMapLayer As MobileCacheMapLayer
             ''Set the active layer
@@ -4879,7 +5060,27 @@ Public Class EditControl
         Return True
     End Function
     Private m_DT As FeatureDataTable
+    Private Sub getGPSCoords()
+        m_GPSVal = New GPSLocationDetails()
+        m_GPSVal.Altitude = GlobalsFunctions.m_GPS.GpsConnection.Altitude
+        m_GPSVal.Course = GlobalsFunctions.m_GPS.GpsConnection.Course
+        m_GPSVal.CourseMagnetic = GlobalsFunctions.m_GPS.GpsConnection.CourseMagnetic
+        m_GPSVal.DateTime = GlobalsFunctions.m_GPS.GpsConnection.DateTime
+        m_GPSVal.FixSatelliteCount = GlobalsFunctions.m_GPS.GpsConnection.FixSatelliteCount
+        m_GPSVal.FixStatus = GlobalsFunctions.m_GPS.GpsConnection.FixStatus
 
+        m_GPSVal.GeoidHeight = GlobalsFunctions.m_GPS.GpsConnection.GeoidHeight
+        m_GPSVal.HorizontalDilutionOfPrecision = GlobalsFunctions.m_GPS.GpsConnection.HorizontalDilutionOfPrecision
+        m_GPSVal.Latitude = GlobalsFunctions.m_GPS.GpsConnection.Latitude
+        ' gpsD.LatitudeToDegreeMinutesSeconds = GlobalsFunctions.m_GPS.GpsConnection.LatitudeToDegreeMinutesSeconds
+        m_GPSVal.Longitude = GlobalsFunctions.m_GPS.GpsConnection.Longitude
+        ' gpsD.LongitudeToDegreeMinutesSeconds = GlobalsFunctions.m_GPS.GpsConnection.LongitudeToDegreeMinutesSeconds
+        m_GPSVal.PositionDilutionOfPrecision = GlobalsFunctions.m_GPS.GpsConnection.PositionDilutionOfPrecision
+        m_GPSVal.SpatialReference = GlobalsFunctions.m_GPS.GpsConnection.SpatialReference
+        m_GPSVal.Speed = GlobalsFunctions.m_GPS.GpsConnection.Speed
+        m_GPSVal.VerticalDilutionOfPrecision = GlobalsFunctions.m_GPS.GpsConnection.VerticalDilutionOfPrecision
+
+    End Sub
     Private Function SaveRecordToLayer() As Boolean
         Try
 
@@ -4890,25 +5091,7 @@ Public Class EditControl
             If m_FDR.Geometry.IsEmpty Then Return False
             'Get the Data Table associated with the record
             If m_GPSStatus = "On" And m_GPSVal Is Nothing Then
-                m_GPSVal = New GPSLocationDetails()
-                m_GPSVal.Altitude = GlobalsFunctions.m_GPS.GpsConnection.Altitude
-                m_GPSVal.Course = GlobalsFunctions.m_GPS.GpsConnection.Course
-                m_GPSVal.CourseMagnetic = GlobalsFunctions.m_GPS.GpsConnection.CourseMagnetic
-                m_GPSVal.DateTime = GlobalsFunctions.m_GPS.GpsConnection.DateTime
-                m_GPSVal.FixSatelliteCount = GlobalsFunctions.m_GPS.GpsConnection.FixSatelliteCount
-                m_GPSVal.FixStatus = GlobalsFunctions.m_GPS.GpsConnection.FixStatus
-
-                m_GPSVal.GeoidHeight = GlobalsFunctions.m_GPS.GpsConnection.GeoidHeight
-                m_GPSVal.HorizontalDilutionOfPrecision = GlobalsFunctions.m_GPS.GpsConnection.HorizontalDilutionOfPrecision
-                m_GPSVal.Latitude = GlobalsFunctions.m_GPS.GpsConnection.Latitude
-                ' gpsD.LatitudeToDegreeMinutesSeconds = GlobalsFunctions.m_GPS.GpsConnection.LatitudeToDegreeMinutesSeconds
-                m_GPSVal.Longitude = GlobalsFunctions.m_GPS.GpsConnection.Longitude
-                ' gpsD.LongitudeToDegreeMinutesSeconds = GlobalsFunctions.m_GPS.GpsConnection.LongitudeToDegreeMinutesSeconds
-                m_GPSVal.PositionDilutionOfPrecision = GlobalsFunctions.m_GPS.GpsConnection.PositionDilutionOfPrecision
-                m_GPSVal.SpatialReference = GlobalsFunctions.m_GPS.GpsConnection.SpatialReference
-                m_GPSVal.Speed = GlobalsFunctions.m_GPS.GpsConnection.Speed
-                m_GPSVal.VerticalDilutionOfPrecision = GlobalsFunctions.m_GPS.GpsConnection.VerticalDilutionOfPrecision
-
+                getGPSCoords()
             End If
             SaveRecordFinal()
 
@@ -5049,10 +5232,26 @@ Public Class EditControl
 
                 End If
             End If
+            'If m_FDR.RowState = DataRowState.Unchanged Then
+            '    m_FDR.SetModified()
+
+            'End If
+
             m_DT.SaveInFeatureSource()
             m_DT.AcceptChanges()
+            Try
+                m_FDR.Table.SaveInFeatureSource()
+                m_FDR.Table.AcceptChanges()
+            Catch ex As Exception
 
+            End Try
+          
             m_FL.SaveEdits(m_DT)
+            Try
+                m_FL.SaveEdits(m_FDR.Table)
+            Catch ex As Exception
+
+            End Try
             Dim lstAtt As List(Of Attachment) = New List(Of Attachment)
 
             If m_pTabPagAtt IsNot Nothing Then
@@ -5338,7 +5537,7 @@ Public Class EditControl
             'Determine if the layer has subtypes
             Dim bSubType As Boolean = m_FDR.FeatureSource.HasSubtypes
             'Gets the feature layer 
-            Dim pFL As ESRI.ArcGIS.Mobile.FeatureCaching.FeatureSource = m_FDR.FeatureSource
+            Dim pFL As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource = m_FDR.FeatureSource
             Dim pBtn As Button
             Dim pBtnPadding As Integer
 
@@ -5822,7 +6021,7 @@ Public Class EditControl
             If m_FDR.Geometry IsNot Nothing Then
                 ' Me.Geometry = m_FDR.Geometry
                 If m_Mode = "ID" Then
-                    If Me.Geometry.GeometryType = ESRI.ArcGIS.Mobile.Geometries.GeometryType.Point Then
+                    If Me.Geometry.GeometryType = Esri.ArcGIS.Mobile.Geometries.GeometryType.Point Then
                         GlobalsFunctions.flashGeo(m_FDR.Geometry, m_Map, m_penFlash, m_brushFlash)
                     Else
                         GlobalsFunctions.flashGeo(m_FDR.Geometry, m_Map, m_penLineFlash, m_brushFlash)
@@ -6905,7 +7104,7 @@ Public Class EditControl
 
     End Sub
 
-    Private Sub m_Map_Paint(ByVal sender As Object, ByVal e As ESRI.ArcGIS.Mobile.WinForms.MapPaintEventArgs) Handles m_Map.MapPaint
+    Private Sub m_Map_Paint(ByVal sender As Object, ByVal e As Esri.ArcGIS.Mobile.WinForms.MapPaintEventArgs) Handles m_Map.MapPaint
         Try
 
             If m_FDR Is Nothing Then Return
@@ -6924,7 +7123,7 @@ Public Class EditControl
                             e.MapSurface.DrawGeometry(m_Pen, m_Brush, m_PointSize, m_FDR.Geometry)
                             If (m_FDR.Geometry.GeometryType = GeometryType.Polyline) Then
                                 If m_FDR.Geometry.CurrentCoordinate IsNot Nothing Then
-                                    e.MapSurface.DrawGeometry(m_Pen, m_Brush, m_PointSize, New ESRI.ArcGIS.Mobile.Geometries.Point(m_FDR.Geometry.CurrentCoordinate))
+                                    e.MapSurface.DrawGeometry(m_Pen, m_Brush, m_PointSize, New Esri.ArcGIS.Mobile.Geometries.Point(m_FDR.Geometry.CurrentCoordinate))
                                 End If
 
 
@@ -6934,8 +7133,8 @@ Public Class EditControl
 
                             ElseIf (m_FDR.Geometry.GeometryType = GeometryType.Polyline) Then
 
-                                If CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Polyline).Parts(0).Count = 1 Then
-                                    e.MapSurface.DrawGeometry(m_Pen, m_Brush, m_PointSize, New ESRI.ArcGIS.Mobile.Geometries.Point(CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Polyline).Parts(0)(0)))
+                                If CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Polyline).Parts(0).Count = 1 Then
+                                    e.MapSurface.DrawGeometry(m_Pen, m_Brush, m_PointSize, New Esri.ArcGIS.Mobile.Geometries.Point(CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Polyline).Parts(0)(0)))
 
                                 End If
                             End If
