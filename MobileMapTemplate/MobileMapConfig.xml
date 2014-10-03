@@ -541,7 +541,7 @@
       </UIComponents>
     </LayerOptions>
     <!--General Editor Options, affects any control that uses an edit form-->
-  <EditControlOptions RequireGPSForSaving="False">
+    <EditControlOptions RequireGPSForSaving="False">
       <!--Show a two radio buttons for a domain with only two values-->
       <RadioOnTwo>True</RadioOnTwo>
       <!--Colors for edit forms-->

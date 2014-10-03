@@ -2655,8 +2655,11 @@ Public Class EditControl
                             tbp.Update()
                         Next
                     End If
-                    tbCntrlEdit.TabPages.Add(pAttTabPage)
+                    If pAttTabPage IsNot Nothing Then
+                        tbCntrlEdit.TabPages.Add(pAttTabPage)
 
+                    End If
+                   
                     If tbCntrlEdit.TabPages.Count >= pCurTabIdx Then
                         tbCntrlEdit.SelectedIndex = pCurTabIdx
                     Else

@@ -50,7 +50,7 @@
     <!--Navigation options-->
     <NavigationOptions>
       <!--Option to show a GPS button or not-->
-      <GPS TurnOnStartup ="True" AllowGPSToggle="True">
+      <GPS TurnOnStartup ="False" AllowGPSToggle="True">
         <!--Option to show a GPS button or not-->
         <Visible>True</Visible>
         <!--Com port to GPS or GPS Sim File Name, for the sim file, this is relative to the exe-->
@@ -236,7 +236,13 @@
 
 
           </Field>
-          <Field Name="NOTES" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="" >
+          <Field Name="NOTES" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="" Required="True">
+            <FilterFields Mode="" Visibility="False">
+              <FilterInfo FieldName="COMPLETED">
+                <FieldValue>No</FieldValue>
+                <FieldValue>[ISNULL]</FieldValue>
+              </FilterInfo>
+            </FilterFields>
           </Field>
           <Field Name="COMPLETED" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="" >
 
@@ -554,7 +560,6 @@
           <Field Name="TIMESTAMP" OnNew="Date" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
           <Field Name="CREWNAME" OnNew="User" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
           <Field Name="COMPLETED" OnNew="value" OnModify=""  OnNewReadOnly="false" OnModifyReadOnly ="false" IntersectLayer="" IntersectField="" ValueText="No"/>
-          <Field Name="NOTES" OnNew="SatCount" OnModify=""  OnNewReadOnly="false" OnModifyReadOnly ="false" IntersectLayer="" IntersectField="" ValueText=""/>
 
         </Layer>
         <Layer Name="Sewer Overflows" AllowNew = "True" EditExisting ="true" EditOwnerField ="" EditGeo ="True"  DisplayText="Sewer Overflows" SketchMode="Tap" SketchColor="#FFFFFF00" SnapTo="Sewer Manholes">
@@ -602,7 +607,7 @@
           <Field Name="INSPECTOR" OnNew="WOCrew" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
 
         </Layer>
-        <Layer Name="Service Requests" AllowNew = "True" EditExisting ="" EditOwnerField ="" EditGeo ="False"  DisplayText="Log a Service Request" SketchMode="Tap" SketchColor="#FFFF0000" SnapTo="">
+        <Layer Name="Service Requests" AllowNew = "True" EditExisting ="True" EditOwnerField ="" EditGeo ="True"  DisplayText="Log a Service Request" SketchMode="Tap" SketchColor="#FFFF0000" SnapTo="">
           <Field Name="REQUESTDATE" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
           <Field Name="NAME" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
           <Field Name="INSPECTOR" OnNew="WOCrew" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
@@ -643,7 +648,7 @@
           <Field Name="LASTUPDATE" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
           <Field Name="LASTEDITOR" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
 
-          <Field Name="LOCATION" OnNew="Address" OnModify="Address"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+          <Field Name="LOCATION" OnNew="Address" OnModify="Address"  OnNewReadOnly="false" OnModifyReadOnly ="false" IntersectLayer="" IntersectField="" />
           <Field Name="WORKID" OnNew="GUID" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
           <!--  <Field Name="DIAMETER" OnNew="Intersect" OnModify="Intersect"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="Water Mains" IntersectField="Diameter" />
           <Field Name="MATERIAL" OnNew="Intersect" OnModify="Intersect"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="Water Mains" IntersectField="Material" />-->
@@ -660,7 +665,7 @@
           <Field Name="PLANSTART" OnNew="Date" OnModify=""  OnNewReadOnly="false" OnModifyReadOnly ="false" IntersectLayer="" IntersectField="" />
           <Field Name="LASTUPDATE" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
           <Field Name="LASTEDITOR" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="LOCATION" OnNew="Address" OnModify="Address"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+          <Field Name="LOCATION" OnNew="Address" OnModify="Address"  OnNewReadOnly="false" OnModifyReadOnly ="false" IntersectLayer="" IntersectField="" />
           <Field Name="WORKID" OnNew="ID" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
 
           <!--  
@@ -695,6 +700,7 @@
         <NoGeometryMessage>Use the map to define the location of the record</NoGeometryMessage>
         <PromptForDelete>Are you sure you want to delete this asset</PromptForDelete>
         <PromptForSketch>There are unsaved sketchs, save to attachments?</PromptForSketch>
+        <RequireFieldMessage>Field is empty</RequireFieldMessage>
       </UIComponents>
     </EditControlOptions>
     <!--Options service tab, allows you to sync, post, refresh-->
@@ -1138,10 +1144,10 @@
       <StatusBarMessage>Activitiy List: Shows a list of assigned activities, opening a activity sets up an inspection</StatusBarMessage>
       <!-- Activities Configuration: Activities are loaded from a feature class-->
       <!-- Activities Layer Name-->
-      <LayerInfo AssignedTo="Crew 1" AssignedToField="ASSIGNEDTO" LayerName="Workorders" IDField ="WORKID"/>
+      <LayerInfo AssignedTo="Crew 1" AssignedToField="ASSIGNEDTO" LayerName="Workorders" IDField ="WORKID" ZoomOnLoad="True"/>
 
-      <WorkOrderFilters ButtonSize="40" ButtonFontSize="14" ListFontSize="12" ShowFilterGeo="False" FilterOn="True">
-        <WorkOrderFilter QueryValue="PRIORITY &gt; 4 and (WORKSTATUS  &lt;&gt; 'Work Completed' and WORKSTATUS  &lt;&gt; 'Completed')" Label="High" SortField="PLANSTART" SortDirection="DESC" Action="Zoom,Flash">
+      <WorkOrderFilters ButtonSize="40" ButtonFontSize="14" ListFontSize="12" ShowFilterGeo="True" FilterOn="True">
+        <WorkOrderFilter QueryValue="PRIORITY &gt; 4 and (WORKSTATUS  &lt;&gt; 'Work Completed' and WORKSTATUS  &lt;&gt; 'Completed')" Label="High" SortField="WORKTYPE,PLANSTART" SortDirection="DESC" Action="Zoom,Flash">
           <Fields JoinString=" - ">
             <Field Name="WORKID" />
             <Field Name="WORKTYPE" />
