@@ -656,6 +656,7 @@ Public Class AssignedWorkControl
             m_CurrentWOID = ""
 
             'lblCrewName.Text = GlobalsFunctions.appConfig.WorkorderPanel.LayerInfo.AssignedTo
+
             If GlobalsFunctions.appConfig.WorkorderPanel.LayerInfo.ZoomOnLoad.ToUpper = "TRUE" Then
                 m_Map.Extent = WOExt
             End If

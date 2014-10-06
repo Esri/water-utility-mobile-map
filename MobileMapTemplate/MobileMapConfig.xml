@@ -1144,7 +1144,7 @@
       <StatusBarMessage>Activitiy List: Shows a list of assigned activities, opening a activity sets up an inspection</StatusBarMessage>
       <!-- Activities Configuration: Activities are loaded from a feature class-->
       <!-- Activities Layer Name-->
-      <LayerInfo AssignedTo="Crew 1" AssignedToField="ASSIGNEDTO" LayerName="Workorders" IDField ="WORKID" ZoomOnLoad="True"/>
+      <LayerInfo AssignedTo="Crew 1" AssignedToField="ASSIGNEDTO" LayerName="Workorders" IDField ="WORKID" />
 
       <WorkOrderFilters ButtonSize="40" ButtonFontSize="14" ListFontSize="12" ShowFilterGeo="True" FilterOn="True">
         <WorkOrderFilter QueryValue="PRIORITY &gt; 4 and (WORKSTATUS  &lt;&gt; 'Work Completed' and WORKSTATUS  &lt;&gt; 'Completed')" Label="High" SortField="WORKTYPE,PLANSTART" SortDirection="DESC" Action="Zoom,Flash">

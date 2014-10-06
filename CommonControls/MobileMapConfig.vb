@@ -19392,7 +19392,7 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
 
         Private assignedTo_Field As String = "<NO_MOD>"
         Private iDField_Field As String
-        Private zoomOnLoadField As String
+        Private zoomOnLoadField As String = "FALSE"
 
         Private Shared sSerializer As System.Xml.Serialization.XmlSerializer
 
