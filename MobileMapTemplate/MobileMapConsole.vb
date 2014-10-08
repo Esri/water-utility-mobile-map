@@ -3138,8 +3138,11 @@ Public Class MobileMapConsole
 
     Private Sub MobileMapConsole_Load(sender As Object, e As EventArgs) Handles Me.Load
         If GlobalsFunctions.appConfig.NavigationOptions.GPS.TurnOnStartup.ToUpper() = "TRUE" Then
-            m_MCNav.callGPSButtonclick()
+            If m_MCNav IsNot Nothing Then
+                m_MCNav.callGPSButtonclick()
 
+            End If
+            
         End If
     End Sub
 

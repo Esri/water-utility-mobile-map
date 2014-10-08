@@ -155,20 +155,20 @@ Public Class AssignedWorkControl
 
             If m_WOFSwD.FeatureSource.Columns(GlobalsFunctions.appConfig.WorkorderPanel.LayerInfo.AssignedToField) Is Nothing Then Return
 
-            If GlobalsFunctions.appConfig.WorkorderPanel.WorkOrderFilters.ShowFilterGeo.ToUpper() = "TRUE" Then
-                btnFiltGeo.Visible = True
-                If GlobalsFunctions.appConfig.WorkorderPanel.WorkOrderFilters.FilterOn.ToUpper() = "TRUE" Then
-                    btnFiltGeo.Checked = True
-                Else
-                    btnFiltGeo.Checked = False
+            'If GlobalsFunctions.appConfig.WorkorderPanel.WorkOrderFilters.ShowFilterGeo.ToUpper() = "TRUE" Then
+            '    btnFiltGeo.Visible = True
+            '    If GlobalsFunctions.appConfig.WorkorderPanel.WorkOrderFilters.FilterOn.ToUpper() = "TRUE" Then
+            '        btnFiltGeo.Checked = True
+            '    Else
+            '        btnFiltGeo.Checked = False
 
-                End If
-            Else
-                btnFiltGeo.Visible = False
-            End If
+            '    End If
+            'Else
+            '    btnFiltGeo.Visible = False
+            'End If
         
 
-
+            btnFiltGeo.Visible = False
             InitNavigateBar()
             InitNavigateButtons()
 
@@ -227,7 +227,7 @@ Public Class AssignedWorkControl
 
             End If
 
-            LoadWorkOrders()
+            LoadWorkOrders(True, False)
 
 
         Catch ex As Exception
@@ -493,7 +493,7 @@ Public Class AssignedWorkControl
         End Try
 
     End Function
-    Public Sub LoadWorkOrders(Optional reset As Boolean = True)
+    Public Sub LoadWorkOrders(Optional reset As Boolean = True, Optional zoomTo As Boolean = True)
 
         Dim fid As String = "NAN"
         If CType(m_OutlookNavigatePane.SelectedButton.RelatedControl, ListView).SelectedItems().Count = 1 Then
@@ -502,11 +502,11 @@ Public Class AssignedWorkControl
 
         End If
 
-     
+
 
         Dim filtByExtent As Boolean = btnFiltGeo.Checked
 
-        Dim woFilt As Esri.ArcGISTemplates.MobileConfigClass.MobileConfigMobileMapConfigWorkorderPanelWorkOrderFiltersWorkOrderFilter = Nothing
+        Dim woFilt As ESRI.ArcGISTemplates.MobileConfigClass.MobileConfigMobileMapConfigWorkorderPanelWorkOrderFiltersWorkOrderFilter = Nothing
         Dim pCrewDC As DataColumn = Nothing
         Dim pQF As QueryFilter = Nothing
         Dim pDt As FeatureDataTable = Nothing
@@ -514,7 +514,7 @@ Public Class AssignedWorkControl
         Dim strSql As String
 
         Try
-            Dim WOExt As Esri.ArcGIS.Mobile.Geometries.Envelope = New Esri.ArcGIS.Mobile.Geometries.Envelope
+            Dim WOExt As ESRI.ArcGIS.Mobile.Geometries.Envelope = New ESRI.ArcGIS.Mobile.Geometries.Envelope
 
             For Each nvBtn As NavigateBarButton In m_NVBButton
                 woFilt = nvBtn.Tag
@@ -542,7 +542,7 @@ Public Class AssignedWorkControl
                     If woFilt.Fields IsNot Nothing Then
                         If woFilt.Fields.Field IsNot Nothing Then
                             If woFilt.Fields.Field.Count > 0 Then
-                                For Each fld As Esri.ArcGISTemplates.MobileConfigClass.MobileConfigMobileMapConfigWorkorderPanelWorkOrderFiltersWorkOrderFilterFieldsField In woFilt.Fields.Field
+                                For Each fld As ESRI.ArcGISTemplates.MobileConfigClass.MobileConfigMobileMapConfigWorkorderPanelWorkOrderFiltersWorkOrderFilterFieldsField In woFilt.Fields.Field
                                     If m_WOFSwD.FeatureSource.Columns(fld.Name) IsNot Nothing Then
                                         strFldArr.Add(fld.Name)
 
@@ -620,7 +620,7 @@ Public Class AssignedWorkControl
                         itm.Focused = True
                         AddHandler CType(m_OutlookNavigatePane.SelectedButton.RelatedControl, ListView).SelectedIndexChanged, AddressOf ListView_SelectedIndexChanged
                         CType(m_OutlookNavigatePane.SelectedButton.RelatedControl, ListView).Focus()
-                        Dim pCoord As Esri.ArcGIS.Mobile.Geometries.Coordinate = GlobalsFunctions.GetGeometryCenter(itm.FeatureDataRow.Geometry)
+                        Dim pCoord As ESRI.ArcGIS.Mobile.Geometries.Coordinate = GlobalsFunctions.GetGeometryCenter(itm.FeatureDataRow.Geometry)
 
                         Exit For
 
@@ -657,7 +657,7 @@ Public Class AssignedWorkControl
 
             'lblCrewName.Text = GlobalsFunctions.appConfig.WorkorderPanel.LayerInfo.AssignedTo
 
-            If GlobalsFunctions.appConfig.WorkorderPanel.LayerInfo.ZoomOnLoad.ToUpper = "TRUE" Then
+            If GlobalsFunctions.appConfig.WorkorderPanel.LayerInfo.ZoomOnLoad.ToUpper = "TRUE" And zoomTo = True Then
                 m_Map.Extent = WOExt
             End If
 
@@ -972,17 +972,17 @@ Public Class AssignedWorkControl
             For Each itm As MyListViewItem In CType(m_OutlookNavigatePane.SelectedButton.RelatedControl, ListView).Items
                 If itm.FeatureDataRow.Fid = pFDR.Fid Then
                     Call btnViewAllWork_Click(Nothing, Nothing)
-                    RemoveHandler CType(m_OutlookNavigatePane.SelectedButton.RelatedControl, ListView).SelectedIndexChanged, AddressOf ListView_SelectedIndexChanged
+                    '  RemoveHandler CType(m_OutlookNavigatePane.SelectedButton.RelatedControl, ListView).SelectedIndexChanged, AddressOf ListView_SelectedIndexChanged
 
 
                     m_OutlookNavigatePane.SelectedButton.PerformClick()
                     CType(m_OutlookNavigatePane.SelectedButton.RelatedControl, ListView).EnsureVisible(itm.Index)
                     itm.Selected = True
                     itm.Focused = True
-                    AddHandler CType(m_OutlookNavigatePane.SelectedButton.RelatedControl, ListView).SelectedIndexChanged, AddressOf ListView_SelectedIndexChanged
+                    '   AddHandler CType(m_OutlookNavigatePane.SelectedButton.RelatedControl, ListView).SelectedIndexChanged, AddressOf ListView_SelectedIndexChanged
                     CType(m_OutlookNavigatePane.SelectedButton.RelatedControl, ListView).Focus()
-                    Dim pCoord As Esri.ArcGIS.Mobile.Geometries.Coordinate = GlobalsFunctions.GetGeometryCenter(pFDR.Geometry)
-                    m_Map.CenterAt(pCoord)
+                    'Dim pCoord As Esri.ArcGIS.Mobile.Geometries.Coordinate = GlobalsFunctions.GetGeometryCenter(pFDR.Geometry)
+                    'm_Map.CenterAt(pCoord)
                     Return
 
 
@@ -1168,9 +1168,13 @@ Public Class AssignedWorkControl
 
             End If
         End If
+        Try
+            CType(m_OutlookNavigatePane.SelectedButton.RelatedControl, ListView).Focus()
+        Catch ex As Exception
+
+        End Try
 
 
-        CType(m_OutlookNavigatePane.SelectedButton.RelatedControl, ListView).Focus()
 
 
     End Sub
@@ -1470,7 +1474,7 @@ Public Class AssignedWorkControl
 
     Private Sub m_EdtClose_RecordSaved(LayerName As String, pGeo As Esri.ArcGIS.Mobile.Geometries.Geometry, OID As Integer) Handles m_EdtClose.RecordSaved
         RaiseEvent RaiseMessage(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.SavedMessage)
-        LoadWorkOrders()
+        LoadWorkOrders(True, False)
         Call btnViewAllWork_Click(Nothing, Nothing)
         m_OutlookNavigatePane.SelectedButton.PerformClick()
 
@@ -1518,8 +1522,14 @@ Public Class AssignedWorkControl
 
     Private Sub m_Map_ExtentChanged(sender As Object, e As EventArgs) Handles m_Map.ExtentChanged
         If btnFiltGeo.Checked Then
-            LoadWorkOrders(False)
-            m_OutlookNavigatePane.SelectedButton.PerformClick()
+            LoadWorkOrders(False, False)
+            If m_OutlookNavigatePane IsNot Nothing Then
+                If m_OutlookNavigatePane.SelectedButton IsNot Nothing Then
+                    m_OutlookNavigatePane.SelectedButton.PerformClick()
+
+                End If
+            End If
+
         End If
     End Sub
 

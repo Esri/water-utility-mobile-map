@@ -5240,8 +5240,8 @@ Public Class EditControl
 
             'End If
 
-            m_DT.SaveInFeatureSource()
-            m_DT.AcceptChanges()
+            '  m_DT.SaveInFeatureSource()
+            '   m_DT.AcceptChanges()
             Try
                 m_FDR.Table.SaveInFeatureSource()
                 m_FDR.Table.AcceptChanges()
@@ -5249,7 +5249,7 @@ Public Class EditControl
 
             End Try
           
-            m_FL.SaveEdits(m_DT)
+            ' m_FL.SaveEdits(m_DT)
             Try
                 m_FL.SaveEdits(m_FDR.Table)
             Catch ex As Exception
