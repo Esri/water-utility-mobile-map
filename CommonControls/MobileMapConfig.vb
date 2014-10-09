@@ -8647,21 +8647,21 @@ Public Property RequiredBackColor() As String
      System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
     Partial Public Class MobileConfigMobileMapConfigEditControlOptionsLayersLayerField
 
-        Private nameField As String
+        Private nameField As String = ""
 
-        Private onNewField As String
+        Private onNewField As String = ""
 
-        Private onModifyField As String
+        Private onModifyField As String = ""
 
-        Private onNewReadOnlyField As String
+        Private onNewReadOnlyField As String = ""
 
-        Private onModifyReadOnlyField As String
+        Private onModifyReadOnlyField As String = ""
 
-        Private intersectLayerField As String
+        Private intersectLayerField As String = ""
 
-        Private intersectFieldField As String
+        Private intersectFieldField As String = ""
 
-        Private valueTextField As String
+        Private valueTextField As String = ""
 
         Private Shared sSerializer As System.Xml.Serialization.XmlSerializer
 
