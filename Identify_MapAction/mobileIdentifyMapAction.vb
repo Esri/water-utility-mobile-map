@@ -416,8 +416,11 @@ Public Class mobileIdentifyMapAction
 
 
     End Sub
+    Private m_curRec As FeatureDataRow
 
     Private Sub m_Att_LocationIdentified(ByVal fdr As FeatureDataRow) Handles m_AttFrm.LocationIdentified
+        m_curRec = fdr
+
         m_AttFrm.hideEditButton()
         Dim bEditFnd As Boolean = False
         For Each editLay In GlobalsFunctions.appConfig.EditControlOptions.Layers.Layer
@@ -566,22 +569,31 @@ Public Class mobileIdentifyMapAction
         RaiseEvent RaisePermMessage(Message, Hide)
     End Sub
     Private Sub m_EditFrm_RecordClear() Handles m_EditFrm.RecordClear
+        m_curRec = Nothing
         m_AttFrm.Visible = True
         m_EditFrm.Visible = False
         m_AttFrm.currentRecord(Nothing)
+        m_EditFrm.setCurrentRecord(Nothing, Nothing)
+        m_AttFrm.hideEditButton()
+
 
     End Sub
 
     Private Sub m_EditFrm_RecordDelete(LayerName As String) Handles m_EditFrm.RecordDelete
+        m_curRec = Nothing
         m_AttFrm.Visible = True
         m_EditFrm.Visible = False
         m_AttFrm.currentRecord(Nothing)
+        m_EditFrm.setCurrentRecord(Nothing, Nothing)
+        m_AttFrm.hideEditButton()
 
     End Sub
 
     Private Sub m_EditFrm_RecordSaved(ByVal LayerName As String, ByVal pGeo As Esri.ArcGIS.Mobile.Geometries.Geometry, ByVal OID As Integer) Handles m_EditFrm.RecordSaved
-        'm_AttFrm.Visible = True
-        ' m_EditFrm.Visible = False
+        m_AttFrm.Visible = True
+        m_EditFrm.Visible = False
+        m_AttFrm.currentRecord(m_curRec)
+
         ' m_AttFrm.currentRecord(Nothing)
         RaiseEvent RaiseMessage(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.SavedMessage)
 

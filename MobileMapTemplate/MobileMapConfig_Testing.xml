@@ -108,6 +108,7 @@
         <ALNNotInstalled>ALN is not installed</ALNNotInstalled>
         <DestinationNotFound>Location was invalid</DestinationNotFound>
         <PointsAvgText>Point(s) Captured</PointsAvgText>
+        <GPSNoConnect>GPS could not connect</GPSNoConnect>
       </UIComponents>
     </NavigationOptions>
     <!--Measure options-->

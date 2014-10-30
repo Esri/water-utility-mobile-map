@@ -14,24 +14,24 @@
 ' | limitations under the License.
 
 
-Imports Esri.ArcGIS.Mobile
-Imports Esri.ArcGIS.Mobile.WinForms
+Imports ESRI.ArcGIS.Mobile
+Imports ESRI.ArcGIS.Mobile.WinForms
 'Imports Esri.ArcGIS.Mobile.Geometries
 
-Imports Esri.ArcGIS.Mobile.FeatureCaching
-Imports Esri.ArcGIS.Mobile.SpatialReferences
+Imports ESRI.ArcGIS.Mobile.FeatureCaching
+Imports ESRI.ArcGIS.Mobile.SpatialReferences
 Imports System.Windows.Forms
 Imports System.Drawing
 Imports System.Math
 Imports System.Threading
-Imports Esri.ArcGISTemplates
+Imports ESRI.ArcGISTemplates
 
 
 Public Class mobileNavigation
     Private m_gpsD As GPSLocationDetails
     Public Event RaiseStatMessage(message As String, hide As Boolean)
     Public Event GPSComplete(gpsDet As GPSLocationDetails)
-    Private m_LastExtents As IList(Of Esri.ArcGIS.Mobile.Geometries.Envelope)
+    Private m_LastExtents As IList(Of ESRI.ArcGIS.Mobile.Geometries.Envelope)
     Private m_CurrentStep As Integer
 
     Private m_picBox As PictureBox
@@ -42,7 +42,7 @@ Public Class mobileNavigation
     Private m_BkEditBtn As CheckBox
 
 
-    Private WithEvents m_Map As Esri.ArcGIS.Mobile.WinForms.Map
+    Private WithEvents m_Map As ESRI.ArcGIS.Mobile.WinForms.Map
     Private m_BackColor As Color = Drawing.Color.DarkBlue
     Private m_BackColorBK As System.Drawing.Color = Drawing.Color.LightGray
 
@@ -74,10 +74,10 @@ Public Class mobileNavigation
     Private m_ScaleBrush As Brush = Brushes.White
     Private m_ScaleBrushFront As Brush = Brushes.Black
     Private WithEvents m_PanMA As panExt
-    Private WithEvents m_ZoomInOutMA As Esri.ArcGIS.Mobile.WinForms.ZoomInOutMapAction
+    Private WithEvents m_ZoomInOutMA As ESRI.ArcGIS.Mobile.WinForms.ZoomInOutMapAction
     Private WithEvents m_MeasureMA As MobileControls.MeasureMapAction
-    Private WithEvents m_ZoomInMA As Esri.ArcGIS.Mobile.WinForms.ZoomInMapAction
-    Private WithEvents m_ZoomOutMA As Esri.ArcGIS.Mobile.WinForms.ZoomOutMapAction
+    Private WithEvents m_ZoomInMA As ESRI.ArcGIS.Mobile.WinForms.ZoomInMapAction
+    Private WithEvents m_ZoomOutMA As ESRI.ArcGIS.Mobile.WinForms.ZoomOutMapAction
     Private m_PanBtn As Button
     Private m_GPSBtn As Button
     Private m_GPSTrackBtn As Button
@@ -106,7 +106,7 @@ Public Class mobileNavigation
     Private m_MaxScale As Integer = 0
     Dim m_t As Thread
     Private m_LogGPS As Boolean = False
-    Private m_GPSFL As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource = Nothing
+    Private m_GPSFL As ESRI.ArcGIS.Mobile.FeatureCaching.FeatureSource = Nothing
     Private m_GPSFL_UserField As String = Nothing
     Private m_GPSFL_DateField As String = Nothing
 
@@ -116,7 +116,7 @@ Public Class mobileNavigation
     '   Private m_invokeCount As Integer = 0
     Public Event ToolChange(ByVal toolType As ToolType)
     Private m_FixZoom As Boolean = True
-    Private WithEvents m_GPSAvgTool As Esri.ArcGIS.Mobile.Gps.GpsAveragingTool
+    Private WithEvents m_GPSAvgTool As ESRI.ArcGIS.Mobile.Gps.GpsAveragingTool
 
 #Region "Properties"
     Public Property setTopOffset() As Integer
@@ -155,8 +155,8 @@ Public Class mobileNavigation
 
         End Set
     End Property
-    Public WriteOnly Property MobileMap() As Esri.ArcGIS.Mobile.WinForms.Map
-        Set(ByVal value As Esri.ArcGIS.Mobile.WinForms.Map)
+    Public WriteOnly Property MobileMap() As ESRI.ArcGIS.Mobile.WinForms.Map
+        Set(ByVal value As ESRI.ArcGIS.Mobile.WinForms.Map)
             m_Map = value
         End Set
     End Property
@@ -238,14 +238,14 @@ Public Class mobileNavigation
         none
         Measure
     End Enum
-    Public Sub New(ByRef mobileMap As Esri.ArcGIS.Mobile.WinForms.Map, ByVal bShowBar As Boolean, ByVal bShowButtons As Boolean, ByVal drawScale As Boolean)
+    Public Sub New(ByRef mobileMap As ESRI.ArcGIS.Mobile.WinForms.Map, ByVal bShowBar As Boolean, ByVal bShowButtons As Boolean, ByVal drawScale As Boolean)
 
         Try
 
 
             If mobileMap Is Nothing Then Return
 
-            m_LastExtents = New List(Of Esri.ArcGIS.Mobile.Geometries.Envelope)
+            m_LastExtents = New List(Of ESRI.ArcGIS.Mobile.Geometries.Envelope)
             m_CurrentStep = 0
             'Assign map to global variable
             m_Map = mobileMap
@@ -266,9 +266,9 @@ Public Class mobileNavigation
             Resize()
             'Create the pan and the zoom in out map action
             m_PanMA = New panExt 'New Esri.ArcGIS.Mobile.WinForms.MapActions.PanMapAction
-            m_ZoomInOutMA = New Esri.ArcGIS.Mobile.WinForms.ZoomInOutMapAction
-            m_ZoomInMA = New Esri.ArcGIS.Mobile.WinForms.ZoomInMapAction
-            m_ZoomOutMA = New Esri.ArcGIS.Mobile.WinForms.ZoomOutMapAction
+            m_ZoomInOutMA = New ESRI.ArcGIS.Mobile.WinForms.ZoomInOutMapAction
+            m_ZoomInMA = New ESRI.ArcGIS.Mobile.WinForms.ZoomInMapAction
+            m_ZoomOutMA = New ESRI.ArcGIS.Mobile.WinForms.ZoomOutMapAction
 
             m_Map.MapAction = m_PanMA
 
@@ -434,7 +434,7 @@ Public Class mobileNavigation
                 m_GPSFL.RemoveFeatures(m_Map.FullExtent)
 
             End If
-            
+
         End If
 
     End Sub
@@ -473,11 +473,11 @@ Public Class mobileNavigation
         If GlobalsFunctions.m_GPS.GpsConnection IsNot Nothing Then
 
             If GlobalsFunctions.m_GPS.GpsConnection.IsOpen Then
-                Dim pt As Esri.ArcGIS.Mobile.Geometries.Point
+                Dim pt As ESRI.ArcGIS.Mobile.Geometries.Point
 
 
-                pt = New Esri.ArcGIS.Mobile.Geometries.Point()
-                Dim quality As Esri.ArcGIS.Mobile.Gps.GpsQualityFilter = New Esri.ArcGIS.Mobile.Gps.GpsQualityFilter
+                pt = New ESRI.ArcGIS.Mobile.Geometries.Point()
+                Dim quality As ESRI.ArcGIS.Mobile.Gps.GpsQualityFilter = New ESRI.ArcGIS.Mobile.Gps.GpsQualityFilter
 
                 If IsNumeric(GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSPDOP) Then
                     quality.MaximumPdop = CDbl(GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSPDOP)
@@ -485,7 +485,7 @@ Public Class mobileNavigation
 
                 quality.FixStatus = GlobalsFunctions.GPSTextToFix(GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSFixType)
 
-                m_GPSAvgTool = New Esri.ArcGIS.Mobile.Gps.GpsAveragingTool(quality, GlobalsFunctions.m_GPS.GpsConnection, pt, m_Map.SpatialReference)
+                m_GPSAvgTool = New ESRI.ArcGIS.Mobile.Gps.GpsAveragingTool(quality, GlobalsFunctions.m_GPS.GpsConnection, pt, m_Map.SpatialReference)
                 'm_GPSAvgTool.
                 m_GPSAvgTool.Start()
 
@@ -624,10 +624,10 @@ Public Class mobileNavigation
 
 
                 If GlobalsFunctions.m_GPS.GpsConnection.Longitude.ToString() <> "NaN" And GlobalsFunctions.m_GPS.GpsConnection.Latitude.ToString() <> "NaN" Then
-                  
+
                     Dim pDT As FeatureDataTable = m_GPSFL.GetDataTable()
                     Dim pFDR As FeatureDataRow = pDT.NewRow
-                    pFDR.Geometry = New Esri.ArcGIS.Mobile.Geometries.Point(m_Map.SpatialReference.FromWgs84(GlobalsFunctions.m_GPS.GpsConnection.Longitude, GlobalsFunctions.m_GPS.GpsConnection.Latitude))
+                    pFDR.Geometry = New ESRI.ArcGIS.Mobile.Geometries.Point(m_Map.SpatialReference.FromWgs84(GlobalsFunctions.m_GPS.GpsConnection.Longitude, GlobalsFunctions.m_GPS.GpsConnection.Latitude))
                     If pDT.Columns(m_GPSFL_UserField) IsNot Nothing Then
                         'Environment.UserDomainName & "\\" & Environment.UserName
                         pFDR.Item(m_GPSFL_UserField) = Environment.UserName
@@ -639,7 +639,7 @@ Public Class mobileNavigation
 
                     pDT.Rows.Add(pFDR)
 
-             
+
                     m_GPSFL.SaveEdits(pDT)
                     pDT = Nothing
                     pFDR = Nothing
@@ -755,34 +755,34 @@ Public Class mobileNavigation
         Else
             Try
 
-            
-            m_SerialGPS.PortName = FileName_Port
-            Select Case baudRate
-                Case "115200"
-                    m_SerialGPS.BaudRate = Esri.ArcGIS.Mobile.Gps.GpsBaudRate.BaudRate115200
-                Case "1200"
-                    m_SerialGPS.BaudRate = Esri.ArcGIS.Mobile.Gps.GpsBaudRate.BaudRate1200
-                Case "14400"
-                    m_SerialGPS.BaudRate = Esri.ArcGIS.Mobile.Gps.GpsBaudRate.BaudRate14400
-                Case "19200"
-                    m_SerialGPS.BaudRate = Esri.ArcGIS.Mobile.Gps.GpsBaudRate.BaudRate19200
-                Case "2400"
-                    m_SerialGPS.BaudRate = Esri.ArcGIS.Mobile.Gps.GpsBaudRate.BaudRate2400
-                Case "38400"
-                    m_SerialGPS.BaudRate = Esri.ArcGIS.Mobile.Gps.GpsBaudRate.BaudRate38400
-                Case "4800"
-                    m_SerialGPS.BaudRate = Esri.ArcGIS.Mobile.Gps.GpsBaudRate.BaudRate4800
-                Case "56000"
-                    m_SerialGPS.BaudRate = Esri.ArcGIS.Mobile.Gps.GpsBaudRate.BaudRate56000
-                Case "57600"
-                    m_SerialGPS.BaudRate = Esri.ArcGIS.Mobile.Gps.GpsBaudRate.BaudRate57600
-                Case "9600"
-                    m_SerialGPS.BaudRate = Esri.ArcGIS.Mobile.Gps.GpsBaudRate.BaudRate9600
-                Case Else
-                    m_SerialGPS.BaudRate = Esri.ArcGIS.Mobile.Gps.GpsBaudRate.BaudRate4800
+
+                m_SerialGPS.PortName = FileName_Port
+                Select Case baudRate
+                    Case "115200"
+                        m_SerialGPS.BaudRate = ESRI.ArcGIS.Mobile.Gps.GpsBaudRate.BaudRate115200
+                    Case "1200"
+                        m_SerialGPS.BaudRate = ESRI.ArcGIS.Mobile.Gps.GpsBaudRate.BaudRate1200
+                    Case "14400"
+                        m_SerialGPS.BaudRate = ESRI.ArcGIS.Mobile.Gps.GpsBaudRate.BaudRate14400
+                    Case "19200"
+                        m_SerialGPS.BaudRate = ESRI.ArcGIS.Mobile.Gps.GpsBaudRate.BaudRate19200
+                    Case "2400"
+                        m_SerialGPS.BaudRate = ESRI.ArcGIS.Mobile.Gps.GpsBaudRate.BaudRate2400
+                    Case "38400"
+                        m_SerialGPS.BaudRate = ESRI.ArcGIS.Mobile.Gps.GpsBaudRate.BaudRate38400
+                    Case "4800"
+                        m_SerialGPS.BaudRate = ESRI.ArcGIS.Mobile.Gps.GpsBaudRate.BaudRate4800
+                    Case "56000"
+                        m_SerialGPS.BaudRate = ESRI.ArcGIS.Mobile.Gps.GpsBaudRate.BaudRate56000
+                    Case "57600"
+                        m_SerialGPS.BaudRate = ESRI.ArcGIS.Mobile.Gps.GpsBaudRate.BaudRate57600
+                    Case "9600"
+                        m_SerialGPS.BaudRate = ESRI.ArcGIS.Mobile.Gps.GpsBaudRate.BaudRate9600
+                    Case Else
+                        m_SerialGPS.BaudRate = ESRI.ArcGIS.Mobile.Gps.GpsBaudRate.BaudRate4800
 
 
-            End Select
+                End Select
             Catch ex As Exception
                 MsgBox(GlobalsFunctions.appConfig.NavigationOptions.UIComponents.GPSNoConnect, MsgBoxStyle.Exclamation, "GPS Load")
 
@@ -791,11 +791,11 @@ Public Class mobileNavigation
 
 
         End If
-       
+
         Return True
 
     End Function
-   
+
     Public Sub Dispose()
 
         If m_FileGPS IsNot Nothing Then
@@ -1447,7 +1447,7 @@ Public Class mobileNavigation
             st = Nothing
         End Try
     End Sub
-    Private Sub panByDirection(ByVal mblMap As Esri.ArcGIS.Mobile.WinForms.Map, ByVal pPanDir As side)
+    Private Sub panByDirection(ByVal mblMap As ESRI.ArcGIS.Mobile.WinForms.Map, ByVal pPanDir As side)
         Try
 
             Dim angle As Double = Math.PI * mblMap.RotationAngle / 180.0
@@ -1508,7 +1508,7 @@ Public Class mobileNavigation
             Dim y As Double = mapDx * sinAngle + mapDy * cosAngle
 
             'Offset the extent.
-            Dim pext As Esri.ArcGIS.Mobile.Geometries.Envelope = mblMap.Extent()
+            Dim pext As ESRI.ArcGIS.Mobile.Geometries.Envelope = mblMap.Extent()
 
             pext.Offset(x, y)
 
@@ -1567,7 +1567,7 @@ Public Class mobileNavigation
     End Sub
     Private Function CustomServerToMobileGeom(ByVal DistanceInFeet As Double) As Double
         ';convert feet to map units, used to be custom in 9.2
-        Return Esri.ArcGIS.Mobile.SpatialReferences.Unit.FromUnitToUnit(DistanceInFeet, Esri.ArcGIS.Mobile.SpatialReferences.Unit.Foot, m_Map.SpatialReference.Unit)
+        Return ESRI.ArcGIS.Mobile.SpatialReferences.Unit.FromUnitToUnit(DistanceInFeet, ESRI.ArcGIS.Mobile.SpatialReferences.Unit.Foot, m_Map.SpatialReference.Unit)
 
     End Function
     Private Sub DrawArrows(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs)
@@ -1583,11 +1583,11 @@ Public Class mobileNavigation
         e.Graphics.FillPolygon(m_BrushArrow, pPolygon)
 
     End Sub
-    Private Sub FixZoomMouseWheel(ByVal bOut As Boolean, ByVal centerCoord As Esri.ArcGIS.Mobile.Geometries.Coordinate)
+    Private Sub FixZoomMouseWheel(ByVal bOut As Boolean, ByVal centerCoord As ESRI.ArcGIS.Mobile.Geometries.Coordinate)
         'Handles the mouse wheel zoom in and out
         'Current this recenters on the mouse wheel, not sure if I like this
         If (bOut) Then
-            Dim pExt As Esri.ArcGIS.Mobile.Geometries.Envelope
+            Dim pExt As ESRI.ArcGIS.Mobile.Geometries.Envelope
             'Get the current extent
             pExt = m_Map.Extent()
             'Center on the mouse
@@ -1599,7 +1599,7 @@ Public Class mobileNavigation
             'cleanup
             pExt = Nothing
         Else
-            Dim pExt As Esri.ArcGIS.Mobile.Geometries.Envelope
+            Dim pExt As ESRI.ArcGIS.Mobile.Geometries.Envelope
             'Get the current extent
             pExt = m_Map.Extent()
             'Reduce the extent
@@ -1701,7 +1701,7 @@ Public Class mobileNavigation
         End If
 
     End Sub
-    Private Sub m_Map_MouseWheel(ByVal sender As Object, ByVal e As Esri.ArcGIS.Mobile.MapMouseEventArgs) Handles m_Map.MouseWheel
+    Private Sub m_Map_MouseWheel(ByVal sender As Object, ByVal e As ESRI.ArcGIS.Mobile.MapMouseEventArgs) Handles m_Map.MouseWheel
         'check whether to zoom on the mouse wheel
         If Not m_EnableMouseWheelZoom Then Return
         'Determine which way the mouse wheel was spun
@@ -1713,7 +1713,7 @@ Public Class mobileNavigation
         End If
 
     End Sub
-    Private Sub m_Map_Paint(ByVal sender As Object, ByVal e As Esri.ArcGIS.Mobile.WinForms.MapPaintEventArgs) Handles m_Map.MapPaint
+    Private Sub m_Map_Paint(ByVal sender As Object, ByVal e As ESRI.ArcGIS.Mobile.WinForms.MapPaintEventArgs) Handles m_Map.MapPaint
         If m_Map Is Nothing Then Return
 
         'If m_Map.RotationAngle <> 0 Then
@@ -1835,7 +1835,7 @@ Public Class mobileNavigation
             key = GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSLogLayer
             If key <> "" Then
                 GlobalsFunctions.GetMapLayer(key, m_Map)
-              
+
                 m_GPSFL = GlobalsFunctions.GetFeatureSource(key, m_Map).FeatureSource
                 If m_GPSFL Is Nothing Then
                     m_LogGPS = False
@@ -2261,10 +2261,10 @@ Public Class mobileNavigation
             If bookmark Is Nothing Then Return
             If bookmark.isEmpty Then Return
 
-            Dim pEnv As Esri.ArcGIS.Mobile.Geometries.Envelope
+            Dim pEnv As ESRI.ArcGIS.Mobile.Geometries.Envelope
             'If a point, center on it and create an envelope 50 around around it
 
-            pEnv = New Esri.ArcGIS.Mobile.Geometries.Envelope(bookmark.XMin, bookmark.YMin, bookmark.XMax, bookmark.YMax)
+            pEnv = New ESRI.ArcGIS.Mobile.Geometries.Envelope(bookmark.XMin, bookmark.YMin, bookmark.XMax, bookmark.YMax)
 
             'Set the extent to the map
             m_Map.Extent = pEnv
@@ -2277,16 +2277,16 @@ Public Class mobileNavigation
         End Try
     End Sub
 
-    Private Sub zoomTo(ByVal coord As Esri.ArcGIS.Mobile.Geometries.Coordinate)
+    Private Sub zoomTo(ByVal coord As ESRI.ArcGIS.Mobile.Geometries.Coordinate)
         'Zoom to a feature
         Try
             If coord Is Nothing Then Return
             If coord.IsEmpty Then Return
 
-            Dim pEnv As Esri.ArcGIS.Mobile.Geometries.Envelope
+            Dim pEnv As ESRI.ArcGIS.Mobile.Geometries.Envelope
             'If a point, center on it and create an envelope 50 around around it
-            Dim pIntExtGeo As Integer = CInt(Esri.ArcGIS.Mobile.SpatialReferences.Unit.FromUnitToUnit(400, Esri.ArcGIS.Mobile.SpatialReferences.Unit.Foot, m_Map.SpatialReference.Unit))
-            pEnv = New Esri.ArcGIS.Mobile.Geometries.Envelope(0, 0, pIntExtGeo, pIntExtGeo)
+            Dim pIntExtGeo As Integer = CInt(ESRI.ArcGIS.Mobile.SpatialReferences.Unit.FromUnitToUnit(400, ESRI.ArcGIS.Mobile.SpatialReferences.Unit.Foot, m_Map.SpatialReference.Unit))
+            pEnv = New ESRI.ArcGIS.Mobile.Geometries.Envelope(0, 0, pIntExtGeo, pIntExtGeo)
             pEnv.CenterAt(coord)
 
 
@@ -2328,47 +2328,52 @@ Public Class mobileNavigation
 
     End Sub
     Private Sub btnGPS_MouseDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs)
-        If GlobalsFunctions.m_GPS Is Nothing Then Return
-        If GlobalsFunctions.m_GPS.GpsConnection Is Nothing Then Return
-        'recenter if the user right clicks
-        If e.Button = MouseButtons.Right Then
-            zoomTo(m_Map.SpatialReference.FromWgs84(GlobalsFunctions.m_GPS.GpsConnection.Longitude, GlobalsFunctions.m_GPS.GpsConnection.Latitude))
+        Try
 
-        ElseIf e.Clicks > 1 Then
-            zoomTo(m_Map.SpatialReference.FromWgs84(GlobalsFunctions.m_GPS.GpsConnection.Longitude, GlobalsFunctions.m_GPS.GpsConnection.Latitude))
 
-        Else
+            If GlobalsFunctions.m_GPS Is Nothing Then Return
+            If GlobalsFunctions.m_GPS.GpsConnection Is Nothing Then Return
+            'recenter if the user right clicks
+            If e.Button = MouseButtons.Right Then
+                zoomTo(m_Map.SpatialReference.FromWgs84(GlobalsFunctions.m_GPS.GpsConnection.Longitude, GlobalsFunctions.m_GPS.GpsConnection.Latitude))
 
-            'if the gps is open, close it and reset button image
-            If GlobalsFunctions.m_GPS.GpsConnection.IsOpen Then
-                GlobalsFunctions.m_GPS.GpsConnection.Close()
-                CType(sender, Button).BackgroundImage = My.Resources.SatBlue
-                If m_t IsNot Nothing Then
-                    If m_t.IsAlive Then
-                        m_t.Abort()
+            ElseIf e.Clicks > 1 Then
+                zoomTo(m_Map.SpatialReference.FromWgs84(GlobalsFunctions.m_GPS.GpsConnection.Longitude, GlobalsFunctions.m_GPS.GpsConnection.Latitude))
 
-                    End If
-                End If
             Else
 
-                Try
-                    'Change the GPS button to show it is trying to activate
-                    CType(sender, Button).BackgroundImage = My.Resources.SatRed
-                    'Show the gps activating icon
-                    m_GPSLoadingPic.Visible = True
-
-                    'Create a new thread to open the GPS
-                    m_t = New Thread(AddressOf Me.OpenGPS)
-                    'start the thread
-                    m_t.Start()
-                Catch ex As Exception
-                    'Reset the image back to GPS off
+                'if the gps is open, close it and reset button image
+                If GlobalsFunctions.m_GPS.GpsConnection.IsOpen Then
+                    GlobalsFunctions.m_GPS.GpsConnection.Close()
                     CType(sender, Button).BackgroundImage = My.Resources.SatBlue
-                End Try
+                    If m_t IsNot Nothing Then
+                        If m_t.IsAlive Then
+                            m_t.Abort()
 
+                        End If
+                    End If
+                Else
+
+                    Try
+                        'Change the GPS button to show it is trying to activate
+                        CType(sender, Button).BackgroundImage = My.Resources.SatRed
+                        'Show the gps activating icon
+                        m_GPSLoadingPic.Visible = True
+
+                        'Create a new thread to open the GPS
+                        m_t = New Thread(AddressOf Me.OpenGPS)
+                        'start the thread
+                        m_t.Start()
+                    Catch ex As Exception
+                        'Reset the image back to GPS off
+                        CType(sender, Button).BackgroundImage = My.Resources.SatBlue
+                    End Try
+
+                End If
             End If
-        End If
+        Catch ex As Exception
 
+        End Try
     End Sub
     Private Delegate Sub DelegatehidePicBox()
     Private Sub HidePicBox()
@@ -2411,7 +2416,7 @@ Public Class mobileNavigation
         If m_Map.IsValid = False Then Return
         'Determine which direction to zoom
         If (bOut) Then
-            Dim pExt As Esri.ArcGIS.Mobile.Geometries.Envelope
+            Dim pExt As ESRI.ArcGIS.Mobile.Geometries.Envelope
             'Get the map extent
             pExt = m_Map.Extent()
             'Resize it
@@ -2424,7 +2429,7 @@ Public Class mobileNavigation
             'cleanup
             pExt = Nothing
         Else
-            Dim pExt As Esri.ArcGIS.Mobile.Geometries.Envelope
+            Dim pExt As ESRI.ArcGIS.Mobile.Geometries.Envelope
             'Get the map extent
             pExt = m_Map.Extent()
             'Resize it
@@ -2541,7 +2546,7 @@ Public Class mobileNavigation
             'Change the GPS button to show the active GPS icon
             m_GPSBtn.BackgroundImage = My.Resources.SatGreen
             'Invoke the parent thread to hide the initializing GPS box
-            
+
             If m_GPSLoadingPic.InvokeRequired Then
                 m_GPSLoadingPic.Invoke(New DelegatehidePicBox(AddressOf HidePicBox))
                 ' m_GPSLoadingPic.Invoke(New DelegateStartGPS(AddressOf StartGPS))
@@ -2596,8 +2601,8 @@ Public Class mobileNavigation
         End Try
     End Sub
 
-    Private Sub m_SerialGPS_GpsError(ByVal sender As Object, ByVal e As Esri.ArcGIS.Mobile.Gps.GpsErrorEventArgs) Handles m_SerialGPS.GpsError
-        '  MsgBox(e.Exception.Message.ToString)
+    Private Sub m_SerialGPS_GpsError(ByVal sender As Object, ByVal e As ESRI.ArcGIS.Mobile.Gps.GpsErrorEventArgs) Handles m_SerialGPS.GpsError
+        RaiseEvent RaiseStatMessage(e.Exception.Message.ToString(), False)
 
     End Sub
     Private Sub m_SerialGPS_GpsOpened(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_SerialGPS.GpsOpened
@@ -2652,53 +2657,53 @@ Public Class mobileNavigation
 
 
     End Sub
-    Private Sub m_PanMA_StatusChanged(ByVal sender As Object, ByVal e As Esri.ArcGIS.Mobile.WinForms.MapActionStatusChangedEventArgs) Handles m_PanMA.StatusChanged
+    Private Sub m_PanMA_StatusChanged(ByVal sender As Object, ByVal e As ESRI.ArcGIS.Mobile.WinForms.MapActionStatusChangedEventArgs) Handles m_PanMA.StatusChanged
         'Changes the pan button based on the status of the pan map action
-        If e.StatusId = Esri.ArcGIS.Mobile.WinForms.MapAction.Activated Then
+        If e.StatusId = ESRI.ArcGIS.Mobile.WinForms.MapAction.Activated Then
             m_PanBtn.BackgroundImage = My.Resources.PanDown
             ' m_Map.Cursor = Cursors.Hand
-        ElseIf e.StatusId = Esri.ArcGIS.Mobile.WinForms.MapAction.Deactivated Then
+        ElseIf e.StatusId = ESRI.ArcGIS.Mobile.WinForms.MapAction.Deactivated Then
             m_PanBtn.BackgroundImage = My.Resources.Pan
 
         End If
     End Sub
-    Private Sub m_ZoomOutMA_StatusChanged(ByVal sender As Object, ByVal e As Esri.ArcGIS.Mobile.WinForms.MapActionStatusChangedEventArgs) Handles m_ZoomOutMA.StatusChanged
+    Private Sub m_ZoomOutMA_StatusChanged(ByVal sender As Object, ByVal e As ESRI.ArcGIS.Mobile.WinForms.MapActionStatusChangedEventArgs) Handles m_ZoomOutMA.StatusChanged
         'Changes the pan button based on the status of the pan map action
-        If e.StatusId = Esri.ArcGIS.Mobile.WinForms.MapAction.Activated Then
+        If e.StatusId = ESRI.ArcGIS.Mobile.WinForms.MapAction.Activated Then
             m_ZoomOutBtn.BackgroundImage = My.Resources.ZoomOutDown
             ' m_Map.Cursor = Cursors.Hand
-        ElseIf e.StatusId = Esri.ArcGIS.Mobile.WinForms.MapAction.Deactivated Then
+        ElseIf e.StatusId = ESRI.ArcGIS.Mobile.WinForms.MapAction.Deactivated Then
             m_ZoomOutBtn.BackgroundImage = My.Resources.ZoomOut
 
         End If
     End Sub
-    Private Sub m_ZoomInMA_StatusChanged(ByVal sender As Object, ByVal e As Esri.ArcGIS.Mobile.WinForms.MapActionStatusChangedEventArgs) Handles m_ZoomInMA.StatusChanged
+    Private Sub m_ZoomInMA_StatusChanged(ByVal sender As Object, ByVal e As ESRI.ArcGIS.Mobile.WinForms.MapActionStatusChangedEventArgs) Handles m_ZoomInMA.StatusChanged
         'Changes the pan button based on the status of the pan map action
-        If e.StatusId = Esri.ArcGIS.Mobile.WinForms.MapAction.Activated Then
+        If e.StatusId = ESRI.ArcGIS.Mobile.WinForms.MapAction.Activated Then
             m_ZoomInBtn.BackgroundImage = My.Resources.ZoomInDown
             ' m_Map.Cursor = Cursors.Hand
-        ElseIf e.StatusId = Esri.ArcGIS.Mobile.WinForms.MapAction.Deactivated Then
+        ElseIf e.StatusId = ESRI.ArcGIS.Mobile.WinForms.MapAction.Deactivated Then
             m_ZoomInBtn.BackgroundImage = My.Resources.ZoomIn
 
         End If
     End Sub
 
-    Private Sub m_MeasureMA_StatusChanged(ByVal sender As Object, ByVal e As Esri.ArcGIS.Mobile.WinForms.MapActionStatusChangedEventArgs) Handles m_MeasureMA.StatusChanged
+    Private Sub m_MeasureMA_StatusChanged(ByVal sender As Object, ByVal e As ESRI.ArcGIS.Mobile.WinForms.MapActionStatusChangedEventArgs) Handles m_MeasureMA.StatusChanged
         'Changes the pan button based on the status of the Zoom in out map action
 
-        If e.StatusId = Esri.ArcGIS.Mobile.WinForms.MapAction.Activated Then
+        If e.StatusId = ESRI.ArcGIS.Mobile.WinForms.MapAction.Activated Then
             m_MeasureBtn.BackgroundImage = My.Resources.measureDown
-        ElseIf e.StatusId = Esri.ArcGIS.Mobile.WinForms.MapAction.Deactivated Then
+        ElseIf e.StatusId = ESRI.ArcGIS.Mobile.WinForms.MapAction.Deactivated Then
             m_MeasureBtn.BackgroundImage = My.Resources.measure
 
         End If
     End Sub
-    Private Sub m_ZoomInOutMA_StatusChanged(ByVal sender As Object, ByVal e As Esri.ArcGIS.Mobile.WinForms.MapActionStatusChangedEventArgs) Handles m_ZoomInOutMA.StatusChanged
+    Private Sub m_ZoomInOutMA_StatusChanged(ByVal sender As Object, ByVal e As ESRI.ArcGIS.Mobile.WinForms.MapActionStatusChangedEventArgs) Handles m_ZoomInOutMA.StatusChanged
         'Changes the pan button based on the status of the Zoom in out map action
 
-        If e.StatusId = Esri.ArcGIS.Mobile.WinForms.MapAction.Activated Then
+        If e.StatusId = ESRI.ArcGIS.Mobile.WinForms.MapAction.Activated Then
             m_ZoomInOutBtn.BackgroundImage = My.Resources.ZoomInOutDown
-        ElseIf e.StatusId = Esri.ArcGIS.Mobile.WinForms.MapAction.Deactivated Then
+        ElseIf e.StatusId = ESRI.ArcGIS.Mobile.WinForms.MapAction.Deactivated Then
             m_ZoomInOutBtn.BackgroundImage = My.Resources.ZoomInOut
 
         End If
@@ -2897,23 +2902,46 @@ Public Class mobileNavigation
 #End Region
     Private Sub GPS_GpsChanged(sender As Object, e As System.EventArgs) Handles m_SerialGPS.GpsChanged, m_FileGPS.GpsChanged
 
-        If CInt(GlobalsFunctions.m_GPS.GpsConnection.FixStatus) = CInt(GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSFixType) Then
-            m_GPSBtn.BackgroundImage = My.Resources.SatGreen
-        Else
-            m_GPSBtn.BackgroundImage = My.Resources.SatRed
-        End If
+        'If CInt(GlobalsFunctions.m_GPS.GpsConnection.FixStatus) = CInt(GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSFixType) Then
+        '    m_GPSBtn.BackgroundImage = My.Resources.SatGreen
+        'Else
+        '    m_GPSBtn.BackgroundImage = My.Resources.SatRed
+        'End If
 
-        RaiseEvent RaiseStatMessage(GlobalsFunctions.GPSFixToText(GlobalsFunctions.m_GPS.GpsConnection.FixStatus), False)
+        'RaiseEvent RaiseStatMessage(GlobalsFunctions.GPSFixToText(GlobalsFunctions.m_GPS.GpsConnection.FixStatus), False)
 
 
         '0 - No Fix, 1 - Gps Fix, 2 - DGps Fix, 3 = PPS fix, 4 = Real Time Kinematic, 5 = Float RTK, 6 = estimated (dead reckoning), 7 = Manual input mode, 8 = Simulation mode
     End Sub
     Private Sub GPS_PropertyChanged(sender As Object, e As System.ComponentModel.PropertyChangedEventArgs) Handles m_SerialGPS.PropertyChanged, m_FileGPS.PropertyChanged
+        If GlobalsFunctions.m_GPS Is Nothing Then Return
+        If GlobalsFunctions.m_GPS.GpsConnection Is Nothing Then Return
+        If GlobalsFunctions.m_GPS.GpsConnection.IsOpen Then
+
+            If e.PropertyName.ToUpper() = "FixStatus".ToUpper() Then
+                If CInt(GlobalsFunctions.m_GPS.GpsConnection.FixStatus) = 0 Then
+                    m_GPSBtn.BackgroundImage = My.Resources.SatRed
+                Else
+                    m_GPSBtn.BackgroundImage = My.Resources.SatGreen
+
+                End If
+                'If CInt(GlobalsFunctions.m_GPS.GpsConnection.FixStatus) = CInt(GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSFixType) Then
+                '    m_GPSBtn.BackgroundImage = My.Resources.SatGreen
+                'Else
+                '    m_GPSBtn.BackgroundImage = My.Resources.SatRed
+                'End If
+
+                RaiseEvent RaiseStatMessage(GlobalsFunctions.GPSFixToText(GlobalsFunctions.m_GPS.GpsConnection.FixStatus), False)
+
+            End If
+        End If
+
+
 
     End Sub
 
 
-    Private Sub GPS_SentenceReceived(ByVal sender As Object, ByVal e As Esri.ArcGIS.Mobile.Gps.NmeaSentenceEventArgs) Handles m_FileGPS.SentenceReceived, m_SerialGPS.SentenceReceived
+    Private Sub GPS_SentenceReceived(ByVal sender As Object, ByVal e As ESRI.ArcGIS.Mobile.Gps.NmeaSentenceEventArgs) Handles m_FileGPS.SentenceReceived, m_SerialGPS.SentenceReceived
         '     MsgBox(e.Sentence)
 
     End Sub
@@ -2981,7 +3009,7 @@ Public Class mobileNavigation
 
     End Sub
 
-    Private Sub m_FileGPS_GpsError(sender As Object, e As Esri.ArcGIS.Mobile.Gps.GpsErrorEventArgs) Handles m_FileGPS.GpsError
+    Private Sub m_FileGPS_GpsError(sender As Object, e As ESRI.ArcGIS.Mobile.Gps.GpsErrorEventArgs) Handles m_FileGPS.GpsError
         ' MsgBox(e.Exception.Message)
     End Sub
 End Class

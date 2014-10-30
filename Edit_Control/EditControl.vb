@@ -361,6 +361,7 @@ Public Class EditControl
         End Set
     End Property
     Private Sub curRec(ByVal FeatLayer As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource, ByVal featureDT As FeatureDataTable)
+
         If FeatLayer Is Nothing Then
             DisplayBlank()
             m_FDR = Nothing
@@ -764,6 +765,8 @@ Public Class EditControl
 
     Public Sub NewRecord()
         m_FDR = m_FDR.Table.NewRow
+        btnMove.Visible = False
+
         loadRecordEditor()
         LoadAutoAttributes(m_FDR)
 
@@ -2270,6 +2273,31 @@ Public Class EditControl
 
         End Try
     End Sub
+    Private Sub hideMoveButton()
+        Try
+
+            'Determine whether to disable or enable the save button
+            If m_FDR Is Nothing Then
+                btnMove.Visible = False
+            Else
+                If m_FDR.StoredEditSate = EditState.NotDefined Then
+                    btnMove.Visible = False
+
+                Else
+                    btnMove.Visible = False
+
+                End If
+            End If
+
+          
+
+        Catch ex As Exception
+            Dim st As New StackTrace
+            MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+            st = Nothing
+
+        End Try
+    End Sub
     Private Sub DisplayBlank()
         Try
 
@@ -2611,6 +2639,7 @@ Public Class EditControl
 
 
 
+     
             If pCurTabPage IsNot Nothing Then
 
 
@@ -2659,7 +2688,7 @@ Public Class EditControl
                         tbCntrlEdit.TabPages.Add(pAttTabPage)
 
                     End If
-                   
+
                     If tbCntrlEdit.TabPages.Count >= pCurTabIdx Then
                         tbCntrlEdit.SelectedIndex = pCurTabIdx
                     Else
@@ -2699,6 +2728,20 @@ Public Class EditControl
         Finally
             tbCntrlEdit.ResumeLayout()
             tbCntrlEdit.Refresh()
+            'Dim selTab As TabPage = tbCntrlEdit.SelectedTab
+            'For Each tabpg As TabPage In tbCntrlEdit.TabPages
+            '    tbCntrlEdit.SelectedTab = tabpg
+
+            'Next
+            'tbCntrlEdit.SelectedTab = selTab
+
+
+            For Each tabpg As TabPage In tbCntrlEdit.TabPages
+                tabpg.Show()
+
+
+            Next
+          
             pTbPageCo = Nothing
             pCurTabPage = Nothing
             m_shuffling = False
@@ -7173,6 +7216,8 @@ Public Class EditControl
     End Sub
 
     Private Sub btnMove_EnabledChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnMove.EnabledChanged
+        If btnMove.Visible = False Then Return
+
         If btnMove.Enabled Then
             If btnMove.Checked = True Then
                 btnGPSLoc.Enabled = True
@@ -7181,7 +7226,16 @@ Public Class EditControl
             End If
 
         Else
-            btnGPSLoc.Enabled = False
+            If m_FDR IsNot Nothing Then
+                If m_FDR.StoredEditSate = EditState.NotDefined Then
+                    btnGPSLoc.Enabled = True
+                Else
+                    btnGPSLoc.Enabled = False
+                End If
+            Else
+                btnGPSLoc.Enabled = False
+            End If
+
         End If
     End Sub
     Private Sub btnGPSLoc_EnabledChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnGPSLoc.EnabledChanged
