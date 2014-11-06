@@ -3427,6 +3427,7 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
             Me.aLNNotInstalledField = ""
             Me.destinationNotFoundField = ""
             Me.PointsAvgTextField = ""
+            Me.GPSNoConnectField = "Could not connect to the GPS"
         End Sub
 
         <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=0)> _

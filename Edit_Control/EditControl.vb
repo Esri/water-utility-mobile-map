@@ -28,7 +28,7 @@ Public Class EditControl
 
     Private m_pTabPagAtt As TabPage = Nothing
 
-    Private m_GPSStatus As String
+    Private m_GPSStatus As Boolean
     Private m_AttMan As AttachmentManager
 
     Private m_EditOptions As MobileConfigClass.MobileConfigMobileMapConfigEditControlOptionsLayersLayer
@@ -112,17 +112,14 @@ Public Class EditControl
 
         End Get
     End Property
-    Public Property GPSStatus As String
+    Public Property GPSStatus As Boolean
         Get
             Return m_GPSStatus
         End Get
-        Set(ByVal value As String)
+        Set(ByVal value As Boolean)
             m_GPSStatus = value
-            If m_GPSStatus = "On" Then
-                btnGPSLoc.Enabled = True
-            Else
-                btnGPSLoc.Enabled = False
-            End If
+            btnGPSLoc.Enabled = value
+          
             disableSaveBtn()
 
         End Set
@@ -655,7 +652,7 @@ Public Class EditControl
                 btnGPSLoc.Visible = False
                 relocatebtns()
             End If
-            If GPSStatus = "On" Then
+            If GPSStatus Then
                 btnGPSLoc.Enabled = True
             Else
                 btnGPSLoc.Enabled = False
@@ -5136,7 +5133,7 @@ Public Class EditControl
             If m_FDR.Geometry Is Nothing Then Return False
             If m_FDR.Geometry.IsEmpty Then Return False
             'Get the Data Table associated with the record
-            If m_GPSStatus = "On" And m_GPSVal Is Nothing Then
+            If m_GPSStatus And m_GPSVal Is Nothing Then
                 getGPSCoords()
             End If
             SaveRecordFinal()
@@ -7197,8 +7194,8 @@ Public Class EditControl
     End Sub
 #End Region
 
-    Public Sub EnableGPS()
-        btnGPSLoc.Enabled = True
+    Public Sub EnableGPS(status As Boolean)
+        btnGPSLoc.Enabled = status
 
     End Sub
 
@@ -7220,7 +7217,7 @@ Public Class EditControl
 
         If btnMove.Enabled Then
             If btnMove.Checked = True Then
-                btnGPSLoc.Enabled = True
+                btnGPSLoc.Enabled = m_GPSStatus
             Else
                 btnGPSLoc.Enabled = False
             End If
@@ -7228,7 +7225,8 @@ Public Class EditControl
         Else
             If m_FDR IsNot Nothing Then
                 If m_FDR.StoredEditSate = EditState.NotDefined Then
-                    btnGPSLoc.Enabled = True
+                    btnGPSLoc.Enabled = m_GPSStatus
+
                 Else
                     btnGPSLoc.Enabled = False
                 End If

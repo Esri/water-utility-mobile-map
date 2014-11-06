@@ -36,7 +36,7 @@ Partial Class EditRetriever
         Me.lstMsg.FormattingEnabled = True
         Me.lstMsg.Location = New System.Drawing.Point(12, 215)
         Me.lstMsg.Name = "lstMsg"
-        Me.lstMsg.Size = New System.Drawing.Size(358, 147)
+        Me.lstMsg.Size = New System.Drawing.Size(788, 147)
         Me.lstMsg.TabIndex = 0
         '
         'chkLstLayers
@@ -44,7 +44,7 @@ Partial Class EditRetriever
         Me.chkLstLayers.FormattingEnabled = True
         Me.chkLstLayers.Location = New System.Drawing.Point(12, 27)
         Me.chkLstLayers.Name = "chkLstLayers"
-        Me.chkLstLayers.Size = New System.Drawing.Size(358, 184)
+        Me.chkLstLayers.Size = New System.Drawing.Size(788, 184)
         Me.chkLstLayers.TabIndex = 1
         '
         'Button1
@@ -86,7 +86,7 @@ Partial Class EditRetriever
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(476, 494)
+        Me.ClientSize = New System.Drawing.Size(799, 494)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.lblTotCnt)

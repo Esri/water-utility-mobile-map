@@ -2770,20 +2770,20 @@ Public Class MobileMapConsole
 
     Private Sub m_MCNav_GPSStarted() Handles m_MCNav.GPSStarted
         If m_MCCreateFeatureMA IsNot Nothing Then
-            m_MCCreateFeatureMA.GPSStatus = "On"
+            m_MCCreateFeatureMA.GPSStatus = True
         End If
         If m_MCIDMA IsNot Nothing Then
-            m_MCIDMA.GPSStatus = "On"
+            m_MCIDMA.GPSStatus = True
         End If
 
     End Sub
 
     Private Sub m_MCNav_GPSStopped() Handles m_MCNav.GPSStopped
         If m_MCCreateFeatureMA IsNot Nothing Then
-            m_MCCreateFeatureMA.GPSStatus = "Off"
+            m_MCCreateFeatureMA.GPSStatus = False
         End If
         If m_MCIDMA IsNot Nothing Then
-            m_MCIDMA.GPSStatus = "Off"
+            m_MCIDMA.GPSStatus = False
         End If
 
     End Sub
@@ -3222,5 +3222,10 @@ Public Class MobileMapConsole
                 End If
             End If
         Next
+    End Sub
+
+    Private Sub m_MCNav_RaiseMessage(Message As String) Handles m_MCNav.RaiseMessage
+        showMessage(Message)
+
     End Sub
 End Class

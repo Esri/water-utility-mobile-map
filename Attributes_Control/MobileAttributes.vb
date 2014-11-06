@@ -86,13 +86,13 @@ Public Class MobileAttributes
         m_attDis.hideEditButton()
     End Sub
 
-    Private m_GPSStatus As String
+    Private m_GPSStatus As Boolean
 
-    Public Property GPSStatus As String
+    Public Property GPSStatus As Boolean
         Get
             Return m_GPSStatus
         End Get
-        Set(ByVal value As String)
+        Set(ByVal value As Boolean)
 
             m_GPSStatus = value
             If m_attDis IsNot Nothing Then

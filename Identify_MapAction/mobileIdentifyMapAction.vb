@@ -596,6 +596,7 @@ Public Class mobileIdentifyMapAction
 
         ' m_AttFrm.currentRecord(Nothing)
         RaiseEvent RaiseMessage(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.SavedMessage)
+        m_Map.Refresh()
 
     End Sub
 
@@ -1218,13 +1219,13 @@ Public Class mobileIdentifyMapAction
 
 #End Region
 #Region "Properties"
-    Private m_GPSStatus As String
+    Private m_GPSStatus As Boolean
 
-    Public Property GPSStatus As String
+    Public Property GPSStatus As Boolean
         Get
             Return m_GPSStatus
         End Get
-        Set(ByVal value As String)
+        Set(ByVal value As Boolean)
 
             m_GPSStatus = value
             If m_AttFrm IsNot Nothing Then
@@ -1257,7 +1258,8 @@ Public Class mobileIdentifyMapAction
 
                     If m_EditFrm.Geometry IsNot Nothing Then
                         If m_EditFrm.Geometry.GeometryType = Geometries.GeometryType.Point Then
-                            m_EditFrm.EnableGPS()
+                            m_EditFrm.EnableGPS(GlobalsFunctions.m_GPS.GpsConnection.IsOpen)
+
                             Dim newCoord As Geometries.Coordinate
                             If m_GPSVal.SpatialReference Is Nothing Then
                                 newCoord = Map.SpatialReference.FromGps(m_GPSVal.Coordinate)

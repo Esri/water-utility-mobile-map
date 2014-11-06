@@ -30,6 +30,8 @@ Imports ESRI.ArcGISTemplates
 Public Class mobileNavigation
     Private m_gpsD As GPSLocationDetails
     Public Event RaiseStatMessage(message As String, hide As Boolean)
+    Public Event RaiseMessage(ByVal Message As String)
+
     Public Event GPSComplete(gpsDet As GPSLocationDetails)
     Private m_LastExtents As IList(Of ESRI.ArcGIS.Mobile.Geometries.Envelope)
     Private m_CurrentStep As Integer
@@ -2321,56 +2323,51 @@ Public Class mobileNavigation
 
 
     End Sub
-    Public Sub callGPSButtonclick()
-        Dim e As System.Windows.Forms.MouseEventArgs = New System.Windows.Forms.MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0)
+    Public Sub callGPSButtonclick(Optional ByVal zoomToGPS As Boolean = False)
+        If GlobalsFunctions.m_GPS Is Nothing Then Return
+        If GlobalsFunctions.m_GPS.GpsConnection Is Nothing Then Return
+        'recenter if the user right clicks
+        If zoomToGPS Then
+            zoomTo(m_Map.SpatialReference.FromWgs84(GlobalsFunctions.m_GPS.GpsConnection.Longitude, GlobalsFunctions.m_GPS.GpsConnection.Latitude))
 
-        Call btnGPS_MouseDown(m_GPSBtn, e)
+
+        Else
+
+            'if the gps is open, close it and reset button image
+            If GlobalsFunctions.m_GPS.GpsConnection.IsOpen Then
+                GlobalsFunctions.m_GPS.GpsConnection.Close()
+                m_GPSBtn.BackgroundImage = My.Resources.SatBlue
+                If m_t IsNot Nothing Then
+                    If m_t.IsAlive Then
+                        m_t.Abort()
+
+                    End If
+                End If
+            Else
+
+                Try
+                    'Change the GPS button to show it is trying to activate
+                    m_GPSBtn.BackgroundImage = My.Resources.SatRed
+                    'Show the gps activating icon
+                    m_GPSLoadingPic.Visible = True
+
+                    'Create a new thread to open the GPS
+                    m_t = New Thread(AddressOf Me.OpenGPS)
+                    'start the thread
+                    m_t.Start()
+                Catch ex As Exception
+                    'Reset the image back to GPS off
+                    m_GPSBtn.BackgroundImage = My.Resources.SatBlue
+                End Try
+
+            End If
+        End If
 
     End Sub
     Private Sub btnGPS_MouseDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs)
         Try
+            callGPSButtonclick()
 
-
-            If GlobalsFunctions.m_GPS Is Nothing Then Return
-            If GlobalsFunctions.m_GPS.GpsConnection Is Nothing Then Return
-            'recenter if the user right clicks
-            If e.Button = MouseButtons.Right Then
-                zoomTo(m_Map.SpatialReference.FromWgs84(GlobalsFunctions.m_GPS.GpsConnection.Longitude, GlobalsFunctions.m_GPS.GpsConnection.Latitude))
-
-            ElseIf e.Clicks > 1 Then
-                zoomTo(m_Map.SpatialReference.FromWgs84(GlobalsFunctions.m_GPS.GpsConnection.Longitude, GlobalsFunctions.m_GPS.GpsConnection.Latitude))
-
-            Else
-
-                'if the gps is open, close it and reset button image
-                If GlobalsFunctions.m_GPS.GpsConnection.IsOpen Then
-                    GlobalsFunctions.m_GPS.GpsConnection.Close()
-                    CType(sender, Button).BackgroundImage = My.Resources.SatBlue
-                    If m_t IsNot Nothing Then
-                        If m_t.IsAlive Then
-                            m_t.Abort()
-
-                        End If
-                    End If
-                Else
-
-                    Try
-                        'Change the GPS button to show it is trying to activate
-                        CType(sender, Button).BackgroundImage = My.Resources.SatRed
-                        'Show the gps activating icon
-                        m_GPSLoadingPic.Visible = True
-
-                        'Create a new thread to open the GPS
-                        m_t = New Thread(AddressOf Me.OpenGPS)
-                        'start the thread
-                        m_t.Start()
-                    Catch ex As Exception
-                        'Reset the image back to GPS off
-                        CType(sender, Button).BackgroundImage = My.Resources.SatBlue
-                    End Try
-
-                End If
-            End If
         Catch ex As Exception
 
         End Try
@@ -2602,8 +2599,8 @@ Public Class mobileNavigation
     End Sub
 
     Private Sub m_SerialGPS_GpsError(ByVal sender As Object, ByVal e As ESRI.ArcGIS.Mobile.Gps.GpsErrorEventArgs) Handles m_SerialGPS.GpsError
-        RaiseEvent RaiseStatMessage(e.Exception.Message.ToString(), False)
 
+        RaiseEvent RaiseMessage(e.Exception.Message.ToString())
     End Sub
     Private Sub m_SerialGPS_GpsOpened(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_SerialGPS.GpsOpened
         Try
@@ -2908,9 +2905,12 @@ Public Class mobileNavigation
         '    m_GPSBtn.BackgroundImage = My.Resources.SatRed
         'End If
 
-        'RaiseEvent RaiseStatMessage(GlobalsFunctions.GPSFixToText(GlobalsFunctions.m_GPS.GpsConnection.FixStatus), False)
+        Dim i As Integer = GlobalsFunctions.m_GPS.GpsConnection.FixSatelliteCount
 
+        If GlobalsFunctions.m_GPS.GpsConnection.GpsChangeType = GlobalsFunctions.m_GPS.GpsConnection.GpsChangeType.FixStatus Then
 
+            RaiseEvent RaiseStatMessage(GlobalsFunctions.GPSFixToText(GlobalsFunctions.m_GPS.GpsConnection.FixStatus), False)
+        End If
         '0 - No Fix, 1 - Gps Fix, 2 - DGps Fix, 3 = PPS fix, 4 = Real Time Kinematic, 5 = Float RTK, 6 = estimated (dead reckoning), 7 = Manual input mode, 8 = Simulation mode
     End Sub
     Private Sub GPS_PropertyChanged(sender As Object, e As System.ComponentModel.PropertyChangedEventArgs) Handles m_SerialGPS.PropertyChanged, m_FileGPS.PropertyChanged
@@ -2947,6 +2947,8 @@ Public Class mobileNavigation
     End Sub
     Private Sub m_GPS_Disposed(ByVal sender As Object, ByVal e As System.EventArgs)
         If GlobalsFunctions.m_GPS.GpsConnection IsNot Nothing Then
+
+
 
             If GlobalsFunctions.m_GPS.GpsConnection.IsOpen Then
                 GlobalsFunctions.m_GPS.GpsConnection.Close()

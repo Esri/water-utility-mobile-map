@@ -83,15 +83,15 @@ Public Class MobileSearch
 #Region "Public Functions"
 
 
-    Private m_GPSStatus As String = "Off"
+    Private m_GPSStatus As Boolean = False
 
-    Public Property GPSStatus As String
+    Public Property GPSStatus As Boolean
         Get
             Return m_GPSStatus
         End Get
-        Set(ByVal value As String)
+        Set(ByVal value As Boolean)
             m_GPSStatus = value
-            If m_GPSStatus = "On" Then
+            If m_GPSStatus Then
 
                 btnWaypoint.Enabled = True
                 btnWaypointDrillDown.Enabled = True

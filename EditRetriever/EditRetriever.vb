@@ -123,10 +123,21 @@ Public Class EditRetriever
 
                 End If
             Else
-                writeError("Cache is not valid or is open: " & DateTime.Now.ToLongTimeString())
+                If m_MobileCache.IsValid Then
+
+                    Try
 
 
+                        m_MobileCache.Open()
+                        loadLayers()
+                    Catch ex As Exception
+                        writeError("Cache is not valid or is open: " & DateTime.Now.ToLongTimeString())
+
+                    End Try
+
+                End If
             End If
+
         Next
 
 

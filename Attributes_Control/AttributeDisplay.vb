@@ -90,15 +90,15 @@ Public Class AttributeDisplay
         relocateButtons()
     End Sub
 
-    Private m_GPSStatus As String = "Off"
+    Private m_GPSStatus As Boolean = False
 
-    Public Property GPSStatus
+    Public Property GPSStatus As Boolean
         Get
             Return m_GPSStatus
         End Get
-        Set(ByVal value)
+        Set(ByVal value As Boolean)
             m_GPSStatus = value
-            If m_GPSStatus = "On" Then
+            If m_GPSStatus Then
                 btnGPSLoc.Enabled = True
                 btnWaypoint.Enabled = True
             Else
@@ -187,7 +187,7 @@ Public Class AttributeDisplay
 
         InitializeComponent()
         lblCurrentLayer.Dock = DockStyle.Fill
-        If m_GPSStatus = "On" Then
+        If m_GPSStatus Then
             btnGPSLoc.Enabled = True
         Else
             btnGPSLoc.Enabled = False
@@ -210,7 +210,7 @@ Public Class AttributeDisplay
 
         End If
 
-        If m_GPSStatus = "On" Then
+        If m_GPSStatus Then
             btnGPSLoc.Enabled = True
             btnWaypoint.Enabled = True
         Else

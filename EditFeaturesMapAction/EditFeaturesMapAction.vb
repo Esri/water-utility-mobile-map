@@ -33,7 +33,7 @@ Public Class EditFeaturesMapAction
     Public currentWO As String
     Public currentCrew As String
 
-    Private m_GPSStatus As String = "Off"
+    Private m_GPSStatus As Boolean = False
     Private m_Snapped As Boolean = False
 
     Private WithEvents m_cboCreateLayers As ComboBox
@@ -107,11 +107,11 @@ Public Class EditFeaturesMapAction
         m_PointWidth = CInt(GlobalsFunctions.appConfig.EditControlOptions.SketchPointWidth)
 
     End Sub
-    Public Property GPSStatus As String
+    Public Property GPSStatus As Boolean
         Get
             Return m_GPSStatus
         End Get
-        Set(ByVal value As String)
+        Set(ByVal value As Boolean)
 
             m_GPSStatus = value
             If m_EditPanel IsNot Nothing Then
@@ -1037,7 +1037,7 @@ Public Class EditFeaturesMapAction
 
                     UpdateGeoWithCoordinate()
 
-                    m_EditPanel.EnableGPS()
+                    m_EditPanel.EnableGPS(GlobalsFunctions.m_GPS.GpsConnection.IsOpen)
 
                     Map.Invalidate()
 

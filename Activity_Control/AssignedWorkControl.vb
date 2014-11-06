@@ -228,6 +228,11 @@ Public Class AssignedWorkControl
             End If
 
             LoadWorkOrders(True, False)
+            Call btnViewAllWork_Click(Nothing, Nothing)
+
+            m_OutlookNavigatePane.SelectedButton.PerformClick()
+            outlookNavigatePane_OnNavigateBarButtonSelected(m_OutlookNavigatePane.SelectedButton)
+            m_Map.Refresh()
 
 
         Catch ex As Exception
@@ -1474,10 +1479,7 @@ Public Class AssignedWorkControl
 
     Private Sub m_EdtClose_RecordSaved(LayerName As String, pGeo As Esri.ArcGIS.Mobile.Geometries.Geometry, OID As Integer) Handles m_EdtClose.RecordSaved
         RaiseEvent RaiseMessage(GlobalsFunctions.appConfig.EditControlOptions.UIComponents.SavedMessage)
-        LoadWorkOrders(True, False)
-        Call btnViewAllWork_Click(Nothing, Nothing)
-        m_OutlookNavigatePane.SelectedButton.PerformClick()
-
+       
     End Sub
 
     Private Sub m_EdtCreate_RecordSaved(LayerName As String, pGeo As Esri.ArcGIS.Mobile.Geometries.Geometry, OID As Integer) Handles m_EdtCreate.RecordSaved
@@ -1489,7 +1491,7 @@ Public Class AssignedWorkControl
 
 
     Private Sub btnClear_Click(sender As Object, e As System.EventArgs) Handles btnClear.Click
-        LoadWorkOrders()
+        LoadWorkOrders(False, False)
         Call btnViewAllWork_Click(Nothing, Nothing)
     End Sub
 
