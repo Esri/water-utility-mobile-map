@@ -5340,21 +5340,6 @@ Public Class MobileSearch
         End If
     End Sub
 
-    Private Sub cboStreetLayer1_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboStreetLayer1.SelectedValueChanged
-
-
-    End Sub
-
-
-    Private Sub cboStreetLayer1_TextUpdate(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboStreetLayer1.TextUpdate
-
-
-    End Sub
-
-    Private Sub gpBxAddPntControlsLayer_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles gpBxAddPntControlsLayer.Paint
-
-    End Sub
-
     Private Sub cboDrillDownLayer_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboDrillDownLayer.SelectedIndexChanged
 
 

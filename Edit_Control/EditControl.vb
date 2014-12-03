@@ -4666,7 +4666,7 @@ Public Class EditControl
 
 
                 m_AttControlBox = New AttachmentControl(m_Map)
-                AddHandler m_AttControlBox.AttachmentSelected, AddressOf AttachmentSelected
+
                 AddHandler m_AttControlBox.DeleteAttachment, AddressOf DeleteAttachment
 
                 ' pAttControlBox.ListBox.ValueMember = "Name"
@@ -7208,9 +7208,7 @@ Public Class EditControl
 
     End Sub
 
-    Private Sub spltContEdit_Panel2_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles spltContEdit.Panel2.Paint
-
-    End Sub
+  
 
     Private Sub btnMove_EnabledChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnMove.EnabledChanged
         If btnMove.Visible = False Then Return
@@ -7246,18 +7244,7 @@ Public Class EditControl
 
     End Sub
 
-    Private Sub btnSave_Paint(sender As Object, e As System.Windows.Forms.PaintEventArgs) Handles btnSave.Paint
 
-    End Sub
-
-    Private Sub btnSave_Validated(sender As System.Object, e As System.EventArgs) Handles btnSave.Validated
-
-    End Sub
-
-    Private Sub AttachmentSelected(filename As attFiles)
-
-
-    End Sub
 
     Private Sub DeleteAttachment(id As Integer)
         m_lstAttToDel.Add(id)

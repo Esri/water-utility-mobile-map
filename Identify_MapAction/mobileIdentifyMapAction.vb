@@ -656,7 +656,7 @@ Public Class mobileIdentifyMapAction
     'End Sub
 
     Private Sub mobileIdentifyMapAction_StatusChanged(ByVal sender As Object, ByVal e As Esri.ArcGIS.Mobile.WinForms.MapActionStatusChangedEventArgs) Handles Me.StatusChanged
-
+      
         'Monitors the status of this map action
         If e.StatusId = Esri.ArcGIS.Mobile.WinForms.MapAction.Activated Then
             'Change the button image to display the action is activated
@@ -665,7 +665,12 @@ Public Class mobileIdentifyMapAction
                 m_btn.BackgroundImage = Global.MobileControls.My.Resources.Resources.InfoDown
             End If
             'Show the layer combo box
-            showMapLayerBox(True)
+            If leaveSettings = True Then
+                m_layCBO.Visible = True
+            Else
+                showMapLayerBox(True)
+            End If
+
             If m_AttFrm IsNot Nothing Then
                 m_AttFrm.resizeLabels()
             End If
@@ -683,7 +688,11 @@ Public Class mobileIdentifyMapAction
                 m_btn.BackgroundImage = Global.MobileControls.My.Resources.Resources.Info
             End If
             'Hide the layer combo box
-            showMapLayerBox(False)
+            If leaveSettings = True Then
+                m_layCBO.Visible = False
+            Else
+                showMapLayerBox(False)
+            End If
             If m_EditFrm.Visible Then
                 If m_EditFrm.EditingGeo Then
                     m_EditFrm.hideMoveMessage()
@@ -719,9 +728,7 @@ Public Class mobileIdentifyMapAction
         'Else
         Dim g As Graphics = m_layCBO.CreateGraphics
         For i = 0 To 4
-            ' m_layCBO.Width = m_layCBO.Width + 40
-            '    m_cboInspectionTypes.Height = m_cboInspectionTypes.Height + 5
-
+         
             Dim pFnt As System.Drawing.Font = New System.Drawing.Font(m_layCBO.Font.Name, m_layCBO.Font.Size + i, System.Drawing.FontStyle.Bold)
 
             m_layCBO.Font = pFnt
@@ -739,19 +746,9 @@ Public Class mobileIdentifyMapAction
 
     End Sub
     Private Sub m_layCBO_DropDownClosed(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_layCBO.DropDownClosed
-        'If m_layCBO.Width > 200 Then
-        '    m_layCBO.Font = m_Fnt
-        '    m_layCBO.Width = 200
-        '    'm_cboInspectionTypes.Height
-        '    m_layCBO.Left = m_btn.Left - m_layCBO.Width - 10
-        '    m_layCBO.Top = CInt(m_btn.Top + (m_btn.Height / 2) - (m_layCBO.Height / 2))
-        'End If
+      
         Dim g As Graphics = m_layCBO.CreateGraphics
-        '  For i = 0 To 5
-        ' m_layCBO.Width = m_layCBO.Width + 40
-        '    m_cboInspectionTypes.Height = m_cboInspectionTypes.Height + 5
-
-        ' Dim pFnt As System.Drawing.Font = New System.Drawing.Font(m_layCBO.Font.Name, m_layCBO.Font.Size + i, System.Drawing.FontStyle.Bold)
+       
         m_layCBO.Width = CInt(g.MeasureString(m_layCBO.Text, m_Fnt).Width + 50)
 
 
@@ -763,6 +760,8 @@ Public Class mobileIdentifyMapAction
         g = Nothing
         '   Next
     End Sub
+    Public leaveSettings As Boolean = False
+   
     Private Sub m_layCBO_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_layCBO.SelectedIndexChanged
         'Handles a layer change in the map layer box
         m_Layer = m_layCBO.Text
@@ -793,6 +792,9 @@ Public Class mobileIdentifyMapAction
         End If
     End Sub
     Private Sub resize()
+        Try
+
+        
         'For Each item As String In m_layCBO.Items
 
         'Next
@@ -801,12 +803,15 @@ Public Class mobileIdentifyMapAction
             m_btn.Location = New System.Drawing.Point(m_Map.Width - 80, 25)
             If m_layCBO IsNot Nothing Then
 
-                m_layCBO.Width = 200
+
                 m_layCBO.Left = m_btn.Left - m_layCBO.Width - 10
                 m_layCBO.Top = CInt(m_btn.Top + (m_btn.Height / 2) - (m_layCBO.Height / 2))
             End If
 
-        End If
+            End If
+        Catch ex As Exception
+
+        End Try
     End Sub
 #End Region
 #Region "PrivateFunctions"
@@ -1448,5 +1453,9 @@ Public Class mobileIdentifyMapAction
     Private Sub m_AttFrm_showEditor() Handles m_AttFrm.showEditor
         m_AttFrm.Visible = False
         m_EditFrm.Visible = True
+    End Sub
+
+    Private Sub m_Map_Resize(sender As Object, e As EventArgs) Handles m_Map.Resize
+
     End Sub
 End Class

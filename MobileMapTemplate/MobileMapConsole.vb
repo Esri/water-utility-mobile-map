@@ -2035,8 +2035,13 @@ Public Class MobileMapConsole
 
             If e.StatusId = Esri.ArcGIS.Mobile.WinForms.MapAction.Activated Then
                 'show the ID panel if the Map Action has been activated
+
                 '                showIDPanel()
-                showPanel(TemplatePanels.ID)
+                If m_MCIDMA.leaveSettings = False Then
+                    showPanel(TemplatePanels.ID)
+                End If
+
+
 
             ElseIf e.StatusId = Esri.ArcGIS.Mobile.WinForms.MapAction.Deactivated Then
 
@@ -2333,6 +2338,19 @@ Public Class MobileMapConsole
     End Sub
   
     Private Sub btnOpenClosePanel_MouseDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles btnOpenClosePanel.MouseDown
+        Dim breset As Boolean = False
+
+
+        If Map1.MapAction Is m_MCIDMA Then
+            m_MCIDMA.leaveSettings = True
+
+            Map1.MapAction = Nothing
+
+            breset = True
+        End If
+       
+
+
         'RemoveHandler spContMain.Panel1.Resize, AddressOf spContMain_Panel1_Resize
         'RemoveHandler spContMain.Panel2.Resize, AddressOf spContMain_Panel1_Resize
         'RemoveHandler spContMain.Resize, AddressOf spContControls_Resize
@@ -2351,8 +2369,8 @@ Public Class MobileMapConsole
             'spContMain.SplitterDistance = 345
 
         Else
-            spContMain.Panel1Collapsed = False
-            spContMain.Panel2Collapsed = True
+            'spContMain.Panel1Collapsed = False
+            'spContMain.Panel2Collapsed = True
 
         End If
         RemoveHandler spContMain.Panel1.Resize, AddressOf spContMain_Panel1_Resize
@@ -2364,63 +2382,78 @@ Public Class MobileMapConsole
         AddHandler spContMain.Panel1.Resize, AddressOf spContMain_Panel1_Resize
         AddHandler spContMain.Panel2.Resize, AddressOf spContMain_Panel1_Resize
         ''MsgBox(spContMain.SplitterDistance)
+        If breset Then
+            Map1.MapAction = m_MCIDMA
+            m_MCIDMA.leaveSettings = False
+
+        End If
+
 
     End Sub
 
     Private Sub Map1_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Map1.Paint
-        If m_tickCount > 0 And m_tickMessage <> "" Then
+        Try
 
-            e.Graphics.DrawString(m_tickMessage, m_msgFont, m_msgBrush, m_msgX - m_offset, m_msgY - m_offset)
-            e.Graphics.DrawString(m_tickMessage, m_msgFont, m_msgBrush, m_msgX - m_offset - m_offset, m_msgY - m_offset - m_offset)
+            If m_tickCount > 0 And m_tickMessage <> "" Then
 
-            e.Graphics.DrawString(m_tickMessage, m_msgFont, m_msgBrush, m_msgX + m_offset, m_msgY - m_offset)
-            e.Graphics.DrawString(m_tickMessage, m_msgFont, m_msgBrush, m_msgX + m_offset + m_offset, m_msgY - m_offset - m_offset)
+                e.Graphics.DrawString(m_tickMessage, m_msgFont, m_msgBrush, m_msgX - m_offset, m_msgY - m_offset)
+                e.Graphics.DrawString(m_tickMessage, m_msgFont, m_msgBrush, m_msgX - m_offset - m_offset, m_msgY - m_offset - m_offset)
 
-            e.Graphics.DrawString(m_tickMessage, m_msgFont, m_msgBrush, m_msgX - m_offset, m_msgY + m_offset)
-            e.Graphics.DrawString(m_tickMessage, m_msgFont, m_msgBrush, m_msgX - m_offset - m_offset, m_msgY + m_offset + m_offset)
+                e.Graphics.DrawString(m_tickMessage, m_msgFont, m_msgBrush, m_msgX + m_offset, m_msgY - m_offset)
+                e.Graphics.DrawString(m_tickMessage, m_msgFont, m_msgBrush, m_msgX + m_offset + m_offset, m_msgY - m_offset - m_offset)
 
-            e.Graphics.DrawString(m_tickMessage, m_msgFont, m_msgBrush, m_msgX + m_offset + m_offset, m_msgY + m_offset + m_offset)
-            e.Graphics.DrawString(m_tickMessage, m_msgFont, m_msgBrush, m_msgX + m_offset, m_msgY + m_offset)
+                e.Graphics.DrawString(m_tickMessage, m_msgFont, m_msgBrush, m_msgX - m_offset, m_msgY + m_offset)
+                e.Graphics.DrawString(m_tickMessage, m_msgFont, m_msgBrush, m_msgX - m_offset - m_offset, m_msgY + m_offset + m_offset)
 
-            e.Graphics.DrawString(m_tickMessage, m_msgFont, m_msgBrushFront, m_msgX, m_msgY)
-        End If
+                e.Graphics.DrawString(m_tickMessage, m_msgFont, m_msgBrush, m_msgX + m_offset + m_offset, m_msgY + m_offset + m_offset)
+                e.Graphics.DrawString(m_tickMessage, m_msgFont, m_msgBrush, m_msgX + m_offset, m_msgY + m_offset)
 
-        If m_PermMessage <> "" Then
+                e.Graphics.DrawString(m_tickMessage, m_msgFont, m_msgBrushFront, m_msgX, m_msgY)
+            End If
 
-            e.Graphics.DrawString(m_PermMessage, m_msgFontLarge, m_msgBrushPerm, m_msgPermX - m_offset, m_msgPermY - m_offset)
-            e.Graphics.DrawString(m_PermMessage, m_msgFontLarge, m_msgBrushPerm, m_msgPermX - m_offset - m_offset, m_msgPermY - m_offset - m_offset)
+            If m_PermMessage <> "" Then
 
-            e.Graphics.DrawString(m_PermMessage, m_msgFontLarge, m_msgBrushPerm, m_msgPermX + m_offset, m_msgPermY - m_offset)
-            e.Graphics.DrawString(m_PermMessage, m_msgFontLarge, m_msgBrushPerm, m_msgPermX + m_offset + m_offset, m_msgPermY - m_offset - m_offset)
+                e.Graphics.DrawString(m_PermMessage, m_msgFontLarge, m_msgBrushPerm, m_msgPermX - m_offset, m_msgPermY - m_offset)
+                e.Graphics.DrawString(m_PermMessage, m_msgFontLarge, m_msgBrushPerm, m_msgPermX - m_offset - m_offset, m_msgPermY - m_offset - m_offset)
 
-            e.Graphics.DrawString(m_PermMessage, m_msgFontLarge, m_msgBrushPerm, m_msgPermX - m_offset, m_msgPermY + m_offset)
-            e.Graphics.DrawString(m_PermMessage, m_msgFontLarge, m_msgBrushPerm, m_msgPermX - m_offset - m_offset, m_msgPermY + m_offset + m_offset)
+                e.Graphics.DrawString(m_PermMessage, m_msgFontLarge, m_msgBrushPerm, m_msgPermX + m_offset, m_msgPermY - m_offset)
+                e.Graphics.DrawString(m_PermMessage, m_msgFontLarge, m_msgBrushPerm, m_msgPermX + m_offset + m_offset, m_msgPermY - m_offset - m_offset)
 
-            e.Graphics.DrawString(m_PermMessage, m_msgFontLarge, m_msgBrushPerm, m_msgPermX + m_offset + m_offset, m_msgPermY + m_offset + m_offset)
-            e.Graphics.DrawString(m_PermMessage, m_msgFontLarge, m_msgBrushPerm, m_msgPermX + m_offset, m_msgPermY + m_offset)
+                e.Graphics.DrawString(m_PermMessage, m_msgFontLarge, m_msgBrushPerm, m_msgPermX - m_offset, m_msgPermY + m_offset)
+                e.Graphics.DrawString(m_PermMessage, m_msgFontLarge, m_msgBrushPerm, m_msgPermX - m_offset - m_offset, m_msgPermY + m_offset + m_offset)
 
-            e.Graphics.DrawString(m_PermMessage, m_msgFontLarge, m_msgBrushPermFront, m_msgPermX, m_msgPermY)
-        End If
+                e.Graphics.DrawString(m_PermMessage, m_msgFontLarge, m_msgBrushPerm, m_msgPermX + m_offset + m_offset, m_msgPermY + m_offset + m_offset)
+                e.Graphics.DrawString(m_PermMessage, m_msgFontLarge, m_msgBrushPerm, m_msgPermX + m_offset, m_msgPermY + m_offset)
+
+                e.Graphics.DrawString(m_PermMessage, m_msgFontLarge, m_msgBrushPermFront, m_msgPermX, m_msgPermY)
+            End If
 
 
-        If m_StatMessage <> "" Then
+            If m_StatMessage <> "" Then
 
-            e.Graphics.DrawString(m_StatMessage, m_msgFontSmall, m_msgBrushStat, m_msgStatX - m_offset, m_msgStatY - m_offset)
-            e.Graphics.DrawString(m_StatMessage, m_msgFontSmall, m_msgBrushStat, m_msgStatX - m_offset - m_offset, m_msgStatY - m_offset - m_offset)
+                e.Graphics.DrawString(m_StatMessage, m_msgFontSmall, m_msgBrushStat, m_msgStatX - m_offset, m_msgStatY - m_offset)
+                e.Graphics.DrawString(m_StatMessage, m_msgFontSmall, m_msgBrushStat, m_msgStatX - m_offset - m_offset, m_msgStatY - m_offset - m_offset)
 
-            e.Graphics.DrawString(m_StatMessage, m_msgFontSmall, m_msgBrushStat, m_msgStatX + m_offset, m_msgStatY - m_offset)
-            e.Graphics.DrawString(m_StatMessage, m_msgFontSmall, m_msgBrushStat, m_msgStatX + m_offset + m_offset, m_msgStatY - m_offset - m_offset)
+                e.Graphics.DrawString(m_StatMessage, m_msgFontSmall, m_msgBrushStat, m_msgStatX + m_offset, m_msgStatY - m_offset)
+                e.Graphics.DrawString(m_StatMessage, m_msgFontSmall, m_msgBrushStat, m_msgStatX + m_offset + m_offset, m_msgStatY - m_offset - m_offset)
 
-            e.Graphics.DrawString(m_StatMessage, m_msgFontSmall, m_msgBrushStat, m_msgStatX - m_offset, m_msgStatY + m_offset)
-            e.Graphics.DrawString(m_StatMessage, m_msgFontSmall, m_msgBrushStat, m_msgStatX - m_offset - m_offset, m_msgStatY + m_offset + m_offset)
+                e.Graphics.DrawString(m_StatMessage, m_msgFontSmall, m_msgBrushStat, m_msgStatX - m_offset, m_msgStatY + m_offset)
+                e.Graphics.DrawString(m_StatMessage, m_msgFontSmall, m_msgBrushStat, m_msgStatX - m_offset - m_offset, m_msgStatY + m_offset + m_offset)
 
-            e.Graphics.DrawString(m_StatMessage, m_msgFontSmall, m_msgBrushStat, m_msgStatX + m_offset + m_offset, m_msgStatY + m_offset + m_offset)
-            e.Graphics.DrawString(m_StatMessage, m_msgFontSmall, m_msgBrushStat, m_msgStatX + m_offset, m_msgStatY + m_offset)
+                e.Graphics.DrawString(m_StatMessage, m_msgFontSmall, m_msgBrushStat, m_msgStatX + m_offset + m_offset, m_msgStatY + m_offset + m_offset)
+                e.Graphics.DrawString(m_StatMessage, m_msgFontSmall, m_msgBrushStat, m_msgStatX + m_offset, m_msgStatY + m_offset)
 
-            e.Graphics.DrawString(m_StatMessage, m_msgFontSmall, m_msgBrushStatFront, m_msgStatX, m_msgStatY)
-        End If
+                e.Graphics.DrawString(m_StatMessage, m_msgFontSmall, m_msgBrushStatFront, m_msgStatX, m_msgStatY)
+            End If
+
+        Catch ex As Exception
+
+        End Try
     End Sub
     Private Sub Map1_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles Map1.Resize
+        Map1.SuspendLayout()
+        Map1.DisableDrawing()
+
         Try
             btnOpenClosePanel.Left = 25
             btnOpenClosePanel.Top = CInt((Map1.Height / 2)) + 15 '+ (Map1.Height / 4) - (btnOpenClosePanel.Height / 2)
@@ -2455,6 +2488,9 @@ Public Class MobileMapConsole
             MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
             st = Nothing
         End Try
+        Map1.EnableDrawing()
+        Map1.ResumeLayout()
+
     End Sub
     Private Sub spContControls_Resize(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles spContControls.Resize
         spContControls.SplitterDistance = (tblLayoutWidgets.RowCount * 33) + (tblLayoutWidgets.RowCount * 9)
@@ -3146,9 +3182,7 @@ Public Class MobileMapConsole
         End If
     End Sub
 
-    Private Sub MobileMapConsole_Paint(sender As Object, e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
-
-    End Sub
+ 
 
     Private Sub pnlCreateFeature_VisibleChanged(sender As System.Object, e As System.EventArgs) Handles pnlCreateFeature.VisibleChanged
         Try
@@ -3226,6 +3260,10 @@ Public Class MobileMapConsole
 
     Private Sub m_MCNav_RaiseMessage(Message As String) Handles m_MCNav.RaiseMessage
         showMessage(Message)
+
+    End Sub
+
+    Private Sub btnOpenClosePanel_Click(sender As Object, e As EventArgs) Handles btnOpenClosePanel.Click
 
     End Sub
 End Class

@@ -41,7 +41,7 @@ Partial Class MobileMapConsole
         Me.pnlWeb = New System.Windows.Forms.Panel()
         Me.btnTakeImage = New System.Windows.Forms.Button()
         Me.btnOpenClosePanel = New System.Windows.Forms.Button()
-        Me.Map1 = New Esri.ArcGIS.Mobile.WinForms.Map()
+        Me.Map1 = New ESRI.ArcGIS.Mobile.WinForms.Map()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.statLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.statTool = New System.Windows.Forms.ToolStripStatusLabel()
@@ -254,7 +254,7 @@ Partial Class MobileMapConsole
         Me.Map1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Map1.Location = New System.Drawing.Point(0, 0)
         Me.Map1.Name = "Map1"
-        Me.Map1.ScaleBar.DisplayPosition = Esri.ArcGIS.Mobile.WinForms.ScaleBarDisplayPosition.None
+        Me.Map1.ScaleBar.DisplayPosition = ESRI.ArcGIS.Mobile.WinForms.ScaleBarDisplayPosition.None
         Me.Map1.Size = New System.Drawing.Size(578, 712)
         Me.Map1.TabIndex = 0
         Me.Map1.Text = "Map1"

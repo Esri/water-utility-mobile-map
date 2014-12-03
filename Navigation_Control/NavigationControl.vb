@@ -1573,17 +1573,22 @@ Public Class mobileNavigation
 
     End Function
     Private Sub DrawArrows(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs)
-        'Draw the arrows on the navigation bar, 
-        e.Graphics.SmoothingMode = Drawing2D.SmoothingMode.AntiAlias
+        Try
 
-        If CType(sender, Label).Tag Is Nothing Then
-            Return
+            'Draw the arrows on the navigation bar, 
+            e.Graphics.SmoothingMode = Drawing2D.SmoothingMode.AntiAlias
 
-        End If
-        Dim pPolygon() As Point = CType(CType(sender, Label).Tag, Point())
+            If CType(sender, Label).Tag Is Nothing Then
+                Return
 
-        e.Graphics.FillPolygon(m_BrushArrow, pPolygon)
+            End If
+            Dim pPolygon() As Point = CType(CType(sender, Label).Tag, Point())
 
+            e.Graphics.FillPolygon(m_BrushArrow, pPolygon)
+
+        Catch ex As Exception
+
+        End Try
     End Sub
     Private Sub FixZoomMouseWheel(ByVal bOut As Boolean, ByVal centerCoord As ESRI.ArcGIS.Mobile.Geometries.Coordinate)
         'Handles the mouse wheel zoom in and out
@@ -1716,43 +1721,49 @@ Public Class mobileNavigation
 
     End Sub
     Private Sub m_Map_Paint(ByVal sender As Object, ByVal e As ESRI.ArcGIS.Mobile.WinForms.MapPaintEventArgs) Handles m_Map.MapPaint
-        If m_Map Is Nothing Then Return
-
-        'If m_Map.RotationAngle <> 0 Then
-        '    My.Resources.NorthArrow.RotateFlip(RotateFlipType.Rotate90FlipNone)
-        '    e.Graphics.DrawImage(My.Resources.NorthArrow, m_NorthArrowX, m_NorthArrowY)
-        '    'DrawImageRotatedAroundCenter(e.Graphics, New System.Drawing.Point(m_NorthArrowX, m_NorthArrowY), My.Resources.NorthArrow, m_Map.RotationAngle)
-
-        '    ' e.Graphics.DrawImage(My.Resources.NorthArrow, m_NorthArrowX, m_NorthArrowY, My.Resources.NorthArrow.Width, My.Resources.NorthArrow.Height)
-        'End If
-
-        'check whether to draw the scale
-        If m_DrawScale Then
-
-            'Make sure the map is valid
-            If m_Map.Scale <= 0 Then Return
-
-            'Draw the scale 
+        Try
 
 
+            If m_Map Is Nothing Then Return
 
-            'e.Graphics.DrawString("1: " & CInt(m_Map.Scale), m_scaleFontLarge, Brushes.Red, m_ScaleX, m_ScaleY)
-            'For top Center
-            'm_ScaleX = CInt(m_Map.Width / 2 - e.Graphics.MeasureString("1:" & CInt(m_Map.Scale), m_scaleFont).Width / 2)
-            'e.Graphics.DrawString("1:" & CInt(m_Map.Scale), m_scaleFont, m_ScaleBrush, m_ScaleX - m_offset, m_ScaleY - m_offset)
-            'e.Graphics.DrawString("1:" & CInt(m_Map.Scale), m_scaleFont, m_ScaleBrush, m_ScaleX + m_offset, m_ScaleY - m_offset)
-            'e.Graphics.DrawString("1:" & CInt(m_Map.Scale), m_scaleFont, m_ScaleBrush, m_ScaleX - m_offset, m_ScaleY + m_offset)
-            'e.Graphics.DrawString("1:" & CInt(m_Map.Scale), m_scaleFont, m_ScaleBrush, m_ScaleX + m_offset, m_ScaleY + m_offset)
-            'e.Graphics.DrawString("1:" & CInt(m_Map.Scale), m_scaleFont, m_ScaleBrushFront, m_ScaleX, m_ScaleY)
+            'If m_Map.RotationAngle <> 0 Then
+            '    My.Resources.NorthArrow.RotateFlip(RotateFlipType.Rotate90FlipNone)
+            '    e.Graphics.DrawImage(My.Resources.NorthArrow, m_NorthArrowX, m_NorthArrowY)
+            '    'DrawImageRotatedAroundCenter(e.Graphics, New System.Drawing.Point(m_NorthArrowX, m_NorthArrowY), My.Resources.NorthArrow, m_Map.RotationAngle)
 
-            'For bottom left
+            '    ' e.Graphics.DrawImage(My.Resources.NorthArrow, m_NorthArrowX, m_NorthArrowY, My.Resources.NorthArrow.Width, My.Resources.NorthArrow.Height)
+            'End If
 
-            e.Graphics.DrawString("1:" & CInt(m_Map.Scale), m_scaleFont, m_ScaleBrush, m_ScaleX - m_offset, m_ScaleY - m_offset)
-            e.Graphics.DrawString("1:" & CInt(m_Map.Scale), m_scaleFont, m_ScaleBrush, m_ScaleX + m_offset, m_ScaleY - m_offset)
-            e.Graphics.DrawString("1:" & CInt(m_Map.Scale), m_scaleFont, m_ScaleBrush, m_ScaleX - m_offset, m_ScaleY + m_offset)
-            e.Graphics.DrawString("1:" & CInt(m_Map.Scale), m_scaleFont, m_ScaleBrush, m_ScaleX + m_offset, m_ScaleY + m_offset)
-            e.Graphics.DrawString("1:" & CInt(m_Map.Scale), m_scaleFont, m_ScaleBrushFront, m_ScaleX, m_ScaleY)
-        End If
+            'check whether to draw the scale
+            If m_DrawScale Then
+
+                'Make sure the map is valid
+                If m_Map.Scale <= 0 Then Return
+
+                'Draw the scale 
+
+
+
+                'e.Graphics.DrawString("1: " & CInt(m_Map.Scale), m_scaleFontLarge, Brushes.Red, m_ScaleX, m_ScaleY)
+                'For top Center
+                'm_ScaleX = CInt(m_Map.Width / 2 - e.Graphics.MeasureString("1:" & CInt(m_Map.Scale), m_scaleFont).Width / 2)
+                'e.Graphics.DrawString("1:" & CInt(m_Map.Scale), m_scaleFont, m_ScaleBrush, m_ScaleX - m_offset, m_ScaleY - m_offset)
+                'e.Graphics.DrawString("1:" & CInt(m_Map.Scale), m_scaleFont, m_ScaleBrush, m_ScaleX + m_offset, m_ScaleY - m_offset)
+                'e.Graphics.DrawString("1:" & CInt(m_Map.Scale), m_scaleFont, m_ScaleBrush, m_ScaleX - m_offset, m_ScaleY + m_offset)
+                'e.Graphics.DrawString("1:" & CInt(m_Map.Scale), m_scaleFont, m_ScaleBrush, m_ScaleX + m_offset, m_ScaleY + m_offset)
+                'e.Graphics.DrawString("1:" & CInt(m_Map.Scale), m_scaleFont, m_ScaleBrushFront, m_ScaleX, m_ScaleY)
+
+                'For bottom left
+
+                e.Graphics.DrawString("1:" & CInt(m_Map.Scale), m_scaleFont, m_ScaleBrush, m_ScaleX - m_offset, m_ScaleY - m_offset)
+                e.Graphics.DrawString("1:" & CInt(m_Map.Scale), m_scaleFont, m_ScaleBrush, m_ScaleX + m_offset, m_ScaleY - m_offset)
+                e.Graphics.DrawString("1:" & CInt(m_Map.Scale), m_scaleFont, m_ScaleBrush, m_ScaleX - m_offset, m_ScaleY + m_offset)
+                e.Graphics.DrawString("1:" & CInt(m_Map.Scale), m_scaleFont, m_ScaleBrush, m_ScaleX + m_offset, m_ScaleY + m_offset)
+                e.Graphics.DrawString("1:" & CInt(m_Map.Scale), m_scaleFont, m_ScaleBrushFront, m_ScaleX, m_ScaleY)
+            End If
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Private Sub MaxExtent()
@@ -2707,9 +2718,15 @@ Public Class mobileNavigation
     End Sub
     Private Sub m_Map_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_Map.Resize
         'handles the map resize envet
+        Try
+
+    
         Resize()
         MaxExtent()
-        reLocateButtonsGrouped()
+            reLocateButtonsGrouped()
+        Catch ex As Exception
+
+        End Try
     End Sub
     Private Sub reLocateButtonsGrouped()
 

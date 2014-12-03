@@ -902,7 +902,13 @@ Public Class mobileGroupToggle
 
     Private Sub m_Map_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_Map.Resize
         'reLocateButtons()
-        reLocateButtonsGrouped()
+        Try
+
+     
+            reLocateButtonsGrouped()
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Protected Overrides Sub Finalize()
