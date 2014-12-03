@@ -85,5 +85,5 @@ limitations under the License.
 A copy of the license is available in the repository's
 [LICENSE.txt](LICENSE.txt) file.
 
-[](Esri Tags: Local-Government Water-Utility Local Government Water Utility Mobile Map Utility Utilities C-Sharp)
+[](Esri Tags: ArcGISSolutions Local-Government Water-Utility Local Government Water Utility Mobile Map Utility Utilities C-Sharp)
 [](Esri Language: Visual-Basic)
