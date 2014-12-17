@@ -8,7 +8,7 @@
       <FontSize>10</FontSize>
       <SideBarControl>False</SideBarControl>
       <CopyrightText>Esri, Inc.</CopyrightText>
-      <VersionInfo>Version: 10.2.0.5, 8-28-2014</VersionInfo>
+      <VersionInfo>Version: 10.3, 12-18-2014</VersionInfo>
       <ZoomExtent>600</ZoomExtent>
       <MultiLineThreshold Threshold="125" SizeFactor="3" />
       <MapExport visible="true" mailClient="Outlook" textToInclude="" />
@@ -24,7 +24,7 @@
       </UIComponents>
     </ApplicationSettings>
     <NavigationOptions>
-      <GPS>
+      <GPS AllowGPSToggle="True" TurnOnStartup="False">
         <Visible>True</Visible>
         <COMFile>file.txt</COMFile>
         <GPSBaud>4800</GPSBaud>
@@ -64,7 +64,6 @@
         <ALNNotInstalled>ALN is not installed</ALNNotInstalled>
         <DestinationNotFound>Location was invalid</DestinationNotFound>
         <PointsAvgText>Point(s) Captured</PointsAvgText>
-        <GPSNoConnect>GPS could not connect</GPSNoConnect>
       </UIComponents>
     </NavigationOptions>
     <MeasureOptions>
@@ -81,7 +80,7 @@
     </MeasureOptions>
     <LayerOptions>
       <MobileServices ymax="" LimitQuery="" ymin="" xmin="" xmax="">
-        <MobileService StorageLocation="" UserName="" Password="" Domain="" TokenURL ="">http://localhost:6080/arcgis/services/LeakSurvey/MapServer/MobileServer</MobileService>
+        <MobileService StorageLocation="" UserName="" Password="" Domain="" TokenURL="">http://utilsolutions.esri.com:6080/arcgis/services/LeakSurveyMobileMap/MapServer/MobileServer</MobileService>
       </MobileServices>
       <CachedMaps>
         <CachedMap DisplayName="DayMap">Mobile Day Map</CachedMap>
@@ -93,12 +92,12 @@
       </WebMaps>
       <LayerGroupings>
         <LayersGroup Visible="True" DisplayName="Leak Survey Grids">
-          <LayerGroup Name="Leak Survey Trailer Park" />
-          <LayerGroup Name="Leak Survey Cast Iron" />
+          <LayerGroup Name="Leak Survey Area Survey" />
+          <LayerGroup Name="Leak Survey Atmosphere" />
+          <LayerGroup Nam="Leak Survey Cast Iron"/>
           <LayerGroup Name="Leak Survey Business" />
           <LayerGroup Name="Leak Survey Bare Steel" />
-          <LayerGroup Name="Leak Survey Atmosphere" />
-          <LayerGroup Name="Leak Survey Area Survey" />
+          <LayerGroup Name="Leak Survey Trailer Park" />
         </LayersGroup>
         <LayersGroup Visible="true" DisplayName="Network">
           <LayerGroup Name="Meter Setting" />
@@ -107,6 +106,9 @@
           <LayerGroup Name="Controllable Fitting" />
           <LayerGroup Name="Gas Valve" />
           <LayerGroup Name="Relief Valve" />
+          <LayerGroup Name="Rectifier" />
+          <LayerGroup Name="Pressure Monitoring Device" />
+          <LayerGroup Name="Anode" />
           <LayerGroup Name="Town Border Station" />
           <LayerGroup Name="Regulator Station" />
           <LayerGroup Name="Service" />
@@ -117,153 +119,137 @@
       <SingleBaseMap>True</SingleBaseMap>
       <FlowArrowsLayers />
       <LayersFieldOptions>
-        <Layer SketchColor="" SnapTo="" DisplayText="Gas Leaks" Name="Gas Leaks" SpecialCase="" SketchMode="">
-          <Field Options="" BackColor="buttonface" Caption="Gas Leak ID" Name="GasLeakID" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="Address" Name="Address" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="Facility" Name="Facility" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="Pipe Name" Name="PipeName" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
+        <Layer SketchColor="" SnapTo="" DisplayText="Gas Leak" Name="Gas Leak" SpecialCase="" SketchMode="">
+          <Field Options="" BackColor="buttonface" Caption="Gas Leak ID" Name="GlobalID" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
+          <Field Options="" BackColor="buttonface" Caption="Address" Name="ADDRESS" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
+          <Field Options="" BackColor="buttonface" Caption="Location Description" Name="LOCATIONDESCRIPTION" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
+          <Field Options="" BackColor="buttonface" Caption="Facility" Name="FACILITY" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
+          <Field Options="" BackColor="buttonface" Caption="Leak Class" Name="ORIGINALLEAKCLASS" ForeColor="#FFFF0000" HyperFormat="" BoxColor="buttonface" />
+          <Field Options="" BackColor="buttonface" Caption="Highest Read" Name="HIGHESTREAD" ForeColor="#FFFF0000" HyperFormat="" BoxColor="buttonface" />
+          <Field Options="" BackColor="buttonface" Caption="Method Detected" Name="METHODDETECTED" ForeColor="#FFFF0000" HyperFormat="" BoxColor="buttonface" />
+          <Field Options="" BackColor="buttonface" Caption="Leak Survey Type" Name="LEAKSURVEYTYPE" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
             <FilterFields Visibility="False" Mode="">
-              <FilterInfo FieldName="Facility">
-                <FieldValue>Service Line</FieldValue>
-                <FieldValue>Valve</FieldValue>
-                <FieldValue>Fitting</FieldValue>
-                <FieldValue>Regulator Station</FieldValue>
-                <FieldValue>Tranmission Line</FieldValue>
-                <FieldValue>Meter</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-                <FieldValue>Other</FieldValue>
-              </FilterInfo>
-            </FilterFields>
-            <FilterFields Visibility="True" Mode="">
-              <FilterInfo FieldName="Facility">
-                <FieldValue>Main Line</FieldValue>
-              </FilterInfo>
-            </FilterFields>
-          </Field>
-          <Field Options="" BackColor="buttonface" Caption="Leak Class" Name="OriginalLeakClass" ForeColor="#FFFF0000" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="Highest Read" Name="HighestRead" ForeColor="#FFFF0000" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="Method Detected" Name="MethodDetected" ForeColor="#FFFF0000" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="Leak Survey Type" Name="LeakSurveyType" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
-            <FilterFields Visibility="False" Mode="">
-              <FilterInfo FieldName="MethodDetected">
-                <FieldValue>Air Patrol</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
+              <FilterInfo FieldName="METHODDETECTED">
+                <FieldValue>Odor</FieldValue>
+                <FieldValue>Vegetation</FieldValue>
                 <FieldValue>Customer Reported</FieldValue>
-                <FieldValue>Unknown</FieldValue>
+                <FieldValue>[ISNULL]</FieldValue>
               </FilterInfo>
             </FilterFields>
             <FilterFields Visibility="True" Mode="">
-              <FilterInfo FieldName="MethodDetected">
+              <FilterInfo FieldName="METHODDETECTED">
                 <FieldValue>Leak Survey</FieldValue>
               </FilterInfo>
             </FilterFields>
           </Field>
-          <Field Options="" BackColor="buttonface" Caption="Surface Type" Name="SurfaceType" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="Leak Status" Name="LeakStatus" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="Fed Land Indicator" Name="FederalLandIndicator" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="DOT Reported Indicator" Name="DOTReportedIndicator" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="Reported By" Name="CreationUser" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="Date Reported" Name="DateReported" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
+          <Field Options="" BackColor="buttonface" Caption="Surface Type" Name="SURFACETYPE" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
+          <Field Options="" BackColor="buttonface" Caption="Leak Status" Name="LEAKSTATUS" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
+          <Field Options="" BackColor="buttonface" Caption="Fed Land Indicator" Name="FEDERALLANDINDICATOR" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
+          <Field Options="" BackColor="buttonface" Caption="DOT Reported Indicator" Name="DOTREPORTEDINDICATOR" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
+          <Field Options="" BackColor="buttonface" Caption="Comments" Name="COMMENTS" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
+          <Field Options="" BackColor="buttonface" Caption="Reported By" Name="CREATIONUSER" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
+          <Field Options="" BackColor="buttonface" Caption="Date Reported" Name="DATEREPORTED" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
         </Layer>
-        <Layer SketchColor="" SnapTo="" DisplayText="" Name="Gas Leak Inspection" SpecialCase="" SketchMode="">
-          <Field Options="" BackColor="buttonface" Caption="Gas Leak ID" Name="GasLeaksID" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="Leak Class" Name="LeakClass" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="Highest Read" Name="HighestRead" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="Method Detected" Name="MethodDetected" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="Gas In" Name="Gas In" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="Likely Source" Name="ProbableSource" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="Surface Type" Name="SurfaceType" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="Comments" Name="Comments" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="InspectedBy" Name="Inspected By" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="Date Inspected" Name="DateInspected" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
+        <Layer SketchColor="" SnapTo="" DisplayText="Gas Leak Inspection" Name="Gas Leak Inspection" SpecialCase="" SketchMode="">
+          <Field Options="" BackColor="buttonface" Caption="Gas Leak ID" Name="GASLEAK_GlobalID" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
+          <Field Options="" BackColor="buttonface" Caption="Leak Class" Name="LEAKCLASS" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
+          <Field Options="" BackColor="buttonface" Caption="Highest Read" Name="HIGHESTREAD" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
+          <Field Options="" BackColor="buttonface" Caption="Method Detected" Name="METHODDETECTED" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
+          <Field Options="" BackColor="buttonface" Caption="Gas In" Name="GASIN" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
+          <Field Options="" BackColor="buttonface" Caption="Probable Source" Name="PROBABLESOURCE" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
+          <Field Options="" BackColor="buttonface" Caption="Surface Type" Name="SURFACETYPE" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
+          <Field Options="" BackColor="buttonface" Caption="Comments" Name="COMMENTS" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
+          <Field Options="" BackColor="buttonface" Caption="InspectedBy" Name="INSPECTEDBY" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
+          <Field Options="" BackColor="buttonface" Caption="Date Inspected" Name="DATEINSPECTED" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
         </Layer>
-        <Layer SketchColor="" SnapTo="" DisplayText="" Name="Identified Issues" SpecialCase="" SketchMode="">
+        <Layer SketchColor="" SnapTo="" DisplayText="Identified Issue" Name="Identified Issue" SpecialCase="" SketchMode="">
           <Field Options="" BackColor="" Caption="Issue" Name="ISSUE" ForeColor="" HyperFormat="" BoxColor="" />
           <Field Options="" BackColor="" Caption="Comments" Name="COMMENTS" ForeColor="" HyperFormat="" BoxColor="" />
-          <Field Options="" BackColor="" Caption="Date Identified" Name="DATE" ForeColor="" HyperFormat="" BoxColor="" />
+          <Field Options="" BackColor="" Caption="Date Reported" Name="DATEREPORTED" ForeColor="" HyperFormat="" BoxColor="" />
           <Field Options="" BackColor="" Caption="Reported By" Name="REPORTEDBY" ForeColor="" HyperFormat="" BoxColor="" />
-          <Field Options="" BackColor="" Caption="Comments" Name="COMMENTS" ForeColor="" HyperFormat="" BoxColor="" />
         </Layer>
-        <Layer SketchColor="" SnapTo="" DisplayText="" Name="Leak Survey Work Orders" SpecialCase="" SketchMode="">
-          <Field Options="" BackColor="buttonface" Caption="Work Order ID" Name="WorkOrderID" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
+        <Layer SketchColor="" SnapTo="" DisplayText="" Name="Leak Survey Work Order" SpecialCase="" SketchMode="">
+          <Field Options="" BackColor="buttonface" Caption="Work Order ID" Name="WORKORDERID" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
             <FilterFields Visibility="True" Mode="WO_ID" />
             <FilterFields Visibility="False" Mode="WO_Close" />
           </Field>
-          <Field Options="" BackColor="buttonface" Caption="Leak Survey Type" Name="WorkOrderType" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
+          <Field Options="" BackColor="buttonface" Caption="Leak Survey Type" Name="WORKORDERTYPE" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
             <FilterFields Visibility="True" Mode="WO_ID" />
             <FilterFields Visibility="False" Mode="WO_Close" />
           </Field>
-          <Field Options="" BackColor="buttonface" Caption="Map Grid ID" Name="FacilityID" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
+          <Field Options="" BackColor="buttonface" Caption="Status" Name="WORKORDERSTATUS" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
+            <FilterFields Visibility="True" Mode="WO_ID"/>
+            <FilterFields Visibility="True" Mode="WO_Close"/>
+          </Field>
+          <Field Options="" BackColor="buttonface" Caption="Map Grid ID" Name="FACILITYID" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
             <FilterFields Visibility="True" Mode="WO_ID" />
             <FilterFields Visibility="False" Mode="WO_Close" />
           </Field>
-          <Field Options="" BackColor="buttonface" Caption="Days Til Due" Name="DaysTilDue" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
+          <Field Options="" BackColor="buttonface" Caption="AssignedTo" Name="ASSIGNEDTO" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
+            <FilterFields Visibility="False" Mode="WO_ID">
+            </FilterFields>
+            <FilterFields Visibility="False" Mode="WO_Close" />
+          </Field>
+          <Field Options="" BackColor="buttonface" Caption="Start Date" Name="STARTDATE" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
             <FilterFields Visibility="True" Mode="WO_ID">
-              <FilterInfo FieldName="WorkOrderStatus">
+              <FilterInfo FieldName="WORKORDERSTATUS">
+                <FieldValue>In Progress</FieldValue>
+              </FilterInfo>
+            </FilterFields>
+            <FilterFields Visibility="True" Mode="WO_Close" />
+          </Field>
+          <Field Options="" BackColor="buttonface" Caption="End Date" Name="ENDDATE" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
+            <FilterFields Visibility="True" Mode="WO_ID">
+              <FilterInfo FieldName="WORKORDERSTATUS">
+                <FieldValue>Completed</FieldValue>
+              </FilterInfo>
+            </FilterFields>
+            <FilterFields Visibility="True" Mode="WO_Close" />
+          </Field>
+          <Field Options="" BackColor="buttonface" Caption="Survey By" Name="SURVEYBY" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
+            <FilterFields Visibility="True" Mode="WO_ID">
+              <FilterInfo FieldName="WORKORDERSTATUS">
+                <FieldValue>Completed</FieldValue>
+              </FilterInfo>
+            </FilterFields>
+            <FilterFields Visibility="True" Mode="WO_Close" />
+          </Field>
+          <Field Options="" BackColor="buttonface" Caption="Survey Method" Name="SURVEYMETHOD" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
+            <FilterFields Visibility="True" Mode="WO_ID">
+              <FilterInfo FieldName="WORKORDERSTATUS">
+                <FieldValue>Completed</FieldValue>
+              </FilterInfo>
+            </FilterFields>
+            <FilterFields Visibility="True" Mode="WO_Close" />
+          </Field>
+          <Field Options="" BackColor="buttonface" Caption="Days Until Due" Name="DAYSTILDUE" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
+            <FilterFields Visibility="True" Mode="WO_ID">
+              <FilterInfo FieldName="WORKORDERSTATUS">
                 <FieldValue>Assigned</FieldValue>
                 <FieldValue>In Progress</FieldValue>
               </FilterInfo>
             </FilterFields>
             <FilterFields Visibility="False" Mode="WO_Close" />
           </Field>
-          <Field Options="" BackColor="buttonface" Caption="Footage of Mains" Name="FootageMains" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
+          <Field Options="" BackColor="buttonface" Caption="Footage of Mains" Name="FOOTAGEMAINS" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
             <FilterFields Visibility="True" Mode="WO_ID" />
             <FilterFields Visibility="False" Mode="WO_Close" />
           </Field>
-          <Field Options="" BackColor="buttonface" Caption="Number of Services" Name="NumberServices" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
+          <Field Options="" BackColor="buttonface" Caption="Number of Services" Name="NUMBERSERVICES" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
             <FilterFields Visibility="True" Mode="WO_ID" />
             <FilterFields Visibility="False" Mode="WO_Close" />
-          </Field>
-          <Field Options="" BackColor="buttonface" Caption="AssignedTo" Name="AssignedTo" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
-            <FilterFields Visibility="False" Mode="WO_ID">
-              <FilterInfo FieldName="WorkOrderStatus" />
-            </FilterFields>
-            <FilterFields Visibility="False" Mode="WO_Close" />
-          </Field>
-          <Field Options="" BackColor="buttonface" Caption="Status" Name="WorkOrderStatus" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="Start Date" Name="StartDate" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
-            <FilterFields Visibility="True" Mode="WO_ID">
-              <FilterInfo FieldName="WorkOrderStatus">
-                <FieldValue>In Progress</FieldValue>
-              </FilterInfo>
-            </FilterFields>
-            <FilterFields Visibility="True" Mode="WO_Close" />
-          </Field>
-          <Field Options="" BackColor="buttonface" Caption="End Date" Name="EndDate" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
-            <FilterFields Visibility="True" Mode="">
-              <FilterInfo FieldName="WorkOrderStatus">
-                <FieldValue>Completed</FieldValue>
-              </FilterInfo>
-            </FilterFields>
-            <FilterFields Visibility="True" Mode="WO_Close" />
-          </Field>
-          <Field Options="" BackColor="buttonface" Caption="Survey Method" Name="SurveyMethod" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
-            <FilterFields Visibility="True" Mode="WO_ID">
-              <FilterInfo FieldName="WorkOrderStatus">
-                <FieldValue>Completed</FieldValue>
-              </FilterInfo>
-            </FilterFields>
-            <FilterFields Visibility="True" Mode="WO_Close" />
-          </Field>
-          <Field Options="" BackColor="buttonface" Caption="Survey By" Name="SurveyBy" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
-            <FilterFields Visibility="True" Mode="WO_ID">
-              <FilterInfo FieldName="WorkOrderStatus">
-                <FieldValue>Completed</FieldValue>
-              </FilterInfo>
-            </FilterFields>
-            <FilterFields Visibility="True" Mode="WO_Close" />
           </Field>
           <Field Options="" BackColor="buttonface" Caption="Number of Leaks" Name="NumberLeaks" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
             <FilterFields Visibility="True" Mode="WO_ID">
-              <FilterInfo FieldName="WorkOrderStatus">
+              <FilterInfo FieldName="WORKORDERSTATUS">
                 <FieldValue>Completed</FieldValue>
               </FilterInfo>
             </FilterFields>
             <FilterFields Visibility="True" Mode="WO_Close" />
           </Field>
-          <Field Options="" BackColor="buttonface" Caption="Number of Hours" Name="Duration" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
+          <Field Options="" BackColor="buttonface" Caption="Number of Hours" Name="DURATION" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
             <FilterFields Visibility="True" Mode="WO_ID">
-              <FilterInfo FieldName="WorkOrderStatus">
+              <FilterInfo FieldName="WORKORDERSTATUS">
                 <FieldValue>Completed</FieldValue>
               </FilterInfo>
             </FilterFields>
@@ -280,27 +266,30 @@
       <EditFormExistingColor />
       <EditFormNewColor />
       <Layers>
-        <Layer AllowNew="TRUE" EditExisting="false" DisplayText="Gas Leaks" EditOwnerField="" SyncOnSave="0" EditGeo="false" DeleteFeature="false" RequiredBoxColor="" RequiredForeColor="" RequiredBackColor="" Name="Gas Leaks" SnapTo="" SketchColor="#FFFF0000" SketchMode="Tap">
-          <Field Name="GasLeakID" OnNew="GUID" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
-          <Field Name="Address" OnNew="Address" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
-          <Field Name="PipeName" OnNew="Intersect" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="Main" IntersectField="PipeName" />
-          <Field Name="FederalLandIndicator" OnNew="value" OnModify="" OnNewReadOnly="false" OnModifyReadOnly="false" IntersectLayer="" IntersectField="" ValueText="N" />
-          <Field Name="DOTReportedIndicator" OnNew="value" OnModify="" OnNewReadOnly="false" OnModifyReadOnly="false" IntersectLayer="" IntersectField="" ValueText="N" />
-          <Field Name="CreationUser" OnNew="User" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
-          <Field Name="DateReported" OnNew="Date" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
+        <Layer AllowNew="TRUE" EditExisting="false" DisplayText="Gas Leak" EditOwnerField="" SyncOnSave="0" EditGeo="false" DeleteFeature="false" RequiredBoxColor="" RequiredForeColor="" RequiredBackColor="" Name="Gas Leak" SnapTo="" SketchColor="#FFFF0000" SketchMode="Tap">
+          <Field Name="GlobalID" OnNew="GUID" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
+          <Field Name="ADDRESS" OnNew="Address" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
+          <Field Name="LOCATIONDESCRIPTION" OnNew="Intersect" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="Distribution Main" IntersectField="LEGACYID" />
+          <Field Name="FEDERALLANDINDICATOR" OnNew="value" OnModify="" OnNewReadOnly="false" OnModifyReadOnly="false" IntersectLayer="" IntersectField="" ValueText="N" />
+          <Field Name="DOTREPORTEDINDICATOR" OnNew="value" OnModify="" OnNewReadOnly="false" OnModifyReadOnly="false" IntersectLayer="" IntersectField="" ValueText="N" />
+          <Field Name="LEAKSTATUS" OnNew="value" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" ValueText="Active"/>
+          <Field Name="CREATIONUSER" OnNew="User" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
+          <Field Name="DATEREPORTED" OnNew="Date" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
         </Layer>
-        <Layer AllowNew="TRUE" EditExisting="false" DisplayText="Leak Inspections" EditOwnerField="" SyncOnSave="0" EditGeo="false" DeleteFeature="false" RequiredBoxColor="" RequiredForeColor="" RequiredBackColor="" Name="Gas Leak Inspection" SnapTo="Gas Leaks" SketchColor="#FFFF0000" SketchMode="Tap">
-          <Field Name="GasLeaksID" OnNew="Intersect" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="Gas Leaks" IntersectField="GasLeakID" />
-          <Field Name="SurfaceType" OnNew="Intersect" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="Gas Leaks" IntersectField="SurfaceType" />
-          <Field Name="DateInspected" OnNew="Date" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
-          <Field Name="InspectedBy" OnNew="User" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
+        <Layer AllowNew="TRUE" EditExisting="false" DisplayText="Leak Inspection" EditOwnerField="" SyncOnSave="0" EditGeo="false" DeleteFeature="false" RequiredBoxColor="" RequiredForeColor="" RequiredBackColor="" Name="Gas Leak Inspection" SnapTo="Gas Leak" SketchColor="#FFFF0000" SketchMode="Tap">
+          <Field Name="GASLEAK_GlobalID" OnNew="Intersect" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="Gas Leak" IntersectField="GlobalID" />
+          <Field Name="METHODDETECTED" OnNew="Intersect" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="Gas Leak" IntersectField="METHODDETECTED"/>
+          <Field Name="SURFACETYPE" OnNew="Intersect" OnModify="" OnNewReadOnly="false" OnModifyReadOnly="false" IntersectLayer="Gas Leak" IntersectField="SURFACETYPE" />
+          <Field Name="PROBABLESOURCE" OnNew="Intersect" OnModify="" OnNewReadOnly="false" OnModifyReadOnly="false" IntersectLayer="Gas Leak" IntersectField="PROBABLESOURCE"/>
+          <Field Name="DATEINSPECTED" OnNew="Date" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
+          <Field Name="INSPECTEDBY" OnNew="User" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
         </Layer>
         <Layer AllowNew="TRUE" EditExisting="false" DisplayText="Identified Issue" EditOwnerField="" SyncOnSave="" EditGeo="false" DeleteFeature="false" RequiredBoxColor="" RequiredForeColor="" RequiredBackColor="" Name="Identified Issue" SnapTo="" SketchColor="#FFFF0000" SketchMode="Tap">
           <Field Name="DATE" OnNew="Date" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
           <Field Name="REPORTEDBY" OnNew="User" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
         </Layer>
-        <Layer AllowNew="false" EditExisting="true" DisplayText="Leak Survey Work Orders" EditOwnerField="" SyncOnSave="" EditGeo="false" DeleteFeature="false" RequiredBoxColor="" RequiredForeColor="" RequiredBackColor="" Name="Leak Survey Work Orders" SnapTo="" SketchColor="#FFFF0000" SketchMode="">
-          <Field Name="SurveyBy" OnNew="FullUser" OnModify="User" OnNewReadOnly="" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
+        <Layer AllowNew="false" EditExisting="true" DisplayText="Leak Survey Work Order" EditOwnerField="" SyncOnSave="" EditGeo="false" DeleteFeature="false" RequiredBoxColor="" RequiredForeColor="" RequiredBackColor="" Name="Leak Survey Work Order" SnapTo="" SketchColor="#FFFF0000" SketchMode="">
+          <Field Name="SURVEYBY" OnNew="User" OnModify="User" OnNewReadOnly="" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
         </Layer>
       </Layers>
       <DateTimeDisplayFormat>MM/dd/yyyy hh:mm</DateTimeDisplayFormat>
@@ -330,18 +319,18 @@
       <StatusBarMessage>Data Services: Post or get new data changes from your office's server</StatusBarMessage>
       <RefreshList ShowAllLayers="true">
         <RefreshGroup Name="Workorders">
-          <RefreshLayer SyncOnStartUp="True" Name="Leak Survey Work Orders" Extent="Full" WhereClause="" />
+          <RefreshLayer SyncOnStartUp="True" Name="Leak Survey Work Order" Extent="Full" WhereClause="" />
         </RefreshGroup>
         <RefreshGroup Name="Leak Survey Grids">
-          <RefreshLayer SyncOnStartUp="True" Name="Leak Survey Trailer Park" Extent="Full" WhereClause="" />
+          <RefreshLayer SyncOnStartUp="True" Name="Leak Survey Area Survey" Extent="Full" WhereClause="" />
+          <RefreshLayer SyncOnStartUp="True" Name="Leak Survey Atmosphere" Extent="Full" WhereClause="" />
           <RefreshLayer SyncOnStartUp="True" Name="Leak Survey Cast Iron" Extent="Full" WhereClause="" />
           <RefreshLayer SyncOnStartUp="True" Name="Leak Survey Business" Extent="Full" WhereClause="" />
           <RefreshLayer SyncOnStartUp="True" Name="Leak Survey Bare Steel" Extent="Full" WhereClause="" />
-          <RefreshLayer SyncOnStartUp="True" Name="Leak Survey Atmosphere" Extent="Full" WhereClause="" />
-          <RefreshLayer SyncOnStartUp="True" Name="Leak Survey Area Survey" Extent="Full" WhereClause="" />
+          <RefreshLayer SyncOnStartUp="True" Name="Leak Survey Trailer Park" Extent="Full" WhereClause="" />
         </RefreshGroup>
-        <RefreshGroup Name="Leaks and Issues">
-          <RefreshLayer SyncOnStartUp="false" Name="Gas Leaks" Extent="Current" WhereClause="" />
+        <RefreshGroup Name="Field Operations">
+          <RefreshLayer SyncOnStartUp="false" Name="Gas Leak" Extent="Current" WhereClause="" />
           <RefreshLayer SyncOnStartUp="false" Name="Gas Leak Inspection" Extent="Current" WhereClause="" />
           <RefreshLayer SyncOnStartUp="false" Name="Identified Issue" Extent="Current" WhereClause="" />
         </RefreshGroup>
@@ -352,6 +341,9 @@
           <RefreshLayer SyncOnStartUp="false" Name="Controllable Fitting" Extent="Current" WhereClause="" />
           <RefreshLayer SyncOnStartUp="false" Name="Gas Valve" Extent="Current" WhereClause="" />
           <RefreshLayer SyncOnStartUp="false" Name="Relief Valve" Extent="Current" WhereClause="" />
+          <RefreshLayer SyncOnStartUp="false" Name="Rectifier" Extent="Current" WhereClause=""/>
+          <RefreshLayer SyncOnStartUp="false" Name="Pressure Monitoring Device" Extent="Current" WhereClause=""/>
+          <RefreshLayer SynOnStartUp="false"  Name="Anode" Extent="Current" WhereClause=""/>
           <RefreshLayer SyncOnStartUp="false" Name="Town Border Station" Extent="Current" WhereClause="" />
           <RefreshLayer SyncOnStartUp="false" Name="Regulator Station" Extent="Current" WhereClause="" />
           <RefreshLayer SyncOnStartUp="false" Name="Service" Extent="Current" WhereClause="" />
@@ -382,43 +374,43 @@
       <SearchXYOneLine>False</SearchXYOneLine>
       <SearchDataLoadType>ADO</SearchDataLoadType>
       <SearchLayers>
-        <SearchLayer DefQuery="" DisplayName="Meter Setting" Name="Meter Setting" xmin="" xmax="" ymin="" ymax="">
+        <SearchLayer Name="Meter Setting" DisplayName="Meter Setting" xmin="" DefQuery="" xmax="" ymin="" ymax="">
           <Fields />
         </SearchLayer>
-        <SearchLayer DefQuery="" DisplayName="Gas Valve" Name="Gas Valve" xmin="" xmax="" ymin="" ymax="">
+        <SearchLayer Name="Gas Valve" DisplayName="Gas Valve" xmin="" DefQuery="" xmax="" ymin="" ymax="">
           <Fields />
         </SearchLayer>
-        <SearchLayer DefQuery="" DisplayName="Regulator Station"  Name="Regulator Station" xmin="" xmax="" ymin="" ymax="">
+        <SearchLayer Name="Regulator Station" DisplayName="Regulator Station" xmin="" DefQuery="" xmax="" ymin="" ymax="">
           <Fields />
         </SearchLayer>
-        <SearchLayer DefQuery="" DisplayName="Town Border Station" Name="Town Border Station" xmin="" xmax="" ymin="" ymax="">
+        <SearchLayer Name="Town Border Station" DisplayName="Town Border Station" xmin="" DefQuery="" xmax="" ymin="" ymax="">
           <Fields />
         </SearchLayer>
-        <SearchLayer DefQuery="" DisplayName="Gas Leaks" Name="Gas Leaks" xmin="" xmax="" ymin="" ymax="">
+        <SearchLayer Name="Gas Leak" DisplayName="Gas Leak" xmin="" DefQuery="" xmax="" ymin="" ymax="">
           <Fields />
         </SearchLayer>
       </SearchLayers>
       <DrillDownSearches>
         <DrillDownSearch DefQuery="" LayerName="Gas Valve" DisplayText="Gas Valve" ymax="" xmin="" xmax="" ymin="">
           <PointFields>
-            <PointField Name="FacilityID" DisplayText="Facility ID" AutoComplete="True" />
+            <PointField Name="FACILITYID" DisplayText="Facility ID" AutoComplete="True" />
           </PointFields>
         </DrillDownSearch>
         <DrillDownSearch DefQuery="" LayerName="Meter Setting" DisplayText="Meter Setting" ymax="" xmin="" xmax="" ymin="">
           <PointFields>
-            <PointField Name="FacilityID" DisplayText="Facility ID" AutoComplete="True" />
+            <PointField Name="FACILITYID" DisplayText="Facility ID" AutoComplete="True" />
           </PointFields>
         </DrillDownSearch>
         <DrillDownSearch DefQuery="" LayerName="Regulator Station" DisplayText="Regulator Station" ymax="" xmin="" xmax="" ymin="">
           <PointFields>
-            <PointField Name="FacilityID" DisplayText="Facility ID" AutoComplete="True" />
-            <PointField Name="Station" DisplayText="Station" AutoComplete="True" />
+            <PointField Name="FACILITYID" DisplayText="Facility ID" AutoComplete="True" />
+            <PointField Name="STATIONNAME" DisplayText="Station" AutoComplete="True" />
           </PointFields>
         </DrillDownSearch>
         <DrillDownSearch DefQuery="" LayerName="Town Border Station" DisplayText="Town Border Station" ymax="" xmin="" xmax="" ymin="">
           <PointFields>
-            <PointField Name="FacilityID" DisplayText="Facility ID" AutoComplete="True" />
-            <PointField Name="Station" DisplayText="Station" AutoComplete="True" />
+            <PointField Name="FACILITYID" DisplayText="Facility ID" AutoComplete="True" />
+            <PointField Name="STATIONNAME" DisplayText="Station" AutoComplete="True" />
           </PointFields>
         </DrillDownSearch>
       </DrillDownSearches>
@@ -439,9 +431,9 @@
           <DefaultCity>Wheaton</DefaultCity>
           <DefaultState>Il</DefaultState>
         </SDC>
-        <!--<OnlineServices>
-          <Geocode TextToAdd="Naperville, Il" GCUrl="https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?" singleLineFieldName="SingleLine"/>
-        </OnlineServices>-->
+        <OnlineServices>
+          <Geocode GCUrl="" singleLineFieldName="SingleLine" />
+        </OnlineServices>
       </AddressSearch>
       <UIComponents>
         <AllText>&lt;All&gt;</AllText>
@@ -538,18 +530,18 @@
       <LengthUnit>Foot</LengthUnit>
       <IDGroups AllLayersText="All Layers">
         <IDGroup DisplayName="Work Order">
-          <IDLayer Name="Leak Survey Work Orders" />
+          <IDLayer Name="Leak Survey Work Order" />
         </IDGroup>
         <IDGroup DisplayName="Leak Survey Grids">
-          <IDLayer Name="Leak Survey Construction Site" />
-          <IDLayer Name="Leak Survey Trailer Park" />
+          <IDLayer Name="Leak Survey Area Survey" />
+          <IDLayer Name="Leak Survey Atmosphere" />
+          <IDLayer Name="Leak Survey Cast Iron" />
           <IDLayer Name="Leak Survey Business" />
           <IDLayer Name="Leak Survey Bare Steel" />
-          <IDLayer Name="Leak Survey Atmosphere" />
-          <IDLayer Name="Leak Survey Area Survey" />
+          <IDLayer Name="Leak Survey Trailer Park" />
         </IDGroup>
-        <IDGroup DisplayName="Leaks and Issues">
-          <IDLayer Name="Gas Leaks" />
+        <IDGroup DisplayName="Field Operations">
+          <IDLayer Name="Gas Leak" />
           <IDLayer Name="Gas Leak Inspection" />
           <IDLayer Name="Identified Issue" />
         </IDGroup>
@@ -560,10 +552,13 @@
           <IDLayer Name="Controllable Fitting" />
           <IDLayer Name="Gas Valve" />
           <IDLayer Name="Relief Valve" />
+          <IDLayer Name="Rectifier"/>
+          <IDLayer Name="Pressure Monitoring Device"/>
+          <IDLayer Name="Anode"/>
           <IDLayer Name="Town Border Station" />
           <IDLayer Name="Regulator Station" />
           <IDLayer Name="Service" />
-          <IDLayer Name="Main" />
+          <IDLayer Name="Distribution Main" />
         </IDGroup>
       </IDGroups>
       <UIComponents>
@@ -600,49 +595,49 @@
     <WorkorderPanel>
       <Visible>True</Visible>
       <DisplayText>Workorder</DisplayText>
-      <StatusBarMessage>Activitiy List: Shows a list of assigned activities, opening a activity sets up an inspection</StatusBarMessage>
-      <LayerInfo LayerName="Leak Survey Work Orders" AssignedToField="AssignedTo" AssignedTo="Crew 5" IDField="WorkOrderID" />
-      <WorkOrderFilters ButtonSize="40" ListFontSize="12" ButtonFontSize="14">
-        <WorkOrderFilter Action="Zoom,Flash" QueryValue="DaysTilDue &lt;= 0 and (WorkOrderStatus = 'Assigned' or WorkOrderStatus = 'In Progress')" Label="Overdue" SortField="FacilityID">
+      <StatusBarMessage>Activity List: Shows a list of assigned activities, opening a activity sets up an inspection</StatusBarMessage>
+      <LayerInfo LayerName="Leak Survey Work Order" AssignedToField="ASSIGNEDTO" AssignedTo="Crew 3" IDField="WORKORDERID" />
+      <WorkOrderFilters ButtonSize="40" ListFontSize="12" ButtonFontSize="14" ShowFilterGeo="False" FilterOn="False">
+        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="DAYSTILDUE &lt;= 0 and (WORKORDERSTATUS = 'Assigned' or WORKORDERSTATUS = 'In Progress')" Label="Overdue" SortField="FACILITYID">
           <Fields JoinString=" - ">
-            <Field Name="FacilityID" Label="" />
-            <Field Name="WorkOrderType" Label="" />
+            <Field Name="FACILITYID" Label="" />
+            <Field Name="WORKORDERTYPE" Label="" />
           </Fields>
         </WorkOrderFilter>
-        <WorkOrderFilter Action="Zoom,Flash" QueryValue="(WorkOrderStatus = 'Assigned' or WorkOrderStatus = 'In Progress') AND (DaysTilDue &gt; 0 and DaysTilDue  &lt;= 30)" Label="Due 1-30 Days" SortField="FacilityID">
+        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="(WORKORDERSTATUS = 'Assigned' or WORKORDERSTATUS = 'In Progress') AND (DAYSTILDUE &gt; 0 and DAYSTILDUE  &lt;= 30)" Label="Due 1-30 Days" SortField="FACILITYID">
           <Fields JoinString=" - ">
-            <Field Name="FacilityID" Label="" />
-            <Field Name="WorkOrderType" Label="" />
+            <Field Name="FACILITYID" Label="" />
+            <Field Name="WORKORDERTYPE" Label="" />
           </Fields>
         </WorkOrderFilter>
-        <WorkOrderFilter Action="Zoom,Flash" QueryValue="(WorkOrderStatus = 'Assigned' or WorkOrderStatus = 'In Progress') AND (DaysTilDue &gt; 30 and DaysTilDue &lt;= 90)" Label="Due 31-90 Days" SortField="FacilityID">
+        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="(WORKORDERSTATUS = 'Assigned' or WORKORDERSTATUS = 'In Progress') AND (DAYSTILDUE &gt; 30 and DAYSTILDUE &lt;= 90)" Label="Due 31-90 Days" SortField="FACILITYID">
           <Fields JoinString=" - ">
-            <Field Name="FacilityID" Label="" />
-            <Field Name="WorkOrderType" Label="" />
+            <Field Name="FACILITYID" Label="" />
+            <Field Name="WORKORDERTYPE" Label="" />
           </Fields>
         </WorkOrderFilter>
-        <WorkOrderFilter Action="Zoom,Flash" QueryValue="(WorkOrderStatus = 'Assigned' or WorkOrderStatus= 'In Progress') AND (DaysTilDue &gt; 90 and DaysTilDue &lt;= 180)" Label="Due 91-180 Days" SortField="FacilityID">
+        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="(WORKORDERSTATUS = 'Assigned' or WORKORDERSTATUS = 'In Progress') AND (DAYSTILDUE &gt; 90 and DAYSTILDUE &lt;= 180)" Label="Due 91-180 Days" SortField="FACILITYID">
           <Fields JoinString=" - ">
-            <Field Name="FacilityID" Label="" />
-            <Field Name="WorkOrderType" Label="" />
+            <Field Name="FACILITYID" Label="" />
+            <Field Name="WORKORDERTYPE" Label="" />
           </Fields>
         </WorkOrderFilter>
-        <WorkOrderFilter Action="Zoom,Flash" QueryValue="WorkOrderStatus = 'In Progress'" Label="In Progress" SortField="FacilityID">
+        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="WORKORDERSTATUS = 'In Progress'" Label="In Progress" SortField="FACILITYID">
           <Fields JoinString=" - ">
-            <Field Name="FacilityID" Label="" />
-            <Field Name="WorkOrderType" Label="" />
+            <Field Name="FACILITYID" Label="" />
+            <Field Name="WORKORDERTYPE" Label="" />
           </Fields>
         </WorkOrderFilter>
-        <WorkOrderFilter Action="Zoom,Flash" QueryValue="WorkOrderStatus = 'Completed'" Label="Completed" SortField="FacilityID">
+        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="WORKORDERSTATUS = 'Completed'" Label="Completed" SortField="FACILITYID">
           <Fields JoinString=" - ">
-            <Field Name="FacilityID" Label="" />
-            <Field Name="WorkOrderType" Label="" />
+            <Field Name="FACILITYID" Label="" />
+            <Field Name="WORKORDERTYPE" Label="" />
           </Fields>
         </WorkOrderFilter>
-        <WorkOrderFilter Action="Zoom,Flash" QueryValue="WorkOrderStatus = 'No Access'" Label="No Access" SortField="FacilityID">
+        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="WorkOrderStatus = 'No Access'" Label="No Access" SortField="FACILITYID">
           <Fields JoinString=" - ">
-            <Field Name="FacilityID" Label="" />
-            <Field Name="WorkOrderType" Label="" />
+            <Field Name="FACILITYID" Label="" />
+            <Field Name="WORKORDERTYPE" Label="" />
           </Fields>
         </WorkOrderFilter>
       </WorkOrderFilters>

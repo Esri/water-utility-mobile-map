@@ -1431,7 +1431,7 @@ Public Class MobileServiceSync
                     If m_MobileCache.IsValid Then
 
                         Try
-
+                            m_MobileConnect.WebClientProtocolType = WebClientProtocolType.SoapWebService
                             m_MobileSyncAgent = New Esri.ArcGIS.Mobile.FeatureCaching.Synchronization.MobileCacheSyncAgent(m_MobileCache, m_MobileConnect)
                             m_MobileSyncResults = New Esri.ArcGIS.Mobile.FeatureCaching.Synchronization.MobileCacheSyncResults()
                             m_MobileCache.Open()
@@ -2111,9 +2111,6 @@ TogglePostRefresh(true)
                     If TypeOf pFS Is Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource Then
 
 
-
-
-
                         If pFS.HasEdits = False And syncDir = Esri.ArcGIS.Mobile.FeatureCaching.Synchronization.SyncDirection.UploadOnly Then
                         Else
                             ' Dim pFeatAtt As Esri.ArcGIS.Mobile.FeatureCaching.FeatureAttachmentManager = pFL.AttachmentManager
@@ -2148,51 +2145,52 @@ TogglePostRefresh(true)
                 For Each pConfigValue As MobileConfigClass.MobileConfigMobileMapConfigServicePanelRefreshListRefreshGroupRefreshLayer In LayersToPost
                     Dim pFS As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource = GlobalsFunctions.GetFeatureSource(pConfigValue.Name, m_Map).FeatureSource
 
+                    If pFS IsNot Nothing Then
+
+                        If pFS.HasEdits = False And syncDir = ESRI.ArcGIS.Mobile.FeatureCaching.Synchronization.SyncDirection.UploadOnly Then
+                        Else
+
+                            pFLSyncAgent = New ESRI.ArcGIS.Mobile.FeatureCaching.Synchronization.FeatureSyncAgent(pFS)
+                            pFLSyncAgent.SynchronizationDirection = syncDir
+                            pFLSyncAgent.SynchronizeAttachments = True
 
 
+                            pFLSyncAgent.MapDocumentConnection = m_MobileConnect
+                            If extent IsNot Nothing Then
+                                pQf = New QueryFilter
 
-                    If pFS.HasEdits = False And syncDir = Esri.ArcGIS.Mobile.FeatureCaching.Synchronization.SyncDirection.UploadOnly Then
-                    Else
+                                If pConfigValue.Extent.ToUpper = "FULL" Then
+                                    pQf.Geometry = m_Map.FullExtent
+                                Else
+                                    pQf.Geometry = extent.Extent
+                                End If
+                                If pConfigValue.WhereClause <> "" Then
+                                    pQf.WhereClause = pConfigValue.WhereClause
 
-                        pFLSyncAgent = New Esri.ArcGIS.Mobile.FeatureCaching.Synchronization.FeatureSyncAgent(pFS)
-                        pFLSyncAgent.SynchronizationDirection = syncDir
-                        pFLSyncAgent.SynchronizeAttachments = True
+                                End If
+
+                                pQf.GeometricRelationship = Geometries.GeometricRelationshipType.Intersect
 
 
-                        pFLSyncAgent.MapDocumentConnection = m_MobileConnect
-                        If extent IsNot Nothing Then
-                            pQf = New QueryFilter
+                                pFLSyncAgent.DownloadFilter = pQf
+                                ' pFLSyncAgent.UploadFilter = pQf
 
-                            If pConfigValue.Extent.ToUpper = "FULL" Then
-                                pQf.Geometry = m_Map.FullExtent
-                            Else
-                                pQf.Geometry = extent.Extent
                             End If
-                            If pConfigValue.WhereClause <> "" Then
-                                pQf.WhereClause = pConfigValue.WhereClause
+                            featLToSync.Add(pFLSyncAgent)
 
-                            End If
+                            'Dim ca As New AsyncPostFeatureSourceClass()
+                            'ca.Esri.ArcGIS.Mobile.FeatureCaching.Synchronization.FeatureSyncAgent = pFLSyncAgent
+                            'ca.StartDelegate = AddressOf SyncLayerAsync
+                            'Dim t As New Thread(AddressOf ca.syncFeatureSource)
+                            'm_PostLayCount = m_PostLayCount + 1
+                            't.IsBackground = True
+                            't.Start()
 
-                            pQf.GeometricRelationship = Geometries.GeometricRelationshipType.Intersect
-
-
-                            pFLSyncAgent.DownloadFilter = pQf
-                            ' pFLSyncAgent.UploadFilter = pQf
 
                         End If
-                        featLToSync.Add(pFLSyncAgent)
-
-                        'Dim ca As New AsyncPostFeatureSourceClass()
-                        'ca.Esri.ArcGIS.Mobile.FeatureCaching.Synchronization.FeatureSyncAgent = pFLSyncAgent
-                        'ca.StartDelegate = AddressOf SyncLayerAsync
-                        'Dim t As New Thread(AddressOf ca.syncFeatureSource)
-                        'm_PostLayCount = m_PostLayCount + 1
-                        't.IsBackground = True
-                        't.Start()
-
-
+                    Else
+                        MsgBox("Layer datasource not found")
                     End If
-
                 Next
             End If
 

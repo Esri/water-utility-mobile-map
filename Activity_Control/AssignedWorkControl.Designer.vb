@@ -172,6 +172,7 @@ Partial Class AssignedWorkControl
         Me.btnFiltGeo.TabIndex = 19
         Me.btnFiltGeo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.btnFiltGeo.UseVisualStyleBackColor = True
+        Me.btnFiltGeo.Visible = False
         '
         'gpBoxWOList
         '

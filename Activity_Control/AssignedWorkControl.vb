@@ -145,6 +145,13 @@ Public Class AssignedWorkControl
 
 
             m_WOFSwD = GlobalsFunctions.GetFeatureSource(GlobalsFunctions.appConfig.WorkorderPanel.LayerInfo.LayerName, m_Map)
+            If GlobalsFunctions.appConfig.WorkorderPanel.LayerInfo.LayerName IsNot Nothing Then
+                If Len(GlobalsFunctions.appConfig.WorkorderPanel.LayerInfo.LayerName) > 0 Then
+                    If m_WOFSwD.FeatureSource Is Nothing Then
+                        MsgBox(GlobalsFunctions.appConfig.WorkorderPanel.LayerInfo.LayerName & " layer not found, check the name, activity control will not function")
+                    End If
+                End If
+            End If
             If m_WOFSwD.FeatureSource Is Nothing Then Return
 
 
@@ -166,7 +173,7 @@ Public Class AssignedWorkControl
             'Else
             '    btnFiltGeo.Visible = False
             'End If
-        
+
 
             btnFiltGeo.Visible = False
             InitNavigateBar()
@@ -499,6 +506,7 @@ Public Class AssignedWorkControl
 
     End Function
     Public Sub LoadWorkOrders(Optional reset As Boolean = True, Optional zoomTo As Boolean = True)
+        If CType(m_OutlookNavigatePane.SelectedButton.RelatedControl, ListView) Is Nothing Then Return
 
         Dim fid As String = "NAN"
         If CType(m_OutlookNavigatePane.SelectedButton.RelatedControl, ListView).SelectedItems().Count = 1 Then
@@ -1500,6 +1508,8 @@ Public Class AssignedWorkControl
     End Sub
 
     Private Sub btnCrew_Click(sender As System.Object, e As System.EventArgs) Handles btnCrew.Click
+        If m_WOFSwD.FeatureSource Is Nothing Then Return
+
         Dim frmSelect As frmSelectOptionCombo = New frmSelectOptionCombo(GlobalsFunctions.appConfig.WorkorderPanel.UIComponents.ChangeCrewText, GetCrewNames(), GlobalsFunctions.appConfig.WorkorderPanel.LayerInfo.AssignedToField, m_AssignedTo, GlobalsFunctions.appConfig.WorkorderPanel.UIComponents.SaveCrewText, True)
 
         frmSelect.ShowDialog()

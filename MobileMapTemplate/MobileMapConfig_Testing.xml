@@ -143,7 +143,7 @@
       <!--The url of the mobile service, currently only one is supported-->
       <MobileServices LimitQuery ="">
         <!--Option to specify cache location, empty string = application defaults-->
-        <MobileService  UserName="" Password=""  Domain="" TokenURL ="" StorageLocation="">http://localhost:6080/arcgis/services/WaterUtilityMobileMap/MapServer/MobileServer</MobileService>
+        <MobileService  UserName="" Password=""  Domain="" TokenURL ="" StorageLocation="">http://utilsolutions.esri.com/arcgis/services/WaterUtilityMobileMap/MapServer/MobileServer</MobileService>
       </MobileServices>
       <!--The path to the local cache maps, these are tiles cache maps, if a full path is not listed, it will check the LocalCacheMap Folder-->
       <CachedMaps>
@@ -153,7 +153,8 @@
 
       </CachedMaps>
       <WebMaps>
-
+        <WebMap DisplayName="Streets">http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer</WebMap>
+        <WebMap DisplayName="Imagery">http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer</WebMap>
       </WebMaps>
 
       <!--Option to display a layer group control, this will allow you to toggle a set of layers as a group-->

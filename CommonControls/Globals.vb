@@ -1293,10 +1293,12 @@ IL_1EE:
     End Function
     Public Shared Function LayerNameMatches(featLay As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource, Name As String) As Boolean
         Try
-            If featLay.Name = Name Then Return True
-            If featLay.Name.Substring(featLay.Name.LastIndexOf(".") + 1) = Name Then Return True
+            If Name Is Nothing Then Return False
 
-            If featLay.ServerFeatureClassName.Substring(featLay.ServerFeatureClassName.LastIndexOf(".") + 1) = Name Then Return True
+            If featLay.Name.ToUpper = Name.ToUpper Then Return True
+            If featLay.Name.ToUpper.Substring(featLay.Name.ToUpper.LastIndexOf(".") + 1) = Name.ToUpper Then Return True
+
+            If featLay.ServerFeatureClassName.ToUpper.Substring(featLay.ServerFeatureClassName.ToUpper.LastIndexOf(".") + 1) = Name.ToUpper Then Return True
             Return False
         Catch ex As Exception
             Dim st As New StackTrace

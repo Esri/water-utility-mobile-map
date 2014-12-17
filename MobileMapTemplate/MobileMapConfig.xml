@@ -30,7 +30,7 @@
       <!--Option to show a side bar - Not functional yet-->
       <SideBarControl>False</SideBarControl>
       <CopyrightText>Esri, Inc.</CopyrightText>
-      <VersionInfo>Version: 10.2.0.5, 8-28-2014</VersionInfo>
+      <VersionInfo>Version: 10.2.0.6, 12-18-2014</VersionInfo>
       <!--The scale to zoom to for point feature results-->
       <ZoomExtent>600</ZoomExtent>
       <MultiLineThreshold Threshold ="125" SizeFactor="3"/>
@@ -143,17 +143,18 @@
       <!--The url of the mobile service, currently only one is supported-->
       <MobileServices LimitQuery ="">
         <!--Option to specify cache location, empty string = application defaults-->
-        <MobileService  UserName="" Password=""  Domain="" TokenURL ="" StorageLocation="">http://localhost:6080/arcgis/services/WaterUtilityMobileMap/MapServer/MobileServer</MobileService>
+        <MobileService  UserName="" Password=""  Domain="" TokenURL ="" StorageLocation="">http://yourserver/arcgis/services/WaterUtilityMobileMap/MapServer/MobileServer</MobileService>
       </MobileServices>
       <!--The path to the local cache maps, these are tiles cache maps, if a full path is not listed, it will check the LocalCacheMap Folder-->
       <CachedMaps>
-        <CachedMap DisplayName="DayMap">C:\Work\GitHub\Development Support\LocalCacheMaps\Mobile Day Map</CachedMap>
-        <CachedMap DisplayName="NightMap">C:\Work\GitHub\Development Support\LocalCacheMaps\Mobile Night Map</CachedMap>
+        <CachedMap DisplayName="DayMap">Mobile Day Map</CachedMap>
+        <CachedMap DisplayName="NightMap">Mobile Night Map</CachedMap>
 
 
       </CachedMaps>
       <WebMaps>
-
+        <WebMap DisplayName="Streets">http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer</WebMap>
+        <WebMap DisplayName="Imagery">http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer</WebMap>
       </WebMaps>
 
       <!--Option to display a layer group control, this will allow you to toggle a set of layers as a group-->
