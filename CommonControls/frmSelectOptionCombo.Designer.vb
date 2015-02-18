@@ -114,6 +114,8 @@ Partial Class frmSelectOptionCombo
         Me.ComboBox1.Name = "ComboBox1"
         Me.ComboBox1.Size = New System.Drawing.Size(565, 50)
         Me.ComboBox1.TabIndex = 0
+        Me.ComboBox1.IntegralHeight = False
+
         '
         'frmSelectOptionCombo
         '
