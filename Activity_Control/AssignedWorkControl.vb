@@ -486,7 +486,7 @@ Public Class AssignedWorkControl
             Else
 
                 If pCrewDC.DataType Is System.Type.GetType("System.String") Then
-                    newValue = m_AssignedTo.Replace("'", "''")
+                    Dim newValue As String = m_AssignedTo.Replace("'", "''")
                     strSql = GlobalsFunctions.appConfig.WorkorderPanel.LayerInfo.AssignedToField & " = '" & newValue & "'"
                 Else
                     strSql = GlobalsFunctions.appConfig.WorkorderPanel.LayerInfo.AssignedToField & " = " & m_AssignedTo
