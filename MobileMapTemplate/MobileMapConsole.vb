@@ -2747,6 +2747,7 @@ Public Class MobileMapConsole
         If m_MCActivityMA IsNot Nothing Then
             m_MCCreateFeatureMA.currentWO = m_MCActivityMA.getWO
             m_MCCreateFeatureMA.currentCrew = m_MCActivityMA.getCrew
+            m_MCCreateFeatureMA.currentText = m_MCActivityMA.getText
         End If
     End Sub
     Private Sub m_MCCreateFeatureMA_RaiseMessage(ByVal Message As String) Handles m_MCCreateFeatureMA.RaiseMessage
@@ -3265,5 +3266,9 @@ Public Class MobileMapConsole
 
     Private Sub btnOpenClosePanel_Click(sender As Object, e As EventArgs) Handles btnOpenClosePanel.Click
 
+    End Sub
+
+    Private Sub m_MCActivityMA_WOChanged(WOOID As String, WOCrew As String, WODisplayText As String) Handles m_MCActivityMA.WOChanged
+        m_MCNav.setWOInfo(WOOID, WOCrew, WODisplayText)
     End Sub
 End Class

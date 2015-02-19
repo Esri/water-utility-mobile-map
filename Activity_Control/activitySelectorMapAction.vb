@@ -165,11 +165,15 @@ Public Class activitySelectorMapAction
     End Sub
 #Region "Public Functions"
     Public Function getCrew() As String
-        Return m_MCActivityControl.getWO()
+        Return m_MCActivityControl.getCrew()
 
     End Function
     Public Function getWO() As String
-        Return m_MCActivityControl.getCrew()
+        Return m_MCActivityControl.getWO()
+
+    End Function
+    Public Function getText() As String
+        Return m_MCActivityControl.getText()
 
     End Function
     Public Function addActivityButton(Optional ByVal TopX As Integer = -1, Optional ByVal TopY As Integer = -1) As Boolean
@@ -390,5 +394,9 @@ Public Class activitySelectorMapAction
             st = Nothing
             Return
         End Try
+    End Sub
+    Public Event WOChanged(WOOID As String, WOCrew As String, WODisplayText As String)
+    Private Sub m_MCActivityControl_WOChanged(WOOID As String, WOCrew As String, WODisplayText As String) Handles m_MCActivityControl.WOChanged
+        RaiseEvent WOChanged(WOOID, WOCrew, WODisplayText)
     End Sub
 End Class

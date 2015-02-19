@@ -32,7 +32,7 @@ Public Class EditFeaturesMapAction
     Public Event GetWorkorder()
     Public currentWO As String
     Public currentCrew As String
-
+    Public currentText As String
     Private m_GPSStatus As Boolean = False
     Private m_Snapped As Boolean = False
 
@@ -1145,6 +1145,7 @@ Public Class EditFeaturesMapAction
         RaiseEvent GetWorkorder()
         m_EditPanel.currentWO = currentWO
         m_EditPanel.currentCrew = currentCrew
+        m_EditPanel.currentWOText = currentText
     End Sub
 
     Private Sub m_EditPanel_RaiseMessage(ByVal Message As String) Handles m_EditPanel.RaiseMessage

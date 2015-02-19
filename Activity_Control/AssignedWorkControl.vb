@@ -90,7 +90,7 @@ Public Class AssignedWorkControl
     Private m_CurrentWOID As String = ""
     Public Event RaiseMessage(ByVal Message As String)
     Public Event RaisePermMessage(ByVal Message As String, ByVal Hide As Boolean)
-
+    Public Event WOChanged(WOOID As String, WOCrew As String, WODisplayText As String)
     Private m_OutlookNavigatePane As NavigateBar
     Private m_NVBButton As List(Of NavigateBarButton)
     Private splitterNavigateMenu As MTSplitter = Nothing
@@ -1102,13 +1102,13 @@ Public Class AssignedWorkControl
 
     Public Function getWO() As String
         Return m_CurrentWOID
-
-
     End Function
     Public Function getCrew() As String
         Return m_AssignedTo
+    End Function
 
-
+    Public Function getText() As String
+        Return lblCurrentWO.Text
     End Function
     Private Sub ListView_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
@@ -1120,6 +1120,7 @@ Public Class AssignedWorkControl
 
                 lblCurrentWO.Text = CType(sender, ListView).SelectedItems(0).Text
                 m_CurrentWOID = CType(CType(sender, ListView).SelectedItems(0), MyListViewItem).ID
+                RaiseEvent WOChanged(m_CurrentWOID, m_AssignedTo, lblCurrentWO.Text)
                 Dim prevWO As String = CType(CType(sender, ListView).SelectedItems(0), MyListViewItem).ID
                 RaiseEvent RaisePermMessage(CType(sender, ListView).SelectedItems(0).Text, False)
                 Dim pGeo As Geometry = CType(CType(sender, ListView).SelectedItems(0), MyListViewItem).Geometry

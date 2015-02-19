@@ -35,7 +35,7 @@ Public Class EditControl
     Public Event GetWorkorder()
     Public currentWO As String
     Public currentCrew As String
-
+    Public currentWOText As String
     Public Event HyperClick(ByVal PathToFile As String)
     Public Event RecordSnapped(ByVal geo As Geometry)
     Private m_shuffling As Boolean = False
@@ -1625,7 +1625,14 @@ Public Class EditControl
                                         UpdateField(autoAttFld.Name, currentCrew, True, "FALSE")
                                     End If
                                     currentCrew = ""
-
+                                Case "WOText".ToUpper
+                                    RaiseEvent GetWorkorder()
+                                    If currentWOText <> "" Then
+                                        UpdateField(autoAttFld.Name, currentWOText, True, setRead)
+                                    Else
+                                        UpdateField(autoAttFld.Name, currentWOText, True, "FALSE")
+                                    End If
+                                    currentWOText = ""
                                 Case "GUID".ToUpper
 
                                     UpdateField(autoAttFld.Name, System.Guid.NewGuid.ToString(), True, setRead)

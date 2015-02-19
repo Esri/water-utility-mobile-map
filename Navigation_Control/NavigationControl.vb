@@ -110,7 +110,9 @@ Public Class mobileNavigation
     Private m_LogGPS As Boolean = False
     Private m_GPSFL As ESRI.ArcGIS.Mobile.FeatureCaching.FeatureSource = Nothing
     Private m_GPSFL_UserField As String = Nothing
+
     Private m_GPSFL_DateField As String = Nothing
+    Private m_GPSFL_WOField As String = Nothing
 
     Private m_LogInterval As Integer = 60
     Private m_GPSTimer As System.Threading.Timer
@@ -619,6 +621,15 @@ Public Class mobileNavigation
         Return gpsD
 
     End Function
+    Private m_WOID As String = ""
+    Private m_WOCrew As String = ""
+    Private m_WODisplayText As String = ""
+
+    Public Sub setWOInfo(WOID As String, WOCrew As String, WODisplayText As String)
+        m_WOID = WOID
+        m_WOCrew = WOCrew
+        m_WODisplayText = WODisplayText
+    End Sub
     Private Sub LogGPS()
         Try
 
@@ -629,16 +640,26 @@ Public Class mobileNavigation
 
                     Dim pDT As FeatureDataTable = m_GPSFL.GetDataTable()
                     Dim pFDR As FeatureDataRow = pDT.NewRow
-                    pFDR.Geometry = New ESRI.ArcGIS.Mobile.Geometries.Point(m_Map.SpatialReference.FromWgs84(GlobalsFunctions.m_GPS.GpsConnection.Longitude, GlobalsFunctions.m_GPS.GpsConnection.Latitude))
-                    If pDT.Columns(m_GPSFL_UserField) IsNot Nothing Then
-                        'Environment.UserDomainName & "\\" & Environment.UserName
-                        pFDR.Item(m_GPSFL_UserField) = Environment.UserName
-                    End If
-                    If pDT.Columns(m_GPSFL_DateField) IsNot Nothing Then
-                        pFDR.Item(m_GPSFL_DateField) = Now.ToString()
-                    End If
+                    pFDR.Geometry = New Esri.ArcGIS.Mobile.Geometries.Point(m_Map.SpatialReference.FromWgs84(GlobalsFunctions.m_GPS.GpsConnection.Longitude, GlobalsFunctions.m_GPS.GpsConnection.Latitude))
+                    Try
 
+                        If pDT.Columns(m_GPSFL_UserField) IsNot Nothing Then
+                            'Environment.UserDomainName & "\\" & Environment.UserName
+                            pFDR.Item(m_GPSFL_UserField) = Environment.UserName
+                        End If
+                        If pDT.Columns(m_GPSFL_DateField) IsNot Nothing Then
+                            pFDR.Item(m_GPSFL_DateField) = Now.ToString()
+                        End If
+                        If m_WOID <> "" Then
 
+                            If pDT.Columns(m_GPSFL_WOField) IsNot Nothing Then
+                                pFDR.Item(m_GPSFL_WOField) = m_WOID.ToString()
+                            End If
+                        End If
+
+                    Catch ex As Exception
+
+                    End Try
                     pDT.Rows.Add(pFDR)
 
 

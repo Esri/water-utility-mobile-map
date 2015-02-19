@@ -45,6 +45,8 @@
         <GPSLogLayer_UserNameField>UserID</GPSLogLayer_UserNameField>
         <GPSLogLayer_DateField>TimeStamp</GPSLogLayer_DateField>
         <GPSLogLayer_TruncateAfterPost>True</GPSLogLayer_TruncateAfterPost>
+        <GPSAutoCenter>False</GPSAutoCenter>
+        <GPSLogLayer_WOField>CURWO</GPSLogLayer_WOField>
       </GPS>
       <ZoomPan>
         <FixZoom>True</FixZoom>
