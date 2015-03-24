@@ -2631,8 +2631,12 @@ Public Class mobileNavigation
     End Sub
 
     Private Sub m_SerialGPS_GpsError(ByVal sender As Object, ByVal e As ESRI.ArcGIS.Mobile.Gps.GpsErrorEventArgs) Handles m_SerialGPS.GpsError
+        If e.Exception.Message.ToString().Contains("Arithmetic") Then
+            'pass
+        Else
+            RaiseEvent RaiseMessage(e.Exception.Message.ToString())
+        End If
 
-        RaiseEvent RaiseMessage(e.Exception.Message.ToString())
     End Sub
     Private Sub m_SerialGPS_GpsOpened(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_SerialGPS.GpsOpened
         Try
