@@ -2596,10 +2596,16 @@ Public Class EditControl
                                     Next
 
                                 End If
+                                cnt.Visible = True
+
+                                If controlVisible = False Then
+                                    cnt.Height = 0
 
 
-                                cnt.Visible = controlVisible
-                                If controlVisible Then
+                                Else
+                                    If cnt.Height = 0 Then
+                                        cnt.Height = cnt.MaximumSize.Height
+                                    End If
                                     pCntlNextTop = pCntlNextTop + cnt.Height + pTopPadding
                                 End If
                                 pCurTabPage.Controls.Add(cnt)
@@ -2754,13 +2760,14 @@ Public Class EditControl
     End Sub
     Private Sub AddControls()
         Try
+     
             m_HasFilter = False
 
             If m_FL Is Nothing Then Return
             btnMove.CheckState = CheckState.Unchecked
 
             ''Feature layer being Identified
-            Dim pfl As Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource = m_FL
+            Dim pfl As ESRI.ArcGIS.Mobile.FeatureCaching.FeatureSource = m_FL
             ''Map Layer from Cache
             'Dim msMapLayer As MobileCacheMapLayer
             ''Set the active layer
@@ -3168,6 +3175,8 @@ Public Class EditControl
                             pPnl.Top = pNextControlTop
                             pPnl.Left = 0
                             pPnl.Height = pNewGpBox.Height + pLbl.Height + 10
+                            pPnl.MaximumSize = New Size(400, pPnl.Height)
+
                             pPnl.Controls.Add(pLbl)
                             pPnl.Controls.Add(pNewGpBox)
 
@@ -3359,6 +3368,8 @@ Public Class EditControl
                             pPnl.Top = pNextControlTop
                             pPnl.Left = 0
                             pPnl.Height = pCBox.Height + pLbl.Height + 15
+                            pPnl.MaximumSize = New Size(400, pPnl.Height)
+
                             pPnl.Controls.Add(pLbl)
                             pPnl.Controls.Add(pCBox)
 
@@ -3556,6 +3567,7 @@ Public Class EditControl
                             pPnl.Top = pNextControlTop
                             pPnl.Left = 0
                             pPnl.Height = pTxtBox.Height + pLbl.Height + 10
+                            pPnl.MaximumSize = New Size(400, pPnl.Height)
 
                             pPnl.Controls.Add(pLbl)
                             AddHandler pTxtBox.Leave, AddressOf controlLeave
@@ -3687,6 +3699,8 @@ Public Class EditControl
                             pPnl.Top = pNextControlTop
                             pPnl.Left = 0
                             pPnl.Height = pDateTime.Height + pLbl.Height + 10
+                            pPnl.MaximumSize = New Size(400, pPnl.Height)
+
                             pPnl.Controls.Add(pLbl)
                             AddHandler pDateTime.Leave, AddressOf controlLeave
                             AddHandler pDateTime.Enter, AddressOf controlEntered
@@ -3953,6 +3967,8 @@ Public Class EditControl
                             pPnl.Top = pNextControlTop
                             pPnl.Left = 0
                             pPnl.Height = pTxtBox.Height + pLbl.Height + 10
+                            pPnl.MaximumSize = New Size(400, pPnl.Height)
+
                             pPnl.Controls.Add(pLbl)
                             pPnl.Controls.Add(pTxtBox)
                             AddHandler pTxtBox.Leave, AddressOf controlLeave
@@ -4165,6 +4181,8 @@ Public Class EditControl
                                     pPnl.Top = pNextControlTop
                                     pPnl.Left = 0
                                     pPnl.Height = pNewGpBox.Height + pLbl.Height + 10
+                                    pPnl.MaximumSize = New Size(400, pPnl.Height)
+
                                     pPnl.Controls.Add(pLbl)
                                     pPnl.Controls.Add(pNewGpBox)
 
@@ -4323,6 +4341,9 @@ Public Class EditControl
                                     pPnl.Top = pNextControlTop
                                     pPnl.Left = 0
                                     pPnl.Height = pCBox.Height + pLbl.Height + 15
+
+                                    pPnl.MaximumSize = New Size(400, pPnl.Height)
+
                                     pPnl.Controls.Add(pLbl)
                                     pPnl.Controls.Add(pCBox)
                                     AddHandler pCBox.SelectedIndexChanged, AddressOf controlLeave
@@ -4495,6 +4516,8 @@ Public Class EditControl
                             pPnl.Top = pNextControlTop
                             pPnl.Left = 0
                             pPnl.Height = pNumBox.Height + pLbl.Height + 15
+                            pPnl.MaximumSize = New Size(400, pPnl.Height)
+
                             pPnl.Controls.Add(pLbl)
                             pPnl.Controls.Add(pNumBox)
                             AddHandler pNumBox.Leave, AddressOf controlLeave
@@ -4647,6 +4670,8 @@ Public Class EditControl
                             pPnl.Top = pNextControlTop
                             pPnl.Left = 0
                             pPnl.Height = pTxtBox.Height + pLbl.Height + 10
+                            pPnl.MaximumSize = New Size(400, pPnl.Height)
+
                             pPnl.Controls.Add(pLbl)
                             AddHandler pTxtBox.Leave, AddressOf controlLeave
                             AddHandler pTxtBox.Enter, AddressOf controlEntered
