@@ -2302,7 +2302,7 @@ Public Class EditControl
 
         End Try
     End Sub
-    Private Sub DisplayBlank()
+    Public Sub DisplayBlank()
         Try
 
             'Clear out the controls from the container

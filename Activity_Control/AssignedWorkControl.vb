@@ -106,7 +106,7 @@ Public Class AssignedWorkControl
 
 #End Region
     Public m_AssignedTo As String = ""
-
+   
     Public Sub New(ByVal Map As Esri.ArcGIS.Mobile.WinForms.Map)
 
         ' This call is required by the designer.
@@ -206,7 +206,7 @@ Public Class AssignedWorkControl
                 st = Nothing
             End Try
             m_EdtClose.Visible = False
-
+            m_AttInfoDisplay.Visible = False
 
         Catch ex As Exception
             Dim st As New StackTrace
@@ -1155,9 +1155,12 @@ Public Class AssignedWorkControl
                 End If
 
                 m_EdtClose.Visible = True
+                m_AttInfoDisplay.Visible = True
 
                 m_EdtClose.setCurrentRecord(pFDR, m_EditOp)
-                m_AttInfoDisplay.IdentifyLocation(pGeo)
+                m_AttInfoDisplay.CurrentRow = pFDR
+
+                'm_AttInfoDisplay.IdentifyLocation(pGeo)
                 'CType(sender, ListView).Focus()
                 'CType(sender, ListView).Refresh()
 
@@ -1500,8 +1503,20 @@ Public Class AssignedWorkControl
 
 
     Private Sub btnClear_Click(sender As Object, e As System.EventArgs) Handles btnClear.Click
+        RaiseEvent RaisePermMessage("", True)
+        m_EdtClose.Visible = False
+        m_AttInfoDisplay.Visible = False
+
+        'm_EdtClose.DisplayBlank()
+        'm_AttInfoDisplay.DisplayBlank()
+
+        lblCurrentWO.Text = ""
+        m_CurrentWOID = ""
+        RaiseEvent WOChanged("", "", "")
+
         LoadWorkOrders(False, False)
         Call btnViewAllWork_Click(Nothing, Nothing)
+
     End Sub
 
     Private Sub btnClear_CheckedChanged(sender As System.Object, e As System.EventArgs)

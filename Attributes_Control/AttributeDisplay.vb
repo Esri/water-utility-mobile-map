@@ -78,6 +78,25 @@ Public Class AttributeDisplay
     '__Private m_Distance As Integer = 5
     Private m_Mode As String = "ID"
 #Region "Public Functions"
+    Public Sub DisplayBlank()
+        Try
+
+            'Clear out the controls from the container
+            m_CurrentRow = Nothing
+            m_TabControl.TabPages.Clear()
+
+            m_TabControl.Controls.Clear()
+            m_TabControl.TabPages.Add(New TabPage(""))
+            m_Map.Invalidate()
+
+        Catch ex As Exception
+            Dim st As New StackTrace
+            MsgBox(st.GetFrame(0).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Name & ":" & st.GetFrame(1).GetMethod.Module.Name & vbCrLf & ex.Message)
+            st = Nothing
+
+
+        End Try
+    End Sub
     Public Sub showEditButton()
         btnEdit.Visible = True
         relocateButtons()
@@ -180,7 +199,7 @@ Public Class AttributeDisplay
         m_BColor = Nothing
 
     End Sub
-    Public Sub New(ByVal map As Esri.ArcGIS.Mobile.WinForms.Map, Optional ByVal LayerName As String = "", _
+    Public Sub New(ByVal map As ESRI.ArcGIS.Mobile.WinForms.Map, Optional ByVal LayerName As String = "", _
                    Optional ByVal RouteToOption As Boolean = False, Optional ByVal fntSize As Single = 12.0F, _
                    Optional ByVal BoolLenFlds As Boolean = False, Optional ByVal LengthFormat As String = "{0:0.00}", _
                    Optional ByVal LengthUnit As String = "MAP", Optional ByVal showGPSButton As Boolean = True, Optional ByVal showLayerLabel As Boolean = True)
@@ -253,7 +272,7 @@ Public Class AttributeDisplay
         toggleLayerLabel = showLayerLabel
 
     End Sub
-    Public Function IdentifyLocation(ByVal Location As Esri.ArcGIS.Mobile.Geometries.Geometry) As Boolean
+    Public Function IdentifyLocation(ByVal Location As ESRI.ArcGIS.Mobile.Geometries.Geometry) As Boolean
         'used to identify features
         Try
             Dim pDT As FeatureDataTable = selectFeature(Location)
@@ -297,8 +316,8 @@ Public Class AttributeDisplay
             Return False
         End Try
     End Function
-    Public Function IdentifyLocation(ByVal Location As Esri.ArcGIS.Mobile.Geometries.Coordinate) As Boolean
-        Return IdentifyLocation(New Esri.ArcGIS.Mobile.Geometries.Point(Location))
+    Public Function IdentifyLocation(ByVal Location As ESRI.ArcGIS.Mobile.Geometries.Coordinate) As Boolean
+        Return IdentifyLocation(New ESRI.ArcGIS.Mobile.Geometries.Point(Location))
 
 
     End Function
