@@ -940,77 +940,81 @@ Public Class EditControl
 
                     'If the control is a 2 value domain(Checkboxs)
                     If TypeOf cCntrl Is Panel Then
-                        For Each cCntrlPnl As Control In cCntrl.Controls
-                            If TypeOf cCntrlPnl Is CustomPanel Then
-                                'Get the Field
-                                strFld = CType(cCntrlPnl, CustomPanel).Tag.ToString
-                                If strFld.IndexOf("|") > 0 Then
-                                    strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
-                                End If
-                                If Field = strFld Then
-                                    'Get the target value
+                        If cCntrl.Height > 1 Then
+
+
+                            For Each cCntrlPnl As Control In cCntrl.Controls
+                                If TypeOf cCntrlPnl Is CustomPanel Then
+                                    'Get the Field
+                                    strFld = CType(cCntrlPnl, CustomPanel).Tag.ToString
+                                    If strFld.IndexOf("|") > 0 Then
+                                        strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
+                                    End If
+                                    If Field = strFld Then
+                                        'Get the target value
+
+                                        If Field = strFld Then
+                                            Return CType(cCntrlPnl, CustomPanel).Visible
+
+                                        End If
+
+                                    End If
+                                    'If the control is a text box
+                                ElseIf TypeOf cCntrlPnl Is TextBox Then
+                                    'Get the field
+                                    strFld = CType(cCntrlPnl, TextBox).Tag.ToString
+                                    If strFld.IndexOf("|") > 0 Then
+                                        strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
+                                    End If
+                                    If Field = strFld Then
+                                        Return CType(cCntrlPnl, TextBox).Visible
+
+                                    End If
+
+
+                                    'if the control is a combo box(domain)
+                                ElseIf TypeOf cCntrlPnl Is ComboBox Then
+                                    'Get the field
+                                    strFld = CType(cCntrlPnl, ComboBox).Tag.ToString
+                                    If strFld.IndexOf("|") > 0 Then
+                                        strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
+                                    End If
+                                    If Field = strFld Then
+                                        Return CType(cCntrlPnl, ComboBox).Visible
+
+                                    End If
+
+
+
+                                    'if the control is a data time field
+                                ElseIf TypeOf cCntrlPnl Is DateTimePicker Then
+                                    'Get the field
+                                    strFld = CType(cCntrlPnl, DateTimePicker).Tag.ToString
+                                    If strFld.IndexOf("|") > 0 Then
+                                        strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
+                                    End If '
 
                                     If Field = strFld Then
-                                        Return CType(cCntrlPnl, CustomPanel).Visible
+                                        Return CType(cCntrlPnl, DateTimePicker).Visible
+
+                                    End If
+
+                                    'If the field is a range domain
+                                ElseIf TypeOf cCntrlPnl Is NumericUpDown Then
+                                    'Get the field
+                                    strFld = CType(cCntrlPnl, NumericUpDown).Tag.ToString
+                                    If strFld.IndexOf("|") > 0 Then
+                                        strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
+                                    End If
+                                    If Field = strFld Then
+                                        Return CType(cCntrlPnl, NumericUpDown).Visible
 
                                     End If
 
                                 End If
-                                'If the control is a text box
-                            ElseIf TypeOf cCntrlPnl Is TextBox Then
-                                'Get the field
-                                strFld = CType(cCntrlPnl, TextBox).Tag.ToString
-                                If strFld.IndexOf("|") > 0 Then
-                                    strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
-                                End If
-                                If Field = strFld Then
-                                    Return CType(cCntrlPnl, TextBox).Visible
+                            Next
 
-                                End If
-
-
-                                'if the control is a combo box(domain)
-                            ElseIf TypeOf cCntrlPnl Is ComboBox Then
-                                'Get the field
-                                strFld = CType(cCntrlPnl, ComboBox).Tag.ToString
-                                If strFld.IndexOf("|") > 0 Then
-                                    strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
-                                End If
-                                If Field = strFld Then
-                                    Return CType(cCntrlPnl, ComboBox).Visible
-
-                                End If
-
-
-
-                                'if the control is a data time field
-                            ElseIf TypeOf cCntrlPnl Is DateTimePicker Then
-                                'Get the field
-                                strFld = CType(cCntrlPnl, DateTimePicker).Tag.ToString
-                                If strFld.IndexOf("|") > 0 Then
-                                    strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
-                                End If '
-
-                                If Field = strFld Then
-                                    Return CType(cCntrlPnl, DateTimePicker).Visible
-
-                                End If
-
-                                'If the field is a range domain
-                            ElseIf TypeOf cCntrlPnl Is NumericUpDown Then
-                                'Get the field
-                                strFld = CType(cCntrlPnl, NumericUpDown).Tag.ToString
-                                If strFld.IndexOf("|") > 0 Then
-                                    strFld = Trim(strFld.Substring(0, strFld.IndexOf("|")))
-                                End If
-                                If Field = strFld Then
-                                    Return CType(cCntrlPnl, NumericUpDown).Visible
-
-                                End If
-
-                            End If
-                        Next
-
+                        End If
                     End If
 
                 Next
