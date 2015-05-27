@@ -1862,95 +1862,53 @@ Public Class EditControl
                                 Case "Intersect".ToUpper
                                     If m_FDR.Geometry IsNot Nothing Then
                                         If m_FDR.Geometry.IsValid Then
+                                            Dim layerNamesInt As List(Of String) = New List(Of String)
 
-                                            If featDataRow IsNot Nothing Then
-
-                                                If GlobalsFunctions.LayerNameMatches(featDataRow.FeatureSource, autoAttFld.IntersectLayer) Then
-                                                    If autoAttFld.IntersectField = "[Name]" Then
-                                                        UpdateField(autoAttFld.Name, featDataRow.FeatureSource.Name, True, setRead)
-                                                        Continue For
-                                                    ElseIf autoAttFld.IntersectField = "[FCName]" Then
-                                                        UpdateField(autoAttFld.Name, featDataRow.FeatureSource.ServerFeatureClassName, True, setRead)
-                                                        Continue For
-
-                                                    ElseIf featDataRow.FeatureSource.Columns(autoAttFld.IntersectField) IsNot Nothing Then
-                                                        If m_FDR.FeatureSource.Columns(autoAttFld.Name) IsNot Nothing Then
-                                                            If featDataRow(autoAttFld.IntersectField) Is Nothing Then
-
-                                                                UpdateField(autoAttFld.Name, DBNull.Value, True, setRead)
-                                                                Continue For
-
-                                                            ElseIf featDataRow(autoAttFld.IntersectField) Is DBNull.Value Then
-
-                                                                UpdateField(autoAttFld.Name, DBNull.Value, True, setRead)
-                                                                Continue For
-
-
-                                                            Else
-                                                                UpdateField(autoAttFld.Name, featDataRow(autoAttFld.IntersectField).ToString(), True, setRead)
-                                                                Continue For
-
-
-                                                            End If
-
-                                                        End If
-
-                                                    End If
-                                                End If
-
-
-
-                                            End If
-
-
-                                            If pFl Is Nothing Then
-                                                pFl = GlobalsFunctions.GetFeatureSource(autoAttFld.IntersectLayer, m_Map).FeatureSource
+                                            If autoAttFld.IntersectLayer.Contains(",") Then
+                                                For Each layname In autoAttFld.IntersectLayer.Split(",")
+                                                    layerNamesInt.Add(layname)
+                                                Next
                                             Else
-                                                If pFl.Name <> autoAttFld.IntersectLayer Then
-                                                    pFl = GlobalsFunctions.GetFeatureSource(autoAttFld.IntersectLayer, m_Map).FeatureSource
-
-                                                End If
-
+                                                layerNamesInt.Add(autoAttFld.IntersectLayer)
                                             End If
-                                            If pFl Is Nothing Then Continue For
-                                            'Create a new query filter to find the asset being inspected
-                                            If autoAttFld.IntersectField = "[Name]" Then
-                                                UpdateField(autoAttFld.Name, pFl.Name, True, setRead)
-                                                Continue For
-                                            ElseIf autoAttFld.IntersectField = "[FCName]" Then
-                                                UpdateField(autoAttFld.Name, pFl.ServerFeatureClassName, True, setRead)
-                                                Continue For
+                                            Dim featureFound As Boolean = False
 
-                                            Else
+                                            For Each layName As String In layerNamesInt
+                                                If featureFound = True Then Exit For
+
+                                                If featDataRow IsNot Nothing Then
 
 
-                                                pQFilt = New QueryFilter
-                                                'Create a new envelope to search by
-                                                If m_FDR.Geometry.GeometryType = GeometryType.Point Then
-                                                    Dim intBufferValueforPoint As Double
-                                                    intBufferValueforPoint = GlobalsFunctions.bufferToMap(m_Map, GlobalsFunctions.appConfig.EditControlOptions.SnapTolerence) 'maptobuffer()
-                                                    Dim pEnv As New Geometries.Envelope(CType(m_FDR.Geometry, Esri.ArcGIS.Mobile.Geometries.Point).Coordinate, intBufferValueforPoint, intBufferValueforPoint)
-                                                    pQFilt.Geometry = pEnv
 
-                                                Else
-                                                    pQFilt.Geometry = m_FDR.Geometry
-                                                End If
+                                                    If GlobalsFunctions.LayerNameMatches(featDataRow.FeatureSource, layName) Then
+                                                        If autoAttFld.IntersectField = "[Name]" Then
+                                                            UpdateField(autoAttFld.Name, featDataRow.FeatureSource.Name, True, setRead)
+                                                            featureFound = True
+                                                            Exit For
+                                                        ElseIf autoAttFld.IntersectField = "[FCName]" Then
+                                                            UpdateField(autoAttFld.Name, featDataRow.FeatureSource.ServerFeatureClassName, True, setRead)
+                                                            featureFound = True
+                                                            Exit For
 
-
-                                                pQFilt.GeometricRelationship = Geometries.GeometricRelationshipType.Intersect
-                                                If pFl.GetFeatureCount(pQFilt) > 0 Then
-
-                                                    pDRead = pFl.GetDataReader(pQFilt)
-                                                    If pDRead.ReadFirst Then
-
-                                                        If pFl.Columns(autoAttFld.IntersectField) IsNot Nothing Then
+                                                        ElseIf featDataRow.FeatureSource.Columns(autoAttFld.IntersectField) IsNot Nothing Then
                                                             If m_FDR.FeatureSource.Columns(autoAttFld.Name) IsNot Nothing Then
-                                                                If pDRead(autoAttFld.IntersectField) IsNot Nothing Then
+                                                                If featDataRow(autoAttFld.IntersectField) Is Nothing Then
 
-                                                                    UpdateField(autoAttFld.Name, pDRead(autoAttFld.IntersectField).ToString(), True, setRead)
-                                                                    Continue For
+                                                                    UpdateField(autoAttFld.Name, DBNull.Value, True, setRead)
+                                                                    featureFound = True
+                                                                    Exit For
+
+                                                                ElseIf featDataRow(autoAttFld.IntersectField) Is DBNull.Value Then
+
+                                                                    UpdateField(autoAttFld.Name, DBNull.Value, True, setRead)
+                                                                    featureFound = True
+                                                                    Exit For
 
 
+                                                                Else
+                                                                    UpdateField(autoAttFld.Name, featDataRow(autoAttFld.IntersectField).ToString(), True, setRead)
+                                                                    featureFound = True
+                                                                    Exit For
 
 
                                                                 End If
@@ -1958,21 +1916,93 @@ Public Class EditControl
                                                             End If
 
                                                         End If
-
-
-
                                                     End If
-                                                    If pDRead.IsClosed = False Then
-                                                        pDRead.Close()
-                                                    End If
-
-
-
-                                                Else
-                                                    UpdateField(autoAttFld.Name, "", True, "FALSE")
-                                                    ' SetReadOnly(spatIntFld.Name, False)
 
                                                 End If
+
+
+                                                If pFl Is Nothing Then
+                                                    pFl = GlobalsFunctions.GetFeatureSource(layName, m_Map).FeatureSource
+                                                Else
+                                                    If pFl.Name <> layName Then
+                                                        pFl = GlobalsFunctions.GetFeatureSource(layName, m_Map).FeatureSource
+
+                                                    End If
+
+                                                End If
+                                                If pFl Is Nothing Then Continue For
+                                                'Create a new query filter to find the asset being inspected
+                                                If autoAttFld.IntersectField = "[Name]" Then
+                                                    UpdateField(autoAttFld.Name, pFl.Name, True, setRead)
+                                                    featureFound = True
+                                                    Exit For
+                                                ElseIf autoAttFld.IntersectField = "[FCName]" Then
+                                                    UpdateField(autoAttFld.Name, pFl.ServerFeatureClassName, True, setRead)
+                                                    featureFound = True
+                                                    Exit For
+
+                                                Else
+
+
+                                                    pQFilt = New QueryFilter
+                                                    'Create a new envelope to search by
+                                                    If m_FDR.Geometry.GeometryType = GeometryType.Point Then
+                                                        Dim intBufferValueforPoint As Double
+                                                        intBufferValueforPoint = GlobalsFunctions.bufferToMap(m_Map, GlobalsFunctions.appConfig.EditControlOptions.SnapTolerence) 'maptobuffer()
+                                                        Dim pEnv As New Geometries.Envelope(CType(m_FDR.Geometry, ESRI.ArcGIS.Mobile.Geometries.Point).Coordinate, intBufferValueforPoint, intBufferValueforPoint)
+                                                        pQFilt.Geometry = pEnv
+
+                                                    Else
+                                                        pQFilt.Geometry = m_FDR.Geometry
+                                                    End If
+
+
+                                                    pQFilt.GeometricRelationship = Geometries.GeometricRelationshipType.Intersect
+                                                    If pFl.GetFeatureCount(pQFilt) > 0 Then
+
+                                                        pDRead = pFl.GetDataReader(pQFilt)
+                                                        If pDRead.ReadFirst Then
+
+                                                            If pFl.Columns(autoAttFld.IntersectField) IsNot Nothing Then
+                                                                If m_FDR.FeatureSource.Columns(autoAttFld.Name) IsNot Nothing Then
+                                                                    If pDRead(autoAttFld.IntersectField) IsNot Nothing Then
+
+                                                                        UpdateField(autoAttFld.Name, pDRead(autoAttFld.IntersectField).ToString(), True, setRead)
+                                                                        If pDRead.IsClosed = False Then
+                                                                            pDRead.Close()
+                                                                        End If
+
+                                                                        featureFound = True
+
+                                                                        Exit For
+
+
+
+
+                                                                    End If
+
+                                                                End If
+
+                                                            End If
+
+
+
+                                                        End If
+                                                        If pDRead.IsClosed = False Then
+                                                            pDRead.Close()
+                                                        End If
+
+
+
+                                                    Else
+
+                                                        ' SetReadOnly(spatIntFld.Name, False)
+
+                                                    End If
+                                                End If
+                                            Next
+                                            If featureFound = False Then
+                                                UpdateField(autoAttFld.Name, "", True, "FALSE")
                                             End If
                                         End If
 

@@ -305,6 +305,9 @@
     <None Include="Images\animated.gif" />
     <Content Include="Images\BluCamera.png" />
     <None Include="Images\BluePrint.png" />
+    <None Include="MobileMapConfig_LeakSurvey - Copy.xml">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="NavigationSettings.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -599,11 +599,11 @@ Public Class AssignedWorkControl
                             pDRs = pDt.Select("1=1", sorting & " " & woFilt.SortDirection)
 
                         Else
-                            pDRs = pDt.Select(strSql)
+                            pDRs = pDt.Select("1=1")
 
                         End If
                     Else
-                        pDRs = pDt.Select(strSql)
+                        pDRs = pDt.Select("1=1")
 
                     End If
 
@@ -973,17 +973,106 @@ Public Class AssignedWorkControl
 
     End Sub
     Public Sub selectWOatLocation(coord As Coordinate)
+        Dim selectedID As Integer = -1
+        Dim strSql As String
+   
+        strSql = workorderSQL(m_OutlookNavigatePane.SelectedButton.Tag)
+    
 
-        Dim pFDR As FeatureDataRow = selectFeature(New Esri.ArcGIS.Mobile.Geometries.Point(coord))
-        If pFDR IsNot Nothing Then
-            lblCurrentWO.Text = ""
-            RaiseEvent RaisePermMessage("", True)
+  
+        Dim pFDRs As DataRowCollection = selectFeatures(New Esri.ArcGIS.Mobile.Geometries.Point(coord), strSql)
+
+        If pFDRs IsNot Nothing Then
+            If pFDRs.Count = 0 Then Return
+
+            If pFDRs.Count > 1 Then
+
+
+                Dim strFldArr As List(Of String) = New List(Of String)
+
+                If GlobalsFunctions.appConfig.WorkorderPanel.WorkOrderFilters.WorkOrderFilter(0).Fields IsNot Nothing Then
+                    If GlobalsFunctions.appConfig.WorkorderPanel.WorkOrderFilters.WorkOrderFilter(0).Fields.Field IsNot Nothing Then
+                        If GlobalsFunctions.appConfig.WorkorderPanel.WorkOrderFilters.WorkOrderFilter(0).Fields.Field.Count > 0 Then
+                            For Each fld As Esri.ArcGISTemplates.MobileConfigClass.MobileConfigMobileMapConfigWorkorderPanelWorkOrderFiltersWorkOrderFilterFieldsField In GlobalsFunctions.appConfig.WorkorderPanel.WorkOrderFilters.WorkOrderFilter(0).Fields.Field
+                                If m_WOFSwD.FeatureSource.Columns(fld.Name) IsNot Nothing Then
+                                    strFldArr.Add(fld.Name)
+                                End If
+
+                            Next
+                        End If
+                    End If
+                End If
+                Dim strDis As String
+                Dim obj As Object
+                Dim pCV As CodedValueDomain
+                Dim table As New DataTable
+
+                ' Create four typed columns in the DataTable.
+                table.Columns.Add("DISPLAY", GetType(String))
+                table.Columns.Add("VALUE", GetType(Integer))
+                For Each pFDR As FeatureDataRow In pFDRs
+
+                    strDis = ""
+                    Dim subVal As Integer = 0
+                    If m_WOFSwD.FeatureSource.HasSubtypes() Then
+                        subVal = pFDR.Item(m_WOFSwD.FeatureSource.SubtypeColumnIndex)
+                    End If
+
+                    For i As Integer = 0 To strFldArr.Count - 1
+                        If strFldArr(i) <> pFDR.FeatureSource.GeometryColumnName Then
+                            Dim valToAdd As Object = pFDR.Item(strFldArr(i))
+                            obj = CType(pFDR.FeatureSource.Columns(strFldArr(i)), SourceDataColumn).GetDomain(subVal)
+
+                            If obj IsNot Nothing Then
+                                If TypeOf (obj) Is CodedValueDomain Then
+                                    pCV = obj
+
+                                    valToAdd = GlobalsFunctions.getDomainCode(valToAdd, pCV)
+                                End If
+                            End If
+
+                            If strDis = "" Then
+                                strDis = valToAdd.ToString()
+
+                                'pLstViewItm.Text = (pDr(i).ToString)
+                            Else
+                                'pLstViewItm.SubItems.Add(pDr(i).ToString)
+                                strDis = strDis & GlobalsFunctions.appConfig.WorkorderPanel.WorkOrderFilters.WorkOrderFilter(0).Fields.JoinString & valToAdd.ToString()
+
+                            End If
+                        End If
+
+
+                    Next
+                    If strDis = "" Then
+                        strDis = GlobalsFunctions.appConfig.WorkorderPanel.UIComponents.NoDisplayText
+
+                    End If
+
+                    table.Rows.Add(strDis, pFDR.Fid)
+
+
+                Next
+
+                Dim frmSelect As frmSelectOptionCombo = New frmSelectOptionCombo("Multiple Assignments at that location", table, "DISPLAY", "VALUE", "", "", False, False)
+
+                Dim res As String = frmSelect.ShowDialog()
+                If frmSelect.selectedValue <> "" Then
+                    selectedID = CType(frmSelect.selectedValue, Integer)
+                Else
+                    Return
+                End If
+
+
+            Else
+                selectedID = CType(pFDRs(0), FeatureDataRow).Fid
+            End If
 
             m_CurrentWOID = ""
             CType(m_OutlookNavigatePane.SelectedButton.RelatedControl, ListView).SelectedItems.Clear()
 
             For Each itm As MyListViewItem In CType(m_OutlookNavigatePane.SelectedButton.RelatedControl, ListView).Items
-                If itm.FeatureDataRow.Fid = pFDR.Fid Then
+                If itm.FeatureDataRow.Fid = selectedID Then
                     Call btnViewAllWork_Click(Nothing, Nothing)
                     '  RemoveHandler CType(m_OutlookNavigatePane.SelectedButton.RelatedControl, ListView).SelectedIndexChanged, AddressOf ListView_SelectedIndexChanged
 
@@ -1027,11 +1116,11 @@ Public Class AssignedWorkControl
         End If
 
     End Sub
-    Public Function selectFeature(ByVal Location As Esri.ArcGIS.Mobile.Geometries.Geometry) As FeatureDataRow
+    Public Function selectFeature(ByVal Location As Esri.ArcGIS.Mobile.Geometries.Geometry, sql As String) As FeatureDataRow
         Try
             Dim pDT As FeatureDataTable
 
-            pDT = spatialQFeature(Location)
+            pDT = spatialQFeature(Location, Sql)
             If pDT.Rows.Count = 0 Then Return Nothing
 
             Return pDT.Rows(0)
@@ -1041,7 +1130,21 @@ Public Class AssignedWorkControl
             Return Nothing
         End Try
     End Function
-    Private Function spatialQFeature(ByVal Location As Esri.ArcGIS.Mobile.Geometries.Geometry) As FeatureDataTable
+    Public Function selectFeatures(ByVal Location As Esri.ArcGIS.Mobile.Geometries.Geometry, sql As String) As DataRowCollection
+        Try
+            Dim pDT As FeatureDataTable
+
+            pDT = spatialQFeature(Location, sql)
+            If pDT.Rows.Count = 0 Then Return Nothing
+
+            Return pDT.Rows
+
+
+        Catch ex As Exception
+            Return Nothing
+        End Try
+    End Function
+    Private Function spatialQFeature(ByVal Location As Esri.ArcGIS.Mobile.Geometries.Geometry, sql As String) As FeatureDataTable
         Dim pLayDef As MobileCacheMapLayerDefinition
 
 
@@ -1075,10 +1178,10 @@ Public Class AssignedWorkControl
 
 
                     'Set up query filter used to id features
-                    Dim pQf As QueryFilter = New QueryFilter(pEnv, Geometries.GeometricRelationshipType.Intersect)
+                    Dim pQf As QueryFilter = New QueryFilter(pEnv, Geometries.GeometricRelationshipType.Intersect, sql)
                     'Build an array to limit returned fields
                     Dim pStr(m_WOFSwD.FeatureSource.Columns.Count) As String
-                 
+
                     If m_WOFSwD.FeatureSource.GetFeatureCount(pQf) > 0 Then
 
 
@@ -1526,7 +1629,10 @@ Public Class AssignedWorkControl
     Private Sub btnCrew_Click(sender As System.Object, e As System.EventArgs) Handles btnCrew.Click
         If m_WOFSwD.FeatureSource Is Nothing Then Return
 
-        Dim frmSelect As frmSelectOptionCombo = New frmSelectOptionCombo(GlobalsFunctions.appConfig.WorkorderPanel.UIComponents.ChangeCrewText, GetCrewNames(), GlobalsFunctions.appConfig.WorkorderPanel.LayerInfo.AssignedToField, m_AssignedTo, GlobalsFunctions.appConfig.WorkorderPanel.UIComponents.SaveCrewText, True)
+        Dim frmSelect As frmSelectOptionCombo = New frmSelectOptionCombo(GlobalsFunctions.appConfig.WorkorderPanel.UIComponents.ChangeCrewText,
+                                                                         GetCrewNames(), GlobalsFunctions.appConfig.WorkorderPanel.LayerInfo.AssignedToField,
+                                                                         GlobalsFunctions.appConfig.WorkorderPanel.LayerInfo.AssignedToField, m_AssignedTo,
+                                                                         GlobalsFunctions.appConfig.WorkorderPanel.UIComponents.SaveCrewText, True, True)
 
         frmSelect.ShowDialog()
         If frmSelect.selectedOption <> "" Then

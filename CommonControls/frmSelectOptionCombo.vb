@@ -16,8 +16,9 @@
 
 Public Class frmSelectOptionCombo
     Private m_SelectedOption As String
-    Public Sub New(ByVal Label As String, DataTable As DataTable, displayCol As String, currentVal As String, _
-                   checkBoxLabel As String, chk As Boolean)
+    Private m_SelectedValue As String
+    Public Sub New(ByVal Label As String, DataTable As DataTable, displayCol As String, valueCol As String, currentVal As String, _
+                   checkBoxLabel As String, chk As Boolean, Optional addAllWorkorders As Boolean = True)
 
         ' This call is required by the designer.
         InitializeComponent()
@@ -36,14 +37,19 @@ Public Class frmSelectOptionCombo
         Dim drarray() As DataRow
 
         ComboBox1.Items.Clear()
-
+        ComboBox1.DisplayMember = "Text"
+        ComboBox1.ValueMember = "Value"
         drarray = DataTable.Select("", displayCol)
-        If GlobalsFunctions.appConfig.WorkorderPanel.UIComponents.AllWOText <> "" Then
-            ComboBox1.Items.Add(GlobalsFunctions.appConfig.WorkorderPanel.UIComponents.AllWOText.ToString)
-
+        If addAllWorkorders Then
+            If GlobalsFunctions.appConfig.WorkorderPanel.UIComponents.AllWOText <> "" Then
+                'ComboBox1.Items.Add(GlobalsFunctions.appConfig.WorkorderPanel.UIComponents.AllWOText.ToString)
+                ComboBox1.Items.Add(New With {.Text = GlobalsFunctions.appConfig.WorkorderPanel.UIComponents.AllWOText.ToString, .Value = GlobalsFunctions.appConfig.WorkorderPanel.UIComponents.AllWOText.ToString})
+            End If
         End If
+
         For i = 0 To (drarray.Length - 1)
-            ComboBox1.Items.Add(drarray(i)(displayCol).ToString)
+            'ComboBox1.Items.Add(drarray(i)(displayCol).ToString)
+            ComboBox1.Items.Add(New With {.Text = drarray(i)(displayCol).ToString, .Value = drarray(i)(valueCol).ToString})
         Next
         'ComboBox1.DataSource = DataTable.Select("", displayCol)
         'ComboBox1.Sorted = True
@@ -72,7 +78,16 @@ Public Class frmSelectOptionCombo
 
         'End Set
     End Property
+    Public ReadOnly Property selectedValue As String
+        Get
+            Return m_SelectedValue
 
+        End Get
+        'Set(ByVal value As Boolean)
+
+
+        'End Set
+    End Property
     Public ReadOnly Property checkboxState As Boolean
         Get
             Return chkPersist.Checked
@@ -86,12 +101,17 @@ Public Class frmSelectOptionCombo
 
 
     Private Sub btnAccept_Click(sender As System.Object, e As System.EventArgs) Handles btnAccept.Click
-        m_SelectedOption = ComboBox1.Text
+        m_SelectedOption = ComboBox1.SelectedItem.Text
+
+
+        m_SelectedValue = ComboBox1.SelectedItem.Value
+
         Me.Close()
     End Sub
 
     Private Sub btnClose_Click(sender As System.Object, e As System.EventArgs) Handles btnClose.Click
         m_SelectedOption = ""
+        m_SelectedValue = ""
         Me.Close()
     End Sub
 End Class

@@ -889,6 +889,7 @@ Public Class MobileTOC
 
 
                 CType(m_Map.MapLayers(pFSwD.MapLayerIndex), MobileCacheMapLayer).LayerDefinitions(pFSwD.LayerIndex).Visibility = pNode.Checked
+             
                 'Cleanup
             End If
 

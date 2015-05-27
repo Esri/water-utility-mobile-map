@@ -24,6 +24,7 @@
       </UIComponents>
     </ApplicationSettings>
     <NavigationOptions>
+      a
       <GPS AllowGPSToggle="True" TurnOnStartup="False">
         <Visible>True</Visible>
         <COMFile>file.txt</COMFile>
@@ -82,7 +83,7 @@
     </MeasureOptions>
     <LayerOptions>
       <MobileServices ymax="" LimitQuery="" ymin="" xmin="" xmax="">
-        <MobileService StorageLocation="" UserName="" Password="" Domain="" TokenURL="">http://utilsolutions.esri.com:6080/arcgis/services/LeakSurveyMobileMap/MapServer/MobileServer</MobileService>
+        <MobileService StorageLocation="" UserName="" Password="" Domain="" TokenURL="">http://millerwin7.esri.com:6080/arcgis/services/mobileTest/MapServer/MobileServer</MobileService>
       </MobileServices>
       <CachedMaps>
         <CachedMap DisplayName="DayMap">Mobile Day Map</CachedMap>
@@ -106,7 +107,7 @@
           <LayerGroup Name="Excess Flow Valve" />
           <LayerGroup Name="Non-Controllable Fitting" />
           <LayerGroup Name="Controllable Fitting" />
-          <LayerGroup Name="Gas Valve" />
+          <LayerGroup Name="Valve" />
           <LayerGroup Name="Relief Valve" />
           <LayerGroup Name="Rectifier" />
           <LayerGroup Name="Pressure Monitoring Device" />
@@ -341,7 +342,7 @@
           <RefreshLayer SyncOnStartUp="false" Name="Excess Flow Valve" Extent="Current" WhereClause="" />
           <RefreshLayer SyncOnStartUp="false" Name="Non-Controllable Fitting" Extent="Current" WhereClause="" />
           <RefreshLayer SyncOnStartUp="false" Name="Controllable Fitting" Extent="Current" WhereClause="" />
-          <RefreshLayer SyncOnStartUp="false" Name="Gas Valve" Extent="Current" WhereClause="" />
+          <RefreshLayer SyncOnStartUp="false" Name="Valve" Extent="Current" WhereClause="" />
           <RefreshLayer SyncOnStartUp="false" Name="Relief Valve" Extent="Current" WhereClause="" />
           <RefreshLayer SyncOnStartUp="false" Name="Rectifier" Extent="Current" WhereClause=""/>
           <RefreshLayer SyncOnStartUp="false" Name="Pressure Monitoring Device" Extent="Current" WhereClause=""/>
@@ -379,7 +380,7 @@
         <SearchLayer Name="Meter Setting" DisplayName="Meter Setting" xmin="" DefQuery="" xmax="" ymin="" ymax="">
           <Fields />
         </SearchLayer>
-        <SearchLayer Name="Gas Valve" DisplayName="Gas Valve" xmin="" DefQuery="" xmax="" ymin="" ymax="">
+        <SearchLayer Name="Valve" DisplayName="Valve" xmin="" DefQuery="" xmax="" ymin="" ymax="">
           <Fields />
         </SearchLayer>
         <SearchLayer Name="Regulator Station" DisplayName="Regulator Station" xmin="" DefQuery="" xmax="" ymin="" ymax="">
@@ -393,7 +394,7 @@
         </SearchLayer>
       </SearchLayers>
       <DrillDownSearches>
-        <DrillDownSearch DefQuery="" LayerName="Gas Valve" DisplayText="Gas Valve" ymax="" xmin="" xmax="" ymin="">
+        <DrillDownSearch DefQuery="" LayerName="Valve" DisplayText="Valve" ymax="" xmin="" xmax="" ymin="">
           <PointFields>
             <PointField Name="FACILITYID" DisplayText="Facility ID" AutoComplete="True" />
           </PointFields>
@@ -552,7 +553,7 @@
           <IDLayer Name="Excess Flow Valve" />
           <IDLayer Name="Non-Controllable Fitting" />
           <IDLayer Name="Controllable Fitting" />
-          <IDLayer Name="Gas Valve" />
+          <IDLayer Name="Valve" />
           <IDLayer Name="Relief Valve" />
           <IDLayer Name="Rectifier"/>
           <IDLayer Name="Pressure Monitoring Device"/>
@@ -598,50 +599,50 @@
       <Visible>True</Visible>
       <DisplayText>Workorder</DisplayText>
       <StatusBarMessage>Activity List: Shows a list of assigned activities, opening a activity sets up an inspection</StatusBarMessage>
-      <LayerInfo LayerName="Leak Survey Work Order" AssignedToField="ASSIGNEDTO" AssignedTo="Crew 3" IDField="WORKORDERID" />
+      <LayerInfo LayerName="Leak Surveys" AssignedToField="ASSIGNEDTO" AssignedTo="Crew 3" IDField="WORKORDERID" />
       <WorkOrderFilters ButtonSize="40" ListFontSize="12" ButtonFontSize="14" ShowFilterGeo="False" FilterOn="False">
-        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="DAYSTILDUE &lt;= 0 and (WORKORDERSTATUS = 'Assigned' or WORKORDERSTATUS = 'In Progress')" Label="Overdue" SortField="FACILITYID">
+        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="date('DATEOFSURVEY', '+5 years') &lt; date(now) and (SURVEYSTATUS = 'Assigned' or SURVEYSTATUS = 'In Progress')" Label="Overdue" SortField="FACILITYID">
           <Fields JoinString=" - ">
-            <Field Name="FACILITYID" Label="" />
-            <Field Name="WORKORDERTYPE" Label="" />
+            <Field Name="MAPGRIDNAME" Label="" />
+            <Field Name="GridSurveyType" Label="" />
           </Fields>
         </WorkOrderFilter>
-        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="(WORKORDERSTATUS = 'Assigned' or WORKORDERSTATUS = 'In Progress') AND (DAYSTILDUE &gt; 0 and DAYSTILDUE  &lt;= 30)" Label="Due 1-30 Days" SortField="FACILITYID">
+        <!--<WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="(SURVEYSTATUS = 'Assigned' or SURVEYSTATUS = 'In Progress') AND (DAYSTILDUE &gt; 0 and DAYSTILDUE  &lt;= 30)" Label="Due 1-30 Days" SortField="FACILITYID">
           <Fields JoinString=" - ">
-            <Field Name="FACILITYID" Label="" />
-            <Field Name="WORKORDERTYPE" Label="" />
+            <Field Name="MAPGRIDNAME" Label="" />
+            <Field Name="GridSurveyType" Label="" />
           </Fields>
         </WorkOrderFilter>
-        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="(WORKORDERSTATUS = 'Assigned' or WORKORDERSTATUS = 'In Progress') AND (DAYSTILDUE &gt; 30 and DAYSTILDUE &lt;= 90)" Label="Due 31-90 Days" SortField="FACILITYID">
+        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="(SURVEYSTATUS = 'Assigned' or SURVEYSTATUS = 'In Progress') AND (DAYSTILDUE &gt; 30 and DAYSTILDUE &lt;= 90)" Label="Due 31-90 Days" SortField="FACILITYID">
           <Fields JoinString=" - ">
-            <Field Name="FACILITYID" Label="" />
-            <Field Name="WORKORDERTYPE" Label="" />
+            <Field Name="MAPGRIDNAME" Label="" />
+            <Field Name="GridSurveyType" Label="" />
           </Fields>
         </WorkOrderFilter>
-        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="(WORKORDERSTATUS = 'Assigned' or WORKORDERSTATUS = 'In Progress') AND (DAYSTILDUE &gt; 90 and DAYSTILDUE &lt;= 180)" Label="Due 91-180 Days" SortField="FACILITYID">
+        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="(SURVEYSTATUS = 'Assigned' or SURVEYSTATUS = 'In Progress') AND (DAYSTILDUE &gt; 90 and DAYSTILDUE &lt;= 180)" Label="Due 91-180 Days" SortField="FACILITYID">
           <Fields JoinString=" - ">
-            <Field Name="FACILITYID" Label="" />
-            <Field Name="WORKORDERTYPE" Label="" />
+            <Field Name="MAPGRIDNAME" Label="" />
+            <Field Name="GridSurveyType" Label="" />
           </Fields>
         </WorkOrderFilter>
-        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="WORKORDERSTATUS = 'In Progress'" Label="In Progress" SortField="FACILITYID">
+        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="SURVEYSTATUS = 'In Progress'" Label="In Progress" SortField="FACILITYID">
           <Fields JoinString=" - ">
-            <Field Name="FACILITYID" Label="" />
-            <Field Name="WORKORDERTYPE" Label="" />
+            <Field Name="MAPGRIDNAME" Label="" />
+            <Field Name="GridSurveyType" Label="" />
           </Fields>
         </WorkOrderFilter>
-        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="WORKORDERSTATUS = 'Completed'" Label="Completed" SortField="FACILITYID">
+        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="SURVEYSTATUS = 'Completed'" Label="Completed" SortField="FACILITYID">
           <Fields JoinString=" - ">
-            <Field Name="FACILITYID" Label="" />
-            <Field Name="WORKORDERTYPE" Label="" />
+            <Field Name="MAPGRIDNAME" Label="" />
+            <Field Name="GridSurveyType" Label="" />
           </Fields>
         </WorkOrderFilter>
-        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="WorkOrderStatus = 'No Access'" Label="No Access" SortField="FACILITYID">
+        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="SURVEYSTATUS = 'No Access'" Label="No Access" SortField="FACILITYID">
           <Fields JoinString=" - ">
-            <Field Name="FACILITYID" Label="" />
-            <Field Name="WORKORDERTYPE" Label="" />
+            <Field Name="MAPGRIDNAME" Label="" />
+            <Field Name="GridSurveyType" Label="" />
           </Fields>
-        </WorkOrderFilter>
+        </WorkOrderFilter>-->
       </WorkOrderFilters>
       <UIComponents>
         <InvalidSqlMessage>Invalid SQL</InvalidSqlMessage>

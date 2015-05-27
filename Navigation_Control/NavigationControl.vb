@@ -26,6 +26,8 @@ Imports System.Math
 Imports System.Threading
 Imports ESRI.ArcGISTemplates
 
+'Imports System.Reflection    ' Required if not already in your code
+'Imports System.ComponentModel
 
 Public Class mobileNavigation
     Private m_gpsD As GPSLocationDetails
@@ -660,10 +662,17 @@ Public Class mobileNavigation
                     Catch ex As Exception
 
                     End Try
+                    
+                    m_Map.DisableDrawing()
+                    'm_Map.RefreshOnDataChange = False
+                    'm_Map.SuspendLayout()
                     pDT.Rows.Add(pFDR)
-
+                    m_Map.Invalidate(pFDR.Geometry.Extent)
 
                     m_GPSFL.SaveEdits(pDT)
+                    'm_Map.RefreshOnDataChange = True
+                    'm_Map.ResumeLayout()
+                    m_Map.EnableDrawing()
                     pDT = Nothing
                     pFDR = Nothing
 
@@ -1818,6 +1827,18 @@ Public Class mobileNavigation
         'End Try
 
     End Sub
+    'Private Function BuildEventFields() As List(Of FieldInfo)
+    '    Dim lst As List(Of FieldInfo)
+    '    Dim t As Type = GetType(Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource)
+    '    For Each ei As EventInfo In t.GetEvents(BindingFlags.FlattenHierarchy)
+    '        Dim dt As Type = ei.DeclaringType
+    '        Dim fi As FieldInfo = dt.GetField(ei.Name)
+    '        If fi IsNot Nothing Then
+    '            lst.Add(fi)
+    '        End If
+    '    Next
+    '    Return lst
+    'End Function
     Private Sub AddNavButtons()
         'Add the buttons for the navigation control
         ' Dim pBtn As New Button
@@ -1868,12 +1889,20 @@ Public Class mobileNavigation
         If UCase(key) <> "FALSE" Then
             key = GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSLogLayer
             If key <> "" Then
-                GlobalsFunctions.GetMapLayer(key, m_Map)
+                'GlobalsFunctions.GetMapLayer(key, m_Map)
 
                 m_GPSFL = GlobalsFunctions.GetFeatureSource(key, m_Map).FeatureSource
                 If m_GPSFL Is Nothing Then
                     m_LogGPS = False
                 Else
+
+                    'Dim lst As List(Of FieldInfo)
+                    'lst = BuildEventFields()
+                    'Dim f1 As FieldInfo = GetType(Esri.ArcGIS.Mobile.FeatureCaching.FeatureSource).GetField("OnDataChanged", BindingFlags.Static Or BindingFlags.NonPublic)
+                    'Dim obj As Object = f1.GetValue(m_GPSFL)
+                    'Dim pi As PropertyInfo = m_GPSFL.GetType().GetProperty("Events", BindingFlags.NonPublic Or BindingFlags.Instance)
+                    'Dim list As EventHandlerList = DirectCast(pi.GetValue(m_GPSFL, Nothing), EventHandlerList)
+                    'list.RemoveHandler(obj, list(obj))
                     m_LogGPS = True
                     m_GPSFL_UserField = GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSLogLayer_UserNameField
                     m_GPSFL_DateField = GlobalsFunctions.appConfig.NavigationOptions.GPS.GPSLogLayer_DateField
