@@ -24,14 +24,13 @@
       </UIComponents>
     </ApplicationSettings>
     <NavigationOptions>
-      a
       <GPS AllowGPSToggle="True" TurnOnStartup="False">
         <Visible>True</Visible>
         <COMFile>file.txt</COMFile>
         <GPSBaud>4800</GPSBaud>
         <GPSTrackLog>True</GPSTrackLog>
         <GPSLogLayer>GPSLog</GPSLogLayer>
-        <GPSLogInterval>120</GPSLogInterval>
+        <GPSLogInterval>1</GPSLogInterval>
         <GPSFixType>1</GPSFixType>
         <GPSPDOP>15</GPSPDOP>
         <GPSPointAvg>100</GPSPointAvg>
@@ -48,6 +47,7 @@
         <GPSLogLayer_TruncateAfterPost>True</GPSLogLayer_TruncateAfterPost>
         <GPSAutoCenter>False</GPSAutoCenter>
         <GPSLogLayer_WOField>CURWO</GPSLogLayer_WOField>
+        <SaveToLayerInterval>30</SaveToLayerInterval>
       </GPS>
       <ZoomPan>
         <FixZoom>True</FixZoom>
@@ -245,6 +245,12 @@
             </FilterFields>
            
           </Field>
+          <Field Options="" BackColor="buttonface" Caption="Comments/Notes" Name="COMMENTS" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
+            <FilterFields Visibility="True" Mode="WO_ID">
+
+            </FilterFields>
+            <FilterFields Visibility="True" Mode="WO_Close" />
+          </Field>
         </Layer>
       </LayersFieldOptions>
       <UIComponents>
@@ -260,6 +266,7 @@
           <Field Name="GlobalID" OnNew="GUID" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
           <Field Name="ADDRESS" OnNew="Address" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
           <Field Name="LOCATIONDESCRIPTION" OnNew="Intersect" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="Distribution Mains,Services" IntersectField="LEGACYID" />
+          <Field Name="COMMENTS" OnNew="WOText" OnModify="" OnNewReadOnly="false" OnModifyReadOnly="false" IntersectLayer="" IntersectField="" />
           <Field Name="FEDERALLANDINDICATOR" OnNew="value" OnModify="" OnNewReadOnly="false" OnModifyReadOnly="false" IntersectLayer="" IntersectField="" ValueText="N" />
           <Field Name="DOTREPORTEDINDICATOR" OnNew="value" OnModify="" OnNewReadOnly="false" OnModifyReadOnly="false" IntersectLayer="" IntersectField="" ValueText="N" />
           <Field Name="LEAKSTATUS" OnNew="value" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" ValueText="Active"/>
@@ -542,10 +549,10 @@
       <ToolMessage>Active Tool: Create</ToolMessage>
       <AttachmentOptions>
         <AttachmentSketchGroups ButtonSize="40" ListFontSize="12" ButtonFontSize="14">
-          <AttachmentSketchGroup Label="Anno" Layer="SketchAnno" />
-          <AttachmentSketchGroup Label="Point" Layer="SketchPoints" />
-          <AttachmentSketchGroup Label="Line" Layer="SketchLines" />
-          <AttachmentSketchGroup Label="Polygons" Layer="SketchPolygon" />
+          <AttachmentSketchGroup Label="Anno" Layer="Sketch Anno" />
+          <AttachmentSketchGroup Label="Point" Layer="Sketch Points" />
+          <AttachmentSketchGroup Label="Line" Layer="Sketch Lines" />
+          <AttachmentSketchGroup Label="Polygons" Layer="Sketch Polygons" />
         </AttachmentSketchGroups>
       </AttachmentOptions>
     </CreateFeaturePanel>

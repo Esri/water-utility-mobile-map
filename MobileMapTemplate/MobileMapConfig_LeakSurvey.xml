@@ -83,24 +83,20 @@
     </MeasureOptions>
     <LayerOptions>
       <MobileServices ymax="" LimitQuery="" ymin="" xmin="" xmax="">
-        <MobileService StorageLocation="" UserName="" Password="" Domain="" TokenURL="">http://millerwin7.esri.com:6080/arcgis/services/mobileTest/MapServer/MobileServer</MobileService>
+        <MobileService StorageLocation="" UserName="" Password="" Domain="" TokenURL="">http://millerwin7.esri.com:6080/arcgis/services/LeakSurveyMobileMap/MapServer/MobileServer</MobileService>
       </MobileServices>
       <CachedMaps>
         <CachedMap DisplayName="DayMap">Mobile Day Map</CachedMap>
         <CachedMap DisplayName="NightMap">Mobile Night Map</CachedMap>
       </CachedMaps>
       <WebMaps>
-        <WebMap DisplayName="Streets">http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer</WebMap>
-        <WebMap DisplayName="Imagery">http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer</WebMap>
+        <!--<WebMap DisplayName="Streets">http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer</WebMap>
+        <WebMap DisplayName="Imagery">http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer</WebMap>-->
       </WebMaps>
       <LayerGroupings>
-        <LayersGroup Visible="True" DisplayName="Leak Survey Grids">
-          <LayerGroup Name="Leak Survey Area Survey" />
-          <LayerGroup Name="Leak Survey Atmosphere" />
-          <LayerGroup Nam="Leak Survey Cast Iron"/>
-          <LayerGroup Name="Leak Survey Business" />
-          <LayerGroup Name="Leak Survey Bare Steel" />
-          <LayerGroup Name="Leak Survey Trailer Park" />
+        <LayersGroup Visible="True" DisplayName="Leak Survey Assignments">
+          <LayerGroup Name="Leak Survey Assignments" />
+
         </LayersGroup>
         <LayersGroup Visible="true" DisplayName="Network">
           <LayerGroup Name="Meter Setting" />
@@ -171,23 +167,20 @@
           <Field Options="" BackColor="" Caption="Date Reported" Name="DATEREPORTED" ForeColor="" HyperFormat="" BoxColor="" />
           <Field Options="" BackColor="" Caption="Reported By" Name="REPORTEDBY" ForeColor="" HyperFormat="" BoxColor="" />
         </Layer>
-        <Layer SketchColor="" SnapTo="" DisplayText="" Name="Leak Survey Work Order" SpecialCase="" SketchMode="">
-          <Field Options="" BackColor="buttonface" Caption="Work Order ID" Name="WORKORDERID" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
+        <Layer SketchColor="" SnapTo="" DisplayText="" Name="Leak Survey Assignments" SpecialCase="" SketchMode="">
+          <Field Options="" BackColor="buttonface" Caption="Area ID" Name="MAPGRIDNAME" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
             <FilterFields Visibility="True" Mode="WO_ID" />
             <FilterFields Visibility="False" Mode="WO_Close" />
           </Field>
-          <Field Options="" BackColor="buttonface" Caption="Leak Survey Type" Name="WORKORDERTYPE" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
+          <Field Options="" BackColor="buttonface" Caption="Leak Survey Type" Name="SURVEYTYPE" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
             <FilterFields Visibility="True" Mode="WO_ID" />
             <FilterFields Visibility="False" Mode="WO_Close" />
           </Field>
-          <Field Options="" BackColor="buttonface" Caption="Status" Name="WORKORDERSTATUS" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
+          <Field Options="" BackColor="buttonface" Caption="Status" Name="SURVEYSTATUS" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
             <FilterFields Visibility="True" Mode="WO_ID"/>
             <FilterFields Visibility="True" Mode="WO_Close"/>
           </Field>
-          <Field Options="" BackColor="buttonface" Caption="Map Grid ID" Name="FACILITYID" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
-            <FilterFields Visibility="True" Mode="WO_ID" />
-            <FilterFields Visibility="False" Mode="WO_Close" />
-          </Field>
+
           <Field Options="" BackColor="buttonface" Caption="AssignedTo" Name="ASSIGNEDTO" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
             <FilterFields Visibility="False" Mode="WO_ID">
             </FilterFields>
@@ -195,7 +188,7 @@
           </Field>
           <Field Options="" BackColor="buttonface" Caption="Start Date" Name="STARTDATE" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
             <FilterFields Visibility="True" Mode="WO_ID">
-              <FilterInfo FieldName="WORKORDERSTATUS">
+              <FilterInfo FieldName="SURVEYSTATUS">
                 <FieldValue>In Progress</FieldValue>
               </FilterInfo>
             </FilterFields>
@@ -203,15 +196,21 @@
           </Field>
           <Field Options="" BackColor="buttonface" Caption="End Date" Name="ENDDATE" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
             <FilterFields Visibility="True" Mode="WO_ID">
-              <FilterInfo FieldName="WORKORDERSTATUS">
+              <FilterInfo FieldName="SURVEYSTATUS">
                 <FieldValue>Completed</FieldValue>
               </FilterInfo>
             </FilterFields>
             <FilterFields Visibility="True" Mode="WO_Close" />
           </Field>
-          <Field Options="" BackColor="buttonface" Caption="Survey By" Name="SURVEYBY" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
+          <Field Options="" BackColor="buttonface" Caption="End Date" Name="DUEDATE" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
+            <FilterFields Visibility="True" Mode="WO_ID" />
+
+
+            <FilterFields Visibility="False" Mode="WO_Close" />
+          </Field>
+          <Field Options="" BackColor="buttonface" Caption="Survey By" Name="SURVEYEDBY" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
             <FilterFields Visibility="True" Mode="WO_ID">
-              <FilterInfo FieldName="WORKORDERSTATUS">
+              <FilterInfo FieldName="SURVEYSTATUS">
                 <FieldValue>Completed</FieldValue>
               </FilterInfo>
             </FilterFields>
@@ -219,21 +218,13 @@
           </Field>
           <Field Options="" BackColor="buttonface" Caption="Survey Method" Name="SURVEYMETHOD" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
             <FilterFields Visibility="True" Mode="WO_ID">
-              <FilterInfo FieldName="WORKORDERSTATUS">
+              <FilterInfo FieldName="SURVEYSTATUS">
                 <FieldValue>Completed</FieldValue>
               </FilterInfo>
             </FilterFields>
             <FilterFields Visibility="True" Mode="WO_Close" />
           </Field>
-          <Field Options="" BackColor="buttonface" Caption="Days Until Due" Name="DAYSTILDUE" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
-            <FilterFields Visibility="True" Mode="WO_ID">
-              <FilterInfo FieldName="WORKORDERSTATUS">
-                <FieldValue>Assigned</FieldValue>
-                <FieldValue>In Progress</FieldValue>
-              </FilterInfo>
-            </FilterFields>
-            <FilterFields Visibility="False" Mode="WO_Close" />
-          </Field>
+
           <Field Options="" BackColor="buttonface" Caption="Footage of Mains" Name="FOOTAGEMAINS" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
             <FilterFields Visibility="True" Mode="WO_ID" />
             <FilterFields Visibility="False" Mode="WO_Close" />
@@ -242,21 +233,17 @@
             <FilterFields Visibility="True" Mode="WO_ID" />
             <FilterFields Visibility="False" Mode="WO_Close" />
           </Field>
-          <Field Options="" BackColor="buttonface" Caption="Number of Leaks" Name="NumberLeaks" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
+          <Field Options="" BackColor="buttonface" Caption="Number of Leaks" Name="BELOWGRADELEAKS" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
             <FilterFields Visibility="True" Mode="WO_ID">
-              <FilterInfo FieldName="WORKORDERSTATUS">
-                <FieldValue>Completed</FieldValue>
-              </FilterInfo>
+
             </FilterFields>
             <FilterFields Visibility="True" Mode="WO_Close" />
           </Field>
           <Field Options="" BackColor="buttonface" Caption="Number of Hours" Name="DURATION" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
             <FilterFields Visibility="True" Mode="WO_ID">
-              <FilterInfo FieldName="WORKORDERSTATUS">
-                <FieldValue>Completed</FieldValue>
-              </FilterInfo>
+
             </FilterFields>
-            <FilterFields Visibility="True" Mode="WO_Close" />
+
           </Field>
         </Layer>
       </LayersFieldOptions>
@@ -272,7 +259,7 @@
         <Layer AllowNew="TRUE" EditExisting="false" DisplayText="Gas Leak" EditOwnerField="" SyncOnSave="0" EditGeo="false" DeleteFeature="false" RequiredBoxColor="" RequiredForeColor="" RequiredBackColor="" Name="Gas Leak" SnapTo="" SketchColor="#FFFF0000" SketchMode="Tap">
           <Field Name="GlobalID" OnNew="GUID" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
           <Field Name="ADDRESS" OnNew="Address" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
-          <Field Name="LOCATIONDESCRIPTION" OnNew="Intersect" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="Distribution Main" IntersectField="LEGACYID" />
+          <Field Name="LOCATIONDESCRIPTION" OnNew="Intersect" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="Distribution Mains,Services" IntersectField="LEGACYID" />
           <Field Name="FEDERALLANDINDICATOR" OnNew="value" OnModify="" OnNewReadOnly="false" OnModifyReadOnly="false" IntersectLayer="" IntersectField="" ValueText="N" />
           <Field Name="DOTREPORTEDINDICATOR" OnNew="value" OnModify="" OnNewReadOnly="false" OnModifyReadOnly="false" IntersectLayer="" IntersectField="" ValueText="N" />
           <Field Name="LEAKSTATUS" OnNew="value" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" ValueText="Active"/>
@@ -291,8 +278,8 @@
           <Field Name="DATE" OnNew="Date" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
           <Field Name="REPORTEDBY" OnNew="User" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
         </Layer>
-        <Layer AllowNew="false" EditExisting="true" DisplayText="Leak Survey Work Order" EditOwnerField="" SyncOnSave="" EditGeo="false" DeleteFeature="false" RequiredBoxColor="" RequiredForeColor="" RequiredBackColor="" Name="Leak Survey Work Order" SnapTo="" SketchColor="#FFFF0000" SketchMode="">
-          <Field Name="SURVEYBY" OnNew="User" OnModify="User" OnNewReadOnly="" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
+        <Layer AllowNew="false" EditExisting="true" DisplayText="Leak Survey Assignments" EditOwnerField="" SyncOnSave="" EditGeo="false" DeleteFeature="false" RequiredBoxColor="" RequiredForeColor="" RequiredBackColor="" Name="Leak Survey Assignments" SnapTo="" SketchColor="#FFFF0000" SketchMode="">
+          <Field Name="SURVEYEDBY" OnNew="User" OnModify="User" OnNewReadOnly="" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
         </Layer>
       </Layers>
       <DateTimeDisplayFormat>MM/dd/yyyy hh:mm</DateTimeDisplayFormat>
@@ -321,16 +308,10 @@
       <DisplayText>Service</DisplayText>
       <StatusBarMessage>Data Services: Post or get new data changes from your office's server</StatusBarMessage>
       <RefreshList ShowAllLayers="true">
-        <RefreshGroup Name="Workorders">
-          <RefreshLayer SyncOnStartUp="True" Name="Leak Survey Work Order" Extent="Full" WhereClause="" />
-        </RefreshGroup>
-        <RefreshGroup Name="Leak Survey Grids">
-          <RefreshLayer SyncOnStartUp="True" Name="Leak Survey Area Survey" Extent="Full" WhereClause="" />
-          <RefreshLayer SyncOnStartUp="True" Name="Leak Survey Atmosphere" Extent="Full" WhereClause="" />
-          <RefreshLayer SyncOnStartUp="True" Name="Leak Survey Cast Iron" Extent="Full" WhereClause="" />
-          <RefreshLayer SyncOnStartUp="True" Name="Leak Survey Business" Extent="Full" WhereClause="" />
-          <RefreshLayer SyncOnStartUp="True" Name="Leak Survey Bare Steel" Extent="Full" WhereClause="" />
-          <RefreshLayer SyncOnStartUp="True" Name="Leak Survey Trailer Park" Extent="Full" WhereClause="" />
+
+        <RefreshGroup Name="Leak Survey Assignments">
+          <RefreshLayer SyncOnStartUp="True" Name="Leak Survey Assignments" Extent="Full" WhereClause="" />
+
         </RefreshGroup>
         <RefreshGroup Name="Field Operations">
           <RefreshLayer SyncOnStartUp="false" Name="Gas Leak" Extent="Current" WhereClause="" />
@@ -343,14 +324,11 @@
           <RefreshLayer SyncOnStartUp="false" Name="Non-Controllable Fitting" Extent="Current" WhereClause="" />
           <RefreshLayer SyncOnStartUp="false" Name="Controllable Fitting" Extent="Current" WhereClause="" />
           <RefreshLayer SyncOnStartUp="false" Name="Valve" Extent="Current" WhereClause="" />
-          <RefreshLayer SyncOnStartUp="false" Name="Relief Valve" Extent="Current" WhereClause="" />
-          <RefreshLayer SyncOnStartUp="false" Name="Rectifier" Extent="Current" WhereClause=""/>
-          <RefreshLayer SyncOnStartUp="false" Name="Pressure Monitoring Device" Extent="Current" WhereClause=""/>
-          <RefreshLayer SynOnStartUp="false"  Name="Anode" Extent="Current" WhereClause=""/>
           <RefreshLayer SyncOnStartUp="false" Name="Town Border Station" Extent="Current" WhereClause="" />
           <RefreshLayer SyncOnStartUp="false" Name="Regulator Station" Extent="Current" WhereClause="" />
-          <RefreshLayer SyncOnStartUp="false" Name="Service" Extent="Current" WhereClause="" />
-          <RefreshLayer SyncOnStartUp="false" Name="Distribution Main" Extent="Current" WhereClause="" />
+          <RefreshLayer SyncOnStartUp="false" Name="Services" Extent="Current" WhereClause="" />
+          <RefreshLayer SyncOnStartUp="false" Name="Distribution Mains" Extent="Current" WhereClause="" />
+
         </RefreshGroup>
         <RefreshGroup Name="Streets">
           <RefreshLayer SyncOnStartUp="false" Name="Road Centerlines" Extent="Current" WhereClause="" />
@@ -532,17 +510,8 @@
       <LengthFormat>{0:0.00}</LengthFormat>
       <LengthUnit>Foot</LengthUnit>
       <IDGroups AllLayersText="All Layers">
-        <IDGroup DisplayName="Work Order">
-          <IDLayer Name="Leak Survey Work Order" />
-        </IDGroup>
-        <IDGroup DisplayName="Leak Survey Grids">
-          <IDLayer Name="Leak Survey Area Survey" />
-          <IDLayer Name="Leak Survey Atmosphere" />
-          <IDLayer Name="Leak Survey Cast Iron" />
-          <IDLayer Name="Leak Survey Business" />
-          <IDLayer Name="Leak Survey Bare Steel" />
-          <IDLayer Name="Leak Survey Trailer Park" />
-        </IDGroup>
+
+
         <IDGroup DisplayName="Field Operations">
           <IDLayer Name="Gas Leak" />
           <IDLayer Name="Gas Leak Inspection" />
@@ -554,14 +523,11 @@
           <IDLayer Name="Non-Controllable Fitting" />
           <IDLayer Name="Controllable Fitting" />
           <IDLayer Name="Valve" />
-          <IDLayer Name="Relief Valve" />
-          <IDLayer Name="Rectifier"/>
-          <IDLayer Name="Pressure Monitoring Device"/>
-          <IDLayer Name="Anode"/>
           <IDLayer Name="Town Border Station" />
           <IDLayer Name="Regulator Station" />
-          <IDLayer Name="Service" />
-          <IDLayer Name="Distribution Main" />
+          <IDLayer Name="Services" />
+          <IDLayer Name="Distribution Mains" />
+
         </IDGroup>
       </IDGroups>
       <UIComponents>
@@ -599,50 +565,50 @@
       <Visible>True</Visible>
       <DisplayText>Workorder</DisplayText>
       <StatusBarMessage>Activity List: Shows a list of assigned activities, opening a activity sets up an inspection</StatusBarMessage>
-      <LayerInfo LayerName="Leak Surveys" AssignedToField="ASSIGNEDTO" AssignedTo="Crew 3" IDField="WORKORDERID" />
+      <LayerInfo LayerName="Leak Survey Assignments" AssignedToField="ASSIGNEDTO" AssignedTo="Crew 3" IDField="MAPGRIDNAME" />
       <WorkOrderFilters ButtonSize="40" ListFontSize="12" ButtonFontSize="14" ShowFilterGeo="False" FilterOn="False">
-        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="date('DATEOFSURVEY', '+5 years') &lt; date(now) and (SURVEYSTATUS = 'Assigned' or SURVEYSTATUS = 'In Progress')" Label="Overdue" SortField="FACILITYID">
+        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="(DUEDATE IS NULL or DUEDATE &lt;= 'now') and (SURVEYSTATUS = 'Assigned')" Label="Overdue" SortField="MAPGRIDNAME">
           <Fields JoinString=" - ">
             <Field Name="MAPGRIDNAME" Label="" />
-            <Field Name="GridSurveyType" Label="" />
+            <Field Name="SURVEYTYPE" Label="" />
           </Fields>
         </WorkOrderFilter>
-        <!--<WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="(SURVEYSTATUS = 'Assigned' or SURVEYSTATUS = 'In Progress') AND (DAYSTILDUE &gt; 0 and DAYSTILDUE  &lt;= 30)" Label="Due 1-30 Days" SortField="FACILITYID">
+        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="DUEDATE &gt; 'now' and DUEDATE &lt;= date('now','+30 days') and (SURVEYSTATUS = 'Assigned')" Label="Due 1-30 Days" SortField="MAPGRIDNAME">
           <Fields JoinString=" - ">
             <Field Name="MAPGRIDNAME" Label="" />
-            <Field Name="GridSurveyType" Label="" />
+            <Field Name="SURVEYTYPE" Label="" />
           </Fields>
         </WorkOrderFilter>
-        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="(SURVEYSTATUS = 'Assigned' or SURVEYSTATUS = 'In Progress') AND (DAYSTILDUE &gt; 30 and DAYSTILDUE &lt;= 90)" Label="Due 31-90 Days" SortField="FACILITYID">
+        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="DUEDATE &gt; date('now','+30 days') and DUEDATE &lt;= date('now','+90 days') and (SURVEYSTATUS = 'Assigned')" Label="Due 31-90 Days" SortField="MAPGRIDNAME">
           <Fields JoinString=" - ">
             <Field Name="MAPGRIDNAME" Label="" />
-            <Field Name="GridSurveyType" Label="" />
+            <Field Name="SURVEYTYPE" Label="" />
           </Fields>
         </WorkOrderFilter>
-        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="(SURVEYSTATUS = 'Assigned' or SURVEYSTATUS = 'In Progress') AND (DAYSTILDUE &gt; 90 and DAYSTILDUE &lt;= 180)" Label="Due 91-180 Days" SortField="FACILITYID">
+        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="DUEDATE &gt; date('now','+90 days') and DUEDATE &lt;= date('now','+180 days') and (SURVEYSTATUS = 'Assigned')" Label="Due 91-180 Days" SortField="MAPGRIDNAME">
           <Fields JoinString=" - ">
             <Field Name="MAPGRIDNAME" Label="" />
-            <Field Name="GridSurveyType" Label="" />
+            <Field Name="SURVEYTYPE" Label="" />
           </Fields>
         </WorkOrderFilter>
-        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="SURVEYSTATUS = 'In Progress'" Label="In Progress" SortField="FACILITYID">
+        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="SURVEYSTATUS = 'In Progress'" Label="In Progress" SortField="MAPGRIDNAME">
           <Fields JoinString=" - ">
             <Field Name="MAPGRIDNAME" Label="" />
-            <Field Name="GridSurveyType" Label="" />
+            <Field Name="SURVEYTYPE" Label="" />
           </Fields>
         </WorkOrderFilter>
-        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="SURVEYSTATUS = 'Completed'" Label="Completed" SortField="FACILITYID">
+        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="SURVEYSTATUS = 'Completed'" Label="Completed" SortField="MAPGRIDNAME">
           <Fields JoinString=" - ">
             <Field Name="MAPGRIDNAME" Label="" />
-            <Field Name="GridSurveyType" Label="" />
+            <Field Name="SURVEYTYPE" Label="" />
           </Fields>
         </WorkOrderFilter>
-        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="SURVEYSTATUS = 'No Access'" Label="No Access" SortField="FACILITYID">
+        <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="SURVEYSTATUS = 'No Access'" Label="No Access" SortField="MAPGRIDNAME">
           <Fields JoinString=" - ">
             <Field Name="MAPGRIDNAME" Label="" />
-            <Field Name="GridSurveyType" Label="" />
+            <Field Name="SURVEYTYPE" Label="" />
           </Fields>
-        </WorkOrderFilter>-->
+        </WorkOrderFilter>
       </WorkOrderFilters>
       <UIComponents>
         <InvalidSqlMessage>Invalid SQL</InvalidSqlMessage>

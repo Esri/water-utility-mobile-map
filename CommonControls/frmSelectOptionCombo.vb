@@ -64,7 +64,13 @@ Public Class frmSelectOptionCombo
             chkPersist.Checked = chk
 
         End If
-        ComboBox1.Text = currentVal
+        If currentVal = "" Then
+            ComboBox1.SelectedIndex = 0
+
+        Else
+            ComboBox1.Text = currentVal
+        End If
+
         ' Add any initialization after the InitializeComponent() call.
 
     End Sub

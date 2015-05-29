@@ -2318,7 +2318,7 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
 
         Private turnOnStartupField As String = True
         Private allowGPSToggleField As String = True
-
+        Private SaveToLayerIntervalField As Integer = 30
         Private Shared sSerializer As System.Xml.Serialization.XmlSerializer
         Public Sub New()
             waypointControlField = New MobileConfigMobileMapConfigNavigationOptionsGPSWaypointControl()
@@ -2501,6 +2501,16 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
                 Me.gPSLogLayer_WOFieldField = value
             End Set
         End Property
+        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=17)> _
+        Public Property SaveToLayerInterval() As Integer
+            Get
+                Return Me.SaveToLayerIntervalField
+            End Get
+            Set(ByVal value As Integer)
+                Me.SaveToLayerIntervalField = value
+            End Set
+        End Property
+
         Private Shared ReadOnly Property Serializer() As System.Xml.Serialization.XmlSerializer
             Get
                 If (sSerializer Is Nothing) Then

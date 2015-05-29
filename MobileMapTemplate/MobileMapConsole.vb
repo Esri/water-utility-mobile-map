@@ -2945,7 +2945,7 @@ Public Class MobileMapConsole
     Private Sub IMConsole_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         'Dispose
         Try
-
+            m_MCNav.saveGPS()
             If m_SyncIndicator IsNot Nothing Then
                 m_SyncIndicator.Dispose()
             End If

@@ -620,6 +620,8 @@ Public Class AssignedWorkControl
                 End If
 
             Next
+            Dim bmatchfnd As Boolean = False
+
             If fid <> "NAN" Then
 
                 For Each itm As MyListViewItem In CType(m_OutlookNavigatePane.SelectedButton.RelatedControl, ListView).Items
@@ -634,13 +636,16 @@ Public Class AssignedWorkControl
                         AddHandler CType(m_OutlookNavigatePane.SelectedButton.RelatedControl, ListView).SelectedIndexChanged, AddressOf ListView_SelectedIndexChanged
                         CType(m_OutlookNavigatePane.SelectedButton.RelatedControl, ListView).Focus()
                         Dim pCoord As ESRI.ArcGIS.Mobile.Geometries.Coordinate = GlobalsFunctions.GetGeometryCenter(itm.FeatureDataRow.Geometry)
-
+                        m_AttInfoDisplay.CurrentRow = itm.FeatureDataRow
+                        m_AttInfoDisplay.Visible = True
+                        bmatchfnd = True
                         Exit For
 
 
 
                     End If
                 Next
+
             End If
 
             If reset = False Then
@@ -654,20 +659,25 @@ Public Class AssignedWorkControl
             pFSInfo = Nothing
 
             btnCrew.Text = m_AssignedTo
+            If bmatchfnd = False Then
+                If m_EdtClose IsNot Nothing Then
+                    m_EdtClose.Visible = False
+                End If
 
-            If m_EdtClose IsNot Nothing Then
-                m_EdtClose.setCurrentRecord(Nothing, Nothing)
+                If m_AttInfoDisplay IsNot Nothing Then
+
+
+                    m_AttInfoDisplay.Visible = False
+
+                  
+                End If
+              
+                lblCurrentWO.Text = ""
+                RaiseEvent RaisePermMessage("", True)
+
+                m_CurrentWOID = ""
             End If
-
-            If m_AttInfoDisplay IsNot Nothing Then
-
-                m_AttInfoDisplay.IdentifyLocation(CType(Nothing, Geometry))
-            End If
-            lblCurrentWO.Text = ""
-            RaiseEvent RaisePermMessage("", True)
-
-            m_CurrentWOID = ""
-
+       
             'lblCrewName.Text = GlobalsFunctions.appConfig.WorkorderPanel.LayerInfo.AssignedTo
 
             If GlobalsFunctions.appConfig.WorkorderPanel.LayerInfo.ZoomOnLoad.ToUpper = "TRUE" And zoomTo = True Then
@@ -990,10 +1000,10 @@ Public Class AssignedWorkControl
 
                 Dim strFldArr As List(Of String) = New List(Of String)
 
-                If GlobalsFunctions.appConfig.WorkorderPanel.WorkOrderFilters.WorkOrderFilter(0).Fields IsNot Nothing Then
-                    If GlobalsFunctions.appConfig.WorkorderPanel.WorkOrderFilters.WorkOrderFilter(0).Fields.Field IsNot Nothing Then
-                        If GlobalsFunctions.appConfig.WorkorderPanel.WorkOrderFilters.WorkOrderFilter(0).Fields.Field.Count > 0 Then
-                            For Each fld As Esri.ArcGISTemplates.MobileConfigClass.MobileConfigMobileMapConfigWorkorderPanelWorkOrderFiltersWorkOrderFilterFieldsField In GlobalsFunctions.appConfig.WorkorderPanel.WorkOrderFilters.WorkOrderFilter(0).Fields.Field
+                If m_OutlookNavigatePane.SelectedButton.Tag.Fields IsNot Nothing Then
+                    If m_OutlookNavigatePane.SelectedButton.Tag.Fields.Field IsNot Nothing Then
+                        If m_OutlookNavigatePane.SelectedButton.Tag.Fields.Field.Count > 0 Then
+                            For Each fld As ESRI.ArcGISTemplates.MobileConfigClass.MobileConfigMobileMapConfigWorkorderPanelWorkOrderFiltersWorkOrderFilterFieldsField In m_OutlookNavigatePane.SelectedButton.Tag.Fields.Field
                                 If m_WOFSwD.FeatureSource.Columns(fld.Name) IsNot Nothing Then
                                     strFldArr.Add(fld.Name)
                                 End If
@@ -1037,7 +1047,7 @@ Public Class AssignedWorkControl
                                 'pLstViewItm.Text = (pDr(i).ToString)
                             Else
                                 'pLstViewItm.SubItems.Add(pDr(i).ToString)
-                                strDis = strDis & GlobalsFunctions.appConfig.WorkorderPanel.WorkOrderFilters.WorkOrderFilter(0).Fields.JoinString & valToAdd.ToString()
+                                strDis = strDis & m_OutlookNavigatePane.SelectedButton.Tag.Fields.JoinString & valToAdd.ToString()
 
                             End If
                         End If

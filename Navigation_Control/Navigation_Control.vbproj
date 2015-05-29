@@ -97,6 +97,7 @@
     <Import Include="System.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomGraphicsLayer.vb" />
     <Compile Include="Compass.Designer.vb">
       <DependentUpon>Compass.vb</DependentUpon>
     </Compile>

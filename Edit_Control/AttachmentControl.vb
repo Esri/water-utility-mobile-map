@@ -164,6 +164,9 @@ Public Class AttachmentControl
             m_OutlookNavigatePane.Dock = DockStyle.Fill
 
             pnlSketchPalette.Controls.AddRange(New Control() {splitterNavigateMenu, m_OutlookNavigatePane})
+
+        
+
             Return True
 
         Catch ex As Exception
@@ -175,14 +178,18 @@ Public Class AttachmentControl
 
     End Function
     Private Sub InitNavigateButtons()
+        If GlobalsFunctions.appConfig.CreateFeaturePanel.AttachmentOptions Is Nothing Then Return
+        If GlobalsFunctions.appConfig.CreateFeaturePanel.AttachmentOptions.AttachmentSketchGroups Is Nothing Then Return
+        If GlobalsFunctions.appConfig.CreateFeaturePanel.AttachmentOptions.AttachmentSketchGroups.AttachmentSketchGroup Is Nothing Then Return
+        If GlobalsFunctions.appConfig.CreateFeaturePanel.AttachmentOptions.AttachmentSketchGroups.AttachmentSketchGroup.Count = 0 Then Return
+
         Dim nvbBtn As NavigateBarButton
         Dim pLst As ListView
 
-        Dim skGrp As Esri.ArcGISTemplates.MobileConfigClass.MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroupsAttachmentSketchGroup
+        Dim skGrp As ESRI.ArcGISTemplates.MobileConfigClass.MobileConfigMobileMapConfigCreateFeaturePanelAttachmentOptionsAttachmentSketchGroupsAttachmentSketchGroup
 
         Try
             If m_OutlookNavigatePane Is Nothing Then Return
-
 
             If GlobalsFunctions.appConfig.WorkorderPanel IsNot Nothing Then
                 If GlobalsFunctions.appConfig.CreateFeaturePanel.AttachmentOptions.AttachmentSketchGroups IsNot Nothing Then
