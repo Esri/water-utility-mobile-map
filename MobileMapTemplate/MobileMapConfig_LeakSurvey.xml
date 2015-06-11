@@ -24,14 +24,13 @@
       </UIComponents>
     </ApplicationSettings>
     <NavigationOptions>
-      a
       <GPS AllowGPSToggle="True" TurnOnStartup="False">
         <Visible>True</Visible>
         <COMFile>file.txt</COMFile>
         <GPSBaud>4800</GPSBaud>
         <GPSTrackLog>True</GPSTrackLog>
         <GPSLogLayer>GPSLog</GPSLogLayer>
-        <GPSLogInterval>120</GPSLogInterval>
+        <GPSLogInterval>1</GPSLogInterval>
         <GPSFixType>1</GPSFixType>
         <GPSPDOP>15</GPSPDOP>
         <GPSPointAvg>100</GPSPointAvg>
@@ -47,7 +46,8 @@
         <GPSLogLayer_DateField>TimeStamp</GPSLogLayer_DateField>
         <GPSLogLayer_TruncateAfterPost>True</GPSLogLayer_TruncateAfterPost>
         <GPSAutoCenter>False</GPSAutoCenter>
-        <GPSLogLayer_WOField>CURWO</GPSLogLayer_WOField>
+        <GPSLogLayer_WOField>ASSIGNINFO</GPSLogLayer_WOField>
+        <SaveToLayerInterval>30</SaveToLayerInterval>
       </GPS>
       <ZoomPan>
         <FixZoom>True</FixZoom>
@@ -90,12 +90,12 @@
         <CachedMap DisplayName="NightMap">Mobile Night Map</CachedMap>
       </CachedMaps>
       <WebMaps>
-        <!--<WebMap DisplayName="Streets">http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer</WebMap>
-        <WebMap DisplayName="Imagery">http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer</WebMap>-->
+        <WebMap DisplayName="Streets">http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer</WebMap>
+        <WebMap DisplayName="Imagery">http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer</WebMap>
       </WebMaps>
       <LayerGroupings>
-        <LayersGroup Visible="True" DisplayName="Leak Survey Assignments">
-          <LayerGroup Name="Leak Survey Assignments" />
+        <LayersGroup Visible="True" DisplayName="Survey Assignments">
+          <LayerGroup Name="Survey Assignments" />
 
         </LayersGroup>
         <LayersGroup Visible="true" DisplayName="Network">
@@ -149,25 +149,14 @@
           <Field Options="" BackColor="buttonface" Caption="Reported By" Name="CREATIONUSER" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
           <Field Options="" BackColor="buttonface" Caption="Date Reported" Name="DATEREPORTED" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
         </Layer>
-        <Layer SketchColor="" SnapTo="" DisplayText="Gas Leak Inspection" Name="Gas Leak Inspection" SpecialCase="" SketchMode="">
-          <Field Options="" BackColor="buttonface" Caption="Gas Leak ID" Name="GASLEAK_GlobalID" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="Leak Class" Name="LEAKCLASS" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="Highest Read" Name="HIGHESTREAD" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="Method Detected" Name="METHODDETECTED" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="Gas In" Name="GASIN" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="Probable Source" Name="PROBABLESOURCE" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="Surface Type" Name="SURFACETYPE" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="Comments" Name="COMMENTS" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="InspectedBy" Name="INSPECTEDBY" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-          <Field Options="" BackColor="buttonface" Caption="Date Inspected" Name="DATEINSPECTED" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
-        </Layer>
+
         <Layer SketchColor="" SnapTo="" DisplayText="Identified Issue" Name="Identified Issue" SpecialCase="" SketchMode="">
           <Field Options="" BackColor="" Caption="Issue" Name="ISSUE" ForeColor="" HyperFormat="" BoxColor="" />
           <Field Options="" BackColor="" Caption="Comments" Name="COMMENTS" ForeColor="" HyperFormat="" BoxColor="" />
           <Field Options="" BackColor="" Caption="Date Reported" Name="DATEREPORTED" ForeColor="" HyperFormat="" BoxColor="" />
           <Field Options="" BackColor="" Caption="Reported By" Name="REPORTEDBY" ForeColor="" HyperFormat="" BoxColor="" />
         </Layer>
-        <Layer SketchColor="" SnapTo="" DisplayText="" Name="Leak Survey Assignments" SpecialCase="" SketchMode="">
+        <Layer SketchColor="" SnapTo="" DisplayText="" Name="Survey Assignments" SpecialCase="" SketchMode="">
           <Field Options="" BackColor="buttonface" Caption="Area ID" Name="MAPGRIDNAME" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
             <FilterFields Visibility="True" Mode="WO_ID" />
             <FilterFields Visibility="False" Mode="WO_Close" />
@@ -243,7 +232,13 @@
             <FilterFields Visibility="True" Mode="WO_ID">
 
             </FilterFields>
+            <FilterFields Visibility="True" Mode="WO_Close" />
+          </Field>
+          <Field Options="" BackColor="buttonface" Caption="Comments/Notes" Name="COMMENTS" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
+            <FilterFields Visibility="True" Mode="WO_ID">
 
+            </FilterFields>
+            <FilterFields Visibility="True" Mode="WO_Close" />
           </Field>
         </Layer>
       </LayersFieldOptions>
@@ -260,25 +255,21 @@
           <Field Name="GlobalID" OnNew="GUID" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
           <Field Name="ADDRESS" OnNew="Address" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
           <Field Name="LOCATIONDESCRIPTION" OnNew="Intersect" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="Distribution Mains,Services" IntersectField="LEGACYID" />
+          <Field Name="COMMENTS" OnNew="WOText" OnModify="" OnNewReadOnly="false" OnModifyReadOnly="false" IntersectLayer="" IntersectField="" />
           <Field Name="FEDERALLANDINDICATOR" OnNew="value" OnModify="" OnNewReadOnly="false" OnModifyReadOnly="false" IntersectLayer="" IntersectField="" ValueText="N" />
           <Field Name="DOTREPORTEDINDICATOR" OnNew="value" OnModify="" OnNewReadOnly="false" OnModifyReadOnly="false" IntersectLayer="" IntersectField="" ValueText="N" />
           <Field Name="LEAKSTATUS" OnNew="value" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" ValueText="Active"/>
           <Field Name="CREATIONUSER" OnNew="User" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
           <Field Name="DATEREPORTED" OnNew="Date" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
         </Layer>
-        <Layer AllowNew="TRUE" EditExisting="false" DisplayText="Leak Inspection" EditOwnerField="" SyncOnSave="0" EditGeo="false" DeleteFeature="false" RequiredBoxColor="" RequiredForeColor="" RequiredBackColor="" Name="Gas Leak Inspection" SnapTo="Gas Leak" SketchColor="#FFFF0000" SketchMode="Tap">
-          <Field Name="GASLEAK_GlobalID" OnNew="Intersect" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="Gas Leak" IntersectField="GlobalID" />
-          <Field Name="METHODDETECTED" OnNew="Intersect" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="Gas Leak" IntersectField="METHODDETECTED"/>
-          <Field Name="SURFACETYPE" OnNew="Intersect" OnModify="" OnNewReadOnly="false" OnModifyReadOnly="false" IntersectLayer="Gas Leak" IntersectField="SURFACETYPE" />
-          <Field Name="PROBABLESOURCE" OnNew="Intersect" OnModify="" OnNewReadOnly="false" OnModifyReadOnly="false" IntersectLayer="Gas Leak" IntersectField="PROBABLESOURCE"/>
-          <Field Name="DATEINSPECTED" OnNew="Date" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
-          <Field Name="INSPECTEDBY" OnNew="User" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
-        </Layer>
+
         <Layer AllowNew="TRUE" EditExisting="false" DisplayText="Identified Issue" EditOwnerField="" SyncOnSave="" EditGeo="false" DeleteFeature="false" RequiredBoxColor="" RequiredForeColor="" RequiredBackColor="" Name="Identified Issue" SnapTo="" SketchColor="#FFFF0000" SketchMode="Tap">
           <Field Name="DATE" OnNew="Date" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
           <Field Name="REPORTEDBY" OnNew="User" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
+          <Field Name="COMMENTS" OnNew="WOText" OnModify="" OnNewReadOnly="false" OnModifyReadOnly="false" IntersectLayer="" IntersectField="" />
+
         </Layer>
-        <Layer AllowNew="false" EditExisting="true" DisplayText="Leak Survey Assignments" EditOwnerField="" SyncOnSave="" EditGeo="false" DeleteFeature="false" RequiredBoxColor="" RequiredForeColor="" RequiredBackColor="" Name="Leak Survey Assignments" SnapTo="" SketchColor="#FFFF0000" SketchMode="">
+        <Layer AllowNew="false" EditExisting="true" DisplayText="Survey Assignments" EditOwnerField="" SyncOnSave="" EditGeo="false" DeleteFeature="false" RequiredBoxColor="" RequiredForeColor="" RequiredBackColor="" Name="Survey Assignments" SnapTo="" SketchColor="#FFFF0000" SketchMode="">
           <Field Name="SURVEYEDBY" OnNew="User" OnModify="User" OnNewReadOnly="" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
         </Layer>
       </Layers>
@@ -309,13 +300,12 @@
       <StatusBarMessage>Data Services: Post or get new data changes from your office's server</StatusBarMessage>
       <RefreshList ShowAllLayers="true">
 
-        <RefreshGroup Name="Leak Survey Assignments">
-          <RefreshLayer SyncOnStartUp="True" Name="Leak Survey Assignments" Extent="Full" WhereClause="" />
+        <RefreshGroup Name="Survey Assignments">
+          <RefreshLayer SyncOnStartUp="True" Name="Survey Assignments" Extent="Full" WhereClause="" />
 
         </RefreshGroup>
         <RefreshGroup Name="Field Operations">
           <RefreshLayer SyncOnStartUp="false" Name="Gas Leak" Extent="Current" WhereClause="" />
-          <RefreshLayer SyncOnStartUp="false" Name="Gas Leak Inspection" Extent="Current" WhereClause="" />
           <RefreshLayer SyncOnStartUp="false" Name="Identified Issue" Extent="Current" WhereClause="" />
         </RefreshGroup>
         <RefreshGroup Name="Gas Network">
@@ -514,7 +504,6 @@
 
         <IDGroup DisplayName="Field Operations">
           <IDLayer Name="Gas Leak" />
-          <IDLayer Name="Gas Leak Inspection" />
           <IDLayer Name="Identified Issue" />
         </IDGroup>
         <IDGroup DisplayName="Gas Network">
@@ -542,10 +531,10 @@
       <ToolMessage>Active Tool: Create</ToolMessage>
       <AttachmentOptions>
         <AttachmentSketchGroups ButtonSize="40" ListFontSize="12" ButtonFontSize="14">
-          <AttachmentSketchGroup Label="Anno" Layer="SketchAnno" />
-          <AttachmentSketchGroup Label="Point" Layer="SketchPoints" />
-          <AttachmentSketchGroup Label="Line" Layer="SketchLines" />
-          <AttachmentSketchGroup Label="Polygons" Layer="SketchPolygon" />
+          <AttachmentSketchGroup Label="Anno" Layer="Sketch Anno" />
+          <AttachmentSketchGroup Label="Point" Layer="Sketch Points" />
+          <AttachmentSketchGroup Label="Line" Layer="Sketch Lines" />
+          <AttachmentSketchGroup Label="Polygons" Layer="Sketch Polygons" />
         </AttachmentSketchGroups>
       </AttachmentOptions>
     </CreateFeaturePanel>
@@ -565,7 +554,7 @@
       <Visible>True</Visible>
       <DisplayText>Workorder</DisplayText>
       <StatusBarMessage>Activity List: Shows a list of assigned activities, opening a activity sets up an inspection</StatusBarMessage>
-      <LayerInfo LayerName="Leak Survey Assignments" AssignedToField="ASSIGNEDTO" AssignedTo="Crew 3" IDField="MAPGRIDNAME" />
+      <LayerInfo LayerName="Survey Assignments" AssignedToField="ASSIGNEDTO" AssignedTo="Crew 3" IDField="MAPGRIDNAME" />
       <WorkOrderFilters ButtonSize="40" ListFontSize="12" ButtonFontSize="14" ShowFilterGeo="False" FilterOn="False">
         <WorkOrderFilter Action="Zoom,Flash" SortDirection="ASC" QueryValue="(DUEDATE IS NULL or DUEDATE &lt;= 'now') and (SURVEYSTATUS = 'Assigned')" Label="Overdue" SortField="MAPGRIDNAME">
           <Fields JoinString=" - ">

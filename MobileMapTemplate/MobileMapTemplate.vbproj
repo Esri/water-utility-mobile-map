@@ -20,7 +20,7 @@
     <ApplicationIcon>ico\123.ico</ApplicationIcon>
     <ManifestCertificateThumbprint>6BB95E950A812CB0792B309822C620EB2B628B29</ManifestCertificateThumbprint>
     <ManifestKeyFile>MobileMapTemplate_TemporaryKey.pfx</ManifestKeyFile>
-    <GenerateManifests>false</GenerateManifests>
+    <GenerateManifests>true</GenerateManifests>
     <SignManifests>false</SignManifests>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
@@ -40,7 +40,7 @@
     </SccProvider>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
-    <PublishUrl>http://localhost/MobileMap/</PublishUrl>
+    <PublishUrl>http://utilsolutions.esri.com/LeakSurveyMobileMap/</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -50,7 +50,6 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>http://localhost/MobileMap/</InstallUrl>
     <ProductName>ArcGIS Templates - Water Utilities Mobile Map</ProductName>
     <PublisherName>ESRI</PublisherName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
@@ -305,9 +304,6 @@
     <None Include="Images\animated.gif" />
     <Content Include="Images\BluCamera.png" />
     <None Include="Images\BluePrint.png" />
-    <None Include="MobileMapConfig_LeakSurvey - Copy.xml">
-      <SubType>Designer</SubType>
-    </None>
     <Content Include="NavigationSettings.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
