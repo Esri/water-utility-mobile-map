@@ -96,7 +96,7 @@
       <LayerGroupings>
         <LayersGroup Visible="True" DisplayName="Survey Assignments">
           <LayerGroup Name="Survey Assignments" />
-
+          
         </LayersGroup>
         <LayersGroup Visible="true" DisplayName="Network">
           <LayerGroup Name="Meter Setting" />
@@ -149,7 +149,7 @@
           <Field Options="" BackColor="buttonface" Caption="Reported By" Name="CREATIONUSER" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
           <Field Options="" BackColor="buttonface" Caption="Date Reported" Name="DATEREPORTED" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface" />
         </Layer>
-
+        
         <Layer SketchColor="" SnapTo="" DisplayText="Identified Issue" Name="Identified Issue" SpecialCase="" SketchMode="">
           <Field Options="" BackColor="" Caption="Issue" Name="ISSUE" ForeColor="" HyperFormat="" BoxColor="" />
           <Field Options="" BackColor="" Caption="Comments" Name="COMMENTS" ForeColor="" HyperFormat="" BoxColor="" />
@@ -169,7 +169,7 @@
             <FilterFields Visibility="True" Mode="WO_ID"/>
             <FilterFields Visibility="True" Mode="WO_Close"/>
           </Field>
-
+          
           <Field Options="" BackColor="buttonface" Caption="AssignedTo" Name="ASSIGNEDTO" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
             <FilterFields Visibility="False" Mode="WO_ID">
             </FilterFields>
@@ -193,8 +193,8 @@
           </Field>
           <Field Options="" BackColor="buttonface" Caption="End Date" Name="DUEDATE" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
             <FilterFields Visibility="True" Mode="WO_ID" />
-
-
+              
+            
             <FilterFields Visibility="False" Mode="WO_Close" />
           </Field>
           <Field Options="" BackColor="buttonface" Caption="Survey By" Name="SURVEYEDBY" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
@@ -213,7 +213,7 @@
             </FilterFields>
             <FilterFields Visibility="True" Mode="WO_Close" />
           </Field>
-
+        
           <Field Options="" BackColor="buttonface" Caption="Footage of Mains" Name="FOOTAGEMAINS" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
             <FilterFields Visibility="True" Mode="WO_ID" />
             <FilterFields Visibility="False" Mode="WO_Close" />
@@ -224,13 +224,13 @@
           </Field>
           <Field Options="" BackColor="buttonface" Caption="Number of Leaks" Name="BELOWGRADELEAKS" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
             <FilterFields Visibility="True" Mode="WO_ID">
-
+              
             </FilterFields>
             <FilterFields Visibility="True" Mode="WO_Close" />
           </Field>
           <Field Options="" BackColor="buttonface" Caption="Number of Hours" Name="DURATION" ForeColor="buttontext" HyperFormat="" BoxColor="buttonface">
             <FilterFields Visibility="True" Mode="WO_ID">
-
+            
             </FilterFields>
             <FilterFields Visibility="True" Mode="WO_Close" />
           </Field>
@@ -262,7 +262,7 @@
           <Field Name="CREATIONUSER" OnNew="User" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
           <Field Name="DATEREPORTED" OnNew="Date" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
         </Layer>
-
+       
         <Layer AllowNew="TRUE" EditExisting="false" DisplayText="Identified Issue" EditOwnerField="" SyncOnSave="" EditGeo="false" DeleteFeature="false" RequiredBoxColor="" RequiredForeColor="" RequiredBackColor="" Name="Identified Issue" SnapTo="" SketchColor="#FFFF0000" SketchMode="Tap">
           <Field Name="DATE" OnNew="Date" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
           <Field Name="REPORTEDBY" OnNew="User" OnModify="" OnNewReadOnly="true" OnModifyReadOnly="true" IntersectLayer="" IntersectField="" />
@@ -299,10 +299,10 @@
       <DisplayText>Service</DisplayText>
       <StatusBarMessage>Data Services: Post or get new data changes from your office's server</StatusBarMessage>
       <RefreshList ShowAllLayers="true">
-
+      
         <RefreshGroup Name="Survey Assignments">
           <RefreshLayer SyncOnStartUp="True" Name="Survey Assignments" Extent="Full" WhereClause="" />
-
+          
         </RefreshGroup>
         <RefreshGroup Name="Field Operations">
           <RefreshLayer SyncOnStartUp="false" Name="Gas Leak" Extent="Current" WhereClause="" />
@@ -318,7 +318,7 @@
           <RefreshLayer SyncOnStartUp="false" Name="Regulator Station" Extent="Current" WhereClause="" />
           <RefreshLayer SyncOnStartUp="false" Name="Services" Extent="Current" WhereClause="" />
           <RefreshLayer SyncOnStartUp="false" Name="Distribution Mains" Extent="Current" WhereClause="" />
-
+  
         </RefreshGroup>
         <RefreshGroup Name="Streets">
           <RefreshLayer SyncOnStartUp="false" Name="Road Centerlines" Extent="Current" WhereClause="" />
@@ -500,8 +500,8 @@
       <LengthFormat>{0:0.00}</LengthFormat>
       <LengthUnit>Foot</LengthUnit>
       <IDGroups AllLayersText="All Layers">
-
-
+     
+        
         <IDGroup DisplayName="Field Operations">
           <IDLayer Name="Gas Leak" />
           <IDLayer Name="Identified Issue" />
@@ -516,7 +516,7 @@
           <IDLayer Name="Regulator Station" />
           <IDLayer Name="Services" />
           <IDLayer Name="Distribution Mains" />
-
+         
         </IDGroup>
       </IDGroups>
       <UIComponents>

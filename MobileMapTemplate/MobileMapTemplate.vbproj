@@ -282,10 +282,7 @@
     <None Include="MobileMapConfig_LeakSurvey.xml">
       <SubType>Designer</SubType>
     </None>
-    <None Include="MobileMapConfig_Release.xml">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="MobileMapConfig_Testing.xml">
+    <None Include="MobileMapConfig_WaterMobile.xml">
       <SubType>Designer</SubType>
     </None>
     <Content Include="MobileMapConfig.xml">

@@ -30,7 +30,7 @@
       <!--Option to show a side bar - Not functional yet-->
       <SideBarControl>False</SideBarControl>
       <CopyrightText>Esri, Inc.</CopyrightText>
-      <VersionInfo>Version: 10.2.0.5, 8-28-2014</VersionInfo>
+      <VersionInfo>Version: 10.2.1.0, 7-1-2015</VersionInfo>
       <!--The scale to zoom to for point feature results-->
       <ZoomExtent>600</ZoomExtent>
       <MultiLineThreshold Threshold ="125" SizeFactor="3"/>
@@ -144,7 +144,7 @@
       <!--The url of the mobile service, currently only one is supported-->
       <MobileServices LimitQuery ="">
         <!--Option to specify cache location, empty string = application defaults-->
-        <MobileService  UserName="" Password=""  Domain="" TokenURL ="" StorageLocation="">http://utilsolutions.esri.com/arcgis/services/WaterUtilityMobileMap/MapServer/MobileServer</MobileService>
+        <MobileService  UserName="" Password=""  Domain="" TokenURL ="" StorageLocation="">http://localhost/arcgis/services/WaterUtilityMobileMap/MapServer/MobileServer</MobileService>
       </MobileServices>
       <!--The path to the local cache maps, these are tiles cache maps, if a full path is not listed, it will check the LocalCacheMap Folder-->
       <CachedMaps>
@@ -228,194 +228,6 @@
       </FlowArrowsLayers>
 
       <LayersFieldOptions>
-
-        <Layer Name="Markup Polygons"  Caption="Redlines" SpecialCase="">
-
-          <Field Name="CREWNAME" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="" >
-
-
-          </Field>
-          <Field Name="TIMESTAMP" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="" >
-
-
-          </Field>
-          <Field Name="NOTES" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="" Required="True">
-            <FilterFields Mode="" Visibility="False">
-              <FilterInfo FieldName="COMPLETED">
-                <FieldValue>No</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>
-            </FilterFields>
-          </Field>
-          <Field Name="COMPLETED" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="" >
-
-
-          </Field>
-
-
-
-
-
-        </Layer>
-        <Layer Name="Water Hydrant Inspections"  Caption="Water Hydrant Inspections" SpecialCase="">
-
-          <Field Name="INSSTART" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="True">
-              <!--<FilterInfo FieldName="ASSIGNEDTO">
-                <FieldValue>Crew 1</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>-->
-            </FilterFields>
-          </Field>
-
-          <Field Name="HYDRCOND" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="True">
-              <!--<FilterInfo FieldName="ASSIGNEDTO">
-                <FieldValue>Crew 1</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>-->
-            </FilterFields>
-          </Field>
-
-          <Field Name="OPERHARD" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="False">
-              <FilterInfo FieldName="HYDRCOND">
-                <FieldValue>[ISNULL]</FieldValue>
-                <FieldValue>Good</FieldValue>
-                <FieldValue>New</FieldValue>
-                <FieldValue>Fair</FieldValue>
-              </FilterInfo>
-            </FilterFields>
-          </Field>
-          <Field Name="OPERABLE" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-
-            <FilterFields Mode="" Visibility="False">
-              <FilterInfo FieldName="HYDRCOND">
-                <FieldValue>[ISNULL]</FieldValue>
-
-                <FieldValue>Good</FieldValue>
-                <FieldValue>New</FieldValue>
-                <FieldValue>Fair</FieldValue>
-              </FilterInfo>
-            </FilterFields>
-          </Field>
-          <Field Name="CORRODED" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-
-            <FilterFields Mode="" Visibility="False">
-              <FilterInfo FieldName="HYDRCOND">
-                <FieldValue>[ISNULL]</FieldValue>
-
-                <FieldValue>Good</FieldValue>
-                <FieldValue>New</FieldValue>
-                <FieldValue>Fair</FieldValue>
-              </FilterInfo>
-            </FilterFields>
-          </Field>
-
-          <Field Name="FLOW" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="True">
-              <!--<FilterInfo FieldName="ASSIGNEDTO">
-                <FieldValue>Crew 1</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>-->
-            </FilterFields>
-          </Field>
-          <Field Name="PRESSURE" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="True">
-              <!--<FilterInfo FieldName="ASSIGNEDTO">
-                <FieldValue>Crew 1</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>-->
-            </FilterFields>
-          </Field>
-          <Field Name="MTCERQRD" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="True">
-              <!--<FilterInfo FieldName="ASSIGNEDTO">
-                <FieldValue>Crew 1</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>-->
-            </FilterFields>
-          </Field>
-          <Field Name="NOTES" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="True">
-              <!--<FilterInfo FieldName="ASSIGNEDTO">
-                <FieldValue>Crew 1</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>-->
-            </FilterFields>
-          </Field>
-          <Field Name="INSEND" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="True">
-              <!--<FilterInfo FieldName="ASSIGNEDTO">
-                <FieldValue>Crew 1</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>-->
-            </FilterFields>
-          </Field>
-          <Field Name="INSPECTID" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="True">
-              <!--<FilterInfo FieldName="ASSIGNEDTO">
-                <FieldValue>Crew 1</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>-->
-            </FilterFields>
-          </Field>
-          <Field Name="FACILITYKEY" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="True">
-              <!--<FilterInfo FieldName="ASSIGNEDTO">
-                <FieldValue>Crew 1</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>-->
-            </FilterFields>
-          </Field>
-          <Field Name="INSPECTOR" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="True">
-              <!--<FilterInfo FieldName="ASSIGNEDTO">
-                <FieldValue>Crew 1</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>-->
-            </FilterFields>
-          </Field>
-          <Field Name="LASTUPDATE" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="True">
-              <!--<FilterInfo FieldName="ASSIGNEDTO">
-                <FieldValue>Crew 1</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>-->
-            </FilterFields>
-          </Field>
-          <Field Name="LASTEDITOR" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="True">
-              <!--<FilterInfo FieldName="ASSIGNEDTO">
-                <FieldValue>Crew 1</FieldValue>
-                <FieldValue>[ISNULL]</FieldValue>
-              </FilterInfo>-->
-            </FilterFields>
-          </Field>
-          <Field Name="WORKKEY" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="">
-
-            <FilterFields Mode="" Visibility="True">
-
-            </FilterFields>
-          </Field>
-
-
-        </Layer>
         <Layer Name="Workorders"  Caption="Wordorders" SpecialCase="">
 
           <Field Name="FCLASS" HyperFormat="" Options="" BoxColor="" BackColor="" ForeColor="" Caption="Asset">
@@ -536,8 +348,6 @@
           </Field>
 
         </Layer>
-
-
       </LayersFieldOptions>
       <UIComponents>
         <LayerSpatialReferenceDontMatch>{0} Spatial Reference does not match the map</LayerSpatialReferenceDontMatch>
@@ -560,84 +370,49 @@
 
 
         <Layer Name="Markup Polygons" AllowNew = "True" EditExisting ="false" EditOwnerField ="" EditGeo ="false" DeleteFeature="false" DisplayText="Redline" SketchMode="Freehand" SketchColor="#FFFF0000" SnapTo="" SyncOnSave="0">
-          <Field Name="TIMESTAMP" OnNew="Date" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="CREWNAME" OnNew="User" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="COMPLETED" OnNew="value" OnModify=""  OnNewReadOnly="false" OnModifyReadOnly ="false" IntersectLayer="" IntersectField="" ValueText="No"/>
 
         </Layer>
         <Layer Name="Sewer Overflows" AllowNew = "True" EditExisting ="true" EditOwnerField ="" EditGeo ="True"  DisplayText="Sewer Overflows" SketchMode="Tap" SketchColor="#FFFFFF00" SnapTo="Sewer Manholes">
           <Field Name="MTCENAME" OnNew="User" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
           <Field Name="OVRFLWSTART" OnNew="Date" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
           <Field Name="FACILITYKEY" OnNew="Intersect" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="Sewer Manholes" IntersectField="FACILITYID" />
-
-
           <Field Name="LASTUPDATE" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
           <Field Name="LASTEDITOR" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-
         </Layer>
         <Layer Name="Water Hydrant Inspections" AllowNew = "True" EditExisting ="true" EditOwnerField ="" EditGeo ="True"  DisplayText="Hydrant Inspections" SketchMode="Tap" SketchColor="#FFFFFF00" SnapTo="Water Hydrants">
-          <Field Name="INSSTART" OnNew="Date" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-
-
-
           <Field Name="FACILITYKEY" OnNew="Intersect" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="Water Hydrants" IntersectField="FACILITYID" />
-
-
-
-          <Field Name="LASTUPDATE" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="LASTEDITOR" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="WORKKEY" OnNew="WOCurrent" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="INSPECTOR" OnNew="WOCrew" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-
+          <Field Name="INSPECTOR" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
         </Layer>
 
         <Layer Name="Water Valve Inspections" AllowNew = "True" EditExisting ="" EditOwnerField ="" EditGeo ="False"  DisplayText="Valve Inspections" SketchMode="Tap" SketchColor="#FFFF0000" SnapTo="Water System Valves">
-          <Field Name="INSSTART" OnNew="Date" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
           <Field Name="FACILITYKEY" OnNew="Intersect" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="Water System Valves" IntersectField="FACILITYID" />
-          <Field Name="LASTUPDATE" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="LASTEDITOR" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-
-          <Field Name="WORKKEY" OnNew="WOCurrent" OnModify="WOCurrent"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="INSPECTOR" OnNew="WOCrew" OnModify="WOCrew"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+          <Field Name="OPERATOR" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
         </Layer>
 
         <Layer Name="Sewer Manhole Inspections" AllowNew = "True" EditExisting ="" EditOwnerField ="" EditGeo ="False"  DisplayText="Manhole Inspections" SketchMode="Tap" SketchColor="#FFFF0000" SnapTo="Sewer Manholes">
-          <Field Name="INSSTART" OnNew="Date" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="FACILITYKEY" OnNew="Intersect" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="Sewer Manholes" IntersectField="FACILITYID" />
-          <Field Name="LASTUPDATE" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="LASTEDITOR" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="WORKKEY" OnNew="WOCurrent" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="INSPECTOR" OnNew="WOCrew" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+          <Field Name="ManholeNumber" OnNew="Intersect" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="Sewer Manholes" IntersectField="FACILITYID" />
+          <Field Name="DateTime" OnNew="DateTime" OnModify="DateTime"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+          <Field Name="WorkOrder" OnNew="WOCurrent" OnModify="WOCurrent"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+          <Field Name="SurveyedBy" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
 
         </Layer>
         <Layer Name="Service Requests" AllowNew = "True" EditExisting ="True" EditOwnerField ="" EditGeo ="True"  DisplayText="Log a Service Request" SketchMode="Tap" SketchColor="#FFFF0000" SnapTo="">
-          <Field Name="REQUESTDATE" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
           <Field Name="NAME" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="INSPECTOR" OnNew="WOCrew" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
 
         </Layer>
         <Layer Name="Inlet Cleanouts" AllowNew = "True" EditExisting ="" EditOwnerField ="" EditGeo ="False"  DisplayText="Cleanout Inspection" SketchMode="Tap" SketchColor="#FFFF0000" SnapTo="Storm Inlets">
-          <Field Name="INSSTART" OnNew="Date" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="FACILITYKEY" OnNew="Intersect" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="Storm Inlets" IntersectField="FACILITYID" />
-          <Field Name="LASTUPDATE" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="LASTEDITOR" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-          <Field Name="WORKKEY" OnNew="WOCurrent" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-
-          <Field Name="INSPECTOR" OnNew="WOCrew" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+          <Field Name="DATE" OnNew="Date" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+          <Field Name="FACILITYID" OnNew="Intersect" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="Storm Inlets" IntersectField="FACILITYID" />
+          <Field Name="INSPECTOR" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
 
         </Layer>
         <Layer Name="Water Leaks" AllowNew = "True" EditExisting ="" EditOwnerField ="" EditGeo ="False"  DisplayText="Main Break" SketchMode="Tap" SketchColor="#FFFF0000" SnapTo="Water Mains">
-          <Field Name="INSSTART" OnNew="Date" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
           <Field Name="FACILITYKEY" OnNew="Intersect" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="Water Mains" IntersectField="FACILITYID" />
           <Field Name="LASTUPDATE" OnNew="Date" OnModify="Date"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
           <Field Name="LASTEDITOR" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-
           <Field Name="WORKKEY" OnNew="WOCurrent" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
-
-          <Field Name="INSPECTOR" OnNew="WOCrew" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
+          <Field Name="MTCENAME" OnNew="User" OnModify="User"  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" />
         </Layer>
-
-
         <Layer Name="Workorders" AllowNew = "True" EditExisting ="" EditOwnerField ="" EditGeo ="False"  DisplayText="Create a WO on Mains" SketchMode="Tap" SketchColor="#FFFF0000" SnapTo="Water Mains">
           <Field Name="FCLASS" OnNew="Value" OnModify=""  OnNewReadOnly="true" OnModifyReadOnly ="true" IntersectLayer="" IntersectField="" ValueText="Water Mains"/>
 
@@ -723,9 +498,17 @@
         <RefreshGroup Name="Operations">
 
           <RefreshLayer Name="Site Address Points" />
-          <RefreshLayer Name="Water Leaks" />
-          <RefreshLayer Name="Workorders"  SyncOnStartUp ="False" />
-          <RefreshLayer Name="Markup Polygons" SyncOnStartUp ="" />
+
+          <RefreshLayer SyncOnStartUp="False" Name="Inlet Cleanouts" Extent="Current" WhereClause="" />
+          <RefreshLayer SyncOnStartUp="False" Name="Sewer Manhole Inspection" Extent="Current" WhereClause="" />
+          <RefreshLayer SyncOnStartUp="False" Name="Storm Outfall Inspections" Extent="Current" WhereClause="" />
+          <RefreshLayer SyncOnStartUp="False" Name="Sewer Overflows" Extent="Current" WhereClause="" />
+          <RefreshLayer SyncOnStartUp="False" Name="Sewer Backups" Extent="Current" WhereClause="" />
+          <RefreshLayer SyncOnStartUp="False" Name="Service Requests" Extent="Current" WhereClause="" />
+          <RefreshLayer SyncOnStartUp="False" Name="Water Hydrant Inspection" Extent="Current" WhereClause="" />
+          <RefreshLayer SyncOnStartUp="False" Name="Water Leaks" Extent="Current" WhereClause="" />
+          <RefreshLayer SyncOnStartUp="False" Name="Water Valve Inspection" Extent="Current" WhereClause="" />
+          <RefreshLayer SyncOnStartUp="False" Name="Markup Polygon" Extent="Current" WhereClause="" />
 
         </RefreshGroup >
         <RefreshGroup Name="Water">
@@ -1025,8 +808,6 @@
           <IDLayer Name="Water Valve Inspections"/>
           <IDLayer Name="Inlet Cleanouts"/>
           <IDLayer Name="Water Leaks"/>
-          <IDLayer Name="Main Flushing"/>
-
 
         </IDGroup>
         <IDGroup DisplayName="Water">
