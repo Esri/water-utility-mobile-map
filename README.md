@@ -1,3 +1,5 @@
+# As of 6-14-2016 the Water Utility Mobile Map moved to the [Mature Lifecycle Phase](http://links.esri.com/Support/ProductLifeCycle) to align with the lifecycle status of ArcGIS for Windows Mobile. See the [ArcGIS for Windows Mobile product life cycle support](http://links.esri.com/support/LifeCycleStatus/ArcGISforWindowsMobile) status for more details.
+
 # water-utility-mobile-map
 
 The Water Utility Mobile Map is an ArcGIS Mobile application that can be used by field operations and maintenance staff in a water utility or public works department to gain access to utility information. The Water Utility Mobile Map requires a Tablet PC that supports:
