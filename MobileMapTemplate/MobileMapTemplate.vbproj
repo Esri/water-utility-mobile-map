@@ -93,7 +93,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
-    <OutputPath>bin\x86\Water Utility Mobile Map\</OutputPath>
+    <OutputPath>bin\x86\release\</OutputPath>
     <NoWarn>42353,42354,42355</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <IntermediateOutputPath>C:\Users\mich3661\AppData\Local\Temp\vs989.tmp\x86\Release\</IntermediateOutputPath>

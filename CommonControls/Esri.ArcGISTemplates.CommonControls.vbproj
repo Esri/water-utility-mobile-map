@@ -111,7 +111,7 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Toughbook_DotNET">
-      <HintPath>..\..\..\..\Program Files (x86)\Panasonic\Toughbook SDK\DotNET\Toughbook_DotNET.dll</HintPath>
+      <HintPath>..\..\Development Support\Toughbook_DotNET.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -259,13 +259,6 @@ Public Class MobileMapConsole
             btnOpenClosePanel.BackgroundImage = My.Resources.ArrowRight
 
 
-
-
-
-
-
-
-
             'm_FntSize = GlobalsFunctions.FindConfigKey("FontSize")
             'm_Fnt = New System.Drawing.Font("Microsoft Sans Serif", m_FntSize, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0)
 

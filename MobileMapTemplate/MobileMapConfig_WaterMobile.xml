@@ -478,8 +478,8 @@
         <DeleteMessage>Record has been deleted</DeleteMessage>
         <NoGeometryMessage>Use the map to define the location of the record</NoGeometryMessage>
         <PromptForDelete>Are you sure you want to delete this asset</PromptForDelete>
-        <PromptForSketch>There are unsaved sketchs, save to attachments?</PromptForSketch>
         <RequireFieldMessage>Field is empty</RequireFieldMessage>
+        <PromptForSaveSketch>There are unsaved sketches, save?</PromptForSaveSketch>
       </UIComponents>
     </EditControlOptions>
     <!--Options service tab, allows you to sync, post, refresh-->

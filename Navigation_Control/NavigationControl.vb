@@ -3013,6 +3013,14 @@ Public Class mobileNavigation
             If e.PropertyName.ToUpper() = "FixStatus".ToUpper() Then
                 If CInt(GlobalsFunctions.m_GPS.GpsConnection.FixStatus) = 0 Then
                     m_GPSBtn.BackgroundImage = My.Resources.SatRed
+                    'Dim player as System.Media.SoundPlayer = new System.Media.SoundPlayer(@"c:\mywavfile.wav")
+                    'player.Play()
+                    '         System.Media.SystemSounds.Question.Play();
+                    'System.Media.SystemSounds.Exclamation.Play();
+                    'System.Media.SystemSounds.Hand.Play();
+                    'System.Media.SystemSounds.Asterisk.Play();
+                    'System.Media.SystemSounds.Beep.Play();
+
                 Else
                     m_GPSBtn.BackgroundImage = My.Resources.SatGreen
 
