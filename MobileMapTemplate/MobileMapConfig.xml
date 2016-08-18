@@ -143,9 +143,9 @@
     <!--Layer options-->
     <LayerOptions>
       <!--The url of the mobile service, currently only one is supported-->
-      <MobileServices LimitQuery ="">
+      <MobileServices LimitQuery ="" PoleInterval ="0">
         <!--Option to specify cache location, empty string = application defaults-->
-        <MobileService  UserName="" Password=""  Domain="" TokenURL ="" StorageLocation="">http://localhost/arcgis/services/WaterUtilityMobileMap/MapServer/MobileServer</MobileService>
+        <MobileService  UserName="" Password=""  Domain="" TokenURL ="" StorageLocation="">http://surfacebkmiller.esri.com/arcgis/services/WaterUtilityMobileMap/MapServer/MobileServer</MobileService>
       </MobileServices>
       <!--The path to the local cache maps, these are tiles cache maps, if a full path is not listed, it will check the LocalCacheMap Folder-->
       <CachedMaps>
@@ -370,7 +370,7 @@
         TIME,CPUNAME,Date,User,FullUser,Value,WOCrew,GUID,WOCurrent,ADDRESS,None or "",Intersect-->
 
 
-        <Layer Name="Markup Polygons" AllowNew = "True" EditExisting ="false" EditOwnerField ="" EditGeo ="false" DeleteFeature="false" DisplayText="Redline" SketchMode="Freehand" SketchColor="#FFFF0000" SnapTo="" SyncOnSave="0">
+        <Layer Name="Markup Polygons" AllowNew = "True" EditExisting ="false" EditOwnerField ="" EditGeo ="false" DeleteFeature="false" DisplayText="Redline" SketchMode="Freehand" SketchColor="#FFFF0000" SnapTo="" SyncOnSave="1">
 
         </Layer>
         <Layer Name="Sewer Overflows" AllowNew = "True" EditExisting ="true" EditOwnerField ="" EditGeo ="True"  DisplayText="Sewer Overflows" SketchMode="Tap" SketchColor="#FFFFFF00" SnapTo="Sewer Manholes">

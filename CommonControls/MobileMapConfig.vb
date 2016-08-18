@@ -4371,7 +4371,7 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
         Private yminField As String
         Private ymaxField As String
         Private limitQueryField As String
-
+        Private poleIntervalField As String = 20000
 
         <System.Xml.Serialization.XmlAttributeAttribute()> _
         Public Property LimitQuery() As String
@@ -4382,7 +4382,15 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
                 Me.limitQueryField = value
             End Set
         End Property
-
+        <System.Xml.Serialization.XmlAttributeAttribute()> _
+        Public Property PoleInterval() As String
+            Get
+                Return Me.poleIntervalField
+            End Get
+            Set(ByVal value As String)
+                Me.poleIntervalField = value
+            End Set
+        End Property
         <System.Xml.Serialization.XmlAttributeAttribute()> _
         Public Property xmin() As String
             Get

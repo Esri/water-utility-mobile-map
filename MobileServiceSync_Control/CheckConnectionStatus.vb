@@ -33,9 +33,11 @@ End Enum
 Public Class CheckStatusClass
     Private WithEvents m_ChkServStat As checkServiceStatus
     Public Event connectionStateChanged(ByVal connectionStatus As ConnectionState)
+    Public Event connectionStateNotChanged(ByVal connectionStatus As ConnectionState)
 
     Public Event URLError(ByVal Message As String)
     Public Delegate Sub m_ExtractorDll_ConnectionStatusChangedDelegate(ByVal ConnectionStatus As ConnectionState)
+    Public Delegate Sub m_ExtractorDll_ConnectionStatusNotChangedDelegate(ByVal ConnectionStatus As ConnectionState)
     Public Sub dispose()
         If m_ChkServStat IsNot Nothing Then
             m_ChkServStat.dispose()
@@ -46,8 +48,13 @@ Public Class CheckStatusClass
         m_ChkServStat = New checkServiceStatus()
 
     End Sub
+    Public Sub checkStatus(ByVal strURL As String, ByVal netCred As ICredentials, Optional ByVal SecureUserName As String = "", Optional ByVal SecurePassword As String = "", Optional ByVal SecureDomain As String = "")
+        
+        m_ChkServStat.checkStatus(strURL, netCred, SecureUserName, SecurePassword, SecureDomain)
+
+    End Sub
     Public Sub startChecking(ByVal strURL As String, ByVal netCred As ICredentials, Optional ByVal checkInterval As Integer = 10000, Optional ByVal SecureUserName As String = "", Optional ByVal SecurePassword As String = "", Optional ByVal SecureDomain As String = "")
-      
+
         If m_ChkServStat.isChecking Then Return
 
         m_ChkServStat.startChecking(strURL, netCred, checkInterval, SecureUserName, SecurePassword, SecureDomain)
@@ -65,7 +72,11 @@ Public Class CheckStatusClass
         RaiseEvent connectionStateChanged(connectionStatus)
 
     End Sub
+    Public Sub m_ChkServStat_connectionStateNotChanged(ByVal connectionStatus As ConnectionState) Handles m_ChkServStat.connectionStateNotChanged
 
+        RaiseEvent connectionStateNotChanged(connectionStatus)
+
+    End Sub
     Private Class InetConnection
 
 #Region "Internet Connection"
@@ -219,7 +230,7 @@ Public Class CheckStatusClass
         Private m_LastConnectState As Integer
         Private m_bConnected As Boolean
         Public Event connectionStateChanged(ByVal connectionStatus As ConnectionState)
-
+        Public Event connectionStateNotChanged(ByVal connectionStatus As ConnectionState)
         Private m_SecureUserName As String
         Private m_SecurePassword As String
         Private m_SecureDomain As String
@@ -244,6 +255,16 @@ Public Class CheckStatusClass
             End If
 
         End Sub
+        Public Sub checkStatus(ByVal URL As String, ByVal netCred As ICredentials, Optional ByVal SecureUserName As String = "", Optional ByVal SecurePassword As String = "", Optional ByVal SecureDomain As String = "")
+            m_url = URL
+            m_netCred = netCred
+            m_SecureUserName = SecureUserName
+            m_SecurePassword = SecurePassword
+            m_SecureDomain = SecureDomain
+            OnTimer(Nothing)
+
+        End Sub
+
         Public Sub startChecking(ByVal URL As String, ByVal netCred As ICredentials, Optional ByVal checkInterval As Integer = 10000, Optional ByVal SecureUserName As String = "", Optional ByVal SecurePassword As String = "", Optional ByVal SecureDomain As String = "")
             m_url = URL
             m_netCred = netCred
@@ -289,7 +310,11 @@ Public Class CheckStatusClass
                     m_LastConnectState = connection
                     RaiseEvent connectionStateChanged(connection)
                 End If
-                If (m_LastConnectState = connection) Then Return
+                If (m_LastConnectState = connection) Then
+                    RaiseEvent connectionStateNotChanged(ConnectionState.INTERNET_CONNECTION_MODEM)
+                    Return
+                End If
+
 
 
 

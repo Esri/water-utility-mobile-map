@@ -3192,6 +3192,7 @@ Public Class MobileMapConsole
 
     Private Sub m_MCCreateFeatureMA_SyncLayer(layerName As String) Handles m_MCCreateFeatureMA.SyncLayer
         Try
+            m_MCService.clearErrorWindow()
 
             Dim pLst As New List(Of FeatureSource)
             pLst.Add(GlobalsFunctions.GetFeatureSource(layerName, Map1).FeatureSource)

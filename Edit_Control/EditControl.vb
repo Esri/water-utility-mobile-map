@@ -745,7 +745,7 @@ Public Class EditControl
         If m_EditOptions IsNot Nothing Then
             If GlobalsFunctions.IsNumeric(m_EditOptions.SyncOnSave) Then
                 If CInt(m_EditOptions.SyncOnSave) > 0 Then
-                    If CInt(m_EditOptions.SyncOnSave) >= m_FL.EditsCount Then
+                    If m_FL.EditsCount >= CInt(m_EditOptions.SyncOnSave) Then
                         RaiseEvent SyncLayer(m_EditOptions.Name)
 
                     End If

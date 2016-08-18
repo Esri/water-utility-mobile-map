@@ -99,7 +99,8 @@ Public Class MobileServiceSync
     Private WithEvents m_ConnectionStatus As CheckStatusClass
 
     Private m_SyncToolsInit As Boolean = False
-
+    Private m_saveIfConnected As Boolean = False
+    Private m_refreshIfConnected As Boolean = False
     'Variable to show indictor or not(At this release, it cannot be false)
     Private m_ShowSyncIndicator As Boolean = True
 
@@ -145,9 +146,13 @@ Public Class MobileServiceSync
 
         Try
 
-
+            btnPost.BackgroundImage = My.Resources.UploadRed
+            btnPost.Tag = "UploadRed"
+            btnRefresh.BackgroundImage = My.Resources.DownloadRed
+            btnRefresh.Tag = "DownloadRed"
             'Init the service monitor class
             m_ConnectionStatus = New CheckStatusClass
+
             Dim fntSize As Single
             Single.TryParse(GlobalsFunctions.appConfig.ApplicationSettings.FontSize, fntSize)
             If Not IsNumeric(fntSize) Then
@@ -168,7 +173,7 @@ Public Class MobileServiceSync
     End Sub
 
     Public Function refreshBaseMapLayer(ByVal layer As Esri.ArcGIS.Mobile.MapLayer) As Boolean
-    
+
     End Function
 
     'Public Function refreshDataExtent(ByVal HonorScale As Boolean, ByVal Refresh As Boolean, ByVal FullExtent As Boolean, Optional ByVal strLayName As String = "") As Boolean
@@ -891,22 +896,24 @@ Public Class MobileServiceSync
 
         End Try
     End Sub
+    Private Sub cancelSync()
+        If syncThread IsNot Nothing Then
+            'cancelWorker.RunWorkerAsync()
+            syncThread.Abort()
+            hideSyncInc()
+            TogglePostRefresh(True)
+
+            RaiseEvent SyncFinished(m_MobileSyncAgent.FeatureSyncAgents)
+            writeError(String.Format(GlobalsFunctions.appConfig.ServicePanel.UIComponents.CanceledText, DateTime.Now.ToLongTimeString()))
+        End If
+    End Sub
     Private Sub m_Map_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles m_Map.KeyUp
         Try
 
 
             'If the escape key is pressed, cancel any request
             If e.KeyCode = Keys.Escape Then
-                If syncThread IsNot Nothing Then
-                    'cancelWorker.RunWorkerAsync()
-                    syncThread.Abort()
-                    hideSyncInc()
-                    TogglePostRefresh(True)
-
-                    RaiseEvent SyncFinished(m_MobileSyncAgent.FeatureSyncAgents)
-                    writeError(String.Format(GlobalsFunctions.appConfig.ServicePanel.UIComponents.CanceledText, DateTime.Now.ToLongTimeString()))
-                End If
-
+                cancelSync()
 
             End If
         Catch ex As Exception
@@ -967,7 +974,50 @@ Public Class MobileServiceSync
         End Try
     End Sub
     Private Shared m_connectState As ConnectionState = ConnectionState.INTERNET_CONNECTION_OFFLINE
+    Private Sub m_ConnectionStatusconnectionStateNotChanged(ByVal connectionStatus As ConnectionState) Handles m_ConnectionStatus.connectionStateNotChanged
+        If InvokeRequired Then
+            Try
+                Invoke(New CheckStatusClass.m_ExtractorDll_ConnectionStatusNotChangedDelegate(AddressOf m_ConnectionStatusconnectionStateNotChanged), connectionStatus)
 
+            Catch
+            End Try
+
+            Return
+
+
+        End If
+        If (m_saveIfConnected = True Or m_refreshIfConnected = True) Then
+            If (m_currentState = False) Then
+                ClearErrors()
+                writeError("Currently Offline: " & DateTime.Now)
+            Else
+                ClearErrors()
+                writeError("Currently Online: " & DateTime.Now)
+            End If
+            TogglePostRefresh(m_currentState)
+        End If
+
+        'm_saveIfConnected = False
+        'm_refreshIfConnected = False
+
+        'If connectionStatus = ConnectionState.INTERNET_CONNECTION_NEEDNEWTOKEN Then
+        '    m_MobileConnect.Url = GlobalsFunctions.GetServerToken()
+        '    MonitorServerConnection(False)
+        '    MonitorServerConnection(True)
+        '    TogglePostRefresh(False)
+        'ElseIf connectionStatus = ConnectionState.INTERNET_CONNECTION_LAN Then
+        '    TogglePostRefresh(True)
+        '    'ElseIf connectionStatus = ConnectionState.INTERNET_CONNECTION_MODEM Then
+        '    '    TogglePostRefresh(True)
+        '    'ElseIf connectionStatus = ConnectionState.INTERNET_CONNECTION_LAN Then
+        '    '    TogglePostRefresh(True)
+        'Else
+        '    TogglePostRefresh(False)
+        'End If
+
+
+
+    End Sub
     Private Sub m_ConnectionStatus_connectionStateChanged(ByVal connectionStatus As ConnectionState) Handles m_ConnectionStatus.connectionStateChanged
         Try
             m_connectState = connectionStatus
@@ -984,7 +1034,7 @@ Public Class MobileServiceSync
 
 
             End If
-
+            
             'If there is a connection
             If connectionStatus = ConnectionState.INTERNET_CONNECTION_NEEDNEWTOKEN Then
 
@@ -1002,12 +1052,19 @@ Public Class MobileServiceSync
 
 
             ElseIf connectionStatus = ConnectionState.INTERNET_CONNECTION_LAN Then
-                TogglePostRefresh(True)
 
+                If m_saveIfConnected = True Then
+                    post()
+                ElseIf m_refreshIfConnected = True Then
+                    refreshData()
 
+                Else
+                    TogglePostRefresh(True)
+                End If
+                m_saveIfConnected = False
+                m_refreshIfConnected = False
 
-
-
+             
             Else
                 TogglePostRefresh(False)
 
@@ -1023,14 +1080,30 @@ Public Class MobileServiceSync
     End Sub
     Private Sub disableSync()
         MonitorServerConnection(False)
-        btnRefresh.Enabled = False
+        'btnRefresh.Enabled = False
         btnRefresh.BackgroundImage = My.Resources.DownloadGray
-
-        btnPost.Enabled = False
+        btnRefresh.Tag = "DownloadGray"
+        'btnPost.Enabled = False
         btnPost.BackgroundImage = My.Resources.UploadGray
-
+        btnPost.Tag = "UploadGray"
+        btnRefresh.Update()
+        btnPost.Update()
+        btnRefresh.Refresh()
+        btnPost.Refresh()
     End Sub
     Private Sub btnRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRefresh.Click
+        If btnRefresh.Tag = "DownloadGreen" Then
+
+            refreshData()
+
+
+        ElseIf btnRefresh.Tag = "DownloadRed" Then
+            m_refreshIfConnected = True
+            checkStatus()
+
+        End If
+    End Sub
+    Public Sub refreshData()
         Try
             disableSync()
             lstErrors.Items.Clear()
@@ -1053,17 +1126,10 @@ Public Class MobileServiceSync
 
         End Try
     End Sub
-
-
-    Private Sub btnPost_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPost.Click
+    Private Sub post()
         disableSync()
-
         Try
-
-
             lstErrors.Items.Clear()
-
-
             'Post the data
             PostData()
         Catch ex As Exception
@@ -1073,8 +1139,18 @@ Public Class MobileServiceSync
 
         End Try
     End Sub
+    Private Sub btnPost_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPost.Click
 
-    Private Sub ClearErrors() Handles gpBoxErrors.Click
+        If btnPost.Tag = "UploadGreen" Then
+            post()
+        ElseIf btnPost.Tag = "UploadRed" Then
+            m_saveIfConnected = True
+            checkStatus()
+
+        End If
+
+    End Sub
+    Public Sub clearErrorWindow()
         Try
 
             'Clears the error box
@@ -1085,6 +1161,9 @@ Public Class MobileServiceSync
             st = Nothing
 
         End Try
+    End Sub
+    Private Sub ClearErrors() Handles gpBoxErrors.Click
+        clearErrorWindow()
 
     End Sub
 
@@ -1301,7 +1380,7 @@ Public Class MobileServiceSync
                         End If
 
 
-                        
+
                         'If strURL.UserName <> "" Then
                         '    Try
                         '        GlobalsFunctions.OverrideCertificateValidation()
@@ -1606,7 +1685,7 @@ Public Class MobileServiceSync
 
         End Try
     End Function
-  
+
     'Private Sub deleteAllFilesInFolder(ByVal folderPath As String)
 
     '    Try
@@ -1770,8 +1849,15 @@ Public Class MobileServiceSync
             lstErrors.Invoke(New ChangeTextControlDelegate(AddressOf writeError), New Object() {message})
             Return
         Else
+            If message.Contains("status 400:") Then
+                lstErrors.Items.Insert(0, "Sync Process failed, service is offline")
+                cancelSync()
+                TogglePostRefresh(False)
+            Else
+                lstErrors.Items.Insert(0, message)
+            End If
             ' lstErrors.Items.Add(message)
-            lstErrors.Items.Insert(0, message)
+
         End If
 
     End Sub
@@ -1791,7 +1877,7 @@ Public Class MobileServiceSync
             hideSyncInc()
 
             RaiseEvent SyncFinished(m_MobileSyncAgent.FeatureSyncAgents)
-
+            TogglePostRefresh(True)
         Else
             showSyncInc()
         End If
@@ -1800,7 +1886,7 @@ Public Class MobileServiceSync
         'Hide the indicator
         RaiseEvent showIndicator(False)
         MonitorServerConnection(True)
-TogglePostRefresh(true)
+        TogglePostRefresh(True)
         'm_SyncIndicator.Visible = False
         'Adjust the edit label
         adjustEditLbl()
@@ -2147,10 +2233,10 @@ TogglePostRefresh(true)
 
                     If pFS IsNot Nothing Then
 
-                        If pFS.HasEdits = False And syncDir = ESRI.ArcGIS.Mobile.FeatureCaching.Synchronization.SyncDirection.UploadOnly Then
+                        If pFS.HasEdits = False And syncDir = Esri.ArcGIS.Mobile.FeatureCaching.Synchronization.SyncDirection.UploadOnly Then
                         Else
 
-                            pFLSyncAgent = New ESRI.ArcGIS.Mobile.FeatureCaching.Synchronization.FeatureSyncAgent(pFS)
+                            pFLSyncAgent = New Esri.ArcGIS.Mobile.FeatureCaching.Synchronization.FeatureSyncAgent(pFS)
                             pFLSyncAgent.SynchronizationDirection = syncDir
                             pFLSyncAgent.SynchronizeAttachments = True
 
@@ -2507,8 +2593,20 @@ TogglePostRefresh(true)
                         Else
                             url = m_MobileConnect.Url & "?wsdl"
                         End If
+                        Dim poleInt As Integer
+                        Try
+                            If GlobalsFunctions.IsInteger(GlobalsFunctions.appConfig.LayerOptions.MobileServices.PoleInterval) Then
+                                poleInt = CInt(GlobalsFunctions.appConfig.LayerOptions.MobileServices.PoleInterval)
+                            Else
+                                poleInt = 20000
+                            End If
+                        Catch ex As Exception
+                            poleInt = 20000
+                        End Try
+                        If poleInt <> 0 Then
+                            m_ConnectionStatus.startChecking(url, m_MobileConnect.WebClientProtocol.Credentials, poleInt)
+                        End If
 
-                        m_ConnectionStatus.startChecking(url, m_MobileConnect.WebClientProtocol.Credentials)
                     End If
 
                 Case Else
@@ -2831,8 +2929,11 @@ TogglePostRefresh(true)
         lstErrors.Items.Insert(0, GlobalsFunctions.appConfig.ServicePanel.UIComponents.URLError)
     End Sub
     Private Delegate Sub TogglePostRefreshDel(ByVal enabled As Boolean)
+    Private m_currentState As Boolean = False
 
     Private Sub TogglePostRefresh(ByVal enabled As Boolean)
+        m_currentState = enabled
+
         If Me.InvokeRequired Then
             Try
                 Me.Invoke(New TogglePostRefreshDel(AddressOf TogglePostRefresh), enabled)
@@ -2843,20 +2944,27 @@ TogglePostRefresh(true)
 
 
         Else
+            m_saveIfConnected = False
+            m_refreshIfConnected = False
 
             If enabled Then
+
                 btnPost.BackgroundImage = My.Resources.UploadGreen
+                btnPost.Tag = "UploadGreen"
                 btnRefresh.BackgroundImage = My.Resources.DownloadGreen
-                btnPost.Enabled = True
-                btnRefresh.Enabled = True
+                btnRefresh.Tag = "DownloadGreen"
+                'btnPost.Enabled = True
+                'btnRefresh.Enabled = True
 
             Else
 
 
                 btnPost.BackgroundImage = My.Resources.UploadRed
+                btnPost.Tag = "UploadRed"
                 btnRefresh.BackgroundImage = My.Resources.DownloadRed
-                btnPost.Enabled = False
-                btnRefresh.Enabled = False
+                btnRefresh.Tag = "DownloadRed"
+                'btnPost.Enabled = False
+                'btnRefresh.Enabled = False
             End If
         End If
 
@@ -2936,6 +3044,22 @@ TogglePostRefresh(true)
     Private Sub bkGrnOpenLayers_ProgressChanged(sender As Object, e As System.ComponentModel.ProgressChangedEventArgs) Handles bkGrnOpenLayers.ProgressChanged
         'MsgBox(e.UserState)
         lstErrors.Items.Insert(0, e.UserState)
+
+    End Sub
+
+    Private Sub checkStatus()
+        If m_MobileConnect.Url IsNot Nothing Then
+            disableSync()
+            Dim url As String
+            If m_MobileConnect.Url.Contains("?") Then
+                url = m_MobileConnect.Url & "&wsdl"
+
+            Else
+                url = m_MobileConnect.Url & "?wsdl"
+            End If
+            m_ConnectionStatus.checkStatus(url, m_MobileConnect.WebClientProtocol.Credentials)
+
+        End If
 
     End Sub
 End Class

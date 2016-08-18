@@ -60,7 +60,6 @@ Partial Class MobileServiceSync
         '
         Me.btnRefresh.BackgroundImage = Global.MobileControls.My.Resources.Resources.DownloadRed
         Me.btnRefresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.btnRefresh.Enabled = False
         Me.btnRefresh.FlatAppearance.BorderSize = 0
         Me.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnRefresh.Location = New System.Drawing.Point(13, 82)
@@ -71,9 +70,7 @@ Partial Class MobileServiceSync
         '
         'btnPost
         '
-        Me.btnPost.BackgroundImage = Global.MobileControls.My.Resources.Resources.UploadRed
         Me.btnPost.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.btnPost.Enabled = False
         Me.btnPost.FlatAppearance.BorderSize = 0
         Me.btnPost.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnPost.Location = New System.Drawing.Point(13, 26)
