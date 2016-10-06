@@ -2300,6 +2300,7 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
 
         Private gPSLogLayerField As String
         Private gPSLogLayer_UserNameFieldField As String
+        Private gPSLogLayer_UserNameCaseField As String
         Private gPSLogLayer_DateFieldField As String
         Private gPSLogLayer_TruncateAfterPostField As String
         Private gPSLogLayer_WOFieldField As String
@@ -2508,6 +2509,15 @@ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
             End Get
             Set(ByVal value As Integer)
                 Me.SaveToLayerIntervalField = value
+            End Set
+        End Property
+        <System.Xml.Serialization.XmlElementAttribute(Form:=System.Xml.Schema.XmlSchemaForm.Unqualified, Order:=18)> _
+        Public Property GPSLogLayer_UserNameCase() As String
+            Get
+                Return Me.gPSLogLayer_UserNameCaseField
+            End Get
+            Set(ByVal value As String)
+                Me.gPSLogLayer_UserNameCaseField = value
             End Set
         End Property
 

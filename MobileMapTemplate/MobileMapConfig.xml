@@ -87,6 +87,7 @@
         <GPSAutoCenter>False</GPSAutoCenter>
         <GPSLogLayer_WOField>CURWO</GPSLogLayer_WOField>
         <SaveToLayerInterval>30</SaveToLayerInterval>
+        <GPSLogLayer_UserNameCase>Upper</GPSLogLayer_UserNameCase>
       </GPS>
       <ZoomPan>
         <!--Option to use Fix zoom(True) in or drag a box and zoom(False)-->

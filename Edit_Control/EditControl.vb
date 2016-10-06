@@ -1614,7 +1614,10 @@ Public Class EditControl
                                 Case "DateTime".ToUpper
 
                                     UpdateField(autoAttFld.Name, Now.ToString(), True, setRead)
-
+                                Case "UserLower".ToUpper
+                                    UpdateField(autoAttFld.Name, Environment.UserName.ToString.ToLower, True, setRead)
+                                Case "UserUpper".ToUpper
+                                    UpdateField(autoAttFld.Name, Environment.UserName.ToString.ToUpper, True, setRead)
                                 Case "User".ToUpper
                                     UpdateField(autoAttFld.Name, Environment.UserName, True, setRead)
                                 Case "FullUser".ToUpper
