@@ -639,13 +639,14 @@ Public Class mobileNavigation
 
                 If GlobalsFunctions.m_GPS.GpsConnection.Longitude.ToString() <> "NaN" And GlobalsFunctions.m_GPS.GpsConnection.Latitude.ToString() <> "NaN" Then
 
-                    If gpsGraphicsLayer.count > m_gpsSaveToLayerInt Or forceSave Then
+                    If gpsGraphicsLayer.count >= m_gpsSaveToLayerInt Or forceSave Then
+                        gpsGraphicsLayer.addGPSLoc(m_Map.SpatialReference.FromWgs84(GlobalsFunctions.m_GPS.GpsConnection.Longitude, GlobalsFunctions.m_GPS.GpsConnection.Latitude), Environment.UserName, Now.ToString(), m_WOID.ToString())
                         Dim pDT As FeatureDataTable = m_GPSFL.GetDataTable()
                         Dim pFDR As FeatureDataRow
                         Dim listGPS As List(Of CustomGraphicsLayer.gpsLoc) = gpsGraphicsLayer.getGPSData()
                         For Each gpsLoc As CustomGraphicsLayer.gpsLoc In listGPS
                             pFDR = pDT.NewRow
-                            pFDR.Geometry = New ESRI.ArcGIS.Mobile.Geometries.Point(gpsLoc._coordinate)
+                            pFDR.Geometry = New Esri.ArcGIS.Mobile.Geometries.Point(gpsLoc._coordinate)
                             Try
 
                                 If pDT.Columns(m_GPSFL_UserField) IsNot Nothing Then
