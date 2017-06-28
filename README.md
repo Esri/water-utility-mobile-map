@@ -1,5 +1,5 @@
-# Mature Support
-As of 6-14-2016 the Water Utility Mobile Map moved to the [Mature Lifecycle Phase](http://links.esri.com/Support/ProductLifeCycle) to align with the lifecycle status of ArcGIS for Windows Mobile. See the [ArcGIS for Windows Mobile product life cycle support](http://links.esri.com/support/LifeCycleStatus/ArcGISforWindowsMobile) status for more details.
+# Retired
+As of July 1, 2017 the Water Utility Mobile Map moved to the [Retired Lifecycle Phase](http://links.esri.com/Support/ProductLifeCycle) to align with the lifecycle status of ArcGIS for Windows Mobile. See the [ArcGIS for Windows Mobile product life cycle support](http://links.esri.com/support/LifeCycleStatus/ArcGISforWindowsMobile) status for more details.
 
 # water-utility-mobile-map
 
@@ -71,7 +71,7 @@ Please see our [guidelines for contributing](https://github.com/esri/contributin
 
 ## Licensing
 
-Copyright 2013 Esri
+Copyright 2017 Esri
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -87,6 +87,3 @@ limitations under the License.
 
 A copy of the license is available in the repository's
 [LICENSE.txt](LICENSE.txt) file.
-
-[](Esri Tags: ArcGISSolutions Local-Government Water-Utility Local Government Water Utility Mobile Map Utility Utilities C-Sharp)
-[](Esri Language: Visual-Basic)
